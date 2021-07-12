@@ -6,6 +6,7 @@ dependencies:
   - numpy
   - pandas
   - typer
+  - click-help-colors
   - pip
   - pip:
     - metaDMG-fit

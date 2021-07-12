@@ -2,11 +2,11 @@ import typer
 from pathlib import Path
 from typing import List, Optional
 
-from metadamageprofiler import cli_utils
+from metaDMG import utils, cli_utils
 
 cli_app = cli_utils.get_cli_app()
 
-storage_path_default = Path("./data/")
+storage_dir_default = Path("./data/")
 config_file = Path("config.yaml")
 
 #%%
@@ -21,20 +21,20 @@ def callback(
     ),
 ):
     """
-    Metadamage Profiler — Profiling (Meta)Genomic Ancient Damage.
+    metaDMG.
 
     First run the LCA and compute the ancient damage statistics with the 'compute' command:
 
     \b
-        $ metadamageprofiler config --help
+        $ metaDMG config --help
 
     \b
-        $ metadamageprofiler compute --help
+        $ metaDMG compute --help
 
     And subsequently visualize the results using the dashboard:
 
     \b
-        $ metadamageprofiler dashboard --help
+        $ metaDMG dashboard --help
 
     """
 
@@ -66,8 +66,8 @@ def config(
         file_okay=True,
         help="Path to the (NCBI) acc2tax.gz.",
     ),
-    ngsLCA_command: Path = typer.Option(
-        "ngsLCA/metadamage",
+    metaDMG_lca: Path = typer.Option(
+        "./metaDMG-lca",
         help="The command needed to run the ngsLCA-program.",
     ),
     simscorelow: float = typer.Option(
@@ -103,8 +103,8 @@ def config(
         case_sensitive=False,
         help="The LCA rank used in ngsLCA.",
     ),
-    storage_path: Path = typer.Option(
-        storage_path_default,
+    storage_dir: Path = typer.Option(
+        storage_dir_default,
         help="Path where the generated output files and folders are stored.",
     ),
     cores: int = typer.Option(
@@ -124,22 +124,13 @@ def config(
 ):
     """Generate the config file."""
 
-    from metadamageprofiler import utils
     import yaml
-
-    d_paths = {
-        "ngsLCA": storage_path / "ngsLCA",
-        "mismatch": storage_path / "mismatch",
-        "fit_results": storage_path / "fit_results",
-        "results": storage_path / "results",
-        "database": storage_path / "database",
-    }
 
     config = utils.remove_paths(
         {
             "samples": utils.extract_alignments(samples),
             #
-            "ngsLCA_command": ngsLCA_command,
+            "metaDMG-lca": metaDMG_lca,
             "names": names,
             "nodes": nodes,
             "acc2tax": acc2tax,
@@ -151,12 +142,10 @@ def config(
             "lca_rank": lca_rank.value,  # important to get string
             "max_position": max_position,
             #
-            "storage_path": storage_path,
+            "dir": storage_dir,
             "cores": cores,
             "bayesian": bayesian,
             "debug": debug,
-            #
-            "paths": d_paths,
         }
     )
 
@@ -167,29 +156,21 @@ def config(
 #%%
 
 
-@cli_app.command(
-    "compute",
-    # context_settings={
-    #     "allow_extra_args": True,
-    #     "ignore_unknown_options": True,
-    # },
-)
-def cli_compute(ctx: typer.Context):
+@cli_app.command("compute")
+def compute(
+    config: Optional[Path] = typer.Option(
+        None,
+        exists=True,
+        file_okay=True,
+        help="Path to the config-file.",
+    ),
+):
     """Compute the LCA and Ancient Damage given the configuration."""
 
-    if not config_file.exists():
-        typer.echo("You have to run './metadamageprofiler.sh config' first.")
-        raise typer.Abort()
+    from metaDMG import utils
+    from metaDMG_fit import run_workflow
 
-    import yaml
-    import subprocess
-
-    with open(config_file, "r") as file:
-        cores = yaml.safe_load(file)["cores"]
-
-    typer.echo(__name__)
-    # typer.echo(" ".join(commands))
-    # subprocess.run(commands)
+    run_workflow(config=config)
 
 
 #%%
@@ -197,20 +178,22 @@ def cli_compute(ctx: typer.Context):
 
 @cli_app.command("dashboard")
 def cli_dashboard(
-    results_dir: Path = typer.Argument(
-        storage_path_default / "results",
-        help="Directory contantaining the results of a previous run of metadamageprofiler.",
+    config: Optional[Path] = typer.Argument(
+        None,
+        exists=True,
+        file_okay=True,
+        help="Path to the config-file.",
     ),
     debug: bool = typer.Option(
         False,
         "--debug",
         help="Whether or not the debug-button should be displayed.",
     ),
-    dashboard_port: int = typer.Option(
+    port: int = typer.Option(
         8050,
         help="Dashboard port.",
     ),
-    dashboard_host: str = typer.Option(
+    host: str = typer.Option(
         "0.0.0.0",
         help="Dashboard host address",
     ),
@@ -220,51 +203,27 @@ def cli_dashboard(
     run as e.g.:
 
     \b
-        $ metadamageprofiler dashboard
+        $ metaDMG dashboard
 
-    or for another directory than default:
+    or for another config than default:
 
     \b
-        $ metadamageprofiler dashboard ./other/dir/results
+        $ metaDMG dashboard ./some/other/dir/config2.yaml
 
     """
 
-    from metadamageprofiler.dashboard import utils, app
+    from metaDMG_viz import start_dashboard
 
-    if not results_dir.exists():
-        typer.echo("Please choose a valid directory")
-        raise typer.Abort()
-
-    if not debug:
-        utils.open_browser_in_background()
-
-    dashboard_app = app.get_app(results_dir)
-
-    dashboard_app.run_server(
+    start_dashboard(
+        config=config,
         debug=debug,
-        host=dashboard_host,
-        port=dashboard_port,
+        host=host,
+        port=port,
     )
 
 
 #%%
 
 
-@cli_app.command("clean")
-def cli_clean():
-    """Clean the current directory."""
-
-    import subprocess
-    import importlib_resources
-
-    snakefile = str(importlib_resources.files("metadamageprofiler") / "Snakefile")
-    commands = ["snakemake", "--snakefile", snakefile, "--unlock"]
-    typer.echo(" ".join(commands))
-    subprocess.run(commands)
-
-
-#%%
-
-
 def cli_main():
-    cli_app(prog_name="metadamageprofiler")
+    cli_app(prog_name="metaDMG")
