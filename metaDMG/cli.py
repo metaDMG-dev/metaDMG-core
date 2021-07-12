@@ -66,9 +66,9 @@ def config(
         file_okay=True,
         help="Path to the (NCBI) acc2tax.gz.",
     ),
-    metaDMG_lca: Path = typer.Option(
+    metaDMG_lca: str = typer.Option(
         "./metaDMG-lca",
-        help="The command needed to run the ngsLCA-program.",
+        help="The command needed to run the metaDMG-lca program.",
     ),
     simscorelow: float = typer.Option(
         0.95,
@@ -116,11 +116,6 @@ def config(
         "--bayesian",
         help="Include a fully Bayesian model (probably better, but also _a lot_ slower, about a factor of 100.",
     ),
-    debug: bool = typer.Option(
-        False,
-        "--debug",
-        help="Debug mode.",
-    ),
 ):
     """Generate the config file."""
 
@@ -145,7 +140,6 @@ def config(
             "dir": storage_dir,
             "cores": cores,
             "bayesian": bayesian,
-            "debug": debug,
         }
     )
 
@@ -223,7 +217,6 @@ def cli_dashboard(
 
 
 #%%
-
 
 def cli_main():
     cli_app(prog_name="metaDMG")
