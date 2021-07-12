@@ -5,6 +5,7 @@ dependencies:
   - python==3.8
   - numpy
   - pandas
+  - typer
   - pip
   - pip:
     - metaDMG-fit

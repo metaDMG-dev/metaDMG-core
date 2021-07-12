@@ -6,6 +6,6 @@ from metaDMG_viz import start_dashboard
 
 config = load_config()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_workflow()
     start_dashboard(debug=True)

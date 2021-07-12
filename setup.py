@@ -9,9 +9,14 @@ setup(
     url="https://github.com/metaDMG/metaDMG/",
     license="MIT",
     description="metaDMG",
-    install_requires=['numpy', 'pandas'],
-    extras_require={'fit': ["metaDMG-fit"],
-                    'viz': ['metaDMG-viz'],
-                    'all': ["metaDMG-fit", "metaDMG-viz"],
-                    }
+    install_requires=[
+        "numpy",
+        "pandas",
+        "typer",
+    ],
+    extras_require={
+        "fit": ["metaDMG-fit"],
+        "viz": ["metaDMG-viz"],
+        "all": ["metaDMG-fit", "metaDMG-viz"],
+    },
 )
