@@ -48,3 +48,15 @@ bayesian: false
 verbose: false
 dir: data
 ```
+
+---
+
+If you only want to install some of the tools, you can run:
+```console
+pip install "metaDMG[fit]"
+```
+to only install the fitting part of the tool, or:
+```console
+pip install "metaDMG[viz]"
+```
+to only install the interactive plotting tool (requires you to have gotten the results from somewhere else).
