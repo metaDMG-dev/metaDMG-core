@@ -6,7 +6,12 @@
 
 ---
 
+
+
 Assumes you have a `config.yaml` file in the path and the executable metaDMG-lca located at the location specified in the `['metaDMG-lca']` key of the config.
+
+
+Installation:
 
 ```
 conda env create --file environment.yaml
@@ -14,6 +19,11 @@ conda env create --file environment.yaml
 or, if you have mamba installed (faster)
 ```
 mamba env create --file environment.yaml
+```
+
+or, by using pip:
+```
+pip install "metaDMG[all]"
 ```
 
 
