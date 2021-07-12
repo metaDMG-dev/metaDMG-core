@@ -1,4 +1,4 @@
-# metaDMG-fit
+# metaDMG: Estimating ancient damage in (meta)genomic DNA rapidly
 
 ---
 
@@ -7,11 +7,7 @@
 ---
 
 
-
-Assumes you have a `config.yaml` file in the path and the executable metaDMG-lca located at the location specified in the `['metaDMG-lca']` key of the config.
-
-
-Installation:
+## Installation:
 
 ```
 conda env create --file environment.yaml
@@ -25,29 +21,110 @@ or, by using pip:
 ```
 pip install "metaDMG[all]"
 ```
+---
+
+## Workflow:
 
 
-Example yaml:
-```yaml
-samples:
-  subs: raw_data/subs.bam
-  SPL_195_9299: raw_data/SPL_195_9299.tmp.bam.merged.sort.bam
-metaDMG-lca: ./metaDMG-lca
-names: raw_data/names.dmp.gz
-nodes: raw_data/nodes.dmp.gz
-acc2tax: raw_data/combined_taxid_accssionNO_20200425.gz
-simscorelow: 0.95
-simscorehigh: 1.0
-editdistmin: 0
-editdistmax: 10
-minmapq: 0
-lca_rank: ''
-max_position: 15
-cores: 8
-bayesian: false
-verbose: false
-dir: data
+Create `config.yaml` file:
+```console
+$ metaDMG config ./raw_data/example.bam \
+    --names raw_data/names.dmp.gz \
+    --nodes raw_data/nodes.dmp.gz \
+    --acc2tax raw_data/combined_taxid_accssionNO_20200425.gz
 ```
+Run actual program:
+```console
+$ metaDMG compute
+```
+See the results in the dashboard:
+```console
+$ metaDMG dashboard
+```
+
+
+---
+
+## Usage:
+
+metaDMG works by first creating a config file using the `config` command. This file contains all of the information related to metaDMG such that you only have to type this once. The config file is saved in the current directory as `config.yaml` and can subsequently be edited in any text editor of your like.
+
+After the config has been created, we run the actual program using the `compute` command. This can take a while depending on the number (and size) of the files.
+
+Finally the results are saved in `{storage-dir}/results` directory (`data/results` by default). These can be viewed with the interactive dashboard using the `dashboard` command.
+
+
+---
+
+# `config`
+
+#### CLI options:
+
+`metaDMG config` takes a single argument, `samples`, and a bunch of additional options. The `samples` refer to a single or multiple alignment-files (or a directory containing them), all with the file extensions: `.bam`, `.sam`, and `.sam.gz`.
+
+The options are listed below:
+
+- Input files:
+  - `--names`: Path to the (NCBI) `names.dmp.gz`. Mandatory.
+  - `--nodes`: Path to the (NCBI) `nodes.dmp.gz`. Mandatory.
+  - `--acc2tax`: Path to the (NCBI) `acc2tax.gz`. Mandatory.
+
+- LCA parameters:
+  - `--simscorelow`: Normalized edit distance (read to reference similarity) minimum. Number between 0-1. Default: 0.95.
+  - `--simscorehigh`: Normalized edit distance (read to reference similarity) maximum. Number between 0-1 Default: 1.0.
+  - `--editdistmin`: Minimum edit distance (read to reference similarity). Number between 0-10. Default: 0.
+  - `--editdistmax`: Maximum edit distance (read to reference similarity). Number between 0-10. Default: 10.
+  - `--minmapq`: Minimum mapping quality. Default: 0.
+  - `--max-position`: Maximum position in the sequence to include. Default is (+/-) 15 (forward/reverse).
+  - `--lca-rank`: The LCA rank used in ngsLCA. Can be either `family`, `genus`, `species` or `""` (everything). Default is `""`.
+
+- General parameters:
+  - `--storage_dir`: Path where the generated output files and folders are stored. Default: `./data/`.
+  - `--cores`: The maximum number of cores to use.
+
+- Boolean flags (does not take any values, only the flag). Default is false.
+  - `--bayesian`: Include a fully Bayesian model (probably better, but also _a lot_ slower, about a factor of 100).
+
+
+
+```console
+$ metaDMG config ./raw_data/example.bam \
+    --names raw_data/names.dmp.gz \
+    --nodes raw_data/nodes.dmp.gz \
+    --acc2tax raw_data/combined_taxid_accssionNO_20200425.gz \
+    --cores 4
+```
+
+
+
+metaDMG is pretty versatile regarding its input argument and also accepts multiple alignment files:
+```console
+$ metaDMG config ./raw_data/*.bam [...]
+```
+or even an entire directory containing alignment files (`.bam`, `.sam`, and `.sam.gz`):
+```console
+$ metaDMG config ./raw_data/ [...]
+```
+
+
+---
+
+
+# `compute`
+
+```console
+$ metaDMG compute
+```
+
+---
+
+# `dashboard`
+
+```console
+$ metaDMG dashboard
+```
+
+
 
 ---
 
