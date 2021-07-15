@@ -80,7 +80,7 @@ The options are listed below:
 
 - General parameters:
   - `--storage_dir`: Path where the generated output files and folders are stored. Default: `./data/`.
-  - `--cores`: The maximum number of cores to use. Default is 1. 
+  - `--cores`: The maximum number of cores to use. Default is 1.
   - `--config-file`: The name of the generated config file. Default: `config.yaml`.
 
 - Boolean flags (does not take any values, only the flag). Default is false.
@@ -107,25 +107,63 @@ or even an entire directory containing alignment files (`.bam`, `.sam`, and `.sa
 $ metaDMG config ./raw_data/ [...]
 ```
 
-
 ---
 
 
 # `compute`
 
+
+The `metaDMG compute` command takes an optional config-file as argument
+(defaults to `config.yaml` if not specified).
+
+#### Example:
+
 ```console
-$ metaDMG compute
+$ metaDMG compute --config config.yaml
 ```
 
 ---
 
 # `dashboard`
 
+
+The `metaDMG dashboard` command takes first an optional config-file as argument
+(defaults to `config.yaml` if not specified) followed by the following CLI options:
+
+#### CLI options:
+
+- `--port`: The port to be used for the dashboard. Default is `8050`.
+- `--host`: The dashboard host adress. Default is `0.0.0.0`.
+- `--debug`: Boolean flag that allows for debugging the dashboard. Only for internal usage.
+
+#### Example:
+
 ```console
-$ metaDMG dashboard
+$ metaDMG dashboard --port 8050 --host 0.0.0.0
 ```
 
 
+---
+
+# `convert`
+
+The `metaDMG convert` command takes first an output path as a mandatory argument
+followed by the following CLI options:
+
+#### CLI options:
+
+- `--config`: Path to the `config.yaml` file used to infer the results directory.
+- `--results_dir`: Direct path to the results directory.
+
+Note that neither `--config`, nor `--results_dir`, have to be specified
+(in which just the default `config.yaml` is used), however,
+both cannot be set at the same time.
+
+#### Example:
+
+```console
+$ metaDMG convert ./directory/to/contain/results.csv --config config.yaml
+```
 
 ---
 
