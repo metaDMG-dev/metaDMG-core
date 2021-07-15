@@ -6,9 +6,6 @@ from metaDMG import utils, cli_utils
 
 cli_app = cli_utils.get_cli_app()
 
-storage_dir_default = Path("./data/")
-config_file = Path("config.yaml")
-
 #%%
 
 
@@ -104,7 +101,7 @@ def config(
         help="The LCA rank used in ngsLCA.",
     ),
     storage_dir: Path = typer.Option(
-        storage_dir_default,
+        Path("./data/"),
         help="Path where the generated output files and folders are stored.",
     ),
     cores: int = typer.Option(
@@ -115,6 +112,12 @@ def config(
         False,
         "--bayesian",
         help="Include a fully Bayesian model (probably better, but also _a lot_ slower, about a factor of 100.",
+    ),
+    config_file: Path = typer.Option(
+        Path("config.yaml"),
+        exists=True,
+        file_okay=True,
+        help="The name of the config file. ",
     ),
 ):
     """Generate the config file."""
@@ -152,7 +155,7 @@ def config(
 
 @cli_app.command("compute")
 def compute(
-    config: Optional[Path] = typer.Option(
+    config: Optional[Path] = typer.Argument(
         None,
         exists=True,
         file_okay=True,
