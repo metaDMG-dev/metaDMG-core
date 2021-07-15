@@ -172,7 +172,7 @@ def compute(
 
 
 @cli_app.command("dashboard")
-def cli_dashboard(
+def dashboard(
     config: Optional[Path] = typer.Argument(
         None,
         exists=True,
@@ -214,6 +214,61 @@ def cli_dashboard(
         debug=debug,
         host=host,
         port=port,
+    )
+
+
+#%%
+
+
+def convert_results(output, config=None, results_dir=None):
+
+    if config is not None and results_dir is not None:
+        raise AssertionError("Only a single one of config and results_dir can be set")
+
+    from metaDMG.utils import load_config
+    import pandas as pd
+
+    if results_dir is not None:
+        pass
+
+    else:
+        results_dir = Path(load_config(config)["dir"]) / "results"
+
+    df = pd.read_parquet(results_dir)
+
+    suffix = output.suffix
+    if suffix == ".csv":
+        sep = ","
+    elif suffix == ".tsv":
+        sep = r"\t"
+    else:
+        raise AssertionError(f"'{suffix}' not implemented yet, only .csv and .tsv.")
+
+    output.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(output, sep=sep, index=False)
+
+
+@cli_app.command("convert")
+def convert(
+    output: Path = typer.Argument(
+        ...,
+        help="Where to save the converted file.",
+    ),
+    config: Optional[Path] = typer.Option(
+        None,
+        help="Path to the config-file.",
+    ),
+    results_dir: Optional[Path] = typer.Option(
+        None,
+        help="Path to the config-file.",
+    ),
+):
+    """Convert the results to a single csv file."""
+
+    convert_results(
+        output=output,
+        config=config,
+        results_dir=results_dir,
     )
 
 

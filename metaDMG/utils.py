@@ -4,8 +4,10 @@ import pyarrow.parquet as pq
 import yaml
 
 
-def load_config():
-    with open("config.yaml", "r") as file:
+def load_config(config=None):
+    if config is None:
+        config = "config.yaml"
+    with open(config, "r") as file:
         config = yaml.safe_load(file)
     return config
 
