@@ -115,7 +115,6 @@ def config(
     ),
     config_file: Path = typer.Option(
         Path("config.yaml"),
-        exists=True,
         file_okay=True,
         help="The name of the config file. ",
     ),
