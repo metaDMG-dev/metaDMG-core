@@ -204,7 +204,7 @@ def dashboard(
     or for another config than default:
 
     \b
-        $ metaDMG dashboard ./some/other/dir/config2.yaml
+        $ metaDMG dashboard non-default-config.yaml --port 8050 --host 0.0.0.0
 
     """
 
@@ -237,7 +237,7 @@ def filter(
         help="Where to save the converted file.",
     ),
     query: str = typer.Option(
-        None,
+        "",
         help="Filtering query",
     ),
 ):

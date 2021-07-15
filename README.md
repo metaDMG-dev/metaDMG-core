@@ -122,7 +122,7 @@ $ metaDMG compute
 ```
 
 ```console
-$ metaDMG compute config.yaml
+$ metaDMG compute non-default-config.yaml
 ```
 
 ---
@@ -146,7 +146,7 @@ $ metaDMG dashboard
 ```
 
 ```console
-$ metaDMG dashboard config.yaml --port 8050 --host 0.0.0.0
+$ metaDMG dashboard non-default-config.yaml --port 8050 --host 0.0.0.0
 ```
 
 
@@ -174,8 +174,43 @@ $ metaDMG convert --output ./directory/to/contain/results.csv
 ```
 
 ```console
-$ metaDMG convert config.yaml --output ./directory/to/contain/results.csv
+$ metaDMG convert non-default-config.yaml --output ./directory/to/contain/results.csv
 ```
+
+
+---
+
+# `filter`
+
+The `metaDMG filter` command takes first an optional config-file as argument
+(defaults to `config.yaml` if not specified) used to infer the results directory
+ followed by the following CLI options:
+
+#### CLI options:
+
+- `--output`: Mandatory output path.
+- `--query`: The query string to use for filtering. Follows the [Pandas Query()]([www.link.dk](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method)) syntax.
+Default is `""` which applies no filtering and is thus similar to the `metaDMG convert` command.
+- `--results_dir`: Direct path to the results directory.
+
+Note that neither the config-file nor `--results_dir` have to be specified
+(in which just the default `config.yaml` is used), however,
+both cannot be set at the same time.
+
+
+
+#### Example:
+
+```console
+$ metaDMG filter --output convert-no-query.csv # similar to metaDMG convert
+```
+
+```console
+$ metaDMG filter --output convert-test.csv --query "N_reads > 5_000 & sample in ['subs', 'SPL_195_9299'] & tax_name == 'root'"
+```
+
+---
+
 
 ---
 
