@@ -12,6 +12,7 @@ metaDMG-lca
 *.lca.stat
 *.uglyprint.*
 *.bam.bin
+*.csv
 
 file.log
 dask-worker-space/
