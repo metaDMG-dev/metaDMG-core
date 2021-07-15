@@ -250,20 +250,21 @@ def convert_results(output, config=None, results_dir=None):
 
 @cli_app.command("convert")
 def convert(
-    output: Path = typer.Argument(
+    config: Optional[Path] = typer.Argument(
+        None,
+        file_okay=True,
+        help="Path to the config-file.",
+    ),
+    output: Path = typer.Option(
         ...,
         help="Where to save the converted file.",
-    ),
-    config: Optional[Path] = typer.Option(
-        None,
-        help="Path to the config-file.",
     ),
     results_dir: Optional[Path] = typer.Option(
         None,
         help="Path to the config-file.",
     ),
 ):
-    """Convert the results to a single csv file."""
+    """Convert the results to a single csv or tsv file."""
 
     convert_results(
         output=output,

@@ -97,7 +97,6 @@ $ metaDMG config ./raw_data/example.bam \
 ```
 
 
-
 metaDMG is pretty versatile regarding its input argument and also accepts multiple alignment files:
 ```console
 $ metaDMG config ./raw_data/*.bam [...]
@@ -119,7 +118,11 @@ The `metaDMG compute` command takes an optional config-file as argument
 #### Example:
 
 ```console
-$ metaDMG compute --config config.yaml
+$ metaDMG compute
+```
+
+```console
+$ metaDMG compute config.yaml
 ```
 
 ---
@@ -139,7 +142,11 @@ The `metaDMG dashboard` command takes first an optional config-file as argument
 #### Example:
 
 ```console
-$ metaDMG dashboard --port 8050 --host 0.0.0.0
+$ metaDMG dashboard
+```
+
+```console
+$ metaDMG dashboard config.yaml --port 8050 --host 0.0.0.0
 ```
 
 
@@ -147,22 +154,27 @@ $ metaDMG dashboard --port 8050 --host 0.0.0.0
 
 # `convert`
 
-The `metaDMG convert` command takes first an output path as a mandatory argument
-followed by the following CLI options:
+The `metaDMG convert` command takes first an optional config-file as argument
+(defaults to `config.yaml` if not specified) used to infer the results directory
+ followed by the following CLI options:
 
 #### CLI options:
 
-- `--config`: Path to the `config.yaml` file used to infer the results directory.
+- `--output`: Mandatory output path.
 - `--results_dir`: Direct path to the results directory.
 
-Note that neither `--config`, nor `--results_dir`, have to be specified
+Note that neither the config-file nor `--results_dir` have to be specified
 (in which just the default `config.yaml` is used), however,
 both cannot be set at the same time.
 
 #### Example:
 
 ```console
-$ metaDMG convert ./directory/to/contain/results.csv --config config.yaml
+$ metaDMG convert --output ./directory/to/contain/results.csv
+```
+
+```console
+$ metaDMG convert config.yaml --output ./directory/to/contain/results.csv
 ```
 
 ---
