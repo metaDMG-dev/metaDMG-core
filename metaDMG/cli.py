@@ -2,7 +2,7 @@ import typer
 from pathlib import Path
 from typing import List, Optional
 
-from metaDMG import utils, cli_utils
+from metaDMG import cli_utils
 
 cli_app = cli_utils.get_cli_app()
 
@@ -121,6 +121,7 @@ def config(
     """Generate the config file."""
 
     import yaml
+    from metaDMG import utils
 
     config = utils.remove_paths(
         {
@@ -220,32 +221,39 @@ def dashboard(
 #%%
 
 
-def convert_results(output, config=None, results_dir=None):
+@cli_app.command("filter")
+def filter(
+    config: Optional[Path] = typer.Argument(
+        None,
+        file_okay=True,
+        help="Path to the config-file.",
+    ),
+    results_dir: Optional[Path] = typer.Option(
+        None,
+        help="Path to the results directory.",
+    ),
+    output: Path = typer.Option(
+        ...,
+        help="Where to save the converted file.",
+    ),
+    query: str = typer.Option(
+        None,
+        help="Filtering query",
+    ),
+):
+    """Filter and save the results to either a combined csv or tsv file."""
 
-    if config is not None and results_dir is not None:
-        raise AssertionError("Only a single one of config and results_dir can be set")
+    from metaDMG.filters import filter_and_save_results
 
-    from metaDMG.utils import load_config
-    import pandas as pd
+    filter_and_save_results(
+        output=output,
+        query=query,
+        config=config,
+        results_dir=results_dir,
+    )
 
-    if results_dir is not None:
-        pass
 
-    else:
-        results_dir = Path(load_config(config)["dir"]) / "results"
-
-    df = pd.read_parquet(results_dir)
-
-    suffix = output.suffix
-    if suffix == ".csv":
-        sep = ","
-    elif suffix == ".tsv":
-        sep = r"\t"
-    else:
-        raise AssertionError(f"'{suffix}' not implemented yet, only .csv and .tsv.")
-
-    output.parent.mkdir(parents=True, exist_ok=True)
-    df.to_csv(output, sep=sep, index=False)
+#%%
 
 
 @cli_app.command("convert")
@@ -255,19 +263,22 @@ def convert(
         file_okay=True,
         help="Path to the config-file.",
     ),
+    results_dir: Optional[Path] = typer.Option(
+        None,
+        help="Path to the results directory.",
+    ),
     output: Path = typer.Option(
         ...,
         help="Where to save the converted file.",
     ),
-    results_dir: Optional[Path] = typer.Option(
-        None,
-        help="Path to the config-file.",
-    ),
 ):
-    """Convert the results to a single csv or tsv file."""
+    """Convert the results to either a combined csv or tsv file."""
 
-    convert_results(
+    from metaDMG.filters import filter_and_save_results
+
+    filter_and_save_results(
         output=output,
+        query="",
         config=config,
         results_dir=results_dir,
     )
