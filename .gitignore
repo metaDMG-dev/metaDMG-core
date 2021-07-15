@@ -17,3 +17,4 @@ file.log
 dask-worker-space/
 bla*
 *.egg-info/
+*.eggs

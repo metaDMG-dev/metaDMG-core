@@ -1,1 +1,3 @@
-__version__ = "21.7.1"
+from importlib.metadata import version
+
+__version__ = version("metaDMG")

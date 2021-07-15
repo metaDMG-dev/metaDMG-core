@@ -2,13 +2,14 @@ from setuptools import setup
 
 setup(
     name="metaDMG",
-    version="21.7.1",
     packages=["metaDMG"],
     author="Christian Michelsen",
     author_email="christianmichelsen@gmail.com",
     url="https://github.com/metaDMG/metaDMG/",
     license="MIT",
     description="metaDMG",
+    use_scm_version=True,
+    setup_requires=["setuptools_scm"],
     install_requires=[
         "numpy",
         "pandas",
