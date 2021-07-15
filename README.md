@@ -177,7 +177,6 @@ $ metaDMG convert --output ./directory/to/contain/results.csv
 $ metaDMG convert non-default-config.yaml --output ./directory/to/contain/results.csv
 ```
 
-
 ---
 
 # `filter`

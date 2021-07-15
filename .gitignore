@@ -14,6 +14,9 @@ metaDMG-lca
 *.bam.bin
 *.csv
 
+build.sh
+publish.sh
+
 file.log
 dask-worker-space/
 bla*
