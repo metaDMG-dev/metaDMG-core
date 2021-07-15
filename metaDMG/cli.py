@@ -108,15 +108,14 @@ def config(
         1,
         help="The maximum number of cores to use in the ancient damage estimation.",
     ),
+    config_file: Path = typer.Option(
+        Path("config.yaml"),
+        help="The name of the config file. ",
+    ),
     bayesian: bool = typer.Option(
         False,
         "--bayesian",
         help="Include a fully Bayesian model (probably better, but also _a lot_ slower, about a factor of 100.",
-    ),
-    config_file: Path = typer.Option(
-        Path("config.yaml"),
-        file_okay=True,
-        help="The name of the config file. ",
     ),
 ):
     """Generate the config file."""
@@ -219,6 +218,7 @@ def cli_dashboard(
 
 
 #%%
+
 
 def cli_main():
     cli_app(prog_name="metaDMG")

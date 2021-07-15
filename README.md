@@ -80,7 +80,8 @@ The options are listed below:
 
 - General parameters:
   - `--storage_dir`: Path where the generated output files and folders are stored. Default: `./data/`.
-  - `--cores`: The maximum number of cores to use.
+  - `--cores`: The maximum number of cores to use. Default is 1. 
+  - `--config-file`: The name of the generated config file. Default: `config.yaml`.
 
 - Boolean flags (does not take any values, only the flag). Default is false.
   - `--bayesian`: Include a fully Bayesian model (probably better, but also _a lot_ slower, about a factor of 100).
