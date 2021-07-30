@@ -2,10 +2,10 @@ from pathlib import Path
 import yaml
 
 
-def load_config(config=None):
-    if config is None:
-        config = "config.yaml"
-    with open(config, "r") as file:
+def load_config(config_path=None):
+    if config_path is None:
+        config_path = "config.yaml"
+    with open(config_path, "r") as file:
         config = yaml.safe_load(file)
     return config
 
@@ -85,3 +85,22 @@ def remove_paths(d, ignore_keys=None):
         else:
             d_out[key] = path_to_str(val)
     return d_out
+
+
+#%%
+
+
+def get_results_dir(config_path=None, results_dir=None):
+
+    if config_path is not None and results_dir is not None:
+        raise AssertionError(
+            "Only a single one of 'config_path' and 'results_dir' can be set"
+        )
+
+    if results_dir is not None:
+        pass
+
+    else:
+        results_dir = Path(load_config(config_path)["dir"]) / "results"
+
+    return results_dir

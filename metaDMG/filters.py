@@ -1,24 +1,11 @@
 from pathlib import Path
+from metaDMG.utils import load_config, get_results_dir
+import pandas as pd
 
 
-def load_results(config=None, results_dir=None):
-
-    if config is not None and results_dir is not None:
-        raise AssertionError(
-            "Only a single one of 'config' and 'results_dir' can be set"
-        )
-
-    from metaDMG.utils import load_config
-    import pandas as pd
-
-    if results_dir is not None:
-        pass
-
-    else:
-        results_dir = Path(load_config(config)["dir"]) / "results"
-
+def load_results(config_path=None, results_dir=None):
+    results_dir = get_results_dir(config_path=config_path, results_dir=results_dir)
     df_results = pd.read_parquet(results_dir)
-
     return df_results
 
 
@@ -42,10 +29,10 @@ def save_results(df_results, output):
     df_results.to_csv(output, sep=sep, index=False)
 
 
-def filter_and_save_results(output, query, config=None, results_dir=None):
+def filter_and_save_results(output, query, config_path=None, results_dir=None):
 
     df_results = load_results(
-        config=config,
+        config_path=config_path,
         results_dir=results_dir,
     )
 

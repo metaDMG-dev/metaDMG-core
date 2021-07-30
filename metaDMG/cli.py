@@ -63,8 +63,8 @@ def config(
         file_okay=True,
         help="Path to the (NCBI) acc2tax.gz.",
     ),
-    metaDMG_lca: str = typer.Option(
-        "./metaDMG-lca",
+    metaDMG_cpp: str = typer.Option(
+        "./metaDMG-cpp",
         help="The command needed to run the metaDMG-lca program.",
     ),
     simscorelow: float = typer.Option(
@@ -94,6 +94,14 @@ def config(
     max_position: int = typer.Option(
         15,
         help="Number of positions to include (|z| < max_position).",
+    ),
+    weighttype: int = typer.Option(
+        1,
+        help="Method for calculating weights",
+    ),
+    fix_ncbi: int = typer.Option(
+        1,
+        help="Fix the (ncbi) database. Disable if using a custom database.",
     ),
     lca_rank: cli_utils.RANKS = typer.Option(
         cli_utils.RANKS.none,
@@ -127,7 +135,7 @@ def config(
         {
             "samples": utils.extract_alignments(samples),
             #
-            "metaDMG-lca": metaDMG_lca,
+            "metaDMG-lca": metaDMG_cpp,
             "names": names,
             "nodes": nodes,
             "acc2tax": acc2tax,
@@ -138,6 +146,8 @@ def config(
             "minmapq": minmapq,
             "lca_rank": lca_rank.value,  # important to get string
             "max_position": max_position,
+            "weighttype": weighttype,
+            "fix_ncbi": fix_ncbi,
             #
             "dir": storage_dir,
             "cores": cores,
@@ -154,7 +164,7 @@ def config(
 
 @cli_app.command("compute")
 def compute(
-    config: Optional[Path] = typer.Argument(
+    config_path: Optional[Path] = typer.Argument(
         None,
         exists=True,
         file_okay=True,
@@ -166,7 +176,7 @@ def compute(
     from metaDMG import utils
     from metaDMG_fit import run_workflow
 
-    run_workflow(config=config)
+    run_workflow(config_path=config_path)
 
 
 #%%
@@ -174,11 +184,15 @@ def compute(
 
 @cli_app.command("dashboard")
 def dashboard(
-    config: Optional[Path] = typer.Argument(
+    config_path: Optional[Path] = typer.Argument(
         None,
         exists=True,
         file_okay=True,
         help="Path to the config-file.",
+    ),
+    results_dir: Optional[Path] = typer.Option(
+        None,
+        help="Path to the results directory.",
     ),
     debug: bool = typer.Option(
         False,
@@ -211,7 +225,8 @@ def dashboard(
     from metaDMG_viz import start_dashboard
 
     start_dashboard(
-        config=config,
+        config_path=config_path,
+        results_dir=results_dir,
         debug=debug,
         host=host,
         port=port,
@@ -223,7 +238,7 @@ def dashboard(
 
 @cli_app.command("filter")
 def filter(
-    config: Optional[Path] = typer.Argument(
+    config_path: Optional[Path] = typer.Argument(
         None,
         file_okay=True,
         help="Path to the config-file.",
@@ -248,7 +263,7 @@ def filter(
     filter_and_save_results(
         output=output,
         query=query,
-        config=config,
+        config_path=config_path,
         results_dir=results_dir,
     )
 
@@ -258,7 +273,7 @@ def filter(
 
 @cli_app.command("convert")
 def convert(
-    config: Optional[Path] = typer.Argument(
+    config_path: Optional[Path] = typer.Argument(
         None,
         file_okay=True,
         help="Path to the config-file.",
@@ -279,7 +294,7 @@ def convert(
     filter_and_save_results(
         output=output,
         query="",
-        config=config,
+        config_path=config_path,
         results_dir=results_dir,
     )
 

@@ -1,0 +1,19 @@
+samples:
+  subs_weight1: raw_data/subs.bam
+  SPL_195_9299_weight1: raw_data/SPL_195_9299.tmp.bam.merged.sort.bam
+metaDMG-lca: ./metaDMG-cpp
+names: raw_data/names.dmp.gz
+nodes: raw_data/nodes.dmp.gz
+acc2tax: raw_data/combined_taxid_accssionNO_20200425.gz
+simscorelow: 0.95
+simscorehigh: 1.0
+editdistmin: 0
+editdistmax: 10
+minmapq: 0
+lca_rank: ''
+max_position: 15
+weighttype: 1
+fix_ncbi: 1
+dir: data
+cores: 6
+bayesian: false

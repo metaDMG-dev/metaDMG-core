@@ -76,7 +76,10 @@ The options are listed below:
   - `--editdistmax`: Maximum edit distance (read to reference similarity). Number between 0-10. Default: 10.
   - `--minmapq`: Minimum mapping quality. Default: 0.
   - `--max-position`: Maximum position in the sequence to include. Default is (+/-) 15 (forward/reverse).
+  - `--weighttype`: Method for calculating weights. Default is 1.
+  - `--fix_ncbi`: Fix the (ncbi) database. Disable (0) if using a custom database. Default is 1.
   - `--lca-rank`: The LCA rank used in ngsLCA. Can be either `family`, `genus`, `species` or `""` (everything). Default is `""`.
+
 
 - General parameters:
   - `--storage_dir`: Path where the generated output files and folders are stored. Default: `./data/`.
