@@ -120,6 +120,14 @@ def config(
         Path("config.yaml"),
         help="The name of the config file. ",
     ),
+    sample_prefix: str = typer.Option(
+        "",
+        help="Prefix for the sample names.",
+    ),
+    sample_suffix: str = typer.Option(
+        "",
+        help="Suffix for the sample names.",
+    ),
     bayesian: bool = typer.Option(
         False,
         "--bayesian",
@@ -133,7 +141,9 @@ def config(
 
     config = utils.remove_paths(
         {
-            "samples": utils.extract_alignments(samples),
+            "samples": utils.extract_alignments(
+                samples, prefix=sample_prefix, suffix=sample_suffix
+            ),
             #
             "metaDMG-lca": metaDMG_cpp,
             "names": names,

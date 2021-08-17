@@ -8,7 +8,7 @@ from metaDMG.filters import load_results
 
 config_path = Path("config_weight0.yaml")
 config = load_config(config_path)
-df_results = load_results()
+df_results = load_results(config_path)
 
 x = x
 

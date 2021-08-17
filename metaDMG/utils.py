@@ -14,15 +14,16 @@ def path_endswith(path, s):
     return str(path.name).endswith(s)
 
 
-def extract_name(filename, max_length=100):
+def extract_name(filename, max_length=100, prefix="", suffix=""):
     sample = Path(filename).stem.split(".")[0]
     if len(sample) > max_length:
-        sample = sample[:max_length] + "..."
+        main = sample[:max_length] + "..."
+        sample = prefix + main + suffix
     return sample
 
 
-def extract_names(file_list):
-    return list(map(extract_name, file_list))
+def extract_names(file_list, prefix, suffix):
+    return list(map(extract_name, file_list, prefix=prefix, suffix=suffix))
 
 
 def extract_alignment_files(paths):
@@ -48,10 +49,10 @@ def extract_alignment_files(paths):
     return alignments
 
 
-def extract_alignments(paths):
+def extract_alignments(paths, prefix, suffix):
 
     alignments = extract_alignment_files(paths)
-    samples = extract_names(alignments)
+    samples = extract_names(alignments, prefix=prefix, suffix=suffix)
 
     d_alignments = {}
     for sample, path in zip(samples, alignments):

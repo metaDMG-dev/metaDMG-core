@@ -77,13 +77,15 @@ The options are listed below:
   - `--minmapq`: Minimum mapping quality. Default: 0.
   - `--max-position`: Maximum position in the sequence to include. Default is (+/-) 15 (forward/reverse).
   - `--weighttype`: Method for calculating weights. Default is 1.
-  - `--fix_ncbi`: Fix the (ncbi) database. Disable (0) if using a custom database. Default is 1.
+  - `--fix-ncbi`: Fix the (ncbi) database. Disable (0) if using a custom database. Default is 1.
   - `--lca-rank`: The LCA rank used in ngsLCA. Can be either `family`, `genus`, `species` or `""` (everything). Default is `""`.
 
 
 - General parameters:
-  - `--storage_dir`: Path where the generated output files and folders are stored. Default: `./data/`.
+  - `--storage-dir`: Path where the generated output files and folders are stored. Default: `./data/`.
   - `--cores`: The maximum number of cores to use. Default is 1.
+  - `--sample-prefix`: Prefix for the sample names.
+  - `--sample-suffix`: Suffix for the sample names.
   - `--config-file`: The name of the generated config file. Default: `config.yaml`.
 
 - Boolean flags (does not take any values, only the flag). Default is false.
