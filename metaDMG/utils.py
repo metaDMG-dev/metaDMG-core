@@ -23,7 +23,10 @@ def extract_name(filename, max_length=100, prefix="", suffix=""):
 
 
 def extract_names(file_list, prefix, suffix):
-    return list(map(extract_name, file_list, prefix=prefix, suffix=suffix))
+    names = []
+    for filename in file_list:
+        names.append(extract_name(filename, prefix=prefix, suffix=suffix))
+    return names
 
 
 def extract_alignment_files(paths):
