@@ -31,6 +31,7 @@ setup(
         "pandas",
         "typer",
         "click_help_colors",
+        "pyyaml",
     ],
     extras_require={
         "fit": ["metaDMG-fit"],

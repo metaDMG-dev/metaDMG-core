@@ -6,6 +6,10 @@ from metaDMG import cli_utils
 
 cli_app = cli_utils.get_cli_app()
 
+storage_dir_default = Path("./data/")
+results_dir_default = storage_dir_default / "results"
+
+
 #%%
 
 
@@ -109,7 +113,7 @@ def config(
         help="The LCA rank used in ngsLCA.",
     ),
     storage_dir: Path = typer.Option(
-        Path("./data/"),
+        storage_dir_default,
         help="Path where the generated output files and folders are stored.",
     ),
     cores: int = typer.Option(
@@ -200,8 +204,8 @@ def dashboard(
         file_okay=True,
         help="Path to the config-file.",
     ),
-    results_dir: Optional[Path] = typer.Option(
-        None,
+    results_dir: Path = typer.Option(
+        results_dir_default,
         help="Path to the results directory.",
     ),
     debug: bool = typer.Option(
@@ -254,7 +258,7 @@ def filter(
         help="Path to the config-file.",
     ),
     results_dir: Optional[Path] = typer.Option(
-        None,
+        results_dir_default,
         help="Path to the results directory.",
     ),
     output: Path = typer.Option(
@@ -289,7 +293,7 @@ def convert(
         help="Path to the config-file.",
     ),
     results_dir: Optional[Path] = typer.Option(
-        None,
+        results_dir_default,
         help="Path to the results directory.",
     ),
     output: Path = typer.Option(

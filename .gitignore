@@ -7,6 +7,7 @@ logs/
 config.yaml
 
 metaDMG-lca
+.memoization
 
 *.lca
 *.lca.stat

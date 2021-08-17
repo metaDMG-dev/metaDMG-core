@@ -7,6 +7,7 @@ dependencies:
   - pandas
   - typer
   - click-help-colors
+  - pyyaml
   - pip
   - pip:
     - metaDMG-fit
