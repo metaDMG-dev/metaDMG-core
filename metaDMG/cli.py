@@ -8,7 +8,7 @@ cli_app = cli_utils.get_cli_app()
 
 storage_dir_default = Path("./data/")
 results_dir_default = storage_dir_default / "results"
-
+config_path_default = Path("config.yaml")
 
 #%%
 
@@ -120,8 +120,8 @@ def config(
         1,
         help="The maximum number of cores to use in the ancient damage estimation.",
     ),
-    config_file: Path = typer.Option(
-        Path("config.yaml"),
+    config_path: Path = typer.Option(
+        config_path_default,
         help="The name of the config file. ",
     ),
     sample_prefix: str = typer.Option(
@@ -169,7 +169,7 @@ def config(
         }
     )
 
-    with open(config_file, "w") as file:
+    with open(config_path, "w") as file:
         yaml.dump(config, file, sort_keys=False)
 
 
@@ -178,8 +178,8 @@ def config(
 
 @cli_app.command("compute")
 def compute(
-    config_path: Optional[Path] = typer.Argument(
-        None,
+    config_path: Path = typer.Argument(
+        config_path_default,
         exists=True,
         file_okay=True,
         help="Path to the config-file.",
@@ -189,6 +189,9 @@ def compute(
 
     from metaDMG import utils
     from metaDMG_fit import run_workflow
+
+    typer.echo("computing")
+    typer.echo(config_path)
 
     run_workflow(config_path=config_path)
 

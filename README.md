@@ -86,7 +86,7 @@ The options are listed below:
   - `--cores`: The maximum number of cores to use. Default is 1.
   - `--sample-prefix`: Prefix for the sample names.
   - `--sample-suffix`: Suffix for the sample names.
-  - `--config-file`: The name of the generated config file. Default: `config.yaml`.
+  - `--config-path`: The name of the generated config file. Default: `config.yaml`.
 
 - Boolean flags (does not take any values, only the flag). Default is false.
   - `--bayesian`: Include a fully Bayesian model (probably better, but also _a lot_ slower, about a factor of 100).
