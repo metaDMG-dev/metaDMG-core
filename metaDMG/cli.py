@@ -166,6 +166,7 @@ def config(
             "dir": storage_dir,
             "cores": cores,
             "bayesian": bayesian,
+            "config_path": str(config_path),
         }
     )
 
@@ -178,11 +179,16 @@ def config(
 
 @cli_app.command("compute")
 def compute(
-    config_path: Path = typer.Argument(
-        config_path_default,
-        exists=True,
+    config_path: Optional[Path] = typer.Argument(
+        None,
+        # exists=True,
         file_okay=True,
         help="Path to the config-file.",
+    ),
+    scheduler: cli_utils.SCHEDULER = typer.Option(
+        cli_utils.SCHEDULER.processes,
+        case_sensitive=False,
+        help="Whether or not to use processes or threads for Dask.",
     ),
 ):
     """Compute the LCA and Ancient Damage given the configuration."""
@@ -190,10 +196,12 @@ def compute(
     from metaDMG import utils
     from metaDMG_fit import run_workflow
 
-    typer.echo("computing")
-    typer.echo(config_path)
+    config = utils.load_config(config_path)
+    if config is None:
+        typer.echo("Error! Please select a proper config file.")
+        raise typer.Abort()
 
-    run_workflow(config_path=config_path)
+    run_workflow(config, scheduler=scheduler)
 
 
 #%%

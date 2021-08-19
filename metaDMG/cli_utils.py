@@ -74,3 +74,8 @@ class RANKS(str, Enum):
     genus = "genus"
     species = "species"
     none = ""
+
+
+class SCHEDULER(str, Enum):
+    processes = "processes"
+    threads = "threads"

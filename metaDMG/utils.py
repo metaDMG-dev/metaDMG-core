@@ -5,8 +5,13 @@ import yaml
 def load_config(config_path=None):
     if config_path is None:
         config_path = "config.yaml"
+
+    if not Path(config_path).exists():
+        return None
+
     with open(config_path, "r") as file:
         config = yaml.safe_load(file)
+
     return config
 
 

@@ -2,8 +2,8 @@ samples:
   ESW_CMHR_Mex_9_S50_L005_R1_001_weigth0: raw_data/ESW_CMHR_Mex_9_S50_L005_R1_001.fq.sort.bam
   subs_weigth0: raw_data/subs.bam
   SPL_015_1444_weigth0: raw_data/SPL_015_1444.tmp.bam.merged.sort.bam
-  gumpaper_weigth0: raw_data/gumpaper.sort.bam
-  ESW_D44A_Library_blank2_weigth0: raw_data/ESW_D44A_Library_blank2.file.sort.bam
+  # gumpaper_weigth0: raw_data/gumpaper.sort.bam
+  # ESW_D44A_Library_blank2_weigth0: raw_data/ESW_D44A_Library_blank2.file.sort.bam
   SPL_195_9299_weigth0: raw_data/SPL_195_9299.tmp.bam.merged.sort.bam
 metaDMG-lca: ./metaDMG-cpp
 names: raw_data/names.dmp.gz
@@ -19,5 +19,6 @@ max_position: 15
 weighttype: 0
 fix_ncbi: 1
 dir: data
-cores: 6
+cores: 2
 bayesian: false
+config_path: config_weight0.yaml
