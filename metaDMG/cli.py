@@ -10,6 +10,8 @@ storage_dir_default = Path("./data/")
 results_dir_default = storage_dir_default / "results"
 config_path_default = Path("config.yaml")
 
+# logger = cli_utils.setup_logger()
+
 #%%
 
 
@@ -185,23 +187,19 @@ def compute(
         file_okay=True,
         help="Path to the config-file.",
     ),
-    scheduler: cli_utils.SCHEDULER = typer.Option(
-        cli_utils.SCHEDULER.processes,
-        case_sensitive=False,
-        help="Whether or not to use processes or threads for Dask.",
-    ),
 ):
     """Compute the LCA and Ancient Damage given the configuration."""
 
     from metaDMG import utils
     from metaDMG_fit import run_workflow
+    from logger_tt import logger
 
     config = utils.load_config(config_path)
     if config is None:
         typer.echo("Error! Please select a proper config file.")
         raise typer.Abort()
 
-    run_workflow(config, scheduler=scheduler)
+    run_workflow(config)
 
 
 #%%
