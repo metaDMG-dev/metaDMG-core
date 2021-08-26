@@ -114,6 +114,11 @@ def config(
         case_sensitive=False,
         help="The LCA rank used in ngsLCA.",
     ),
+    forward_only: bool = typer.Option(
+        False,
+        "--forward-only",
+        help="Only use the forward direction.",
+    ),
     storage_dir: Path = typer.Option(
         storage_dir_default,
         help="Path where the generated output files and folders are stored.",
@@ -164,6 +169,7 @@ def config(
             "max_position": max_position,
             "weighttype": weighttype,
             "fix_ncbi": fix_ncbi,
+            "forward_only": forward_only,
             #
             "dir": storage_dir,
             "cores": cores,
@@ -183,7 +189,6 @@ def config(
 def compute(
     config_path: Optional[Path] = typer.Argument(
         None,
-        # exists=True,
         file_okay=True,
         help="Path to the config-file.",
     ),
@@ -197,6 +202,10 @@ def compute(
     config = utils.load_config(config_path)
     if config is None:
         typer.echo("Error! Please select a proper config file.")
+        raise typer.Abort()
+
+    if "forward_only" in config and config["forward_only"]:
+        typer.echo("--forward_only is not implemented yet.")
         raise typer.Abort()
 
     run_workflow(config)

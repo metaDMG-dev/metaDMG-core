@@ -79,6 +79,7 @@ The options are listed below:
   - `--weighttype`: Method for calculating weights. Default is 1.
   - `--fix-ncbi`: Fix the (ncbi) database. Disable (0) if using a custom database. Default is 1.
   - `--lca-rank`: The LCA rank used in ngsLCA. Can be either `family`, `genus`, `species` or `""` (everything). Default is `""`.
+  <!-- - `--forward-only`: Only fit the forward strand. -->
 
 
 - General parameters:
