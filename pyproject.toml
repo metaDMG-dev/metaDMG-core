@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "metaDMG"
-version = "0.0.0"
+version = "v21.8.5"
 description = "metaDMG: Estimating ancient damage in (meta)genomic DNA rapidly"
 authors = ["Christian Michelsen <christianmichelsen@gmail.com>"]
 license = "MIT"
@@ -8,7 +8,6 @@ packages = [{include = "metaDMG"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-numpy = { version = "^1.21.2", python = ">=3.8,<3.11" }
 pandas = "^1.3.2"
 typer = "^0.3.2"
 click-help-colors = "^0.9.1"
@@ -16,13 +15,15 @@ PyYAML = "^5.4.1"
 
 # A list of all of the optional dependencies, some of which are included in the
 # below `extras`. They can be opted into by apps.
-# metaDMG-fit = { version = "^21.8.6", optional = true }
-# metaDMG-viz = { version = "^21.8.1", optional = true }
+metaDMG-fit = { version = "^21.8.8", optional = true }
+metaDMG-viz = { version = "^21.8.2", optional = true }
 
-# [tool.poetry.extras]
-# fit = ["metaDMG-fit"]
-# viz = ["metaDMG-viz"]
-# all = ["metaDMG-fit", "metaDMG-viz"]
+# can be installed as e.g. poetry install --extras "all"
+[tool.poetry.extras]
+fit = ["metaDMG-fit"]
+viz = ["metaDMG-viz"]
+all = ["metaDMG-fit", "metaDMG-viz"]
+
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.10.2"
