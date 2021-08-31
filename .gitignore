@@ -17,6 +17,7 @@ metaDMG-lca
 
 build.sh
 publish.sh
+pdf_export.pdf
 
 file.log
 dask-worker-space/

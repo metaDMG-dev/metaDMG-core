@@ -54,7 +54,7 @@ def version_callback(value: bool):
     from metaDMG.__version__ import __version__
 
     if value:
-        typer.echo(f"metadamageprofiler CLI, version: {__version__}")
+        typer.echo(f"metaDMG CLI, version: {__version__}")
         raise typer.Exit()
 
 

@@ -4,7 +4,10 @@ version = "v21.8.5"
 description = "metaDMG: Estimating ancient damage in (meta)genomic DNA rapidly"
 authors = ["Christian Michelsen <christianmichelsen@gmail.com>"]
 license = "MIT"
+readme = "README.md"
 packages = [{include = "metaDMG"}]
+repository = "https://github.com/metaDMG/metaDMG/"
+
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -16,7 +19,7 @@ PyYAML = "^5.4.1"
 # A list of all of the optional dependencies, some of which are included in the
 # below `extras`. They can be opted into by apps.
 metaDMG-fit = { version = "^21.8.8", optional = true }
-metaDMG-viz = { version = "^21.8.2", optional = true }
+metaDMG-viz = { version = "^21.8.4", optional = true }
 
 # can be installed as e.g. poetry install --extras "all"
 [tool.poetry.extras]

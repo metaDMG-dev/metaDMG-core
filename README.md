@@ -282,3 +282,8 @@ to only install the fitting part of the tool, or:
 pip install "metaDMG[viz]"
 ```
 to only install the interactive plotting tool (requires you to have gotten the results from somewhere else).
+
+---
+
+poetry add "metaDMG[all]"
+pip install metaDMG[all]

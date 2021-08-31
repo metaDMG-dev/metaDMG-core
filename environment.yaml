@@ -3,12 +3,6 @@ channels:
   - conda-forge
 dependencies:
   - python==3.8
-  - numpy
-  - pandas
-  - typer
-  - click-help-colors
-  - pyyaml
   - pip
   - pip:
-    - metaDMG-fit
-    - metaDMG-viz
+    - metaDMG[all]
