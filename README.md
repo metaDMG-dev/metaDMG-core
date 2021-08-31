@@ -21,6 +21,11 @@ or, by using pip:
 ```
 pip install "metaDMG[all]"
 ```
+or, with Poetry:
+```
+poetry add "metaDMG[all]"
+```
+
 ---
 
 ## Workflow:
@@ -285,5 +290,3 @@ to only install the interactive plotting tool (requires you to have gotten the r
 
 ---
 
-poetry add "metaDMG[all]"
-pip install metaDMG[all]

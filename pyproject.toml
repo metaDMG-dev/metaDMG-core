@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "metaDMG"
-version = "v21.8.5"
+version = "v21.8.6"
 description = "metaDMG: Estimating ancient damage in (meta)genomic DNA rapidly"
 authors = ["Christian Michelsen <christianmichelsen@gmail.com>"]
 license = "MIT"
