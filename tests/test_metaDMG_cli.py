@@ -10,7 +10,7 @@ def test_version():
 runner = CliRunner()
 
 
-def test_cli_app_version_command():
+def test_cli_app_version_version():
     result = runner.invoke(cli_app, ["--version"])
     assert result.exit_code == 0
     assert "metaDMG CLI" in result.stdout
