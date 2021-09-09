@@ -91,7 +91,7 @@ jobs:
         password: ${{ secrets.TEST_PYPI_API_TOKEN }}
         repository_url: https://test.pypi.org/legacy/
         skip_existing: true
-        fail_ci_if_error: false  # terminate workflow if an error occurs
+      continue-on-error: true
 
     # Step 6. Test install from TestPyPI
     - name: Test install from TestPyPI
