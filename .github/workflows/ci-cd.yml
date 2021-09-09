@@ -1,12 +1,16 @@
 name: ci-cd
 
 on:
+
   push:
     branches:
       - main
-  pull_request:
+
+      pull_request:
     branches:
       - main
+
+
 
 jobs:
 
@@ -39,8 +43,9 @@ jobs:
     # Step 7. Use Codecov to track coverage
     - uses: codecov/codecov-action@v2
       with:
+        token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
         file: ./coverage.xml    # coverage report
-        fail_ci_if_error: true  # terminate workflow if an error occurs
+        fail_ci_if_error: false  # terminate workflow if an error occurs
 
     #     # Step 8. Build documentation
     # - name: Build documentation
