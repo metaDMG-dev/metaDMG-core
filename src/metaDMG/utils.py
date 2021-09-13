@@ -1,5 +1,7 @@
 from pathlib import Path
 import yaml
+import typer
+from logger_tt import logger
 
 
 def load_config(config_path=None):
@@ -7,10 +9,16 @@ def load_config(config_path=None):
         config_path = "config.yaml"
 
     if not Path(config_path).exists():
-        return None
+        logger.error("Error! Please select a proper config file!")
+        raise typer.Abort()
 
+    logger.info(f"Opening {config_path} as config file.")
     with open(config_path, "r") as file:
         config = yaml.safe_load(file)
+
+    if "forward_only" in config and config["forward_only"]:
+        logger.error("--forward_only is not implemented yet.")
+        raise typer.Abort()
 
     return config
 

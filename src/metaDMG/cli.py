@@ -10,8 +10,6 @@ storage_dir_default = Path("./data/")
 results_dir_default = storage_dir_default / "results"
 config_path_default = Path("config.yaml")
 
-# logger = cli_utils.setup_logger()
-
 #%%
 
 
@@ -196,17 +194,9 @@ def compute(
     """Compute the LCA and Ancient Damage given the configuration."""
 
     from metaDMG import utils
-    from metaDMG_fit import run_workflow
-    from logger_tt import logger
+    from metaDMG.fit import run_workflow
 
     config = utils.load_config(config_path)
-    if config is None:
-        typer.echo("Error! Please select a proper config file.")
-        raise typer.Abort()
-
-    if "forward_only" in config and config["forward_only"]:
-        typer.echo("--forward_only is not implemented yet.")
-        raise typer.Abort()
 
     run_workflow(config)
 

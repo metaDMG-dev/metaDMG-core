@@ -67,15 +67,8 @@ def is_in_range(x, val_min, val_max):
 
 
 #%%
-
-
 class RANKS(str, Enum):
     family = "family"
     genus = "genus"
     species = "species"
     none = ""
-
-
-class SCHEDULER(str, Enum):
-    processes = "processes"
-    threads = "threads"
