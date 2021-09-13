@@ -54,7 +54,6 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.scripts]
 metaDMG = "metaDMG.cli:cli_main"
 
-
 [tool.semantic_release]
 version_variable = "pyproject.toml:version" # version location
 branch = "main"                             # branch to make releases of

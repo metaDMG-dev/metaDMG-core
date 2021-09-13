@@ -1,4 +1,4 @@
-name: ci-cd
+name: CI-CD
 
 on:
 
@@ -9,7 +9,6 @@ on:
   pull_request:
     branches:
       - main
-
 
 
 jobs:
@@ -24,10 +23,6 @@ jobs:
 
     steps:
 
-    #----------------------------------------------
-    #       set-up python and check-out repo
-    #----------------------------------------------
-
     - name: Set up python
       uses: actions/setup-python@v2
       with:
@@ -36,10 +31,7 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v2
 
-    #----------------------------------------------
-    #  -----  install & configure poetry  -----
-    #----------------------------------------------
-
+    # install & configure poetry
     - name: Install Poetry
       uses: snok/install-poetry@v1
       with:
@@ -47,10 +39,7 @@ jobs:
         virtualenvs-in-project: true
         installer-parallel: true
 
-    #----------------------------------------------
-    #       load cached venv if cache exists
-    #----------------------------------------------
-
+    # load cached venv if cache exists
     - name: Load cached venv
       id: cached-poetry-dependencies
       uses: actions/cache@v2
@@ -58,31 +47,17 @@ jobs:
         path: .venv
         key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
 
-    #----------------------------------------------
     # install dependencies if cache does not exist
-    #----------------------------------------------
-
     - name: Install dependencies
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: poetry install --no-interaction --no-root
 
-    #----------------------------------------------
     # install your root project, if required
-    #----------------------------------------------
-
     - name: Install library
       run: poetry install --no-interaction
 
-    #----------------------------------------------
-    #              run formatting (black)
-    #----------------------------------------------
-
     - name: Format with Black
       run: poetry run black .
-
-    #----------------------------------------------
-    #              run test suite
-    #----------------------------------------------
 
     - name: Test with pytest
       run: poetry run pytest tests/ --cov=metaDMG --cov-report=xml
@@ -110,6 +85,8 @@ jobs:
 
     # Only run this job if the "main" branch changes
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    continue-on-error: true
 
     # Step 1. Set up operating system
     runs-on: ubuntu-latest
