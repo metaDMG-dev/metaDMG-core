@@ -5,10 +5,7 @@ description = "metaDMG: Estimating ancient damage in (meta)genomic DNA rapidly"
 authors = ["Christian Michelsen <christianmichelsen@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [
-       { include = "metaDMG", from = "src" },
-       ]
-
+packages = [{ include = "metaDMG", from = "src" }]
 repository = "https://github.com/metaDMG/metaDMG/"
 
 
