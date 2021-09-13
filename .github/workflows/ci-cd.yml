@@ -14,49 +14,108 @@ on:
 
 jobs:
 
-  ci:
+  #----------------------------------------------------------------------------
+  #       Formatting check
+  #----------------------------------------------------------------------------
 
-    # Step 1. Set up operating system
+  black-formatting:
+    name: Check formatting
+
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - uses: psf/black@stable
+
+  #----------------------------------------------------------------------------
+  #       Continuous Integration (CI): Testing
+  #----------------------------------------------------------------------------
+
+  CI:
+
+    # Only run this job if the "black-formatting" job passes
+    needs: black-formatting
+
     runs-on: ubuntu-latest
 
     steps:
 
-      # Step 2. Set up Python 3.8
-    - uses: actions/setup-python@v2
+    #----------------------------------------------
+    #       set-up python and check-out repo
+    #----------------------------------------------
+
+    - name: Set up python
+      uses: actions/setup-python@v2
       with:
         python-version: 3.8
 
-    # Step 3. Check-out repository so we can access its contents
-    - uses: actions/checkout@v2
+    - name: Check out repository
+      uses: actions/checkout@v2
 
-    # Step 4. Install poetry
-    - uses: snok/install-poetry@v1
+    #----------------------------------------------
+    #  -----  install & configure poetry  -----
+    #----------------------------------------------
 
-    # Step 5. Install our metaDMG package
-    - name: Install package
-      run: poetry install
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+        installer-parallel: true
 
-    # Step 6. Run tests for metaDMG
+    #----------------------------------------------
+    #       load cached venv if cache exists
+    #----------------------------------------------
+
+    - name: Load cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v2
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+
+    #----------------------------------------------
+    # install dependencies if cache does not exist
+    #----------------------------------------------
+
+    - name: Install dependencies
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      run: poetry install --no-interaction --no-root
+
+    #----------------------------------------------
+    # install your root project, if required
+    #----------------------------------------------
+
+    - name: Install library
+      run: poetry install --no-interaction
+
+    #----------------------------------------------
+    #              run test suite
+    #----------------------------------------------
+
     - name: Test with pytest
       run: poetry run pytest tests/ --cov=metaDMG --cov-report=xml
 
-    # Step 7. Use Codecov to track coverage
+    # Use Codecov to track coverage
     - uses: codecov/codecov-action@v2
       with:
-        token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+        token: ${{ secrets.CODECOV_TOKEN }} # required for private repos
         file: ./coverage.xml    # coverage report
         fail_ci_if_error: false  # terminate workflow if an error occurs
 
-    #     # Step 8. Build documentation
+    # # Build documentation
     # - name: Build documentation
     #   run: poetry run make html --directory docs/
 
 
+  #----------------------------------------------------------------------------
+  #       Continuous Development (CD): Publishing
+  #----------------------------------------------------------------------------
 
-  cd:
+  CD:
 
-    # Only run this job if the "ci" job passes
-    needs: ci
+    # Only run this job if the "CI" job passes
+    needs: CI
 
     # Only run this job if the "main" branch changes
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
