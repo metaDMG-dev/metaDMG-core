@@ -15,26 +15,10 @@ on:
 jobs:
 
   #----------------------------------------------------------------------------
-  #       Formatting check
-  #----------------------------------------------------------------------------
-
-  black-formatting:
-    name: Check formatting
-
-    runs-on: 'ubuntu-latest'
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-      - uses: psf/black@stable
-
-  #----------------------------------------------------------------------------
   #       Continuous Integration (CI): Testing
   #----------------------------------------------------------------------------
 
   CI:
-
-    # Only run this job if the "black-formatting" job passes
-    needs: black-formatting
 
     runs-on: ubuntu-latest
 
@@ -88,6 +72,13 @@ jobs:
 
     - name: Install library
       run: poetry install --no-interaction
+
+    #----------------------------------------------
+    #              run formatting (black)
+    #----------------------------------------------
+
+    - name: Format with Black
+      run: poetry run black .
 
     #----------------------------------------------
     #              run test suite

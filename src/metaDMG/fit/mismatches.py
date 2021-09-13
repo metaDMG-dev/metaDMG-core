@@ -28,7 +28,11 @@ def get_subsitution_bases_to_keep():
 def get_base_columns(df):
     base_columns = []
     for column in df.columns:
-        if len(column) == 2 and column[0] in fit_utils.ACTG and column[1] in fit_utils.ACTG:
+        if (
+            len(column) == 2
+            and column[0] in fit_utils.ACTG
+            and column[1] in fit_utils.ACTG
+        ):
             base_columns.append(column)
     return base_columns
 
