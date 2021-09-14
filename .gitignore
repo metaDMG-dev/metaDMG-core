@@ -5,6 +5,7 @@ dist/
 build/
 logs/
 config.yaml
+.coverage
 
 metaDMG-lca
 metaDMG-cpp
