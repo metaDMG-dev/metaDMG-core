@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.9.1 (2021-09-14)
+### Fix
+* Update metaDMG-viz dependency ([`b74212f`](https://github.com/metaDMG/metaDMG/commit/b74212f1da275aa5718dc58c023fd27a9fae5dc7))
+
 ## v0.9.0 (2021-09-13)
 ### Feature
 * Include fitting as part of main package ([`14c2b7c`](https://github.com/metaDMG/metaDMG/commit/14c2b7c850f3b0c6a4d0c8423d20741521349378))
