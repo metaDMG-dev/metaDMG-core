@@ -38,7 +38,7 @@ root:
   handlers: [console, error_file_handler]
 
 logger_tt:
-  suppress: ["exchangelib", "numba"]
+  suppress: ["exchangelib", "numba", "matplotlib", "absl"]
   suppress_level_below: "WARNING"
   capture_print: False
   strict: False

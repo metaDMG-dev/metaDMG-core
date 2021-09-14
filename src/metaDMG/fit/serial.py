@@ -26,6 +26,10 @@ def do_run(targets, forced=False):
         return True
 
 
+def do_load(targets, forced=False):
+    return not do_run(targets, forced=forced)
+
+
 def data_dir(config, name, suffix="parquet"):
     target = Path(config["dir"]) / name / f"{config['sample']}.{name}.{suffix}"
     return str(target)
@@ -173,20 +177,41 @@ def get_df_mismatches(config, forced=False):
 #%%
 
 
+def dataframe_columns_contains(df, s):
+    return any(s in column for column in df.columns)
+
+
 def get_df_fit_results(config, df_mismatches, forced=False):
 
     logger.info(f"Getting df_fit_results.")
 
     target = data_dir(config, name="fit_results")
-    if do_run(target, forced=forced):
-        logger.info(f"Computing df_fit_results")
-        df_fit_results = fits.compute(config, df_mismatches)
-        Path(target).parent.mkdir(parents=True, exist_ok=True)
-        df_fit_results.to_parquet(target)
 
-    else:
-        logger.info(f"Loading df_fit_results.")
+    if do_load(target, forced=forced):
+        logger.info(f"Try to load df_fit_results.")
         df_fit_results = pd.read_parquet(target)
+
+        # if frequentist fits only, return immediately
+        if not config["bayesian"]:
+            logger.info(f"Loading df_fit_results (frequentist).")
+            return df_fit_results
+
+        # if df_fit_results has already been run with Bayesian, return this
+        if dataframe_columns_contains(df_fit_results, "Bayesian"):
+            logger.info(f"Loading df_fit_results (Bayesian).")
+            return df_fit_results
+
+    # Compute the fits
+    info = "Computing df_fit_results"
+    if config["bayesian"]:
+        info += " with a Bayesian approach, please wait."
+    else:
+        info += " with a frequentist (MAP) approach."
+
+    logger.info(info)
+    df_fit_results = fits.compute(config, df_mismatches)
+    Path(target).parent.mkdir(parents=True, exist_ok=True)
+    df_fit_results.to_parquet(target)
 
     return df_fit_results
 
@@ -200,18 +225,23 @@ def get_df_results(config, df_mismatches, df_fit_results, forced=False):
 
     target = data_dir(config, name="results")
 
-    if do_run(target, forced=forced):
-        logger.info(f"Computing df_results.")
-        df_results = results.merge(
-            df_mismatches,
-            df_fit_results,
-        )
-        Path(target).parent.mkdir(parents=True, exist_ok=True)
-        df_results.to_parquet(target)
-
-    else:
-        logger.info(f"Loading df_results")
+    if do_load(target, forced=forced):
+        logger.info(f"Loading df_results.")
         df_results = pd.read_parquet(target)
+
+        # if frequentist fits only, return immediately
+        if not config["bayesian"]:
+            return df_results
+
+        # if df_results has already been run with Bayesian, return this
+        if dataframe_columns_contains(df_results, "Bayesian"):
+            return df_results
+
+    # Compute the results:
+    logger.info(f"Computing df_results.")
+    df_results = results.merge(df_mismatches, df_fit_results)
+    Path(target).parent.mkdir(parents=True, exist_ok=True)
+    df_results.to_parquet(target)
 
     return df_results
 
