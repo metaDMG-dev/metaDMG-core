@@ -180,7 +180,13 @@ def get_lppd_and_waic(mcmc, data):
 
 
 def get_mean_of_variable(mcmc, variable, axis=0):
-    return np.mean(mcmc.get_samples()[variable], axis=axis).item()
+    values = mcmc.get_samples()[variable]
+    return np.mean(values, axis=axis).item()
+
+
+def get_std_of_variable(mcmc, variable, axis=0):
+    values = mcmc.get_samples()[variable]
+    return np.std(values, axis=axis).item()
 
 
 def compute_z(d_results_PMD, d_results_null):
@@ -252,10 +258,18 @@ def add_Bayesian_fit_result(
 
     z = compute_z(d_results_PMD, d_results_null)
     fit_result["Bayesian_z"] = z
+
     fit_result["Bayesian_A"] = get_mean_of_variable(mcmc_PMD, "A")
+    fit_result["Bayesian_A_std"] = get_std_of_variable(mcmc_PMD, "A")
+
     fit_result["Bayesian_q"] = get_mean_of_variable(mcmc_PMD, "q")
+    fit_result["Bayesian_q_std"] = get_std_of_variable(mcmc_PMD, "q")
+
     fit_result["Bayesian_c"] = get_mean_of_variable(mcmc_PMD, "c")
+    fit_result["Bayesian_c_std"] = get_std_of_variable(mcmc_PMD, "c")
+
     fit_result["Bayesian_phi"] = get_mean_of_variable(mcmc_PMD, "phi")
+    fit_result["Bayesian_phi_std"] = get_std_of_variable(mcmc_PMD, "phi")
 
 
 def make_fits(fit_result, data, mcmc_PMD, mcmc_null):
