@@ -111,12 +111,12 @@ def get_priors():
 #%%
 
 
-def prob_to_n_sigma(p):
+def prob_to_z(p):
     return np.sqrt(2) * erfinv(p)
 
 
-def n_sigma_to_prob(n_sigma):
-    return erf(n_sigma / np.sqrt(2))
+def z_to_prob(z):
+    return erf(z / np.sqrt(2))
 
 
 def compute_likelihood_ratio(frequentist_PMD, frequentist_null):
@@ -124,9 +124,9 @@ def compute_likelihood_ratio(frequentist_PMD, frequentist_null):
 
     df = len(describe(frequentist_PMD)) - len(describe(frequentist_null))
     LR_P = sp_chi2.sf(x=LR, df=df)
-    LR_n_sigma = prob_to_n_sigma(1 - LR_P)
+    LR_z = prob_to_z(1 - LR_P)
 
-    return LR, LR_P, LR_n_sigma
+    return LR, LR_P, LR_z
 
 
 def sample_from_param_grid(param_grid, random_state=None):

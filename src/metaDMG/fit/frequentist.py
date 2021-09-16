@@ -320,7 +320,7 @@ class Frequentist:
         self.PMD = FrequentistPMD(data, method=method).fit()
         self.null = FrequentistNull(data).fit()
         p = fit_utils.compute_likelihood_ratio(self.PMD, self.null)
-        self.lambda_LR, self.lambda_LR_P, self.lambda_LR_n_sigma = p
+        self.lambda_LR, self.lambda_LR_P, self.lambda_LR_z = p
 
         self.valid = self.PMD.valid
 
@@ -343,7 +343,7 @@ class Frequentist:
         s += (
             f"lambda_LR = {self.lambda_LR:.3f}, "
             f"lambda_LR as prob = {self.lambda_LR_P:.4%}, "
-            f"lambda_LR as n_sigma = {self.lambda_LR_n_sigma:.3f} \n"
+            f"lambda_LR as z = {self.lambda_LR_z:.3f} \n"
         )
         s += f"valid = {self.valid}"
         return s
@@ -425,7 +425,7 @@ def make_fits(fit_result, data):
         "c_std",
         "rho_Ac",
         "lambda_LR_P",
-        "lambda_LR_n_sigma",
+        "lambda_LR_z",
         "valid",
     ]
 

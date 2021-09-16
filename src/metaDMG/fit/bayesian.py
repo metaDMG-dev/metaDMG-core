@@ -177,14 +177,14 @@ def get_mean_of_variable(mcmc, variable, axis=0):
     return np.mean(mcmc.get_samples()[variable], axis=axis).item()
 
 
-def compute_n_sigma(d_results_PMD, d_results_null):
+def compute_z(d_results_PMD, d_results_null):
     n = len(d_results_PMD["waic_i"])
     waic_i_PMD = d_results_PMD["waic_i"]
     waic_i_null = d_results_null["waic_i"]
     dse = np.sqrt(n * np.var(waic_i_PMD - waic_i_null))
     d_waic = d_results_null["waic"] - d_results_PMD["waic"]
-    n_sigma = d_waic / dse
-    return n_sigma
+    z = d_waic / dse
+    return z
 
 
 def init_mcmc(model, **kwargs):
@@ -244,8 +244,8 @@ def add_Bayesian_fit_result(
     fit_result["Bayesian_D_max"] = D_max["mu"]
     fit_result["Bayesian_D_max_std"] = D_max["std"]
 
-    n_sigma = compute_n_sigma(d_results_PMD, d_results_null)
-    fit_result["Bayesian_n_sigma"] = n_sigma.item()
+    z = compute_z(d_results_PMD, d_results_null)
+    fit_result["Bayesian_z"] = z.item()
     fit_result["Bayesian_A"] = get_mean_of_variable(mcmc_PMD, "A")
     fit_result["Bayesian_q"] = get_mean_of_variable(mcmc_PMD, "q")
     fit_result["Bayesian_c"] = get_mean_of_variable(mcmc_PMD, "c")

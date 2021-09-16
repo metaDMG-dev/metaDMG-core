@@ -177,7 +177,7 @@ The column names in the results and their explanation:
 - Fit related parameters:
   - `lambda_LR`: The likelihood ratio between the null model and the ancient damage model. This can be interpreted as the fit certainty, where higher values means higher certainty. float32.
   - `lambda_LR_P`: The likelihood ratio expressed as a probability. float32.
-  - `lambda_LR_n_sigma`: The likelihood ratio expressed as number of ![](https://latex.codecogs.com/svg.image?%5Csigma). float32.
+  - `lambda_LR_z`: The likelihood ratio expressed as number of ![](https://latex.codecogs.com/svg.image?%5Csigma). float32.
   - `D_max`: The estimated damage. This can be interpreted as the amount of damage in the specific taxa. float32.
   - `q`: The damage decay rate. float32.
   - `A`: The background independent damage. float32.
@@ -186,7 +186,7 @@ The column names in the results and their explanation:
   - `rho_Ac`: The correlation between `A` and `c`. High values of this are often a sign of a bad fit. float32.
   - `valid`: Wether or not the fit is valid (defined by [iminuit](https://iminuit.readthedocs.io/en/stable/)). bool.
   - `asymmetry`: An estimate of the asymmetry of the forward and reverse fits. See below for more information. float32.
-  - `XXX_std`: the uncertainty (standard deviation) of the variable `XXX` for `D_max`, `q`, `A`, `c`, and `phi`.
+  - `XXX_std`: the uncertainty (standard deviation) of the variable `XXX` for `D_max`, `A`, `q`, `c`, and `phi`.
   - `forward__XXX`: The same description as above for variable `XXX`, but only for the forward read.
   - `reverse__XXX`: The same description as above for variable `XXX`, but only for the reverse read.
 
