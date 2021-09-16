@@ -29,7 +29,7 @@ def group_to_numpyro_data(config, group):
     reverse = "GA"
     reverse_ref = reverse[0]
 
-    z = np.array(group.iloc[: config["max_position"]]["position"], dtype=int)
+    x = np.array(group.iloc[: config["max_position"]]["position"], dtype=int)
 
     k_forward = np.array(group.iloc[: config["max_position"]][forward], dtype=int)
     N_forward = np.array(group.iloc[: config["max_position"]][forward_ref], dtype=int)
@@ -38,7 +38,7 @@ def group_to_numpyro_data(config, group):
     N_reverse = np.array(group.iloc[-config["max_position"] :][reverse_ref], dtype=int)
 
     data = {
-        "z": np.concatenate([z, -z]),
+        "x": np.concatenate([x, -x]),
         "k": np.concatenate([k_forward, k_reverse]),
         "N": np.concatenate([N_forward, N_reverse]),
     }
@@ -50,8 +50,8 @@ def group_to_numpyro_data(config, group):
 
 
 def add_count_information(config, fit_result, group, data):
-    fit_result["N_z1_forward"] = data["N"][0]
-    fit_result["N_z1_reverse"] = data["N"][config["max_position"]]
+    fit_result["N_x=1_forward"] = data["N"][0]
+    fit_result["N_x=1_reverse"] = data["N"][config["max_position"]]
 
     fit_result["N_sum_total"] = data["N"].sum()
     fit_result["N_sum_forward"] = data["N"][: config["max_position"]].sum()
@@ -92,7 +92,7 @@ def fit_single_group(
 
 def compute_fits_seriel(config, df_mismatches):
 
-    # initializez not MCMC if config["bayesian"] is False
+    # Do not initialise MCMC if config["bayesian"] is False
     mcmc_PMD, mcmc_null = bayesian.init_mcmcs(config)
 
     groupby = get_groupby(df_mismatches)

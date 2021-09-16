@@ -19,26 +19,28 @@ phi_prior = priors["phi"]
 
 
 @njit
-def log_likelihood_PMD(q, A, c, phi, z, k, N):
-    Dz = A * (1 - q) ** (np.abs(z) - 1) + c
-    alpha = Dz * phi
-    beta = (1 - Dz) * phi
+def log_likelihood_PMD(A, q, c, phi, x, k, N):
+    Dx = A * (1 - q) ** (np.abs(x) - 1) + c
+    alpha = Dx * phi
+    beta = (1 - Dx) * phi
     return -fit_utils.log_betabinom_PMD(k=k, N=N, alpha=alpha, beta=beta).sum()
 
 
 @njit
-def log_prior_PMD(q, A, c, phi):
-    lp = fit_utils.log_beta(q, *q_prior)
-    lp += fit_utils.log_beta(A, *A_prior)
-    lp += fit_utils.log_beta(c, *c_prior)
-    lp += fit_utils.log_exponential(phi, *phi_prior)
+def log_prior_PMD(A, q, c, phi):
+    lp = (
+        fit_utils.log_beta(A, *A_prior)
+        + fit_utils.log_beta(q, *q_prior)
+        + fit_utils.log_beta(c, *c_prior)
+        + fit_utils.log_exponential(phi, *phi_prior)
+    )
     return -lp
 
 
 @njit
-def log_posterior_PMD(q, A, c, phi, z, k, N):
-    log_likelihood = log_likelihood_PMD(q, A, c, phi, z, k, N)
-    log_p = log_prior_PMD(q, A, c, phi)
+def log_posterior_PMD(A, q, c, phi, x, k, N):
+    log_likelihood = log_likelihood_PMD(A=A, q=q, c=c, phi=phi, x=x, k=k, N=n)
+    log_p = log_prior_PMD(A=A, q=q, c=c, phi=phi)
     return log_likelihood + log_p
 
 
@@ -47,7 +49,7 @@ def log_posterior_PMD(q, A, c, phi, z, k, N):
 
 class FrequentistPMD:
     def __init__(self, data, method="posterior"):
-        self.z = data["z"]
+        self.x = data["x"]
         self.k = data["k"]
         self.N = data["N"]
         self.method = method
@@ -63,30 +65,32 @@ class FrequentistPMD:
 
     def __str__(self):
         if self.is_fitted:
-            s = f"A = {self.A:.3f}, q = {self.q:.3f}, c = {self.c:.5f}, phi = {self.phi:.1f} \n"
-            s += f"D_max = {self.D_max:.3f} +/- {self.D_max_std:.3f}, rho_Ac = {self.rho_Ac:.3f} \n"
+            s = f"A = {self.A:.3f}, q = {self.q:.3f},"
+            s += "c = {self.c:.5f}, phi = {self.phi:.1f} \n"
+            s += f"D_max = {self.D_max:.3f} +/- {self.D_max_std:.3f} \n"
+            s += f"rho_Ac = {self.rho_Ac:.3f} \n"
             s += f"valid = {self.valid}"
             return s
         else:
             return f"FrequentistPMD(data, method={self.method}). \n\n"
 
-    def __call__(self, q, A, c, phi):
+    def __call__(self, A, q, c, phi):
         if self.method == "likelihood":
-            return self.log_likelihood_PMD(q, A, c, phi)
+            return self.log_likelihood_PMD(A=A, q=q, c=c, phi=phi)
         elif self.method == "posterior":
-            return self.log_posterior_PMD(q, A, c, phi)
+            return self.log_posterior_PMD(A=A, q=q, c=c, phi=phi)
 
-    def log_likelihood_PMD(self, q, A, c, phi):
-        return log_likelihood_PMD(q, A, c, phi, self.z, self.k, self.N)
+    def log_likelihood_PMD(self, A, q, c, phi):
+        return log_likelihood_PMD(A=A, q=q, c=c, phi=phi, x=self.x, k=self.k, N=self.N)
 
-    def log_posterior_PMD(self, q, A, c, phi):
-        return log_posterior_PMD(q, A, c, phi, self.z, self.k, self.N)
+    def log_posterior_PMD(self, A, q, c, phi):
+        return log_posterior_PMD(A=A, q=q, c=c, phi=phi, x=self.x, k=self.k, N=self.N)
 
     def _setup_p0(self):
         self.p0 = dict(q=0.1, A=0.1, c=0.01, phi=1000)
         self.param_grid = {
-            "q": sp_beta(*q_prior),  # mean = 0.2, shape = 4
             "A": sp_beta(*A_prior),  # mean = 0.2, shape = 4
+            "q": sp_beta(*q_prior),  # mean = 0.2, shape = 4
             "c": sp_beta(*c_prior),  # mean = 0.1, shape = 10
             "phi": sp_exponential(*phi_prior),
         }
@@ -122,7 +126,7 @@ class FrequentistPMD:
         self.m.migrad()
         self.is_fitted = True
 
-        # first time try to reinitialize with previous fit result
+        # first time try to reinitialise with previous fit result
         if not self.m.valid:
             self.m.migrad()
 
@@ -195,13 +199,12 @@ class FrequentistPMD:
     def _set_D_max(self):
 
         A = self.A
-        # q = self.q
         c = self.c
         phi = self.phi
 
-        Dz_z1 = A + c
-        alpha = Dz_z1 * phi
-        beta = (1 - Dz_z1) * phi
+        Dx_x1 = A + c
+        alpha = Dx_x1 * phi
+        beta = (1 - Dx_x1) * phi
 
         dist = sp_betabinom(n=self.N[0], a=alpha, b=beta)
 
@@ -231,13 +234,13 @@ class FrequentistPMD:
         c = self.c
         phi = self.phi
 
-        z = self.z
+        x = self.x
         N = self.N
 
-        Dz = A * (1 - q) ** (np.abs(z) - 1) + c
+        Dx = A * (1 - q) ** (np.abs(x) - 1) + c
 
-        alpha = Dz * phi
-        beta = (1 - Dz) * phi
+        alpha = Dx * phi
+        beta = (1 - Dx) * phi
 
         dist = sp_betabinom(n=N, a=alpha, b=beta)
         return dist
@@ -266,7 +269,7 @@ def f_fit_null(c, phi, k, N):
 
 class FrequentistNull:
     def __init__(self, data):
-        self.z = data["z"]
+        self.x = data["x"]
         self.k = data["k"]
         self.N = data["N"]
         self._setup_minuit()
@@ -322,7 +325,7 @@ class Frequentist:
         self.valid = self.PMD.valid
 
         self.data = data
-        self.z = data["z"]
+        self.x = data["x"]
         self.k = data["k"]
         self.N = data["N"]
         self.method = method
@@ -333,9 +336,15 @@ class Frequentist:
         return s
 
     def __str__(self):
-        s = f"A = {self.A:.3f}, q = {self.q:.3f}, c = {self.c:.5f}, phi = {self.phi:.1f} \n"
-        s += f"D_max = {self.D_max:.3f} +/- {self.D_max_std:.3f}, rho_Ac = {self.rho_Ac:.3f} \n"
-        s += f"lambda_LR = {self.lambda_LR:.3f}, lambda_LR as prob = {self.lambda_LR_P:.4%}, lambda_LR as n_sigma = {self.lambda_LR_n_sigma:.3f} \n"
+        s = f"A = {self.A:.3f}, q = {self.q:.3f}, "
+        s += f"c = {self.c:.5f}, phi = {self.phi:.1f} \n"
+        s += f"D_max = {self.D_max:.3f} +/- {self.D_max_std:.3f}, "
+        s += f"rho_Ac = {self.rho_Ac:.3f} \n"
+        s += (
+            f"lambda_LR = {self.lambda_LR:.3f}, "
+            f"lambda_LR as prob = {self.lambda_LR_P:.4%}, "
+            f"lambda_LR as n_sigma = {self.lambda_LR_n_sigma:.3f} \n"
+        )
         s += f"valid = {self.valid}"
         return s
 
@@ -396,8 +405,8 @@ def make_fits(fit_result, data):
 
     fit_all = Frequentist(data, method="posterior")
 
-    data_forward = {key: val[data["z"] > 0] for key, val in data.items()}
-    data_reverse = {key: val[data["z"] < 0] for key, val in data.items()}
+    data_forward = {key: val[data["x"] > 0] for key, val in data.items()}
+    data_reverse = {key: val[data["x"] < 0] for key, val in data.items()}
 
     fit_forward = Frequentist(data_forward, method="posterior")
     fit_reverse = Frequentist(data_reverse, method="posterior")

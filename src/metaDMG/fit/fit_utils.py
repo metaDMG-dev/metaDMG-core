@@ -93,14 +93,19 @@ def is_forward(df):
 def get_priors():
 
     # beta
-    q_prior = mu_phi_to_alpha_beta(mu=0.2, phi=5)  # mean = 0.2, concentration = 5
     A_prior = mu_phi_to_alpha_beta(mu=0.2, phi=5)  # mean = 0.2, concentration = 5
+    q_prior = mu_phi_to_alpha_beta(mu=0.2, phi=5)  # mean = 0.2, concentration = 5
     c_prior = mu_phi_to_alpha_beta(mu=0.1, phi=10)  # mean = 0.1, concentration = 10
 
     # exponential (min, scale)
     phi_prior = (2, 1000)
 
-    return {"q": q_prior, "A": A_prior, "c": c_prior, "phi": phi_prior}
+    return {
+        "A": A_prior,
+        "q": q_prior,
+        "c": c_prior,
+        "phi": phi_prior,
+    }
 
 
 #%%

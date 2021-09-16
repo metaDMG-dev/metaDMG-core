@@ -74,7 +74,7 @@ def compute_df_mismatches_wide(df_mismatches):
 
             df_mismatches_wide.append(
                 df_mismatches.query(d_direction[direction]["query"])
-                .pivot(index="tax_id", columns="|z|", values=variable)
+                .pivot(index="tax_id", columns="|x|", values=variable)
                 .rename(columns=columns)
             )
 

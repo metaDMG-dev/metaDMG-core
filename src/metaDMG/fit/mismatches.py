@@ -139,13 +139,13 @@ def add_min_N_in_group(df):
 #     return df.query(query)
 
 
-def add_k_N_z_names(df):
+def add_k_N_x_names(df):
     # mask_forward = df["direction"] == "5'"
     mask_forward = fit_utils.is_forward(df)
     df["k"] = np.where(mask_forward, df["CT"], df["GA"])
     df["N"] = np.where(mask_forward, df["C"], df["G"])
     df["f"] = df["k"] / df["N"]
-    df["|z|"] = np.abs(df["position"])
+    df["|x|"] = np.abs(df["position"])
     return df
 
 
@@ -164,7 +164,7 @@ def compute(config):
         .pipe(add_error_rates, ref=bases_reverse[0], obs=bases_reverse[1])
         .pipe(make_position_1_indexed)
         .pipe(make_reverse_position_negative)
-        .pipe(add_k_N_z_names)
+        .pipe(add_k_N_x_names)
         .pipe(add_k_sum_counts)
         .pipe(add_min_N_in_group)
         # .pipe(filter_cut_based_on_cfg, cfg)

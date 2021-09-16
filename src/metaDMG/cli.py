@@ -32,7 +32,7 @@ def callback(
     \b
         $ metaDMG compute --help
 
-    And subsequently visualize the results using the dashboard:
+    And subsequently visualise the results using the dashboard:
 
     \b
         $ metaDMG dashboard --help
@@ -73,12 +73,12 @@ def config(
     ),
     simscorelow: float = typer.Option(
         0.95,
-        help="Normalized edit distance (read to reference similarity) minimum. Number between 0-1.",
+        help="Normalised edit distance (read to reference similarity) minimum. Number between 0-1.",
         callback=lambda x: cli_utils.is_in_range(x, 0, 1),
     ),
     simscorehigh: float = typer.Option(
         1.0,
-        help="Normalized edit distance (read to reference similarity) maximum. Number between 0-1.",
+        help="Normalised edit distance (read to reference similarity) maximum. Number between 0-1.",
         callback=lambda x: cli_utils.is_in_range(x, 0, 1),
     ),
     editdistmin: int = typer.Option(
@@ -97,7 +97,7 @@ def config(
     ),
     max_position: int = typer.Option(
         15,
-        help="Number of positions to include (|z| < max_position).",
+        help="Number of positions to include (|x| < max_position).",
     ),
     weighttype: int = typer.Option(
         1,
@@ -230,7 +230,7 @@ def dashboard(
         help="Dashboard host address",
     ),
 ):
-    """Visualize the results in an interactive dashboard.
+    """Visualise the results in an interactive dashboard.
 
     run as e.g.:
 

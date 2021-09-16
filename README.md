@@ -75,8 +75,8 @@ The options are listed below:
   - `--acc2tax`: Path to the (NCBI) `acc2tax.gz`. Mandatory.
 
 - LCA parameters:
-  - `--simscorelow`: Normalized edit distance (read to reference similarity) minimum. Number between 0-1. Default: 0.95.
-  - `--simscorehigh`: Normalized edit distance (read to reference similarity) maximum. Number between 0-1 Default: 1.0.
+  - `--simscorelow`: Normalised edit distance (read to reference similarity) minimum. Number between 0-1. Default: 0.95.
+  - `--simscorehigh`: Normalised edit distance (read to reference similarity) maximum. Number between 0-1 Default: 1.0.
   - `--editdistmin`: Minimum edit distance (read to reference similarity). Number between 0-10. Default: 0.
   - `--editdistmax`: Maximum edit distance (read to reference similarity). Number between 0-10. Default: 10.
   - `--minmapq`: Minimum mapping quality. Default: 0.
@@ -182,7 +182,7 @@ The column names in the results and their explanation:
   - `q`: The damage decay rate. float32.
   - `A`: The background independent damage. float32.
   - `c`: The background. float32.
-  - `phi`: The concentration for a beta binomial distribution (parametrized by ![](https://latex.codecogs.com/svg.image?%5Cmu) and ![](https://latex.codecogs.com/svg.image?%5Cphi)). float32.
+  - `phi`: The concentration for a beta binomial distribution (parametrised by ![](https://latex.codecogs.com/svg.image?%5Cmu) and ![](https://latex.codecogs.com/svg.image?%5Cphi)). float32.
   - `rho_Ac`: The correlation between `A` and `c`. High values of this are often a sign of a bad fit. float32.
   - `valid`: Wether or not the fit is valid (defined by [iminuit](https://iminuit.readthedocs.io/en/stable/)). bool.
   - `asymmetry`: An estimate of the asymmetry of the forward and reverse fits. See below for more information. float32.
@@ -198,8 +198,8 @@ The column names in the results and their explanation:
   - `tax_path`: The taxanomic path from the LCA to the root through the phylogenetic tree. string.
 
 - Count related paramters:
-  - `N_z1_forward`: The total number of _"trials"_, ![](https://latex.codecogs.com/svg.image?N), at position ![](https://latex.codecogs.com/svg.image?z=1): ![](https://latex.codecogs.com/svg.image?N(z=1)) in the forward direction. int64.
-  - `N_z1_reverse`:  Same as above, but for the reverse direction. int64.
+  - `N_x=1_forward`: The total number of _"trials"_, ![](https://latex.codecogs.com/svg.image?N), at position ![](https://latex.codecogs.com/svg.image?x=1): ![](https://latex.codecogs.com/svg.image?N(x=1)) in the forward direction. int64.
+  - `N_x=1_reverse`:  Same as above, but for the reverse direction. int64.
   - `N_sum_forward`:  The sum of ![](https://latex.codecogs.com/svg.image?N) over all positions in the forward direction. int64.
   - `N_sum_reverse`: Same as above, but for the reverse direction. int64.
   - `N_sum_total`:  The total sum `N_sum_forward` and `N_sum_reverse`. int64.
@@ -207,9 +207,9 @@ The column names in the results and their explanation:
   - `k_sum_forward`:  The total number of _"successes"_, ![](https://latex.codecogs.com/svg.image?k), summed over all positions in the forward direction. int64.
   - `k_sum_reverse`: Same as above, but for the reverse direction. int64..
   - `k_sum_total`: The total sum `k_sum_forward` and `k_sum_reverse`. int64.
-  - `k+i`: The number of _"successes"_, ![](https://latex.codecogs.com/svg.image?k) at position ![](https://latex.codecogs.com/svg.image?z=i): ![](https://latex.codecogs.com/svg.image?k(z=1)) in the forward direction. int64.
+  - `k+i`: The number of _"successes"_, ![](https://latex.codecogs.com/svg.image?k) at position ![](https://latex.codecogs.com/svg.image?z=i): ![](https://latex.codecogs.com/svg.image?k(x=1)) in the forward direction. int64.
   - `k-i`: Same as above, but for the reverse direction. int64.
-  - `N+i`: The number of _"trials"_, ![](https://latex.codecogs.com/svg.image?N) at position ![](https://latex.codecogs.com/svg.image?z=i): ![](https://latex.codecogs.com/svg.image?N(z=1)) in the forward direction. int64.
+  - `N+i`: The number of _"trials"_, ![](https://latex.codecogs.com/svg.image?N) at position ![](https://latex.codecogs.com/svg.image?z=i): ![](https://latex.codecogs.com/svg.image?N(x=1)) in the forward direction. int64.
   - `N-i`: Same as above, but for the reverse direction. int64.
   - `f+i`: The fraction between ![](https://latex.codecogs.com/svg.image?k) and ![](https://latex.codecogs.com/svg.image?N) at position ![](https://latex.codecogs.com/svg.image?z=i) in the forward direction. int64.
   - `f-i`: Same as above, but for the reverse direction. int64.

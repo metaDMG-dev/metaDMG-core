@@ -15,42 +15,39 @@ from metaDMG.fit import fit_utils
 numpyro.enable_x64()
 
 priors = fit_utils.get_priors()
-q_prior = priors["q"]  # mean = 0.2, concentration = 5
 A_prior = priors["A"]  # mean = 0.2, concentration = 5
+q_prior = priors["q"]  # mean = 0.2, concentration = 5
 c_prior = priors["c"]  # mean = 0.1, concentration = 10
 phi_prior = priors["phi"]
 
 #%%
 
 
-def model_PMD(z, N, k=None):
-    z = jnp.abs(z)
+def model_PMD(x, N, k=None):
+    x_abs = jnp.abs(x)
 
-    q = numpyro.sample("q", dist.Beta(q_prior[0], q_prior[1]))
     A = numpyro.sample("A", dist.Beta(A_prior[0], A_prior[1]))
+    q = numpyro.sample("q", dist.Beta(q_prior[0], q_prior[1]))
     c = numpyro.sample("c", dist.Beta(c_prior[0], c_prior[1]))
-    # Dz = numpyro.deterministic("Dz", A * (1 - q) ** (z - 1) + c)
-    Dz = jnp.clip(numpyro.deterministic("Dz", A * (1 - q) ** (z - 1) + c), 0, 1)
-    # D_max = numpyro.deterministic("D_max", A)  # pylint: disable=unused-variable
+    Dx = jnp.clip(numpyro.deterministic("Dx", A * (1 - q) ** (x_abs - 1) + c), 0, 1)
 
     delta = numpyro.sample("delta", dist.Exponential(1 / phi_prior[1]))
     phi = numpyro.deterministic("phi", delta + phi_prior[0])
 
-    alpha = numpyro.deterministic("alpha", Dz * phi)
-    beta = numpyro.deterministic("beta", (1 - Dz) * phi)
+    alpha = numpyro.deterministic("alpha", Dx * phi)
+    beta = numpyro.deterministic("beta", (1 - Dx) * phi)
 
     numpyro.sample("obs", dist.BetaBinomial(alpha, beta, N), obs=k)
 
 
-def model_null(z, N, k=None):
+def model_null(x, N, k=None):
     c = numpyro.sample("c", dist.Beta(c_prior[0], c_prior[1]))
-    # D_max = numpyro.deterministic("D_max", q)
-    Dz = numpyro.deterministic("Dz", c)
+    Dx = numpyro.deterministic("Dx", c)
     delta = numpyro.sample("delta", dist.Exponential(1 / phi_prior[1]))
     phi = numpyro.deterministic("phi", delta + phi_prior[0])
 
-    alpha = numpyro.deterministic("alpha", Dz * phi)
-    beta = numpyro.deterministic("beta", (1 - Dz) * phi)
+    alpha = numpyro.deterministic("alpha", Dx * phi)
+    beta = numpyro.deterministic("beta", (1 - Dx) * phi)
 
     numpyro.sample("obs", dist.BetaBinomial(alpha, beta, N), obs=k)
 
