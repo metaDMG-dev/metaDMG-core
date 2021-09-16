@@ -179,6 +179,9 @@ def get_lppd_and_waic(mcmc, data):
     return d_results
 
 
+#%%
+
+
 def get_mean_of_variable(mcmc, variable, axis=0):
     values = mcmc.get_samples()[variable]
     return np.mean(values, axis=axis).item()
@@ -189,6 +192,12 @@ def get_std_of_variable(mcmc, variable, axis=0):
     return np.std(values, axis=axis).item()
 
 
+def compute_rho_Ac(mcmc):
+    A = mcmc.get_samples()["A"]
+    c = mcmc.get_samples()["c"]
+    return np.corrcoef(A, c)[0, 1]
+
+
 def compute_z(d_results_PMD, d_results_null):
     n = len(d_results_PMD["waic_i"])
     waic_i_PMD = d_results_PMD["waic_i"]
@@ -197,6 +206,9 @@ def compute_z(d_results_PMD, d_results_null):
     d_waic = d_results_null["waic"] - d_results_PMD["waic"]
     z = d_waic / dse
     return z.item()
+
+
+#%%
 
 
 def init_mcmc(model, **kwargs):
@@ -270,6 +282,8 @@ def add_Bayesian_fit_result(
 
     fit_result["Bayesian_phi"] = get_mean_of_variable(mcmc_PMD, "phi")
     fit_result["Bayesian_phi_std"] = get_std_of_variable(mcmc_PMD, "phi")
+
+    fit_result["Bayesian_rho_Ac"] = compute_rho_Ac(mcmc_PMD)
 
 
 def make_fits(fit_result, data, mcmc_PMD, mcmc_null):
