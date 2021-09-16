@@ -427,7 +427,9 @@ def compute_LR_ForRev_All(fit_all, fit_forward, fit_reverse):
     log_lik_ForRev = fit_forward.PMD.log_likelihood + fit_reverse.PMD.log_likelihood
     return -2 * (log_lik_ForRev - fit_all.PMD.log_likelihood)
 
+
 #%%
+
 
 def make_fits(fit_result, data):
     np.random.seed(42)
@@ -483,4 +485,3 @@ def make_fits(fit_result, data):
     fit_result["chi2_ForRev"] = fit_forward.chi2 + fit_reverse.chi2
 
     return fit_all, fit_forward, fit_reverse
-
