@@ -2,6 +2,16 @@
 
 <!--next-version-placeholder-->
 
+## v0.10.0 (2021-09-16)
+### Feature
+* Add Bayesian computation of rho_Ac ([`db61f5d`](https://github.com/metaDMG/metaDMG/commit/db61f5d0d9bc49a5d537457178445a0bc7a100cb))
+
+### Fix
+* Update metaDMG-viz ([`931a9f1`](https://github.com/metaDMG/metaDMG/commit/931a9f15a71f6067708a5059f8e1322b47dfee61))
+* Update logging text ([`a58e576`](https://github.com/metaDMG/metaDMG/commit/a58e576ab7e705c1ba72972a7d2c549a8fda8deb))
+* Add uncertainty estimates to Bayesian results ([`21e81c7`](https://github.com/metaDMG/metaDMG/commit/21e81c7198c464937597ee1fa89bc471bae12685))
+* Fix newest renaming bugs ([`e190114`](https://github.com/metaDMG/metaDMG/commit/e1901143dd2c5387314e5543a0bece86e400e215))
+
 ## v0.9.2 (2021-09-14)
 ### Fix
 * Bump metaDMG-viz version ([`4a48962`](https://github.com/metaDMG/metaDMG/commit/4a48962592eefa358257097cd9dad942597bc389))
