@@ -202,11 +202,11 @@ def get_df_fit_results(config, df_mismatches, forced=False):
             return df_fit_results
 
     # Compute the fits
-    info = "Computing df_fit_results"
+    info = "Fitting the data"
     if config["bayesian"]:
-        info += " with a Bayesian approach, please wait."
+        info += " with a Bayesian model, please wait."
     else:
-        info += " with a frequentist (MAP) approach."
+        info += " with a frequentist (MAP) model."
 
     logger.info(info)
     df_fit_results = fits.compute(config, df_mismatches)
