@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.9.2 (2021-09-14)
+### Fix
+* Bump metaDMG-viz version ([`4a48962`](https://github.com/metaDMG/metaDMG/commit/4a48962592eefa358257097cd9dad942597bc389))
+* Improve error messages for Bayesian fits ([`4e7beba`](https://github.com/metaDMG/metaDMG/commit/4e7beba224e05eaa2faef04f47aac1aa9d754932))
+
 ## v0.9.1 (2021-09-14)
 ### Fix
 * Update metaDMG-viz dependency ([`b74212f`](https://github.com/metaDMG/metaDMG/commit/b74212f1da275aa5718dc58c023fd27a9fae5dc7))
