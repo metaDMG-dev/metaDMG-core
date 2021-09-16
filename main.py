@@ -6,7 +6,7 @@ from metaDMG.fit import run_workflow
 from metaDMG_viz import start_dashboard
 from metaDMG.filters import load_results, filter_results
 
-from metaDMG.fit import serial, fit_utils
+from metaDMG.fit import serial, fit_utils, fits
 
 
 config_path = Path("config.yaml")
@@ -27,10 +27,7 @@ df_results = serial.get_df_results(config, df_mismatches, df_fit_results, forced
 read_ids_mapping = serial.get_database_read_ids(config)
 
 
-# # filter_results(df_results, "tax_id == 9606 & sample == 'gumpaper_weigth1'")
+for tax_id, group in fits.get_groupby(df_mismatches):
+    break
 
-# x = x
-
-# if __name__ == "__main__":
-#     run_workflow()
-#     start_dashboard(debug=True)
+data = fits.group_to_numpyro_data(config, group)

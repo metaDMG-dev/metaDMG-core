@@ -213,7 +213,6 @@ def read_stats(config):
 
 
 def compute(config, df_mismatches):
-    sample = config["sample"]
 
     # find unique tax_ids (when compairing the mismatches matrices)
     # such that only those are fitted

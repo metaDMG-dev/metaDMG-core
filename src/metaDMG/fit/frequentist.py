@@ -39,7 +39,7 @@ def log_prior_PMD(A, q, c, phi):
 
 @njit
 def log_posterior_PMD(A, q, c, phi, x, k, N):
-    log_likelihood = log_likelihood_PMD(A=A, q=q, c=c, phi=phi, x=x, k=k, N=n)
+    log_likelihood = log_likelihood_PMD(A=A, q=q, c=c, phi=phi, x=x, k=k, N=N)
     log_p = log_prior_PMD(A=A, q=q, c=c, phi=phi)
     return log_likelihood + log_p
 
@@ -202,18 +202,27 @@ class FrequentistPMD:
         c = self.c
         phi = self.phi
 
-        Dx_x1 = A + c
-        alpha = Dx_x1 * phi
-        beta = (1 - Dx_x1) * phi
+        N = self.N[0]
 
-        dist = sp_betabinom(n=self.N[0], a=alpha, b=beta)
-
-        # mu = dist.mean() / fit.N[0] - c
         mu = A
-        if self.N[0] != 0:
-            std = np.sqrt(dist.var()) / self.N[0]
+
+        if N != 0:
+            std = np.sqrt(A * (1 - A) * (phi + N) / ((phi + 1) * N))
         else:
             std = np.nan
+
+        # Dx_x1 = A + c
+        # alpha = Dx_x1 * phi
+        # beta = (1 - Dx_x1) * phi
+
+        # dist = sp_betabinom(n=self.N[0], a=alpha, b=beta)
+
+        # # mu = dist.mean() / fit.N[0] - c
+        # mu = A
+        # if self.N[0] != 0:
+        #     std = np.sqrt(dist.var()) / self.N[0]
+        # else:
+        #     std = np.nan
 
         self.D_max = mu  # A
         self.D_max_std = std
@@ -400,6 +409,26 @@ class Frequentist:
 #%%
 
 
+def compute_LR(fit1, fit2):
+    return -2 * (fit1.log_likelihood - fit2.log_likelihood)
+
+
+def compute_LR_All(fit_all):
+    return compute_LR(fit_all.PMD, fit_all.null)
+
+
+def compute_LR_ForRev(fit_forward, fit_reverse):
+    LR_forward = compute_LR(fit_forward.PMD, fit_forward.null)
+    LR_reverse = compute_LR(fit_reverse.PMD, fit_reverse.null)
+    return LR_forward + LR_reverse
+
+
+def compute_LR_ForRev_All(fit_all, fit_forward, fit_reverse):
+    log_lik_ForRev = fit_forward.PMD.log_likelihood + fit_reverse.PMD.log_likelihood
+    return -2 * (log_lik_ForRev - fit_all.PMD.log_likelihood)
+
+#%%
+
 def make_fits(fit_result, data):
     np.random.seed(42)
 
@@ -455,21 +484,3 @@ def make_fits(fit_result, data):
 
     return fit_all, fit_forward, fit_reverse
 
-
-def compute_LR(fit1, fit2):
-    return -2 * (fit1.log_likelihood - fit2.log_likelihood)
-
-
-def compute_LR_All(fit_all):
-    return compute_LR(fit_all.PMD, fit_all.null)
-
-
-def compute_LR_ForRev(fit_forward, fit_reverse):
-    LR_forward = compute_LR(fit_forward.PMD, fit_forward.null)
-    LR_reverse = compute_LR(fit_reverse.PMD, fit_reverse.null)
-    return LR_forward + LR_reverse
-
-
-def compute_LR_ForRev_All(fit_all, fit_forward, fit_reverse):
-    log_lik_ForRev = fit_forward.PMD.log_likelihood + fit_reverse.PMD.log_likelihood
-    return -2 * (log_lik_ForRev - fit_all.PMD.log_likelihood)
