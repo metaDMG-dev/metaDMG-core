@@ -4,7 +4,7 @@ import typer
 from logger_tt import logger
 
 
-def load_config(config_path=None):
+def load_config(config_path=None, port=None):
     if config_path is None:
         config_path = "config.yaml"
 
@@ -19,6 +19,9 @@ def load_config(config_path=None):
     if "forward_only" in config and config["forward_only"]:
         logger.error("--forward_only is not implemented yet.")
         raise typer.Abort()
+
+    if port is not None:
+        config["port"] = port
 
     return config
 

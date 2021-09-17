@@ -6,8 +6,8 @@ import shutil
 from logger_tt import logger
 from multiprocessing import current_process
 import json
+from metaDMG.loggers.loggers import setup_logger
 from metaDMG.fit import mismatches, fits, results
-
 
 #%%
 
@@ -288,6 +288,9 @@ def get_database_read_ids(config, forced=False):
 
 
 def run_single_config(config):
+
+    if "SpawnPoolWorker" in current_process().name:
+        setup_logger(port=config["port"])
 
     current_process().name = config["sample"]
 
