@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.10.4 (2021-09-17)
+### Fix
+* Update metaDMG-viz ([`7fc3878`](https://github.com/metaDMG/metaDMG/commit/7fc38788402599adb520eff75cbd364fc92fa147))
+* Make null model more similar to damage model ([`74d575e`](https://github.com/metaDMG/metaDMG/commit/74d575e23c2faf54c62dc06e2de9d515d67fbd60))
+
 ## v0.10.3 (2021-09-17)
 ### Fix
 * Refactor dashboard to only take a results dir as input ([`26608bb`](https://github.com/metaDMG/metaDMG/commit/26608bb6b532e6af9ff96b5b4697cb88a1b52732))
