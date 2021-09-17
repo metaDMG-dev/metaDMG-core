@@ -226,9 +226,9 @@ The `metaDMG convert` command takes first an optional config-file as argument
 #### CLI options:
 
 - `--output`: Mandatory output path.
-- `--results_dir`: Direct path to the results directory.
+- `--results`: Direct path to the results directory.
 
-Note that neither the config-file nor `--results_dir` have to be specified
+Note that neither the config-file nor `--results` have to be specified
 (in which just the default `config.yaml` is used), however,
 both cannot be set at the same time.
 
@@ -255,9 +255,9 @@ The `metaDMG filter` command takes first an optional config-file as argument
 - `--output`: Mandatory output path.
 - `--query`: The query string to use for filtering. Follows the [Pandas Query()]([www.link.dk](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method)) syntax.
 Default is `""` which applies no filtering and is thus similar to the `metaDMG convert` command.
-- `--results_dir`: Direct path to the results directory.
+- `--results`: Direct path to the results directory.
 
-Note that neither the config-file nor `--results_dir` have to be specified
+Note that neither the config-file nor `--results` have to be specified
 (in which just the default `config.yaml` is used), however,
 both cannot be set at the same time.
 

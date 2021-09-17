@@ -111,13 +111,14 @@ def get_results_dir(config_path=None, results_dir=None):
 
     if config_path is not None and results_dir is not None:
         raise AssertionError(
-            "Only a single one of 'config_path' and 'results_dir' can be set"
+            "Only a single one of 'config' and 'results_dir' can be set"
         )
 
-    if results_dir is not None:
-        pass
+    results_dir = Path(results_dir) if isinstance(results_dir, str) else results_dir
+    config_path = Path(config_path) if isinstance(config_path, str) else config_path
 
-    else:
-        results_dir = Path(load_config(config_path)["dir"]) / "results"
+    if isinstance(results_dir, Path):
+        return results_dir
 
+    results_dir = Path(load_config(config_path)["dir"]) / "results"
     return results_dir

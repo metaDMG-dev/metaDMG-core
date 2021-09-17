@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from pathlib import Path
-from metaDMG.utils import load_config
+from metaDMG.utils import load_config, get_results_dir
 from metaDMG.fit import run_workflow
 from metaDMG_viz import start_dashboard
 from metaDMG.filters import load_results, filter_results
@@ -33,3 +33,11 @@ for tax_id, group in fits.get_groupby(df_mismatches):
     break
 
 data = fits.group_to_numpyro_data(config, group)
+
+
+
+get_results_dir(config_path=None, results_dir=None)
+get_results_dir(config_path=Path("efd40f0223-config.weight-0.yaml"), results_dir=None)
+
+get_results_dir(config_path=None, results_dir=Path("./data/results"))
+get_results_dir(config_path=Path("config.yaml"), results_dir=Path("./data/results"))

@@ -212,8 +212,8 @@ def dashboard(
         file_okay=True,
         help="Path to the config-file.",
     ),
-    results_dir: Path = typer.Option(
-        results_dir_default,
+    results: Optional[Path] = typer.Option(
+        None,
         help="Path to the results directory.",
     ),
     debug: bool = typer.Option(
@@ -231,6 +231,7 @@ def dashboard(
     ),
 ):
     """Visualise the results in an interactive dashboard.
+    Requires metaDMG-viz to be installed.
 
     run as e.g.:
 
@@ -244,10 +245,20 @@ def dashboard(
 
     """
 
-    from metaDMG_viz import start_dashboard
+    try:
+        from metaDMG_viz import start_dashboard
+    except ModuleNotFoundError:
+        print("""metaDMG-viz has to be installed: pip install "metaDMG[all]" """)
+        typer.Abort()
+
+    from metaDMG.utils import get_results_dir
+
+    results_dir = get_results_dir(
+        config_path=config_path,
+        results_dir=results,
+    )
 
     start_dashboard(
-        config_path=config_path,
         results_dir=results_dir,
         debug=debug,
         host=host,
@@ -260,13 +271,13 @@ def dashboard(
 
 @cli_app.command("filter")
 def filter(
-    config_path: Optional[Path] = typer.Argument(
+    config: Optional[Path] = typer.Argument(
         None,
         file_okay=True,
         help="Path to the config-file.",
     ),
-    results_dir: Optional[Path] = typer.Option(
-        results_dir_default,
+    results: Optional[Path] = typer.Option(
+        None,
         help="Path to the results directory.",
     ),
     output: Path = typer.Option(
@@ -285,8 +296,8 @@ def filter(
     filter_and_save_results(
         output=output,
         query=query,
-        config_path=config_path,
-        results_dir=results_dir,
+        config_path=config,
+        results_dir=results,
     )
 
 
@@ -295,13 +306,13 @@ def filter(
 
 @cli_app.command("convert")
 def convert(
-    config_path: Optional[Path] = typer.Argument(
+    config: Optional[Path] = typer.Argument(
         None,
         file_okay=True,
         help="Path to the config-file.",
     ),
-    results_dir: Optional[Path] = typer.Option(
-        results_dir_default,
+    results: Optional[Path] = typer.Option(
+        None,
         help="Path to the results directory.",
     ),
     output: Path = typer.Option(
@@ -316,8 +327,8 @@ def convert(
     filter_and_save_results(
         output=output,
         query="",
-        config_path=config_path,
-        results_dir=results_dir,
+        config_path=config,
+        results_dir=results,
     )
 
 
