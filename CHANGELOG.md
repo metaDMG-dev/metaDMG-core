@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.10.2 (2021-09-17)
+### Fix
+* Better parsing of read mode vs contig mode ([`06e3039`](https://github.com/metaDMG/metaDMG/commit/06e3039423a6138a8bed54cd812734489485b63e))
+
 ## v0.10.1 (2021-09-16)
 ### Fix
 * Bump metaDMG-viz version ([`3bb8bae`](https://github.com/metaDMG/metaDMG/commit/3bb8bae1367c67232a39e3c64f213c59c0f7a87e))
