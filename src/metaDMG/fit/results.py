@@ -10,17 +10,24 @@ from scipy.stats import betabinom as sp_betabinom
 #%%
 
 
-def split(strng, sep, pos):
-    strng = strng.split(sep)
-    return sep.join(strng[:pos]), sep.join(strng[pos:])
-
-
 def get_number_of_lines(filename):
     with open(filename, "r") as f:
         counter = 0
         for _ in f:
             counter += 1
     return counter
+
+
+def split(strng, sep, pos):
+    strng = strng.split(sep)
+    return sep.join(strng[:pos]), sep.join(strng[pos:])
+
+
+def extract_tax_id_and_read_id(row):
+    read_id_plus_info, tax_path = split(row, sep="\t", pos=1)
+    tax_id = int(tax_path.split(":")[0])
+    read_id, _ = split(read_id_plus_info, sep=":", pos=-4)
+    return tax_id, read_id
 
 
 def read_filename_lca(file_lca):
@@ -35,9 +42,7 @@ def read_filename_lca(file_lca):
             if irow == 0:
                 continue
 
-            read_id, rest = split(row.strip(), sep=":", pos=7)
-            _, lca = split(rest, sep="\t", pos=1)
-            tax_id = int(lca.split(":")[0])
+            tax_id, read_id = extract_tax_id_and_read_id(row)
             d_tax_id_to_read_ids[tax_id].add(read_id)
 
     d_tax_id_to_read_ids = dict(d_tax_id_to_read_ids)
