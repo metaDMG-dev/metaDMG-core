@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.10.1 (2021-09-16)
+### Fix
+* Bump metaDMG-viz version ([`3bb8bae`](https://github.com/metaDMG/metaDMG/commit/3bb8bae1367c67232a39e3c64f213c59c0f7a87e))
+
 ## v0.10.0 (2021-09-16)
 ### Feature
 * Add Bayesian computation of rho_Ac ([`db61f5d`](https://github.com/metaDMG/metaDMG/commit/db61f5d0d9bc49a5d537457178445a0bc7a100cb))
