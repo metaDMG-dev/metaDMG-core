@@ -235,3 +235,4 @@ def log_betabinom_null(k, N, alpha, beta):
             + gammaln_vec(N + alpha + beta)
         )
     )
+

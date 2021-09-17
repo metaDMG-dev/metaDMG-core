@@ -264,12 +264,12 @@ def add_Bayesian_fit_result(
     d_results_PMD = get_lppd_and_waic(mcmc_PMD, data)
     d_results_null = get_lppd_and_waic(mcmc_null, data)
 
+    z = compute_z(d_results_PMD, d_results_null)
+    fit_result["Bayesian_z"] = z
+
     D_max = compute_D_max(mcmc_PMD, data)
     fit_result["Bayesian_D_max"] = D_max["mu"]
     fit_result["Bayesian_D_max_std"] = D_max["std"]
-
-    z = compute_z(d_results_PMD, d_results_null)
-    fit_result["Bayesian_z"] = z
 
     fit_result["Bayesian_A"] = get_mean_of_variable(mcmc_PMD, "A")
     fit_result["Bayesian_A_std"] = get_std_of_variable(mcmc_PMD, "A")

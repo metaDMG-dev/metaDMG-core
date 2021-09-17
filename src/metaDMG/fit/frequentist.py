@@ -66,9 +66,10 @@ class FrequentistPMD:
     def __str__(self):
         if self.is_fitted:
             s = f"A = {self.A:.3f}, q = {self.q:.3f},"
-            s += "c = {self.c:.5f}, phi = {self.phi:.1f} \n"
+            s += f"c = {self.c:.5f}, phi = {self.phi:.1f} \n"
             s += f"D_max = {self.D_max:.3f} +/- {self.D_max_std:.3f} \n"
             s += f"rho_Ac = {self.rho_Ac:.3f} \n"
+            s += f"log_likelihood = {self.log_likelihood:.3f} \n"
             s += f"valid = {self.valid}"
             return s
         else:
@@ -76,15 +77,41 @@ class FrequentistPMD:
 
     def __call__(self, A, q, c, phi):
         if self.method == "likelihood":
-            return self.log_likelihood_PMD(A=A, q=q, c=c, phi=phi)
+            return self.log_likelihood_PMD(
+                A=A,
+                q=q,
+                c=c,
+                phi=phi,
+            )
         elif self.method == "posterior":
-            return self.log_posterior_PMD(A=A, q=q, c=c, phi=phi)
+            return self.log_posterior_PMD(
+                A=A,
+                q=q,
+                c=c,
+                phi=phi,
+            )
 
     def log_likelihood_PMD(self, A, q, c, phi):
-        return log_likelihood_PMD(A=A, q=q, c=c, phi=phi, x=self.x, k=self.k, N=self.N)
+        return log_likelihood_PMD(
+            A=A,
+            q=q,
+            c=c,
+            phi=phi,
+            x=self.x,
+            k=self.k,
+            N=self.N,
+        )
 
     def log_posterior_PMD(self, A, q, c, phi):
-        return log_posterior_PMD(A=A, q=q, c=c, phi=phi, x=self.x, k=self.k, N=self.N)
+        return log_posterior_PMD(
+            A=A,
+            q=q,
+            c=c,
+            phi=phi,
+            x=self.x,
+            k=self.k,
+            N=self.N,
+        )
 
     def _setup_p0(self):
         self.p0 = dict(q=0.1, A=0.1, c=0.01, phi=1000)
@@ -211,7 +238,7 @@ class FrequentistPMD:
         else:
             std = np.nan
 
-        # Dx_x1 = A + c
+        # Dx_x1 = A
         # alpha = Dx_x1 * phi
         # beta = (1 - Dx_x1) * phi
 
@@ -269,26 +296,73 @@ class FrequentistPMD:
 #%%
 
 
+# @njit
+# def f_fit_null(c, phi, k, N):
+#     alpha = c * phi
+#     beta = (1 - c) * phi
+#     return -fit_utils.log_betabinom_null(k=k, N=N, alpha=alpha, beta=beta).sum()
+
+
 @njit
-def f_fit_null(c, phi, k, N):
+def log_likelihood_null(c, phi, x, k, N):
     alpha = c * phi
     beta = (1 - c) * phi
     return -fit_utils.log_betabinom_null(k=k, N=N, alpha=alpha, beta=beta).sum()
 
 
+@njit
+def log_prior_null(c, phi):
+    lp = fit_utils.log_beta(c, *c_prior) + fit_utils.log_exponential(phi, *phi_prior)
+    return -lp
+
+
+@njit
+def log_posterior_null(c, phi, x, k, N):
+    log_likelihood = log_likelihood_null(c=c, phi=phi, x=x, k=k, N=N)
+    log_p = log_prior_null(c=c, phi=phi)
+    return log_likelihood + log_p
+
+
 class FrequentistNull:
-    def __init__(self, data):
+    def __init__(self, data, method="posterior"):
         self.x = data["x"]
         self.k = data["k"]
         self.N = data["N"]
+        self.method = method
         self._setup_minuit()
 
-    def __call__(self, c, phi):
-        return f_fit_null(c, phi, self.k, self.N)
+    def __call__(self, A, q, c, phi):
+        if self.method == "likelihood":
+            return self.log_likelihood_null(A=A, q=q, c=c, phi=phi)
+        elif self.method == "posterior":
+            return self.log_posterior_null(A=A, q=q, c=c, phi=phi)
+
+    def log_likelihood_null(self, c, phi):
+        return log_likelihood_null(c=c, phi=phi, x=self.x, k=self.k, N=self.N)
+
+    def log_posterior_null(self, c, phi):
+        return log_posterior_null(c=c, phi=phi, x=self.x, k=self.k, N=self.N)
+
+    # def __call__(self, c, phi):
+    # return f_fit_null(c, phi, self.k, self.N)
 
     def _setup_minuit(self):
-        self.m = Minuit(self.__call__, c=0.1, phi=100)
-        self.m.limits["c"] = (0, 1)
+
+        if self.method == "likelihood":
+            f = self.log_likelihood_null
+
+        elif self.method == "posterior":
+            f = self.log_posterior_null
+
+        self.m = Minuit(f, c=0.1, phi=100)
+
+        if self.method == "likelihood":
+            self.m.limits["c"] = (0, 1)
+
+        elif self.method == "posterior":
+            eps = 1e-10
+            self.m.limits["c"] = (0 + eps, 1 - eps)
+
         self.m.limits["phi"] = (2, None)
         self.m.errordef = Minuit.LIKELIHOOD
 
@@ -306,7 +380,7 @@ class FrequentistNull:
 
     @property
     def log_likelihood(self):
-        return f_fit_null(*self.m.values, self.k, self.N)
+        return self.log_likelihood_null(*self.values)
 
     @property
     def c(self):
@@ -327,7 +401,7 @@ class FrequentistNull:
 class Frequentist:
     def __init__(self, data, method="posterior"):
         self.PMD = FrequentistPMD(data, method=method).fit()
-        self.null = FrequentistNull(data).fit()
+        self.null = FrequentistNull(data, method=method).fit()
         p = fit_utils.compute_likelihood_ratio(self.PMD, self.null)
         self.lambda_LR, self.lambda_LR_P, self.lambda_LR_z = p
 
@@ -349,6 +423,8 @@ class Frequentist:
         s += f"c = {self.c:.5f}, phi = {self.phi:.1f} \n"
         s += f"D_max = {self.D_max:.3f} +/- {self.D_max_std:.3f}, "
         s += f"rho_Ac = {self.rho_Ac:.3f} \n"
+        s += f"log_likelihood_PMD  = {self.PMD.log_likelihood:.3f} \n"
+        s += f"log_likelihood_null = {self.null.log_likelihood:.3f} \n"
         s += (
             f"lambda_LR = {self.lambda_LR:.3f}, "
             f"lambda_LR as prob = {self.lambda_LR_P:.4%}, "
