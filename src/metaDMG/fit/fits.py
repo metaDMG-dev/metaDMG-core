@@ -99,6 +99,7 @@ def compute_fits_seriel(config, df_mismatches):
 
     d_fit_results = {}
 
+    # for tax_id, group in tqdm(groupby, total=len(groupby)):
     for tax_id, group in groupby:
         # break
         fit_result = fit_single_group(config, group, mcmc_PMD, mcmc_null)

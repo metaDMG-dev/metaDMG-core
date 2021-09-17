@@ -4,7 +4,10 @@ import pandas as pd
 
 
 def load_results(config_path=None, results_dir=None):
-    results_dir = get_results_dir(config_path=config_path, results_dir=results_dir)
+    results_dir = get_results_dir(
+        config_path=config_path,
+        results_dir=results_dir,
+    )
     df_results = pd.read_parquet(results_dir)
     return df_results
 
