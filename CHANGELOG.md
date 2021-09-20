@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.10.6 (2021-09-20)
+### Fix
+* Use random ports for logging to decrease risk of reusing same port ([`200eecc`](https://github.com/metaDMG/metaDMG/commit/200eecca3f7c45cbaab1246fe7694734494fffd4))
+
 ## v0.10.5 (2021-09-17)
 ### Fix
 * Allow for multiple loggers (multiple jobs) ([`0ee5ce0`](https://github.com/metaDMG/metaDMG/commit/0ee5ce05ef9ca3b496759e7433bb223037b6cb18))
