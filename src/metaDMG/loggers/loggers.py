@@ -3,52 +3,61 @@ from datetime import datetime
 from importlib import resources
 from pathlib import Path
 from multiprocessing import parent_process
+import random
 
 
 def is_main_process():
     return parent_process() is None
 
 
-def setup_logger(port=9021):
+def setup_logger(log_port=None, log_path=None):
 
-    now = datetime.now()
-    now_str = now.strftime("%Y-%m-%d__%H-%M")
-    log_path = f"logs/log__{now_str}.log"
+    if log_port is None:
+        log_port = get_logger_port()
 
-    if Path(log_path).exists() and is_main_process():
-        print("Got here")
-        print(log_path)
-        log_path = log_path.replace(".log", f"-{now.second}.log")
+    if log_path is None:
+        log_path = get_logger_path()
 
     with resources.path("metaDMG.loggers", "log_config.yaml") as p:
         config_path = p
 
-    internal_config.port = port
+    internal_config.port = log_port
     setup_logging(
         config_path=config_path,
         log_path=log_path,
     )
 
     if is_main_process():
-        logger.debug(f"Using port {port}.")
+        logger.debug(f"Using port {log_port} for logging.")
 
 
-def port_is_available(port):
+def port_is_available(log_port):
     from logger_tt.core import LogRecordSocketReceiver
 
     try:
-        LogRecordSocketReceiver("localhost", port, [])
+        LogRecordSocketReceiver("localhost", log_port, [])
         return True
     except OSError:
         return False
 
 
-def get_logger_port(port=9021):
+def get_logger_port():
     loop = 0
-    max__loops = 100
+    max__loops = 1000
     while loop < max__loops:
-        if port_is_available(port):
-            return port
+        log_port = random.randint(49152, 65535)
+        if port_is_available(log_port):
+            return log_port
         else:
-            port += 1
             loop += 1
+
+
+def get_logger_path():
+    now = datetime.now()
+    now_str = now.strftime("%Y-%m-%d__%H-%M-%S")
+    log_path = f"logs/log__{now_str}.log"
+    return log_path
+
+
+def get_logger_port_and_path():
+    return get_logger_port(), get_logger_path()

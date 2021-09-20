@@ -190,20 +190,21 @@ def compute(
         file_okay=True,
         help="Path to the config-file.",
     ),
-    port: int = typer.Option(
-        9021,
-        help="Logging port.",
-    ),
 ):
     """Compute the LCA and Ancient Damage given the configuration file."""
 
-    from metaDMG.loggers.loggers import get_logger_port, setup_logger
     from metaDMG import utils
-    from metaDMG.fit import run_workflow
+    from metaDMG.fit import run_workflow, get_logger_port_and_path, setup_logger
 
-    port = get_logger_port(port)
-    setup_logger(port)
-    config = utils.load_config(config_path, port)
+    log_port, log_path = get_logger_port_and_path()
+
+    setup_logger(log_port=log_port, log_path=log_path)
+
+    config = utils.load_config(
+        config_path=config_path,
+        log_port=log_port,
+        log_path=log_path,
+    )
 
     run_workflow(config)
 

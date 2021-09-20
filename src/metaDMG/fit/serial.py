@@ -289,8 +289,12 @@ def get_database_read_ids(config, forced=False):
 
 def run_single_config(config):
 
+    # if not main process (and haven't been initialized before)
     if "SpawnPoolWorker" in current_process().name:
-        setup_logger(port=config["port"])
+        setup_logger(
+            log_port=config["log_port"],
+            log_path=config["log_path"],
+        )
 
     current_process().name = config["sample"]
 
