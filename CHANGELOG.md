@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.10.5 (2021-09-17)
+### Fix
+* Allow for multiple loggers (multiple jobs) ([`0ee5ce0`](https://github.com/metaDMG/metaDMG/commit/0ee5ce05ef9ca3b496759e7433bb223037b6cb18))
+
 ## v0.10.4 (2021-09-17)
 ### Fix
 * Update metaDMG-viz ([`7fc3878`](https://github.com/metaDMG/metaDMG/commit/7fc38788402599adb520eff75cbd364fc92fa147))
