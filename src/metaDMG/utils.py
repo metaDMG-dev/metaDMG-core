@@ -27,6 +27,9 @@ def load_config(config_path=None, log_port=None, log_path=None):
     if log_path is not None:
         config["log_path"] = log_path
 
+    if "cores_pr_fit" not in config:
+        config["cores_pr_fit"] = 1
+
     return config
 
 
