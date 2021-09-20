@@ -2,6 +2,7 @@ from pathlib import Path
 import yaml
 import typer
 from logger_tt import logger
+import psutil
 
 
 def load_config(config_path=None, log_port=None, log_path=None):
@@ -27,6 +28,29 @@ def load_config(config_path=None, log_port=None, log_path=None):
         config["log_path"] = log_path
 
     return config
+
+
+def check_number_of_jobs(config):
+
+    cores = config["cores"]
+    cores_pr_fit = config["cores_pr_fit"]
+    N_jobs = cores * cores_pr_fit
+    max_cores = psutil.cpu_count(logical=False)
+    max_cores_logical = psutil.cpu_count(logical=True)
+
+    if N_jobs > max_cores:
+        logger.warning(
+            f"The total number of jobs {N_jobs} are higher "
+            f"than the number of cores {max_cores}."
+            "Do not do this unless you know what you are doing. "
+            "Try decreasing either 'cores' or 'cores-pr-fit'."
+        )
+    elif N_jobs > max_cores_logical:
+        logger.info(
+            f"The total number of jobs {N_jobs} are higher "
+            f"than the logical number of cores {max_cores}."
+            "This might decrease performance. "
+        )
 
 
 def path_endswith(path, s):

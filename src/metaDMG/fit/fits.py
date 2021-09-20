@@ -5,8 +5,9 @@ import numpy as np
 import numpyro
 import pandas as pd
 from logger_tt import logger
+from multiprocessing import Pool
+import gc
 from metaDMG.fit import bayesian, frequentist, fit_utils
-
 
 numpyro.enable_x64()
 
@@ -100,10 +101,58 @@ def compute_fits_seriel(config, df_mismatches):
     d_fit_results = {}
 
     # for tax_id, group in tqdm(groupby, total=len(groupby)):
-    for tax_id, group in groupby:
+    for i, (tax_id, group) in enumerate(groupby):
         # break
         fit_result = fit_single_group(config, group, mcmc_PMD, mcmc_null)
         d_fit_results[tax_id] = fit_result
+
+        if config["bayesian"] and i > 0 and i % 1000 == 0:
+            logger.debug("Reducing memory")
+            mcmc_PMD, mcmc_null = bayesian.init_mcmcs(config)
+            gc.collect()
+
+    return d_fit_results
+
+
+from tqdm import tqdm
+
+
+def compute_fits_parallel_worker(df_mismatches_config):
+
+    df_mismatches, config, position = df_mismatches_config
+
+    # Do not initialise MCMC if config["bayesian"] is False
+    mcmc_PMD, mcmc_null = bayesian.init_mcmcs(config)
+
+    groupby = get_groupby(df_mismatches)
+
+    d_fit_results = {}
+
+    # for tax_id, group in tqdm(groupby, total=len(groupby), position=position):
+    for tax_id, group in groupby:
+        d_fit_results[tax_id] = fit_single_group(config, group, mcmc_PMD, mcmc_null)
+    return d_fit_results
+
+
+def compute_fits_parallel(config, df_mismatches):
+
+    cores = config["cores_pr_fit"]
+    tax_id_list = np.array_split(df_mismatches["tax_id"].unique(), cores)
+
+    dfs = []
+    for position, tax_ids in enumerate(tax_id_list):
+        dfs.append(
+            (
+                df_mismatches.query(f"tax_id in {list(tax_ids)}"),
+                config,
+                position,
+            )
+        )
+
+    d_fit_results = {}
+    with Pool(processes=cores) as pool:
+        for d_fit_results_ in pool.imap_unordered(compute_fits_parallel_worker, dfs):
+            d_fit_results.update(d_fit_results_)
 
     return d_fit_results
 
@@ -226,7 +275,12 @@ def compute(config, df_mismatches):
 
     df_mismatches_unique = df_mismatches.query(f"tax_id in {unique}")
 
-    d_fit_results = compute_fits_seriel(config, df_mismatches_unique)
+    if config["cores_pr_fit"] == 1:
+        logger.debug(f"Fitting in seriel.")
+        d_fit_results = compute_fits_seriel(config, df_mismatches_unique)
+    else:
+        logger.debug(f"Fitting in parallel with {config['cores_pr_fit']} cores.")
+        d_fit_results = compute_fits_parallel(config, df_mismatches_unique)
 
     de_duplicate_fit_results(d_fit_results, duplicates)
 

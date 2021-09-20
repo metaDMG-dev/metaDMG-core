@@ -290,7 +290,8 @@ def get_database_read_ids(config, forced=False):
 def run_single_config(config):
 
     # if not main process (and haven't been initialized before)
-    if "SpawnPoolWorker" in current_process().name:
+    name = current_process().name
+    if "SpawnPoolWorker" in name or "SpawnProcess" in name:
         setup_logger(
             log_port=config["log_port"],
             log_path=config["log_path"],
@@ -302,7 +303,7 @@ def run_single_config(config):
     df_mismatches = get_df_mismatches(config)
     df_fit_results = get_df_fit_results(config, df_mismatches)
     df_results = get_df_results(config, df_mismatches, df_fit_results, forced=False)
-    read_ids_mapping = get_database_read_ids(config)
+    # read_ids_mapping = get_database_read_ids(config)
 
     logger.info("Finished.")
 

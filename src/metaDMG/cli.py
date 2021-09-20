@@ -125,6 +125,10 @@ def config(
         1,
         help="The maximum number of cores to use in the ancient damage estimation.",
     ),
+    cores_pr_fit: int = typer.Option(
+        1,
+        help="Number of cores pr. fit. Do not change unless you know what you are doing.",
+    ),
     config_path: Path = typer.Option(
         config_path_default,
         help="The name of the config file. ",
@@ -171,6 +175,7 @@ def config(
             #
             "dir": storage_dir,
             "cores": cores,
+            "cores_pr_fit": cores_pr_fit,
             "bayesian": bayesian,
             "config_path": str(config_path),
         }

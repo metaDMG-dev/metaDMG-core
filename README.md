@@ -90,6 +90,7 @@ The options are listed below:
 - General parameters:
   - `--storage-dir`: Path where the generated output files and folders are stored. Default: `./data/`.
   - `--cores`: The maximum number of cores to use. Default is 1.
+  - `--cores-pr-fit`: Number of cores pr. fit. Do not change unless you know what you are doing.
   - `--sample-prefix`: Prefix for the sample names.
   - `--sample-suffix`: Suffix for the sample names.
   - `--config-path`: The name of the generated config file. Default: `config.yaml`.

@@ -1,7 +1,9 @@
-from multiprocessing import Pool
+# from multiprocessing import Pool
+from concurrent.futures import ProcessPoolExecutor as Pool
 from logger_tt import logger
 from datetime import datetime
 from metaDMG.fit import serial, fit_utils
+from metaDMG.utils import check_number_of_jobs
 
 
 def run_workflow(config):
@@ -20,6 +22,9 @@ def run_workflow(config):
 
     else:
         logger.info(f"Running with {cores} processes in parallel")
-        with Pool(processes=cores) as pool:
-            for dfs in pool.imap_unordered(serial.run_single_config, configs):
+        check_number_of_jobs(config)
+
+        with Pool(max_workers=cores) as pool:
+            # for dfs in pool.imap_unordered(serial.run_single_config, configs):
+            for dfs in pool.map(serial.run_single_config, configs):
                 df_mismatches, df_fit_results, df_results = dfs
