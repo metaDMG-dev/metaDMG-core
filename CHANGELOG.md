@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.11.1 (2021-09-20)
+### Fix
+* Allow running for old config files without cores_pr_fit being set ([`9a07f83`](https://github.com/metaDMG/metaDMG/commit/9a07f838a545348b8b29ec64250a7f3f1a793bf8))
+
 ## v0.11.0 (2021-09-20)
 ### Feature
 * Add "cores-pr-fit" as config parameter ([`0a26847`](https://github.com/metaDMG/metaDMG/commit/0a26847c9e333697f5bece26d3239824018719e1))
