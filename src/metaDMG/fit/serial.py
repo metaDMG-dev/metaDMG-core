@@ -301,8 +301,8 @@ def run_single_config(config):
 
     run_LCA(config)
     df_mismatches = get_df_mismatches(config)
-    df_fit_results = get_df_fit_results(config, df_mismatches)
-    df_results = get_df_results(config, df_mismatches, df_fit_results, forced=False)
+    df_fit_results = get_df_fit_results(config, df_mismatches, forced=True)
+    df_results = get_df_results(config, df_mismatches, df_fit_results)
     # read_ids_mapping = get_database_read_ids(config)
 
     logger.info("Finished.")

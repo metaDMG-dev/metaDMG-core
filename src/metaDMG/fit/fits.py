@@ -91,6 +91,9 @@ def fit_single_group(
     return fit_result
 
 
+from tqdm import tqdm
+
+
 def compute_fits_seriel(config, df_mismatches):
 
     # Do not initialise MCMC if config["bayesian"] is False
@@ -100,62 +103,50 @@ def compute_fits_seriel(config, df_mismatches):
 
     d_fit_results = {}
 
-    # for tax_id, group in tqdm(groupby, total=len(groupby)):
-    for i, (tax_id, group) in enumerate(groupby):
-        # break
-        try:
-            d_fit_results[tax_id] = fit_single_group(
-                config,
-                group,
-                mcmc_PMD,
-                mcmc_null,
-            )
-        except:
-            logger.error(f"Error here: tax_id = {tax_id}")
-            logger.error(f"Error here:  group = {group}")
-            logger.error(f"Error here: config = {config}")
+    # if config["cores"] == 1 and config["cores_pr_fit"] == 1:
+    groupby = tqdm(groupby, total=len(groupby))
 
-        # if config["bayesian"] and i > 0 and i % 1000 == 0:
-        #     logger.debug("Reducing memory")
-        #     mcmc_PMD, mcmc_null = bayesian.init_mcmcs(config)
-        #     gc.collect()
+    for tax_id, group in groupby:
+        d_fit_results[tax_id] = fit_single_group(
+            config,
+            group,
+            mcmc_PMD,
+            mcmc_null,
+        )
 
     return d_fit_results
 
-
-# from tqdm import tqdm
 
 def compute_fits_parallel_worker(df_mismatches_config):
-
     df_mismatches, config, position = df_mismatches_config
-
-    # Do not initialise MCMC if config["bayesian"] is False
-    mcmc_PMD, mcmc_null = bayesian.init_mcmcs(config)
-
-    groupby = get_groupby(df_mismatches)
-
-    d_fit_results = {}
-
-    # for tax_id, group in tqdm(groupby, total=len(groupby), position=position):
-    for tax_id, group in groupby:
-        try:
-            d_fit_results[tax_id] = fit_single_group(
-                config,
-                group,
-                mcmc_PMD,
-                mcmc_null,
-            )
-        except:
-            logger.error(f"Error here: tax_id = {tax_id}")
-            logger.error(f"Error here:  group = {group}")
-            logger.error(f"Error here: config = {config}")
-    return d_fit_results
+    return compute_fits_seriel(config, df_mismatches)
 
 
-def compute_fits_parallel(config, df_mismatches):
+import itertools
 
-    cores = config["cores_pr_fit"]
-    tax_id_list = np.array_split(df_mismatches["tax_id"].unique(), cores)
+
+def grouper(iterable, n):
+    it = iter(iterable)
+    while True:
+        chunk = tuple(itertools.islice(it, n))
+        if not chunk:
+            return
+        yield chunk
+
+
+def get_list_of_groups(config, df_mismatches, N_in_each_group=100):
+
+    cores_pr_fit = config["cores_pr_fit"]
+
+    tax_ids = df_mismatches["tax_id"].unique()
+
+    if not config["bayesian"]:
+        N_splits = cores_pr_fit
+    else:
+        # make splits, each with N_in_each_group groups in them
+        N_splits = len(tax_ids) // N_in_each_group + 1
+
+    tax_id_list = np.array_split(tax_ids, N_splits)
 
     dfs = []
     for position, tax_ids in enumerate(tax_id_list):
@@ -166,11 +157,41 @@ def compute_fits_parallel(config, df_mismatches):
                 position,
             )
         )
+    return dfs
+
+
+# def compute_fits_parallel(config, df_mismatches):
+
+#     cores_pr_fit = config["cores_pr_fit"]
+
+#     dfs = get_list_of_groups(config, df_mismatches)
+
+#     d_fit_results = {}
+#     with Pool(processes=cores_pr_fit) as pool:
+#         for d_fit_results_ in pool.imap_unordered(compute_fits_parallel_worker, dfs):
+#             d_fit_results.update(d_fit_results_)
+
+#     return d_fit_results
+
+
+def compute_fits_parallel(config, df_mismatches):
+
+    cores_pr_fit = config["cores_pr_fit"]
+
+    dfs = get_list_of_groups(config, df_mismatches)
+
+    if config["bayesian"]:
+        it = grouper(dfs, cores_pr_fit)
+    else:
+        it = [dfs]
 
     d_fit_results = {}
-    with Pool(processes=cores) as pool:
-        for d_fit_results_ in pool.imap_unordered(compute_fits_parallel_worker, dfs):
-            d_fit_results.update(d_fit_results_)
+    for dfs_ in it:
+        with Pool(processes=cores_pr_fit) as pool:
+            for d_fit_results_ in pool.imap_unordered(
+                compute_fits_parallel_worker, dfs_
+            ):
+                d_fit_results.update(d_fit_results_)
 
     return d_fit_results
 
@@ -179,14 +200,9 @@ def compute_fits_parallel(config, df_mismatches):
 
 
 def match_tax_id_order_in_df_fit_results(df_fit_results, df_mismatches):
-    tax_ids_all = pd.unique(df_mismatches.tax_id)
+    tax_ids_all = pd.unique(df_mismatches["tax_id"])
     ordered = [tax_id for tax_id in tax_ids_all if tax_id in df_fit_results.index]
     return df_fit_results.loc[ordered]
-
-
-# def move_column_inplace(df, col, pos=0):
-#     col = df.pop(col)
-#     df.insert(pos, col.name, col)
 
 
 def make_df_fit_results_from_fit_results(config, d_fit_results, df_mismatches):
@@ -287,13 +303,17 @@ def compute(config, df_mismatches):
     unique, duplicates = compute_duplicates(df_mismatches)
 
     logger.debug(
-        f"Instead of fitting all {df_mismatches.tax_id.nunique()} tax IDs, "
+        f"Instead of fitting all {df_mismatches['tax_id'].nunique()} tax IDs, "
         f"only fit the {len(unique)} unique ones."
     )
 
     df_mismatches_unique = df_mismatches.query(f"tax_id in {unique}")
 
-    if config["cores_pr_fit"] == 1:
+    # if config["bayesian"]:
+    #     logger.debug(f"compute_fits_parallel_Bayesian")
+    #     d_fit_results = compute_fits_parallel_Bayesian(config, df_mismatches_unique)
+
+    if config["cores_pr_fit"] == 1 and not config["bayesian"]:
         logger.debug(f"Fitting in seriel.")
         d_fit_results = compute_fits_seriel(config, df_mismatches_unique)
     else:
