@@ -123,8 +123,7 @@ def compute_fits_seriel(config, df_mismatches):
     return d_fit_results
 
 
-from tqdm import tqdm
-
+# from tqdm import tqdm
 
 def compute_fits_parallel_worker(df_mismatches_config):
 

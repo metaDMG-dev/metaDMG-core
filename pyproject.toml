@@ -22,11 +22,11 @@ pyarrow = "^5.0.0"
 logger-tt = "^1.6.1"
 numba = { version = "^0.54.0", python = ">=3.8,<3.10" }
 scipy = { version = "^1.7.1", python = ">=3.8,<3.10" }
+psutil = "^5.8.0"
 
 # A list of all of the optional dependencies, some of which are included in the
 # below `extras`. They can be opted into by apps.
 metaDMG-viz = { version = "^0.5.3", optional = true }
-psutil = "^5.8.0"
 
 
 # can be installed as e.g. poetry install --extras "all"
