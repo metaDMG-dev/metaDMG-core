@@ -103,13 +103,22 @@ def compute_fits_seriel(config, df_mismatches):
     # for tax_id, group in tqdm(groupby, total=len(groupby)):
     for i, (tax_id, group) in enumerate(groupby):
         # break
-        fit_result = fit_single_group(config, group, mcmc_PMD, mcmc_null)
-        d_fit_results[tax_id] = fit_result
+        try:
+            d_fit_results[tax_id] = fit_single_group(
+                config,
+                group,
+                mcmc_PMD,
+                mcmc_null,
+            )
+        except:
+            logger.error(f"Error here: tax_id = {tax_id}")
+            logger.error(f"Error here:  group = {group}")
+            logger.error(f"Error here: config = {config}")
 
-        if config["bayesian"] and i > 0 and i % 1000 == 0:
-            logger.debug("Reducing memory")
-            mcmc_PMD, mcmc_null = bayesian.init_mcmcs(config)
-            gc.collect()
+        # if config["bayesian"] and i > 0 and i % 1000 == 0:
+        #     logger.debug("Reducing memory")
+        #     mcmc_PMD, mcmc_null = bayesian.init_mcmcs(config)
+        #     gc.collect()
 
     return d_fit_results
 
@@ -130,7 +139,17 @@ def compute_fits_parallel_worker(df_mismatches_config):
 
     # for tax_id, group in tqdm(groupby, total=len(groupby), position=position):
     for tax_id, group in groupby:
-        d_fit_results[tax_id] = fit_single_group(config, group, mcmc_PMD, mcmc_null)
+        try:
+            d_fit_results[tax_id] = fit_single_group(
+                config,
+                group,
+                mcmc_PMD,
+                mcmc_null,
+            )
+        except:
+            logger.error(f"Error here: tax_id = {tax_id}")
+            logger.error(f"Error here:  group = {group}")
+            logger.error(f"Error here: config = {config}")
     return d_fit_results
 
 

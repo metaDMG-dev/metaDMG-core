@@ -173,3 +173,4 @@ dmypy.json
 .DS_Store
 efd40f0223-config.weight-0.yaml
 98ec3bda1f-config.weight-1.yaml
+errors.yaml
