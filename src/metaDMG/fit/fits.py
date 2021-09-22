@@ -4,9 +4,9 @@ import joblib
 import numpy as np
 import numpyro
 import pandas as pd
-from logger_tt import logger
 from multiprocessing import Pool
-import gc
+import itertools
+from logger_tt import logger
 from metaDMG.fit import bayesian, frequentist, fit_utils
 
 numpyro.enable_x64()
@@ -88,29 +88,29 @@ def fit_single_group(
     if mcmc_PMD is not None and mcmc_null is not None:
         bayesian.make_fits(fit_result, data, mcmc_PMD, mcmc_null)
 
-    if group["tax_id"].iloc[0] == 1:
-        return None.correlation
-
     return fit_result
 
 
 from tqdm import tqdm
 
 
-def compute_fits_seriel(config, df_mismatches):
+def compute_fits_seriel(config, df_mismatches, with_progressbar=False):
 
     # Do not initialise MCMC if config["bayesian"] is False
     mcmc_PMD, mcmc_null = bayesian.init_mcmcs(config)
 
     groupby = get_groupby(df_mismatches)
 
+    if with_progressbar:
+        groupby = tqdm(groupby, total=len(groupby))
+
     d_fit_results = {}
-
-    # if config["cores"] == 1 and config["cores_pr_fit"] == 1:
-    groupby = tqdm(groupby, total=len(groupby))
-
     for tax_id, group in groupby:
         # break
+
+        if with_progressbar:
+            groupby.set_description(f"Fitting Tax ID {tax_id}")
+
         try:
             d_fit_results[tax_id] = fit_single_group(
                 config,
@@ -119,17 +119,19 @@ def compute_fits_seriel(config, df_mismatches):
                 mcmc_null,
             )
         except Exception as e:
-            logger.exception(f"Error occured fitting tax ID: {tax_id}.")
+            sample = config["sample"]
+            logger.exception(f"Error occured fitting Tax ID: {tax_id} in sample {sample}.")
 
     return d_fit_results
 
 
 def compute_fits_parallel_worker(df_mismatches_config):
-    df_mismatches, config, position = df_mismatches_config
-    return compute_fits_seriel(config, df_mismatches)
-
-
-import itertools
+    df_mismatches, config, with_progressbar = df_mismatches_config
+    return compute_fits_seriel(
+        config=config,
+        df_mismatches=df_mismatches,
+        with_progressbar=with_progressbar,
+    )
 
 
 def grouper(iterable, n):
@@ -139,6 +141,17 @@ def grouper(iterable, n):
         if not chunk:
             return
         yield chunk
+
+
+def use_progressbar(config, position):
+    if config["bayesian"]:
+        return False
+
+    if config["cores"] == 1 or len(config["samples"]) == 1:
+        if position == 0:
+            return True
+
+    return False
 
 
 def get_list_of_groups(config, df_mismatches, N_in_each_group=100):
@@ -161,42 +174,64 @@ def get_list_of_groups(config, df_mismatches, N_in_each_group=100):
             (
                 df_mismatches.query(f"tax_id in {list(tax_ids)}"),
                 config,
-                position,
+                use_progressbar(config, position),
             )
         )
     return dfs
 
 
-# def compute_fits_parallel(config, df_mismatches):
-
-#     cores_pr_fit = config["cores_pr_fit"]
-
-#     dfs = get_list_of_groups(config, df_mismatches)
-
-#     d_fit_results = {}
-#     with Pool(processes=cores_pr_fit) as pool:
-#         for d_fit_results_ in pool.imap_unordered(compute_fits_parallel_worker, dfs):
-#             d_fit_results.update(d_fit_results_)
-
-#     return d_fit_results
-
-
-def compute_fits_parallel(config, df_mismatches):
+def compute_fits_parallel(config, df_mismatches, N_in_each_group=100):
 
     cores_pr_fit = config["cores_pr_fit"]
 
-    dfs = get_list_of_groups(config, df_mismatches)
+    dfs = get_list_of_groups(
+        config,
+        df_mismatches,
+        N_in_each_group=N_in_each_group,
+    )
 
-    if config["bayesian"]:
-        it = grouper(dfs, cores_pr_fit)
-    else:
-        it = [dfs]
+    d_fit_results = {}
+    with Pool(processes=cores_pr_fit) as pool:
+        for d_fit_results_ in pool.imap_unordered(
+            compute_fits_parallel_worker,
+            dfs,
+        ):
+            d_fit_results.update(d_fit_results_)
+
+    return d_fit_results
+
+
+def compute_fits_parallel_Bayesian(config, df_mismatches, N_in_each_group=100):
+
+    cores_pr_fit = config["cores_pr_fit"]
+
+    dfs = get_list_of_groups(
+        config=config,
+        df_mismatches=df_mismatches,
+        N_in_each_group=N_in_each_group,
+    )
+
+    do_progressbar = config["cores"] == 1 or len(config["samples"]) == 1
+
+    if do_progressbar:
+        it = tqdm(
+            grouper(dfs, cores_pr_fit),
+            total=len(dfs) // cores_pr_fit,
+            unit="chunks",
+        )
 
     d_fit_results = {}
     for dfs_ in it:
+        # break
+
+        if do_progressbar:
+            size = dfs_[0][0]["tax_id"].nunique()
+            it.set_description(f"Fitting in chunks of size {size}")
+
         with Pool(processes=cores_pr_fit) as pool:
             for d_fit_results_ in pool.imap_unordered(
-                compute_fits_parallel_worker, dfs_
+                compute_fits_parallel_worker,
+                dfs_,
             ):
                 d_fit_results.update(d_fit_results_)
 
@@ -322,16 +357,31 @@ def compute(config, df_mismatches):
 
     df_mismatches_unique = df_mismatches.query(f"tax_id in {unique}")
 
-    # if config["bayesian"]:
-    #     logger.debug(f"compute_fits_parallel_Bayesian")
-    #     d_fit_results = compute_fits_parallel_Bayesian(config, df_mismatches_unique)
+    if config["bayesian"]:
+        logger.debug(f"compute_fits_parallel_Bayesian")
+        d_fit_results = compute_fits_parallel_Bayesian(config, df_mismatches_unique)
 
-    if config["cores_pr_fit"] == 1 and not config["bayesian"]:
-        logger.debug(f"Fitting in seriel.")
-        d_fit_results = compute_fits_seriel(config, df_mismatches_unique)
     else:
-        logger.debug(f"Fitting in parallel with {config['cores_pr_fit']} cores.")
-        d_fit_results = compute_fits_parallel(config, df_mismatches_unique)
+        if config["cores_pr_fit"] == 1:
+            logger.debug(f"Fitting in seriel.")
+
+            if config["cores"] == 1 or len(config["samples"]) == 1:
+                with_progressbar = True
+            else:
+                with_progressbar = False
+
+            d_fit_results = compute_fits_seriel(
+                config,
+                df_mismatches_unique,
+                with_progressbar=with_progressbar,
+            )
+
+        else:
+            logger.debug(f"Fitting in parallel with {config['cores_pr_fit']} cores.")
+            d_fit_results = compute_fits_parallel(
+                config,
+                df_mismatches_unique,
+            )
 
     de_duplicate_fit_results(d_fit_results, duplicates)
 

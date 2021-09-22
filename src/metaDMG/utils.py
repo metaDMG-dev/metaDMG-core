@@ -35,7 +35,7 @@ def load_config(config_path=None, log_port=None, log_path=None):
 
 def check_number_of_jobs(config):
 
-    cores = config["cores"]
+    cores = min(config["cores"], len(config["samples"]))
     cores_pr_fit = config["cores_pr_fit"]
     N_jobs = cores * cores_pr_fit
     max_cores = psutil.cpu_count(logical=True)
@@ -51,7 +51,7 @@ def check_number_of_jobs(config):
     elif N_jobs > max_cores_real:
         logger.info(
             f"The total number of jobs {N_jobs} are higher "
-            f"than the real number of cores {max_cores} (non-logical). "
+            f"than the real number of cores {max_cores_real} (non-logical). "
             "This might decrease performance. "
         )
 

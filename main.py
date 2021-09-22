@@ -17,11 +17,11 @@ config = load_config(config_path)
 configs = fit_utils.make_configs(config)
 
 
-config = configs[1]
+config = configs[0]
 
 # config["cores"] = 6
-# config["bayesian"] = True
-config["bayesian"] = False
+config["bayesian"] = True
+# config["bayesian"] = False
 forced = False
 
 x = x
