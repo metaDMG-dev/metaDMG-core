@@ -25,6 +25,7 @@ def setup_logger(log_port=None, log_path=None):
     setup_logging(
         config_path=config_path,
         log_path=log_path,
+        # full_context=2,
     )
 
     if is_main_process():

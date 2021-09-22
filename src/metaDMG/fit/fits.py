@@ -88,6 +88,9 @@ def fit_single_group(
     if mcmc_PMD is not None and mcmc_null is not None:
         bayesian.make_fits(fit_result, data, mcmc_PMD, mcmc_null)
 
+    if group["tax_id"].iloc[0] == 1:
+        return None.correlation
+
     return fit_result
 
 
@@ -107,12 +110,16 @@ def compute_fits_seriel(config, df_mismatches):
     groupby = tqdm(groupby, total=len(groupby))
 
     for tax_id, group in groupby:
-        d_fit_results[tax_id] = fit_single_group(
-            config,
-            group,
-            mcmc_PMD,
-            mcmc_null,
-        )
+        # break
+        try:
+            d_fit_results[tax_id] = fit_single_group(
+                config,
+                group,
+                mcmc_PMD,
+                mcmc_null,
+            )
+        except Exception as e:
+            logger.exception(f"Error occured fitting tax ID: {tax_id}.")
 
     return d_fit_results
 
@@ -242,7 +249,13 @@ def compute_duplicates(df_mismatches):
 
 
 def de_duplicate_fit_results(d_fit_results, duplicates):
+
     for tax_id_unique, tax_ids_non_unique in duplicates.items():
+
+        if not tax_id_unique in d_fit_results:
+            logger.warning(f"Could not de-duplicate tax ID {tax_id_unique}.")
+            continue
+
         for tax_id_non_unique in tax_ids_non_unique:
             d_fit_results[tax_id_non_unique] = d_fit_results[tax_id_unique]
 
