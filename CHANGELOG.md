@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.11.4 (2021-09-24)
+### Fix
+* Add better handling of fit errors ([`4facb88`](https://github.com/metaDMG/metaDMG/commit/4facb88f1c25974adf73c3a20a546dfe859af3d9))
+
 ## v0.11.3 (2021-09-22)
 ### Fix
 * Add progress bars when running single files or with a single core ([`11c8cdb`](https://github.com/metaDMG/metaDMG/commit/11c8cdbb8f9b74462cf031107beed043d0bdca37))
