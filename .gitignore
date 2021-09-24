@@ -174,3 +174,9 @@ dmypy.json
 efd40f0223-config.weight-0.yaml
 98ec3bda1f-config.weight-1.yaml
 errors.yaml
+5922fb11a0-config.weight-0.yaml
+5922fb11a0.woltka-mdmg.weight-0/lca/5922fb11a0.lca.txt
+.gitignore
+5922fb11a0.woltka-mdmg.weight-0/lca/5922fb11a0.mismatches.txt
+5922fb11a0.woltka-mdmg.weight-0/lca/5922fb11a0.mismatches.stat.txt
+5922fb11a0.woltka-mdmg.weight-0/mismatches/5922fb11a0.mismatches.parquet

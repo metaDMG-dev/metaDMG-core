@@ -118,9 +118,17 @@ def compute_fits_seriel(config, df_mismatches, with_progressbar=False):
                 mcmc_PMD,
                 mcmc_null,
             )
-        except Exception as e:
+        except AttributeError:
             sample = config["sample"]
-            logger.exception(f"Error occured fitting Tax ID: {tax_id} in sample {sample}.")
+            logger.exception(
+                f"Error occured fitting Tax ID: {tax_id} in sample {sample}."
+            )
+
+        except Exception:
+            sample = config["sample"]
+            logger.exception(
+                f"Error occured fitting Tax ID: {tax_id} in sample {sample}."
+            )
 
     return d_fit_results
 

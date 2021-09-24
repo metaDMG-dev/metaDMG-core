@@ -11,7 +11,7 @@ from metaDMG.fit import serial, fit_utils  # , fits
 
 config_path = Path("config.yaml")
 # config_path = Path("efd40f0223-config.weight-0.yaml")
-# config_path = Path("98ec3bda1f-config.weight-1.yaml")
+# config_path = Path("5922fb11a0-config.weight-0.yaml")
 # config_path = Path("errors.yaml")
 config = load_config(config_path)
 configs = fit_utils.make_configs(config)
@@ -20,7 +20,7 @@ configs = fit_utils.make_configs(config)
 config = configs[0]
 
 # config["cores"] = 6
-config["bayesian"] = True
+# config["bayesian"] = True
 # config["bayesian"] = False
 forced = False
 
@@ -34,7 +34,7 @@ read_ids_mapping = serial.get_database_read_ids(config)
 
 
 for tax_id, group in serial.fits.get_groupby(df_mismatches):
-    # break
+    break
     if tax_id == 349:
         break
 

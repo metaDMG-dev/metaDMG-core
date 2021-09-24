@@ -4,6 +4,7 @@ from numba import njit
 from scipy.stats import beta as sp_beta
 from scipy.stats import betabinom as sp_betabinom
 from scipy.stats import expon as sp_exponential
+from logger_tt import logger
 
 from metaDMG.fit import fit_utils
 
@@ -260,7 +261,12 @@ class FrequentistPMD:
 
     @property
     def rho_Ac(self):
-        return self.correlation["A", "c"]
+        try:
+            return self.correlation["A", "c"]
+        except AttributeError as err:
+            logger.exception("Trying to compute correlation rho_Ac")
+            logger.debug(f"{self.x =}, {self.k =}, {self.N =}, {self.method =}.")
+            raise err
 
     @property
     def dist(self):
