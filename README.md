@@ -290,4 +290,17 @@ pip install "metaDMG[viz]"
 to only install the interactive plotting tool (requires you to have gotten the results from somewhere else).
 
 ---
+---
 
+## Updating metaDMG
+
+
+With pip or Conda:
+```console
+pip install "metaDMG[all]"  --upgrade
+```
+
+With Poetry:
+```console
+poetry update "metaDMG[all]"
+```
