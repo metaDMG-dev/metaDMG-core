@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.12.0 (2021-09-30)
+### Feature
+* Update Dashboard to include pdf-plots and progressbar, and update Dash and dbc ([`fbf727c`](https://github.com/metaDMG/metaDMG/commit/fbf727c86c930d1675a31e9de61969323c2d8ec4))
+
 ## v0.11.4 (2021-09-24)
 ### Fix
 * Add better handling of fit errors ([`4facb88`](https://github.com/metaDMG/metaDMG/commit/4facb88f1c25974adf73c3a20a546dfe859af3d9))
