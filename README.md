@@ -302,5 +302,5 @@ pip install "metaDMG[all]"  --upgrade
 
 With Poetry:
 ```console
-poetry update "metaDMG[all]"
+poetry add metaDMG["all"]
 ```
