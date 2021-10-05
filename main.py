@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 from pathlib import Path
 from metaDMG.utils import load_config, get_results_dir
 from metaDMG.fit import run_workflow
@@ -34,6 +35,7 @@ read_ids_mapping = serial.get_database_read_ids(config)
 
 
 for tax_id, group in serial.fits.get_groupby(df_mismatches):
+    pass
     break
     if tax_id == 349:
         break
@@ -59,3 +61,5 @@ for tax_id, group in serial.fits.get_groupby(df_mismatches):
 
 # # transform the group from a wide to a long dataframe
 # group_long = wide_to_long_df(group_wide)
+
+#%%

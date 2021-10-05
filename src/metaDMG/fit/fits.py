@@ -68,6 +68,28 @@ def add_count_information(config, fit_result, group, data):
 #%%
 
 
+def timer_fit_MAP(config, data):
+    # data = group_to_numpyro_data(config, group)
+    # %timeit timer_fit_MAP(config, data)
+    fit_result = {}
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore")
+        fit_all, fit_forward, fit_reverse = frequentist.make_fits(fit_result, data)
+
+
+
+
+
+def timer_fit_bayesian(config, data, mcmc_PMD, mcmc_null):
+    # data = group_to_numpyro_data(config, group)
+    # %timeit timer_fit_bayesian(config, data, mcmc_PMD, mcmc_null)
+    fit_result = {}
+    bayesian.make_fits(fit_result, data, mcmc_PMD, mcmc_null)
+
+
+#%%
+
+
 def fit_single_group(
     config,
     group,
