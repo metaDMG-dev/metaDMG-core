@@ -35,9 +35,7 @@ read_ids_mapping = serial.get_database_read_ids(config)
 
 
 for tax_id, group in serial.fits.get_groupby(df_mismatches):
-    pass
-    break
-    if tax_id == 349:
+    if tax_id == 2600304:
         break
 
 # data = fits.group_to_numpyro_data(config, group)

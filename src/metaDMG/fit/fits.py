@@ -77,9 +77,6 @@ def timer_fit_MAP(config, data):
         fit_all, fit_forward, fit_reverse = frequentist.make_fits(fit_result, data)
 
 
-
-
-
 def timer_fit_bayesian(config, data, mcmc_PMD, mcmc_null):
     # data = group_to_numpyro_data(config, group)
     # %timeit timer_fit_bayesian(config, data, mcmc_PMD, mcmc_null)

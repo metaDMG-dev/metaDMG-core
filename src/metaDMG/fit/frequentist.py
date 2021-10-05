@@ -49,12 +49,12 @@ def log_posterior_PMD(A, q, c, phi, x, k, N):
 
 
 class FrequentistPMD:
-    def __init__(self, data, method="posterior"):
+    def __init__(self, data, method="posterior", p0=None):
         self.x = data["x"]
         self.k = data["k"]
         self.N = data["N"]
         self.method = method
-        self._setup_p0()
+        self._setup_p0(p0)
         self._setup_minuit()
         self.is_fitted = False
 
@@ -114,8 +114,12 @@ class FrequentistPMD:
             N=self.N,
         )
 
-    def _setup_p0(self):
-        self.p0 = dict(q=0.1, A=0.1, c=0.01, phi=1000)
+    def _setup_p0(self, p0):
+        if p0 is None:
+            self.p0 = dict(q=0.1, A=0.1, c=0.01, phi=1000)
+        else:
+            self.p0 = p0
+
         self.param_grid = {
             "A": sp_beta(*A_prior),  # mean = 0.2, shape = 4
             "q": sp_beta(*q_prior),  # mean = 0.2, shape = 4
@@ -179,7 +183,7 @@ class FrequentistPMD:
 
     @property
     def log_likelihood(self):
-        return self.log_likelihood_PMD(*self.values)
+        return self.log_likelihood_PMD(*self.m.values)
 
     def migrad(self):
         return self.fit()
@@ -190,39 +194,43 @@ class FrequentistPMD:
 
     @property
     def values(self):
-        return self.m.values
+        return self.m.values.to_dict()
+
+    @property
+    def errors(self):
+        return self.m.errors.to_dict()
 
     @property
     def A(self):
-        return self.m.values["A"]
+        return self.values["A"]
 
     @property
     def A_std(self):
-        return self.m.errors["A"]
+        return self.errors["A"]
 
     @property
     def q(self):
-        return self.m.values["q"]
+        return self.values["q"]
 
     @property
     def q_std(self):
-        return self.m.errors["q"]
+        return self.errors["q"]
 
     @property
     def c(self):
-        return self.m.values["c"]
+        return self.values["c"]
 
     @property
     def c_std(self):
-        return self.m.errors["c"]
+        return self.errors["c"]
 
     @property
     def phi(self):
-        return self.m.values["phi"]
+        return self.values["phi"]
 
     @property
     def phi_std(self):
-        return self.m.errors["phi"]
+        return self.errors["phi"]
 
     def _set_D_max(self):
 
@@ -386,27 +394,31 @@ class FrequentistNull:
 
     @property
     def log_likelihood(self):
-        return self.log_likelihood_null(*self.values)
+        return self.log_likelihood_null(*self.m.values)
 
     @property
     def c(self):
-        return self.m.values["c"]
+        return self.values["c"]
 
     @property
     def phi(self):
-        return self.m.values["phi"]
+        return self.values["phi"]
 
     @property
     def values(self):
-        return self.m.values
+        return self.m.values.to_dict()
+
+    @property
+    def errors(self):
+        return self.m.errors.to_dict()
 
 
 #%%
 
 
 class Frequentist:
-    def __init__(self, data, method="posterior"):
-        self.PMD = FrequentistPMD(data, method=method).fit()
+    def __init__(self, data, method="posterior", p0=None):
+        self.PMD = FrequentistPMD(data, method=method, p0=p0).fit()
         self.null = FrequentistNull(data, method=method).fit()
         p = fit_utils.compute_likelihood_ratio(self.PMD, self.null)
         self.lambda_LR, self.lambda_LR_P, self.lambda_LR_z = p
@@ -487,6 +499,10 @@ class Frequentist:
     def chi2(self):
         return self.PMD.chi2
 
+    @property
+    def PMD_values(self):
+        return self.PMD.values
+
 
 #%%
 
@@ -521,8 +537,8 @@ def make_fits(fit_result, data):
     data_forward = {key: val[data["x"] > 0] for key, val in data.items()}
     data_reverse = {key: val[data["x"] < 0] for key, val in data.items()}
 
-    fit_forward = Frequentist(data_forward, method="posterior")
-    fit_reverse = Frequentist(data_reverse, method="posterior")
+    fit_forward = Frequentist(data_forward, method="posterior", p0=fit_all.PMD_values)
+    fit_reverse = Frequentist(data_reverse, method="posterior", p0=fit_all.PMD_values)
 
     vars_to_keep = [
         "lambda_LR",
