@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v0.12.1 (2021-09-30)
+### Fix
+* Fix ImportError in NumPyro ([`8245c57`](https://github.com/metaDMG/metaDMG/commit/8245c57a11c87c97117c5178ee958f97d9ea8809))
+
+### Documentation
+* Update readme ([`fda4eef`](https://github.com/metaDMG/metaDMG/commit/fda4eefe5e341a0b6e10cf704eccccd20230fc0c))
+* Update readme with how to update ([`753b360`](https://github.com/metaDMG/metaDMG/commit/753b360ce4332d9ddd086d5529dd7e15d2f3c93e))
+
 ## v0.12.0 (2021-09-30)
 ### Feature
 * Update Dashboard to include pdf-plots and progressbar, and update Dash and dbc ([`fbf727c`](https://github.com/metaDMG/metaDMG/commit/fbf727c86c930d1675a31e9de61969323c2d8ec4))
