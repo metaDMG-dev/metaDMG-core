@@ -304,3 +304,4 @@ With Poetry:
 ```console
 poetry add metaDMG["all"]
 ```
+<!-- poetry add metaDMG-viz@latest -->
