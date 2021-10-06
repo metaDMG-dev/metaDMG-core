@@ -2,10 +2,7 @@ from collections import defaultdict
 import numpy as np
 import pandas as pd
 from scipy.stats import betabinom as sp_betabinom
-
-#%%
-
-# logger = logging.getLogger(__name__)
+from logger_tt import logger
 
 #%%
 
@@ -54,6 +51,14 @@ def read_filename_lca(file_lca):
 
 
 def compute_df_mismatches_wide(df_mismatches):
+
+    # fix old df_mismatches using |z| instead of |x|
+    if "|z|" in df_mismatches.columns:
+        df_mismatches = df_mismatches.rename(columns={"|z|": "|x|"})
+        logger.info(
+            "df_mismatches uses the old notation, '|z|', instead of '|x|'."
+            "Consider deleting the old mismatch file and run again."
+        )
 
     max_pos = df_mismatches.position.max()
 
