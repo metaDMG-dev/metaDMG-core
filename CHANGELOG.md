@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.12.3 (2021-10-06)
+### Fix
+* Update dashboard ([`2fae93f`](https://github.com/metaDMG/metaDMG/commit/2fae93f0225691c68d7081edf8ae873298721b79))
+* Add small fix to deal with old mismatch files that uses the old notation (|z| instead of |x|) ([`4093b0f`](https://github.com/metaDMG/metaDMG/commit/4093b0fcfa4c40e77f08da91c726ad474b511d37))
+
 ## v0.12.2 (2021-10-05)
 ### Fix
 * Update dashboard ([`4667002`](https://github.com/metaDMG/metaDMG/commit/46670021bfc50813b884085fffbf8110cf33c34d))
