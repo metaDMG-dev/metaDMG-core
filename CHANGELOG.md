@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.12.5 (2021-10-06)
+### Fix
+* Remove forced fitting ([`bbfe0dc`](https://github.com/metaDMG/metaDMG/commit/bbfe0dc938c673591e71abaebc1159a28317deb4))
+* Add metaDMG version to logging ([`12d968a`](https://github.com/metaDMG/metaDMG/commit/12d968a20b95ce0c520525f9a1e3b8b803137552))
+
 ## v0.12.4 (2021-10-06)
 ### Fix
 * Update packages ([`8fb48b5`](https://github.com/metaDMG/metaDMG/commit/8fb48b51b6bc357b7221d7fa8313f23545544974))
