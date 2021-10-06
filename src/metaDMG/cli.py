@@ -22,7 +22,7 @@ def callback(
     ),
 ):
     """
-    metaDMG.
+    Welcome to metaDMG.
 
     First run the LCA and compute the ancient damage statistics with the 'compute' command:
 

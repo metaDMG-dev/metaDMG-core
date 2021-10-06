@@ -9,19 +9,10 @@ from metaDMG.filters import load_results, filter_results
 
 from metaDMG.fit import serial, fit_utils  # , fits
 
-
-path = "CCa1-Ext371-Lib371.mismatches.parquet"
-path = "CCa1-Ext371-Lib371.fit_results.parquet"
-# path = "CCa1-Ext371-Lib371.results.parquet"
-df = pd.read_parquet(path)
-
-for col in df.columns:
-    print(col)
-
-
-
 x = x
 
+import metaDMG
+metaDMG.__version__
 
 config_path = Path("config.yaml")
 # config_path = Path("efd40f0223-config.weight-0.yaml")

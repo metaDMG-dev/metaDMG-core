@@ -29,6 +29,10 @@ def setup_logger(log_port=None, log_path=None):
     )
 
     if is_main_process():
+        import metaDMG
+
+        version = metaDMG.__version__
+        logger.debug(f"Running metaDMG version {version}.")
         logger.debug(f"Using port {log_port} for logging.")
 
 
