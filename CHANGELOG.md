@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.12.2 (2021-10-05)
+### Fix
+* Update dashboard ([`4667002`](https://github.com/metaDMG/metaDMG/commit/46670021bfc50813b884085fffbf8110cf33c34d))
+* Improve frequentists fits for forward and reverse fits ([`735d25c`](https://github.com/metaDMG/metaDMG/commit/735d25c742a9e627c4fded2cd86ff861fefe04c6))
+
 ## v0.12.1 (2021-09-30)
 ### Fix
 * Fix ImportError in NumPyro ([`8245c57`](https://github.com/metaDMG/metaDMG/commit/8245c57a11c87c97117c5178ee958f97d9ea8809))
