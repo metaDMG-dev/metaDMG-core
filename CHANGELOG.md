@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.12.4 (2021-10-06)
+### Fix
+* Update packages ([`8fb48b5`](https://github.com/metaDMG/metaDMG/commit/8fb48b51b6bc357b7221d7fa8313f23545544974))
+
 ## v0.12.3 (2021-10-06)
 ### Fix
 * Update dashboard ([`2fae93f`](https://github.com/metaDMG/metaDMG/commit/2fae93f0225691c68d7081edf8ae873298721b79))
