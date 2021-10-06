@@ -26,8 +26,8 @@ psutil = "^5.8.0"
 
 # A list of all of the optional dependencies, some of which are included in the
 # below `extras`. They can be opted into by apps.
-metaDMG-viz = { version = "^0.6.0", optional = true }
-metadmg-viz = "^0.6.5"
+metaDMG-viz = { version = "^0.6.5", optional = true }
+
 
 
 # can be installed as e.g. poetry install --extras "all"
