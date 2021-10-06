@@ -56,7 +56,7 @@ def compute_df_mismatches_wide(df_mismatches):
     if "|z|" in df_mismatches.columns:
         df_mismatches = df_mismatches.rename(columns={"|z|": "|x|"})
         logger.info(
-            "df_mismatches uses the old notation, '|z|', instead of '|x|'."
+            "df_mismatches uses the old notation, '|z|', instead of '|x|'. "
             "Consider deleting the old mismatch file and run again."
         )
 

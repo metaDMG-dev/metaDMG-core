@@ -9,11 +9,6 @@ from metaDMG.filters import load_results, filter_results
 
 from metaDMG.fit import serial, fit_utils  # , fits
 
-x = x
-
-import metaDMG
-metaDMG.__version__
-
 config_path = Path("config.yaml")
 # config_path = Path("efd40f0223-config.weight-0.yaml")
 # config_path = Path("5922fb11a0-config.weight-0.yaml")
@@ -34,9 +29,7 @@ x = x
 serial.run_LCA(config)
 df_mismatches = serial.get_df_mismatches(config)
 df_fit_results = serial.get_df_fit_results(config, df_mismatches)
-df_results = serial.get_df_results(config, df_mismatches, df_fit_results, forced=False)
-read_ids_mapping = serial.get_database_read_ids(config)
-
+df_results = serial.get_df_results(config, df_mismatches, df_fit_results)
 
 for tax_id, group in serial.fits.get_groupby(df_mismatches):
     if tax_id == 2600304:

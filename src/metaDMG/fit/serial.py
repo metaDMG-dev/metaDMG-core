@@ -15,6 +15,9 @@ from metaDMG.fit import mismatches, fits, results
 def do_run(targets, forced=False):
 
     if forced:
+        logger.info("Using forced load, beware.")
+
+    if forced:
         return True
 
     if not isinstance(targets, list):
@@ -134,8 +137,7 @@ def run_LCA(config, forced=False):
     ]
 
     if do_run(targets, forced=forced):
-
-        logger.info(f"LCA has to be computed. " "This can take a while, please wait.")
+        logger.info(f"LCA has to be computed. This can take a while, please wait.")
 
         command_LCA = get_LCA_command(config)
         command_LCA_mismatches = get_LCA_mismatches_command(config)
@@ -186,7 +188,6 @@ def get_df_fit_results(config, df_mismatches, forced=False):
     logger.info(f"Getting df_fit_results.")
 
     target = data_dir(config, name="fit_results")
-
     if do_load(target, forced=forced):
         logger.info(f"Try to load df_fit_results.")
         df_fit_results = pd.read_parquet(target)
@@ -249,39 +250,39 @@ def get_df_results(config, df_mismatches, df_fit_results, forced=False):
 #%%
 
 
-class DB:
-    def __init__(self, path):
-        self.path = path
+# class DB:
+#     def __init__(self, path):
+#         self.path = path
 
-    def save(self, d):
-        Path(self.path).parent.mkdir(parents=True, exist_ok=True)
-        with open(self.path, "w") as write_file:
-            json.dump(d, write_file, indent=4)
+#     def save(self, d):
+#         Path(self.path).parent.mkdir(parents=True, exist_ok=True)
+#         with open(self.path, "w") as write_file:
+#             json.dump(d, write_file, indent=4)
 
-    def load(self):
-        with open(self.path, "r") as read_file:
-            d = json.load(read_file)
-        return {int(k): v for k, v in d.items()}
+#     def load(self):
+#         with open(self.path, "r") as read_file:
+#             d = json.load(read_file)
+#         return {int(k): v for k, v in d.items()}
 
 
-def get_database_read_ids(config, forced=False):
+# def get_database_read_ids(config, forced=False):
 
-    logger.info(f"Getting read_ids_mapping.")
+#     logger.info(f"Getting read_ids_mapping.")
 
-    target = data_dir(config, name="database", suffix="json")
+#     target = data_dir(config, name="database", suffix="json")
 
-    database = DB(target)
+#     database = DB(target)
 
-    if do_run(target, forced=forced):
-        logger.info(f"Computing read_ids_mapping.")
-        read_ids_mapping = results.get_database_read_ids(config)
-        database.save(read_ids_mapping)
+#     if do_run(target, forced=forced):
+#         logger.info(f"Computing read_ids_mapping.")
+#         read_ids_mapping = results.get_database_read_ids(config)
+#         database.save(read_ids_mapping)
 
-    else:
-        logger.info(f"Loading read_ids_mapping.")
-        read_ids_mapping = database.load()
+#     else:
+#         logger.info(f"Loading read_ids_mapping.")
+#         read_ids_mapping = database.load()
 
-    return read_ids_mapping
+#     return read_ids_mapping
 
 
 #%%
@@ -301,7 +302,7 @@ def run_single_config(config):
 
     run_LCA(config)
     df_mismatches = get_df_mismatches(config)
-    df_fit_results = get_df_fit_results(config, df_mismatches, forced=True)
+    df_fit_results = get_df_fit_results(config, df_mismatches)
     df_results = get_df_results(config, df_mismatches, df_fit_results)
     # read_ids_mapping = get_database_read_ids(config)
 
