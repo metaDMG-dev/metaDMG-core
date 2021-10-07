@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.12.6 (2021-10-07)
+### Fix
+* Update dashboard and include online example of dashboard ([`39ef8bb`](https://github.com/metaDMG/metaDMG/commit/39ef8bb42a8b5b8816ba29761eb0f1f682311a63))
+
+### Documentation
+* Add interactive dashboard to readme ([`61f3116`](https://github.com/metaDMG/metaDMG/commit/61f311668a372cabc960a4deb8bbca74c31a516b))
+
 ## v0.12.5 (2021-10-06)
 ### Fix
 * Remove forced fitting ([`bbfe0dc`](https://github.com/metaDMG/metaDMG/commit/bbfe0dc938c673591e71abaebc1159a28317deb4))
