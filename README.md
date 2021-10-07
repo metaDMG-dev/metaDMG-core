@@ -6,7 +6,7 @@
 
 ---
 
-You can now get a preview of the [interactive dashboard](https://metadmg.herokuapp.com).
+You can now see a preview of the [interactive dashboard](https://metadmg.herokuapp.com).
 
 ---
 
@@ -144,7 +144,7 @@ $ metaDMG compute non-default-config.yaml
 
 # `dashboard`
 
-You can now get a preview of the [interactive dashboard](https://metadmg.herokuapp.com).
+You can now see a preview of the [interactive dashboard](https://metadmg.herokuapp.com).
 
 
 The `metaDMG dashboard` command takes first an optional config-file as argument
