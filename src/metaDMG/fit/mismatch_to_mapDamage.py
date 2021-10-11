@@ -47,7 +47,7 @@ def df_mismatch_to_mapDamage(df_mismatch):
     return df_mapDamage
 
 
-def mismatch_to_mapDamage(filename):
+def convert(filename):
 
     df_mismatch = pd.read_parquet(filename)
     df_mapDamage = df_mismatch_to_mapDamage(df_mismatch)

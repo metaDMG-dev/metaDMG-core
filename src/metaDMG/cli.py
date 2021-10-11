@@ -358,9 +358,9 @@ def mismatch_to_mapDamage(
 ):
     """Convert the mismatch file to mapDamage misincorporation.txt format."""
 
-    from metaDMG.fit.mismatch_to_mapDamage import mismatch_to_mapDamage
+    from metaDMG.fit import mismatch_to_mapDamage
 
-    mismatch_to_mapDamage(filename=filename)
+    mismatch_to_mapDamage.convert(filename=filename)
 
 
 #%%
