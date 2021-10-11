@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.12.7 (2021-10-11)
+### Fix
+* Fix error with bad fits and mask them invalid ([`dd58c6c`](https://github.com/metaDMG/metaDMG/commit/dd58c6c3975bfd233b8573a43ab14a52aec6d97d))
+
 ## v0.12.6 (2021-10-07)
 ### Fix
 * Update dashboard and include online example of dashboard ([`39ef8bb`](https://github.com/metaDMG/metaDMG/commit/39ef8bb42a8b5b8816ba29761eb0f1f682311a63))
