@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.12.8 (2021-10-11)
+### Fix
+* Add CLI command to convert mismatch files to mapDamage format ([`c6e35a9`](https://github.com/metaDMG/metaDMG/commit/c6e35a9544760cbcec7478ce373ed98c07ca9e3e))
+
 ## v0.12.7 (2021-10-11)
 ### Fix
 * Fix error with bad fits and mask them invalid ([`dd58c6c`](https://github.com/metaDMG/metaDMG/commit/dd58c6c3975bfd233b8573a43ab14a52aec6d97d))
