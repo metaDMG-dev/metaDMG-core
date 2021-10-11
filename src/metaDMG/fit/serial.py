@@ -142,8 +142,10 @@ def run_LCA(config, forced=False):
         command_LCA = get_LCA_command(config)
         command_LCA_mismatches = get_LCA_mismatches_command(config)
 
+        logger.debug(command_LCA)
         for line in run_command(command_LCA):
             logger.debug(line)
+        logger.debug(command_LCA_mismatches)
         for line in run_command(command_LCA_mismatches):
             logger.debug(line)
 
