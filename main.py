@@ -35,26 +35,4 @@ for tax_id, group in serial.fits.get_groupby(df_mismatches):
     if tax_id == 61870:
         break
 
-# data = fits.group_to_numpyro_data(config, group)
-
-
-# import pandas as pd
-# from metaDMG_viz.results import wide_to_long_df
-
-# # load a specific sample
-# df = pd.read_parquet("./data/results/subs.results.parquet")
-# # or all samples
-# df = pd.read_parquet("./data/results/")
-
-# # specify a tax_id and a specific sample (in case all samples were loaded)
-# tax_id = 1
-# sample = "subs"
-
-# # get the specific group
-# query = f"sample == '{sample}' & tax_id == {tax_id}"
-# group_wide = df.query(query)
-
-# # transform the group from a wide to a long dataframe
-# group_long = wide_to_long_df(group_wide)
-
 #%%

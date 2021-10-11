@@ -348,5 +348,23 @@ def convert(
 #%%
 
 
+@cli_app.command("mismatch-to-mapDamage")
+def mismatch_to_mapDamage(
+    filename: Path = typer.Argument(
+        ...,
+        file_okay=True,
+        help="Path to the config-file.",
+    ),
+):
+    """Convert the mismatch file to mapDamage misincorporation.txt format."""
+
+    from metaDMG.fit.mismatch_to_mapDamage import mismatch_to_mapDamage
+
+    mismatch_to_mapDamage(filename=filename)
+
+
+#%%
+
+
 def cli_main():
     cli_app(prog_name="metaDMG")
