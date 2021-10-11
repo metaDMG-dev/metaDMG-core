@@ -10,12 +10,12 @@ from metaDMG.filters import load_results, filter_results
 from metaDMG.fit import serial, fit_utils  # , fits
 
 config_path = Path("config.yaml")
+config_path = Path("5cdd545807-config.weight-0.yaml")
 # config_path = Path("efd40f0223-config.weight-0.yaml")
 # config_path = Path("5922fb11a0-config.weight-0.yaml")
 # config_path = Path("errors.yaml")
 config = load_config(config_path)
 configs = fit_utils.make_configs(config)
-
 
 config = configs[0]
 
@@ -32,7 +32,7 @@ df_fit_results = serial.get_df_fit_results(config, df_mismatches)
 df_results = serial.get_df_results(config, df_mismatches, df_fit_results)
 
 for tax_id, group in serial.fits.get_groupby(df_mismatches):
-    if tax_id == 2600304:
+    if tax_id == 61870:
         break
 
 # data = fits.group_to_numpyro_data(config, group)

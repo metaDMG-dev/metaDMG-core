@@ -178,12 +178,20 @@ class FrequentistPMD:
                 self.i += 1
 
         self.valid = self.m.valid
-        self._set_D_max()
+
+        if self.valid:
+            self.D_max, self.D_max_std = self._get_D_max()
+        else:
+            self.D_max, self.D_max_std = np.nan, np.nan
+
         return self
 
     @property
     def log_likelihood(self):
-        return self.log_likelihood_PMD(*self.m.values)
+        if self.valid:
+            return self.log_likelihood_PMD(*self.m.values)
+        else:
+            return np.nan
 
     def migrad(self):
         return self.fit()
@@ -194,11 +202,23 @@ class FrequentistPMD:
 
     @property
     def values(self):
-        return self.m.values.to_dict()
+        values = self.m.values.to_dict()
+        if self.valid:
+            return values
+        else:
+            for key, val in values.items():
+                values[key] = np.nan
+            return values
 
     @property
     def errors(self):
-        return self.m.errors.to_dict()
+        errors = self.m.errors.to_dict()
+        if self.valid:
+            return errors
+        else:
+            for key, val in errors.items():
+                errors[key] = np.nan
+            return errors
 
     @property
     def A(self):
@@ -232,7 +252,7 @@ class FrequentistPMD:
     def phi_std(self):
         return self.errors["phi"]
 
-    def _set_D_max(self):
+    def _get_D_max(self):
 
         A = self.A
         c = self.c
@@ -260,8 +280,9 @@ class FrequentistPMD:
         # else:
         #     std = np.nan
 
-        self.D_max = mu  # A
-        self.D_max_std = std
+        return mu, std
+        # self.D_max = mu  # A
+        # self.D_max_std = std
 
     @property
     def correlation(self):
@@ -269,12 +290,11 @@ class FrequentistPMD:
 
     @property
     def rho_Ac(self):
-        try:
+        if self.valid:
             return self.correlation["A", "c"]
-        except AttributeError as err:
-            logger.exception("Trying to compute correlation rho_Ac")
-            logger.debug(f"{self.x =}, {self.k =}, {self.N =}, {self.method =}.")
-            raise err
+        else:
+            logger.debug(f"Error with: {self.x =}, {self.k =}, {self.N =}, {self.method =}.")
+            return np.nan
 
     @property
     def dist(self):
@@ -304,7 +324,10 @@ class FrequentistPMD:
 
     @property
     def chi2(self):
-        return np.sum(self.chi2s)
+        if self.valid:
+            return np.sum(self.chi2s)
+        else:
+             return np.nan
 
 
 #%%

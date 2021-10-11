@@ -181,3 +181,7 @@ errors.yaml
 5922fb11a0.woltka-mdmg.weight-0/mismatches/5922fb11a0.mismatches.parquet
 
 cache/cache.db*
+
+antonio/*
+5cdd545807.woltka-mdmg.weight-0/*
+5cdd545807-config.weight-0.yaml

@@ -50,7 +50,7 @@ def group_to_numpyro_data(config, group):
 #%%
 
 
-def add_count_information(config, fit_result, group, data):
+def add_count_information(fit_result, config, group, data):
     fit_result["N_x=1_forward"] = data["N"][0]
     fit_result["N_x=1_reverse"] = data["N"][config["max_position"]]
 
@@ -102,7 +102,7 @@ def fit_single_group(
         warnings.filterwarnings("ignore")
         fit_all, fit_forward, fit_reverse = frequentist.make_fits(fit_result, data)
 
-    add_count_information(config, fit_result, group, data)
+    add_count_information(fit_result, config, group, data)
 
     if mcmc_PMD is not None and mcmc_null is not None:
         bayesian.make_fits(fit_result, data, mcmc_PMD, mcmc_null)
@@ -130,24 +130,12 @@ def compute_fits_seriel(config, df_mismatches, with_progressbar=False):
         if with_progressbar:
             groupby.set_description(f"Fitting Tax ID {tax_id}")
 
-        try:
-            d_fit_results[tax_id] = fit_single_group(
-                config,
-                group,
-                mcmc_PMD,
-                mcmc_null,
-            )
-        except AttributeError:
-            sample = config["sample"]
-            logger.exception(
-                f"Error occured fitting Tax ID: {tax_id} in sample {sample}."
-            )
-
-        except Exception:
-            sample = config["sample"]
-            logger.exception(
-                f"Error occured fitting Tax ID: {tax_id} in sample {sample}."
-            )
+        d_fit_results[tax_id] = fit_single_group(
+            config,
+            group,
+            mcmc_PMD,
+            mcmc_null,
+        )
 
     return d_fit_results
 
