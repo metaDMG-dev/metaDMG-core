@@ -279,9 +279,18 @@ $ metaDMG filter --output convert-no-query.csv # similar to metaDMG convert
 $ metaDMG filter --output convert-test.csv --query "N_reads > 5_000 & sample in ['subs', 'SPL_195_9299'] & tax_name == 'root'"
 ```
 
+# `mismatch-to-mapDamage`
+
+The `metaDMG mismatch-to-mapDamage` command takes a mandatory mismatch-file as argument
+and converts it to the mapDamage format `misincorporation.txt`.
+
+#### Example:
+
+```console
+$ metaDMG mismatch-to-mapDamage data/mismatches/XXX.mismatches.parquet
+```
+
 ---
-
-
 ---
 
 If you only want to install some of the tools, you can run:
