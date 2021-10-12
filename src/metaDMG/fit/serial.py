@@ -63,7 +63,7 @@ def get_LCA_command(config):
         f"-weighttype {config['weighttype']} "
         f"-fix_ncbi {config['fix_ncbi']} "
     )
-    return command
+    return command[:-1]
 
 
 def get_LCA_mismatches_command(config):
@@ -78,7 +78,7 @@ def get_LCA_mismatches_command(config):
         f"-nodes {config['nodes']} "
         f"-lcastat {lca_stat} "
     )
-    return command
+    return command[:-1]
 
 
 def run_command(command):
@@ -119,7 +119,7 @@ def delete_files(config):
         f"{sample}.lca.stat",
         f"{sample}.bdamage.gz",
         f"{sample}.log",
-        *list(Path(".").glob(f"*{bam}*.bam.bin")),
+        *list(Path(".").glob(f"*{bam}*.bin")),
     ]
     for path in paths_to_remove:
         logger.debug(f"Removing {path}.")
