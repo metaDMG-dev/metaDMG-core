@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.12.10 (2021-10-21)
+### Fix
+* Update versions (including metaDMG-viz) ([`0545eea`](https://github.com/metaDMG/metaDMG/commit/0545eeae4bb84e2fc310a7b8df4c041e93be346b))
+* Add mapDamage conversion command ([`b808fcd`](https://github.com/metaDMG/metaDMG/commit/b808fcd465f2ee7811c3b47c9786e51861efa1eb))
+
 ## v0.12.9 (2021-10-12)
 ### Fix
 * Remove .bin files ([`c16364d`](https://github.com/metaDMG/metaDMG/commit/c16364d1201a443dc58a9fcc624eda1fc9a91630))
