@@ -355,12 +355,17 @@ def mismatch_to_mapDamage(
         file_okay=True,
         help="Path to the config-file.",
     ),
+    csv_out: Path = typer.Option(
+        "misincorporation.txt",
+        file_okay=True,
+        help="Output CSV file (misincorporation.txt).",
+    ),
 ):
     """Convert the mismatch file to mapDamage misincorporation.txt format."""
 
     from metaDMG.fit import mismatch_to_mapDamage
 
-    mismatch_to_mapDamage.convert(filename=filename)
+    mismatch_to_mapDamage.convert(filename=filename, csv_out=csv_out)
 
 
 #%%

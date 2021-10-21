@@ -30,14 +30,14 @@ def df_mismatch_to_mapDamage(df_mismatch):
 
     df_mapDamage = df_mismatch.copy()
 
-    df_mapDamage = df_mapDamage.rename(columns=d_rename)
-    df_mapDamage["End"] = np.where(df_mapDamage["Pos"] > 0, "3p", "5p")
-    df_mapDamage["Std"] = np.where(df_mapDamage["Pos"] > 0, "+", "-")
-    df_mapDamage["Pos"] = np.abs(df_mapDamage["Pos"])
-
-    df_mapDamage["A"] = mismatches.add_reference_counts(df_mapDamage, ref="A")["A"]
-    df_mapDamage["T"] = mismatches.add_reference_counts(df_mapDamage, ref="T")["T"]
+    mismatches.add_reference_counts(df_mapDamage, ref="A")
+    mismatches.add_reference_counts(df_mapDamage, ref="T")
     df_mapDamage["Total"] = df_mapDamage[["A", "C", "G", "T"]].sum(axis=1)
+
+    df_mapDamage = df_mapDamage.rename(columns=d_rename)
+    df_mapDamage["End"] = np.where(df_mapDamage["Pos"] > 0, "5p", "3p")
+    df_mapDamage["Std"] = "+"
+    df_mapDamage["Pos"] = np.abs(df_mapDamage["Pos"])
 
     for col in columns[idx_end:]:
         df_mapDamage[col] = 0
@@ -47,7 +47,7 @@ def df_mismatch_to_mapDamage(df_mismatch):
     return df_mapDamage
 
 
-def convert(filename):
+def convert(filename, csv_out):
 
     df_mismatch = pd.read_parquet(filename)
     df_mapDamage = df_mismatch_to_mapDamage(df_mismatch)
@@ -58,10 +58,10 @@ def convert(filename):
         f"# using mismatch file {filename.name} \n"
         f"# Chr: Tax ID, "
         f"End: from which termini of DNA sequences, "
-        f"Std: strand of reads \n"
+        f"Std: Defined to be relative to + strand \n"
     )
 
     out += df_mapDamage.to_csv(index=False, sep="\t")
 
-    with open("misincorporation.txt", "w") as file:
+    with open(csv_out, "w", encoding="utf-8") as file:
         file.write(out)

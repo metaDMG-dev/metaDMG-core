@@ -9,7 +9,7 @@ from metaDMG.filters import load_results, filter_results
 
 from metaDMG.fit import serial, fit_utils  # , fits
 
-config_path = Path("config2.yaml")
+config_path = Path("config.yaml")
 # config_path = Path("5cdd545807-config.weight-0.yaml")
 # config_path = Path("efd40f0223-config.weight-0.yaml")
 # config_path = Path("5922fb11a0-config.weight-0.yaml")
@@ -36,3 +36,8 @@ for tax_id, group in serial.fits.get_groupby(df_mismatches):
         break
 
 #%%
+
+
+filename = "data/mismatches/subs.mismatches.parquet"
+df_mismatch = pd.read_parquet(filename)
+df_mapDamage = df_mismatch_to_mapDamage(df_mismatch)
