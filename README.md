@@ -284,10 +284,17 @@ $ metaDMG filter --output convert-test.csv --query "N_reads > 5_000 & sample in 
 The `metaDMG mismatch-to-mapDamage` command takes a mandatory mismatch-file as argument
 and converts it to the mapDamage format `misincorporation.txt`.
 
+#### CLI options:
+
+- `--csv-out`: Output CSV file (misincorporation.txt). Default is `misincorporation.txt`.
+
 #### Example:
 
 ```console
 $ metaDMG mismatch-to-mapDamage data/mismatches/XXX.mismatches.parquet
+```
+```console
+$ metaDMG mismatch-to-mapDamage data/mismatches/XXX.mismatches.parquet --csv-out misincorporation.txt
 ```
 
 ---
