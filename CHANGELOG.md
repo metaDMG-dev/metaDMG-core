@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.12.9 (2021-10-12)
+### Fix
+* Remove .bin files ([`c16364d`](https://github.com/metaDMG/metaDMG/commit/c16364d1201a443dc58a9fcc624eda1fc9a91630))
+
+### Documentation
+* Include mismatch-to-mapDamage in readme ([`29cbcf9`](https://github.com/metaDMG/metaDMG/commit/29cbcf9046aa0735af0e405d65f9335637e58bc5))
+
 ## v0.12.8 (2021-10-11)
 ### Fix
 * Add CLI command to convert mismatch files to mapDamage format ([`c6e35a9`](https://github.com/metaDMG/metaDMG/commit/c6e35a9544760cbcec7478ce373ed98c07ca9e3e))
