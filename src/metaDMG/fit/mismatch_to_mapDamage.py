@@ -35,7 +35,7 @@ def df_mismatch_to_mapDamage(df_mismatch):
     df_mapDamage["Total"] = df_mapDamage[["A", "C", "G", "T"]].sum(axis=1)
 
     df_mapDamage = df_mapDamage.rename(columns=d_rename)
-    df_mapDamage["End"] = np.where(df_mapDamage["Pos"] > 0, "5p", "3p")
+    df_mapDamage["End"] = np.where(df_mapDamage["Pos"] > 0, "3p", "5p")
     df_mapDamage["Std"] = "+"
     df_mapDamage["Pos"] = np.abs(df_mapDamage["Pos"])
 
