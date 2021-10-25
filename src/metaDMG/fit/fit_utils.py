@@ -26,21 +26,24 @@ def get_samples_from_config(config):
     return list(config["samples"].keys())
 
 
-def get_configs_from_samples(sample, config):
+def get_config_from_sample(sample, config):
     config = config.copy()
     config["sample"] = sample
+    config["bam"] = config["samples"][sample]
 
     dir_lca = Path(config["dir"]) / "lca"
 
     config["path_mismatches_txt"] = str(dir_lca / f"{sample}.mismatches.txt")
     config["path_mismatches_stat"] = str(dir_lca / f"{sample}.mismatches.stat.txt")
     config["path_lca"] = str(dir_lca / f"{sample}.lca.txt")
+    config["path_lca_log"] = str(dir_lca / f"{sample}.log.txt")
+
     return config
 
 
 def make_configs(config):
     samples = get_samples_from_config(config)
-    configs = [get_configs_from_samples(sample, config) for sample in samples]
+    configs = [get_config_from_sample(sample, config) for sample in samples]
     return configs
 
 
@@ -235,4 +238,3 @@ def log_betabinom_null(k, N, alpha, beta):
             + gammaln_vec(N + alpha + beta)
         )
     )
-

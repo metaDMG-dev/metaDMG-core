@@ -9,7 +9,7 @@ from multiprocessing import current_process
 # import json
 from collections import Counter
 from metaDMG.loggers.loggers import setup_logger
-from metaDMG.errors import metadamageError
+from metaDMG.errors import metadamageError, Error
 from metaDMG.fit import mismatches, fits, results
 
 #%%
@@ -46,12 +46,11 @@ def data_dir(config, name, suffix="parquet"):
 
 def get_LCA_command(config):
     sample = config["sample"]
-    bam = config["samples"][sample]
     lca_rank = f"-lca_rank {config['lca_rank']}" if config["lca_rank"] != "" else ""
 
     command = (
         f"{config['metaDMG-lca']} lca "
-        f"-bam {bam} "
+        f"-bam {config['bam']} "
         f"-outnames {sample} "
         f"-names {config['names']} "
         f"-nodes {config['nodes']} "
@@ -94,10 +93,11 @@ def move_files(config):
         f"{sample}.bdamage.gz.uglyprint.mismatch.txt": config["path_mismatches_txt"],
         f"{sample}.bdamage.gz.uglyprint.stat.txt": config["path_mismatches_stat"],
         f"{sample}.lca": config["path_lca"],
+        f"{sample}.log": config["path_lca_log"],
     }
     for source_path, target_path in d_move_source_target.items():
         logger.debug(f"Moving {source_path} to {target_path}.")
-        if not Path(source_path).exists():
+        if not Path(source_path).is_file():
             raise metadamageError(f"{source_path} does not exist.")
         Path(target_path).parent.mkdir(parents=True, exist_ok=True)
         shutil.move(source_path, target_path)
@@ -106,17 +106,16 @@ def move_files(config):
 def delete_files(config):
     sample = config["sample"]
 
-    bam = Path(config["samples"][sample]).stem  # .name
+    bam = Path(config["bam"]).stem  # .name
 
     paths_to_remove = [
         f"{sample}.lca.stat",
         f"{sample}.bdamage.gz",
-        f"{sample}.log",
         *list(Path(".").glob(f"*{bam}*.bin")),
     ]
     for path in paths_to_remove:
         logger.debug(f"Removing {path}.")
-        if not Path(path).exists():
+        if not Path(path).is_file():
             raise metadamageError(f"{path} does not exist.")
         Path(path).unlink()
 
@@ -142,6 +141,22 @@ def run_command(command):
     yield p.wait()
 
 
+def handle_returncode(command, line, counter):
+
+    command_string = " ".join(command.split()[:2])
+
+    returncode = line
+    if returncode != 0:
+        s = f"{command_string} did not terminate properly."
+        raise metadamageError(s)
+
+    lines_hidden = {key: val for key, val in counter.items() if val >= 3}
+    if len(lines_hidden) > 0:
+        logger.debug(f"Hid the following lines: {lines_hidden}.")
+    logger.debug(f"Got return code {returncode} from {command_string}.")
+    return None
+
+
 def run_command_helper(config, command):
 
     # add a counter to avoid too many similar lines
@@ -150,10 +165,20 @@ def run_command_helper(config, command):
 
         # if finished, check returncode
         if isinstance(line, int):
-            returncode = line
-            if returncode != 0:
-                s = config["metaDMG-lca"] + "did not terminate properly."
-                raise metadamageError(s)
+            return handle_returncode(command, line, counter)
+
+            # command_string = " ".join(command.split()[:2])
+
+            # returncode = line
+            # if returncode != 0:
+            #     s = f"{command_string} did not terminate properly."
+            #     raise metadamageError(s)
+
+            # lines_hidden = {key: val for key, val in counter.items() if val >= 3}
+            # if len(lines_hidden) > 0:
+            #     logger.debug(f"Hid the following lines: {lines_hidden}.")
+            # logger.debug(f"Got return code {returncode} from {command_string}.")
+            # return
 
         # continue running and logging
         if counter[line] < 3:
@@ -161,9 +186,10 @@ def run_command_helper(config, command):
 
         # do not print the same line more than 3 times
         elif counter[line] == 3:
-            logger.debug("...")
-            logger.debug("...")
-            logger.debug("...")
+            # -> Problem finding level for rank: serotype
+            logger.debug("	...")
+            logger.debug("	...")
+            logger.debug("	...")
 
         counter[line] += 1
 
@@ -308,10 +334,17 @@ def run_single_config(config):
 
     current_process().name = config["sample"]
 
+    if not Path(config["bam"]).is_file():
+        logger.error(f"The sample bam file does not exist: {config['bam']}.")
+        return None
+
     try:
         run_LCA(config)
     except metadamageError as error:
-        logger.exception(f"{config['sample']} | metadamageError with run_LCA.")
+        logger.exception(
+            f"{config['sample']} | metadamageError with run_LCA. "
+            f"See log-file for more information"
+        )
         return None
 
     df_mismatches = get_df_mismatches(config)
