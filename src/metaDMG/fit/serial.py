@@ -167,19 +167,6 @@ def run_command_helper(config, command):
         if isinstance(line, int):
             return handle_returncode(command, line, counter)
 
-            # command_string = " ".join(command.split()[:2])
-
-            # returncode = line
-            # if returncode != 0:
-            #     s = f"{command_string} did not terminate properly."
-            #     raise metadamageError(s)
-
-            # lines_hidden = {key: val for key, val in counter.items() if val >= 3}
-            # if len(lines_hidden) > 0:
-            #     logger.debug(f"Hid the following lines: {lines_hidden}.")
-            # logger.debug(f"Got return code {returncode} from {command_string}.")
-            # return
-
         # continue running and logging
         if counter[line] < 3:
             logger.debug(line)
