@@ -120,6 +120,24 @@ def delete_files(config):
         Path(path).unlink()
 
 
+def delete_all_sample_files(config):
+    sample = config["sample"]
+
+    bam = Path(config["bam"]).stem  # .name
+
+    paths_to_remove = [
+        f"{sample}.lca",
+        f"{sample}.lca.stat",
+        f"{sample}.log",
+        f"{sample}.bdamage.gz",
+        *list(Path(".").glob(f"*{bam}*.bin")),
+    ]
+    for path in paths_to_remove:
+        if Path(path).is_file():
+            logger.debug(f"Removing {path}.")
+            Path(path).unlink()
+
+
 #%%
 
 
@@ -327,11 +345,15 @@ def run_single_config(config):
 
     try:
         run_LCA(config)
-    except metadamageError as error:
+    except metadamageError:
         logger.exception(
             f"{config['sample']} | metadamageError with run_LCA. "
             f"See log-file for more information"
         )
+        return None
+    except KeyboardInterrupt:
+        logger.info("Got KeyboardInterrupt. Cleaning up.")
+        delete_all_sample_files(config)
         return None
 
     df_mismatches = get_df_mismatches(config)
