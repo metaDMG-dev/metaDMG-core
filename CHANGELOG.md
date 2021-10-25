@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.12.12 (2021-10-25)
+### Fix
+* Improve error logging and messages for metadamage-cpp ([`73068ed`](https://github.com/metaDMG/metaDMG/commit/73068ed2c667e9770d1f9b2ad25ffd5c11fed568))
+
 ## v0.12.11 (2021-10-21)
 ### Fix
 * Fix 5p vs 3p back again ([`c44b8c1`](https://github.com/metaDMG/metaDMG/commit/c44b8c10f4d786f25cd218c75758fa636bc21942))
