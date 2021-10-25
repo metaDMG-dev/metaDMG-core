@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v0.12.11 (2021-10-21)
+### Fix
+* Fix 5p vs 3p back again ([`c44b8c1`](https://github.com/metaDMG/metaDMG/commit/c44b8c10f4d786f25cd218c75758fa636bc21942))
+* Fix error with 3p and 5p convention ([`48b7636`](https://github.com/metaDMG/metaDMG/commit/48b7636660cc80ffecbc6bcd3ee92864fad0344c))
+
+### Documentation
+* Add mismatch-to-mapDamage ([`c4d1f47`](https://github.com/metaDMG/metaDMG/commit/c4d1f477da2a830f744582d0dd8b9ef5cbb76cc4))
+
 ## v0.12.10 (2021-10-21)
 ### Fix
 * Update versions (including metaDMG-viz) ([`0545eea`](https://github.com/metaDMG/metaDMG/commit/0545eeae4bb84e2fc310a7b8df4c041e93be346b))
