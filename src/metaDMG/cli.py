@@ -44,7 +44,7 @@ def callback(
 
 
 @cli_app.command("config")
-def config(
+def create_config(
     samples: List[Path] = typer.Argument(
         ...,
         help="Single or multiple alignment-files (or a directory containing them).",

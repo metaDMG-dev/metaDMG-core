@@ -18,7 +18,7 @@ def run_workflow(config):
         logger.info(f"Running in seriel (1 core)")
         for config in configs:
             dfs = serial.run_single_config(config)
-            df_mismatches, df_fit_results, df_results = dfs
+            # df_mismatches, df_fit_results, df_results = dfs
 
     else:
         logger.info(f"Running with {cores} processes in parallel")
@@ -27,4 +27,5 @@ def run_workflow(config):
         with Pool(max_workers=cores) as pool:
             # for dfs in pool.imap_unordered(serial.run_single_config, configs):
             for dfs in pool.map(serial.run_single_config, configs):
-                df_mismatches, df_fit_results, df_results = dfs
+                pass
+                # df_mismatches, df_fit_results, df_results = dfs

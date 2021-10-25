@@ -5,8 +5,11 @@ import shlex
 import shutil
 from logger_tt import logger
 from multiprocessing import current_process
-import json
+
+# import json
+from collections import Counter
 from metaDMG.loggers.loggers import setup_logger
+from metaDMG.errors import metadamageError
 from metaDMG.fit import mismatches, fits, results
 
 #%%
@@ -81,19 +84,7 @@ def get_LCA_mismatches_command(config):
     return command[:-1]
 
 
-def run_command(command):
-
-    p = subprocess.Popen(
-        shlex.split(command),
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-    )
-    for line in iter(p.stdout.readline, b""):
-        if line:
-            line = line.decode("utf-8")
-            if line.endswith("\n"):
-                line = line[:-1]
-            yield line
+#%%
 
 
 def move_files(config):
@@ -106,6 +97,8 @@ def move_files(config):
     }
     for source_path, target_path in d_move_source_target.items():
         logger.debug(f"Moving {source_path} to {target_path}.")
+        if not Path(source_path).exists():
+            raise metadamageError(f"{source_path} does not exist.")
         Path(target_path).parent.mkdir(parents=True, exist_ok=True)
         shutil.move(source_path, target_path)
 
@@ -123,7 +116,59 @@ def delete_files(config):
     ]
     for path in paths_to_remove:
         logger.debug(f"Removing {path}.")
+        if not Path(path).exists():
+            raise metadamageError(f"{path} does not exist.")
         Path(path).unlink()
+
+
+#%%
+
+
+def run_command(command):
+
+    p = subprocess.Popen(
+        shlex.split(command),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
+    for line in iter(p.stdout.readline, b""):
+        if line:
+            line = line.decode("utf-8")
+            if line.endswith("\n"):
+                line = line[:-1]
+            yield line
+
+    # waits for the process to finish and returns the returncode
+    yield p.wait()
+
+
+def run_command_helper(config, command):
+
+    # add a counter to avoid too many similar lines
+    counter = Counter()
+    for line in run_command(command):
+
+        # if finished, check returncode
+        if isinstance(line, int):
+            returncode = line
+            if returncode != 0:
+                s = config["metaDMG-lca"] + "did not terminate properly."
+                raise metadamageError(s)
+
+        # continue running and logging
+        if counter[line] < 3:
+            logger.debug(line)
+
+        # do not print the same line more than 3 times
+        elif counter[line] == 3:
+            logger.debug("...")
+            logger.debug("...")
+            logger.debug("...")
+
+        counter[line] += 1
+
+
+#%%
 
 
 def run_LCA(config, forced=False):
@@ -143,11 +188,10 @@ def run_LCA(config, forced=False):
         command_LCA_mismatches = get_LCA_mismatches_command(config)
 
         logger.debug(command_LCA)
-        for line in run_command(command_LCA):
-            logger.debug(line)
+        run_command_helper(config, command_LCA)
+
         logger.debug(command_LCA_mismatches)
-        for line in run_command(command_LCA_mismatches):
-            logger.debug(line)
+        run_command_helper(config, command_LCA_mismatches)
 
         move_files(config)
         delete_files(config)
@@ -252,44 +296,6 @@ def get_df_results(config, df_mismatches, df_fit_results, forced=False):
 #%%
 
 
-# class DB:
-#     def __init__(self, path):
-#         self.path = path
-
-#     def save(self, d):
-#         Path(self.path).parent.mkdir(parents=True, exist_ok=True)
-#         with open(self.path, "w") as write_file:
-#             json.dump(d, write_file, indent=4)
-
-#     def load(self):
-#         with open(self.path, "r") as read_file:
-#             d = json.load(read_file)
-#         return {int(k): v for k, v in d.items()}
-
-
-# def get_database_read_ids(config, forced=False):
-
-#     logger.info(f"Getting read_ids_mapping.")
-
-#     target = data_dir(config, name="database", suffix="json")
-
-#     database = DB(target)
-
-#     if do_run(target, forced=forced):
-#         logger.info(f"Computing read_ids_mapping.")
-#         read_ids_mapping = results.get_database_read_ids(config)
-#         database.save(read_ids_mapping)
-
-#     else:
-#         logger.info(f"Loading read_ids_mapping.")
-#         read_ids_mapping = database.load()
-
-#     return read_ids_mapping
-
-
-#%%
-
-
 def run_single_config(config):
 
     # if not main process (and haven't been initialized before)
@@ -302,12 +308,16 @@ def run_single_config(config):
 
     current_process().name = config["sample"]
 
-    run_LCA(config)
+    try:
+        run_LCA(config)
+    except metadamageError as error:
+        logger.exception(f"{config['sample']} | metadamageError with run_LCA.")
+        return None
+
     df_mismatches = get_df_mismatches(config)
     df_fit_results = get_df_fit_results(config, df_mismatches)
     df_results = get_df_results(config, df_mismatches, df_fit_results)
     # read_ids_mapping = get_database_read_ids(config)
 
     logger.info("Finished.")
-
     return df_mismatches, df_fit_results, df_results

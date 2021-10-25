@@ -37,7 +37,37 @@ for tax_id, group in serial.fits.get_groupby(df_mismatches):
 
 #%%
 
+import subprocess
+import shlex
+import shutil
+from time import sleep
 
-filename = "data/mismatches/subs.mismatches.parquet"
-df_mismatch = pd.read_parquet(filename)
-df_mapDamage = df_mismatch_to_mapDamage(df_mismatch)
+command = "ls"
+
+
+def test(command):
+
+    p = subprocess.Popen(
+        shlex.split(command),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
+    for line in iter(p.stdout.readline, b""):
+        if line:
+            line = line.decode("utf-8")
+            if line.endswith("\n"):
+                line = line[:-1]
+            yield line
+            if line == "raw_data":
+                sleep(3)
+    yield p.wait()
+
+    # return p.returncode
+
+
+for line in test(command):
+    print(line)
+
+#
+
+# %%
