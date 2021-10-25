@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v0.12.13 (2021-10-25)
+### Fix
+* Delete files on KeyboardInterupt (clean up) ([`89d962b`](https://github.com/metaDMG/metaDMG/commit/89d962b04fb902678546ebf15a7f922e40de5074))
+* Remove commented out code ([`5ecbddb`](https://github.com/metaDMG/metaDMG/commit/5ecbddbf4edbbf79ff6f8e546314e9ed03c85783))
+* Add hidden lines in log file and handle return code better ([`1762667`](https://github.com/metaDMG/metaDMG/commit/17626671f58081150e0cdc8e8b76e50fadd2e9fe))
+
 ## v0.12.12 (2021-10-25)
 ### Fix
 * Improve error logging and messages for metadamage-cpp ([`73068ed`](https://github.com/metaDMG/metaDMG/commit/73068ed2c667e9770d1f9b2ad25ffd5c11fed568))
