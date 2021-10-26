@@ -49,7 +49,9 @@ def log_posterior_PMD(A, q, c, phi, x, k, N):
 
 
 class FrequentistPMD:
-    def __init__(self, data, method="posterior", p0=None):
+    def __init__(self, data, sample, tax_id, method="posterior", p0=None):
+        self.sample = sample
+        self.tax_id = tax_id
         self.x = data["x"]
         self.k = data["k"]
         self.N = data["N"]
@@ -66,7 +68,8 @@ class FrequentistPMD:
 
     def __str__(self):
         if self.is_fitted:
-            s = f"A = {self.A:.3f}, q = {self.q:.3f},"
+            s = f"sample = {self.sample}, tax_id = {self.tax_id} \n"
+            s += f"A = {self.A:.3f}, q = {self.q:.3f},"
             s += f"c = {self.c:.5f}, phi = {self.phi:.1f} \n"
             s += f"D_max = {self.D_max:.3f} +/- {self.D_max_std:.3f} \n"
             s += f"rho_Ac = {self.rho_Ac:.3f} \n"
@@ -267,6 +270,8 @@ class FrequentistPMD:
         else:
             std = np.nan
 
+        return mu, std
+
         # Dx_x1 = A
         # alpha = Dx_x1 * phi
         # beta = (1 - Dx_x1) * phi
@@ -280,7 +285,6 @@ class FrequentistPMD:
         # else:
         #     std = np.nan
 
-        return mu, std
         # self.D_max = mu  # A
         # self.D_max_std = std
 
@@ -293,7 +297,11 @@ class FrequentistPMD:
         if self.valid:
             return self.correlation["A", "c"]
         else:
-            logger.debug(f"Error with: {self.x =}, {self.k =}, {self.N =}, {self.method =}.")
+            logger.debug(
+                f"Error with: sample = {self.sample}, "
+                f"tax_id = {self.tax_id}, "
+                f"fit method = {self.method}."
+            )
             return np.nan
 
     @property
@@ -327,7 +335,7 @@ class FrequentistPMD:
         if self.valid:
             return np.sum(self.chi2s)
         else:
-             return np.nan
+            return np.nan
 
 
 #%%
@@ -361,7 +369,9 @@ def log_posterior_null(c, phi, x, k, N):
 
 
 class FrequentistNull:
-    def __init__(self, data, method="posterior"):
+    def __init__(self, data, sample, tax_id, method="posterior"):
+        self.sample = sample
+        self.tax_id = tax_id
         self.x = data["x"]
         self.k = data["k"]
         self.N = data["N"]
@@ -440,15 +450,17 @@ class FrequentistNull:
 
 
 class Frequentist:
-    def __init__(self, data, method="posterior", p0=None):
-        self.PMD = FrequentistPMD(data, method=method, p0=p0).fit()
-        self.null = FrequentistNull(data, method=method).fit()
+    def __init__(self, data, sample, tax_id, method="posterior", p0=None):
+        self.PMD = FrequentistPMD(data, sample, tax_id, method=method, p0=p0).fit()
+        self.null = FrequentistNull(data, sample, tax_id, method=method).fit()
         p = fit_utils.compute_likelihood_ratio(self.PMD, self.null)
         self.lambda_LR, self.lambda_LR_P, self.lambda_LR_z = p
 
         self.valid = self.PMD.valid
 
         self.data = data
+        self.sample = sample
+        self.tax_id = tax_id
         self.x = data["x"]
         self.k = data["k"]
         self.N = data["N"]
@@ -460,7 +472,8 @@ class Frequentist:
         return s
 
     def __str__(self):
-        s = f"A = {self.A:.3f}, q = {self.q:.3f}, "
+        s = f"sample = {self.sample}, tax_id = {self.tax_id} \n"
+        s += f"A = {self.A:.3f}, q = {self.q:.3f}, "
         s += f"c = {self.c:.5f}, phi = {self.phi:.1f} \n"
         s += f"D_max = {self.D_max:.3f} +/- {self.D_max_std:.3f}, "
         s += f"rho_Ac = {self.rho_Ac:.3f} \n"
@@ -552,16 +565,28 @@ def compute_LR_ForRev_All(fit_all, fit_forward, fit_reverse):
 #%%
 
 
-def make_fits(fit_result, data):
+def make_fits(fit_result, data, sample, tax_id):
     np.random.seed(42)
 
-    fit_all = Frequentist(data, method="posterior")
+    fit_all = Frequentist(data, sample, tax_id, method="posterior")
 
     data_forward = {key: val[data["x"] > 0] for key, val in data.items()}
     data_reverse = {key: val[data["x"] < 0] for key, val in data.items()}
 
-    fit_forward = Frequentist(data_forward, method="posterior", p0=fit_all.PMD_values)
-    fit_reverse = Frequentist(data_reverse, method="posterior", p0=fit_all.PMD_values)
+    fit_forward = Frequentist(
+        data_forward,
+        sample,
+        tax_id,
+        method="posterior",
+        p0=fit_all.PMD_values,
+    )
+    fit_reverse = Frequentist(
+        data_reverse,
+        sample,
+        tax_id,
+        method="posterior",
+        p0=fit_all.PMD_values,
+    )
 
     vars_to_keep = [
         "lambda_LR",

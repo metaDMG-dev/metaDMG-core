@@ -9,3 +9,9 @@ class metadamageError(Error):
     """Raised when we get an error with the metadamage part of the program"""
 
     pass
+
+
+class FittingError(Error):
+    """Raised when we get an error with the fit of a specific Tax ID"""
+
+    pass

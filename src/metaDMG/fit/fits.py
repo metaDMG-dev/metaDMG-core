@@ -97,10 +97,17 @@ def fit_single_group(
     fit_result = {}
 
     data = group_to_numpyro_data(config, group)
+    sample = config["sample"]
+    tax_id = group["tax_id"].iloc[0]
 
     with warnings.catch_warnings():
         warnings.filterwarnings("ignore")
-        fit_all, fit_forward, fit_reverse = frequentist.make_fits(fit_result, data)
+        fit_all, fit_forward, fit_reverse = frequentist.make_fits(
+            fit_result,
+            data,
+            sample,
+            tax_id,
+        )
 
     add_count_information(fit_result, config, group, data)
 
