@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.12.15 (2021-10-26)
+### Fix
+* Add forced option to compute ([`ef01915`](https://github.com/metaDMG/metaDMG/commit/ef01915b1c4aaf647d3891835771b5bb372ae786))
+
+### Documentation
+* Add --forced to readme ([`12a2114`](https://github.com/metaDMG/metaDMG/commit/12a211485d78727024017ed080973748c82ce8b0))
+
 ## v0.12.14 (2021-10-26)
 ### Fix
 * Add sample and tax_id information to the fits ([`c308262`](https://github.com/metaDMG/metaDMG/commit/c3082623fcfde23eb7ec04194543824add20693f))
