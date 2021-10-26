@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.13.0 (2021-10-26)
+### Feature
+* Make new version ([`8e1624e`](https://github.com/metaDMG/metaDMG/commit/8e1624ec66113f8db657490ce60e13cc952d4714))
+
+### Fix
+* Limit number of cores to be maximum the number of configs ([`60e4d92`](https://github.com/metaDMG/metaDMG/commit/60e4d92305e7a8973b1d65ffb836b745cee6e5c2))
+
 ## v0.13 (2021-10-26)
 * Add forced option to compute ([`ef01915`](https://github.com/metaDMG/metaDMG/commit/ef01915b1c4aaf647d3891835771b5bb372ae786))
 * Add sample and tax_id information to the fits ([`c308262`](https://github.com/metaDMG/metaDMG/commit/c3082623fcfde23eb7ec04194543824add20693f))
