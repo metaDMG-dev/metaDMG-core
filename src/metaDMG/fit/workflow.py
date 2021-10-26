@@ -10,7 +10,7 @@ def run_workflow(config, forced=False):
 
     configs = fit_utils.make_configs(config)
 
-    cores = config["cores"]
+    cores = max(config["cores"], len(configs))
 
     logger.info(f"Running metaDMG on {len(configs)} files in total.")
 
