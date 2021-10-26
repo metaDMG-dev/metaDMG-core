@@ -173,7 +173,7 @@ def compute(config):
     )
 
     df["sample"] = config["sample"]
-    categories = ["tax_id", "direction", "sample", "k_sum_total", "min_N_in_group"]
+    categories = ["tax_id", "direction", "sample"]
     df_mismatches = fit_utils.downcast_dataframe(df, categories, fully_automatic=False)
 
     return df_mismatches

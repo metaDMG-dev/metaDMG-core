@@ -327,7 +327,7 @@ def get_df_results(config, df_mismatches, df_fit_results, forced=False):
 #%%
 
 
-def run_single_config(config):
+def run_single_config(config, forced=False):
 
     # if not main process (and haven't been initialized before)
     name = current_process().name
@@ -344,7 +344,7 @@ def run_single_config(config):
         return None
 
     try:
-        run_LCA(config)
+        run_LCA(config, forced=forced)
     except metadamageError:
         logger.exception(
             f"{config['sample']} | metadamageError with run_LCA. "
@@ -356,9 +356,9 @@ def run_single_config(config):
         delete_all_sample_files(config)
         return None
 
-    df_mismatches = get_df_mismatches(config)
-    df_fit_results = get_df_fit_results(config, df_mismatches)
-    df_results = get_df_results(config, df_mismatches, df_fit_results)
+    df_mismatches = get_df_mismatches(config, forced=forced)
+    df_fit_results = get_df_fit_results(config, df_mismatches, forced=forced)
+    df_results = get_df_results(config, df_mismatches, df_fit_results, forced=forced)
     # read_ids_mapping = get_database_read_ids(config)
 
     logger.info("Finished.")

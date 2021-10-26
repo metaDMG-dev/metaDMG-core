@@ -1,3 +1,4 @@
+from xmlrpc.client import Boolean
 import typer
 from pathlib import Path
 from typing import List, Optional
@@ -195,6 +196,11 @@ def compute(
         file_okay=True,
         help="Path to the config-file.",
     ),
+    forced: bool = typer.Option(
+        False,
+        "--forced",
+        help="Forced computation (even though the files already exists).",
+    ),
 ):
     """Compute the LCA and Ancient Damage given the configuration file."""
 
@@ -211,7 +217,7 @@ def compute(
         log_path=log_path,
     )
 
-    run_workflow(config)
+    run_workflow(config, forced)
 
 
 #%%
