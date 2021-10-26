@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.12.16 (2021-10-26)
+### Fix
+* Fix bug with forced in parallel ([`f69df6b`](https://github.com/metaDMG/metaDMG/commit/f69df6b5d727a4e4ba50eeeaf7e037255d28c246))
+
 ## v0.12.15 (2021-10-26)
 ### Fix
 * Add forced option to compute ([`ef01915`](https://github.com/metaDMG/metaDMG/commit/ef01915b1c4aaf647d3891835771b5bb372ae786))
