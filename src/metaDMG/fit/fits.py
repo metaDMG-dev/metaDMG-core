@@ -361,6 +361,13 @@ def read_stats(config):
 
 def compute(config, df_mismatches):
 
+    # filter out tax_id's with 0 k_sum_total
+    tax_ids_to_drop = set(df_mismatches.query("k_sum_total == 0")["tax_id"].unique())
+    if len(tax_ids_to_drop) > 0:
+        logger.debug(f"Dropping the following Tax IDs since k_sum_total == 0:")
+        logger.debug(tax_ids_to_drop)
+    df_mismatches = df_mismatches.query("k_sum_total > 0")
+
     # find unique tax_ids (when compairing the mismatches matrices)
     # such that only those are fitted
     unique, duplicates = compute_duplicates(df_mismatches)
