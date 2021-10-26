@@ -57,7 +57,11 @@ results_dir = get_results_dir(
 results = Results(results_dir)
 df_results = filter_results(results.df, query)
 
-save_pdf_plots(df_results, results, pdf_path="pdf_export.pdf",)
+save_pdf_plots(
+    df_results,
+    results,
+    pdf_path="pdf_export.pdf",
+)
 
 
 # %%
