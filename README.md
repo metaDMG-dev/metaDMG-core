@@ -225,6 +225,33 @@ The column names in the results and their explanation:
   - `f+i`: The fraction between ![](https://latex.codecogs.com/svg.image?k) and ![](https://latex.codecogs.com/svg.image?N) at position ![](https://latex.codecogs.com/svg.image?z=i) in the forward direction. int64.
   - `f-i`: Same as above, but for the reverse direction. int64.
 
+---
+
+
+# `plot`
+
+The `metaDMG plot` command takes first an optional config-file as argument
+(defaults to `config.yaml` if not specified) followed by the following CLI options:
+
+#### CLI options:
+
+- `--results-dir`: Direct path to the results directory.
+- `--query`: The query string to use for filtering. Follows the [Pandas Query()]([www.link.dk](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method)) syntax. Default is `""` which applies no filtering.
+- `--samples`: A comma-space seperated string containing the samples to use in the plots. Default is `""` which applies no filtering.
+- `--tax-ids`: A comma-space seperated string containing the tax-ids to use in the plots. Default is `""` which applies no filtering.
+- `--pdf-out`: The path to the output pdf-file. Defaults to pdf_export.pdf.
+
+
+#### Example:
+
+```console
+$ metaDMG plot
+```
+
+
+```console
+$ metaDMG plot --query "100_000 <= N_reads & 8_000 <= phi" --tax-ids "1, 2, 42" --samples "sampleA, another-sample" --pdf-out name-of-plots.pdf
+```
 
 ---
 
@@ -237,9 +264,9 @@ The `metaDMG convert` command takes first an optional config-file as argument
 #### CLI options:
 
 - `--output`: Mandatory output path.
-- `--results`: Direct path to the results directory.
+- `--results-dir`: Direct path to the results directory.
 
-Note that neither the config-file nor `--results` have to be specified
+Note that neither the config-file nor `--results-dir` have to be specified
 (in which just the default `config.yaml` is used), however,
 both cannot be set at the same time.
 
@@ -266,9 +293,9 @@ The `metaDMG filter` command takes first an optional config-file as argument
 - `--output`: Mandatory output path.
 - `--query`: The query string to use for filtering. Follows the [Pandas Query()]([www.link.dk](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method)) syntax.
 Default is `""` which applies no filtering and is thus similar to the `metaDMG convert` command.
-- `--results`: Direct path to the results directory.
+- `--results-dir`: Direct path to the results directory.
 
-Note that neither the config-file nor `--results` have to be specified
+Note that neither the config-file nor `--results-dir` have to be specified
 (in which just the default `config.yaml` is used), however,
 both cannot be set at the same time.
 
@@ -283,6 +310,8 @@ $ metaDMG filter --output convert-no-query.csv # similar to metaDMG convert
 ```console
 $ metaDMG filter --output convert-test.csv --query "N_reads > 5_000 & sample in ['subs', 'SPL_195_9299'] & tax_name == 'root'"
 ```
+
+---
 
 # `mismatch-to-mapDamage`
 

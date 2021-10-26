@@ -260,7 +260,7 @@ def dashboard(
     or for another config than default:
 
     \b
-        $ metaDMG dashboard non-default-config.yaml --port 8050 --host 0.0.0.0
+        $ metaDMG dashboard non-default-config.yaml --port 8050 --host 0.0.0.0 --debug
 
     """
 
@@ -290,12 +290,12 @@ def dashboard(
 
 @cli_app.command("filter")
 def filter(
-    config: Optional[Path] = typer.Argument(
+    config_path: Optional[Path] = typer.Argument(
         None,
         file_okay=True,
         help="Path to the config-file.",
     ),
-    results: Optional[Path] = typer.Option(
+    results_dir: Optional[Path] = typer.Option(
         None,
         help="Path to the results directory.",
     ),
@@ -315,8 +315,8 @@ def filter(
     filter_and_save_results(
         output=output,
         query=query,
-        config_path=config,
-        results_dir=results,
+        config_path=config_path,
+        results_dir=results_dir,
     )
 
 
@@ -325,12 +325,12 @@ def filter(
 
 @cli_app.command("convert")
 def convert(
-    config: Optional[Path] = typer.Argument(
+    config_path: Optional[Path] = typer.Argument(
         None,
         file_okay=True,
         help="Path to the config-file.",
     ),
-    results: Optional[Path] = typer.Option(
+    results_dir: Optional[Path] = typer.Option(
         None,
         help="Path to the results directory.",
     ),
@@ -346,9 +346,73 @@ def convert(
     filter_and_save_results(
         output=output,
         query="",
-        config_path=config,
-        results_dir=results,
+        config_path=config_path,
+        results_dir=results_dir,
     )
+
+
+#%%
+
+
+@cli_app.command("plot")
+def plot(
+    config_path: Optional[Path] = typer.Argument(
+        None,
+        file_okay=True,
+        help="Path to the config-file.",
+    ),
+    results_dir: Optional[Path] = typer.Option(
+        None,
+        help="Path to the results directory.",
+    ),
+    query: str = typer.Option(
+        "",
+        help="Filtering query",
+    ),
+    samples: str = typer.Option(
+        "",
+        help="Only use specific Tax IDs",
+    ),
+    tax_ids: str = typer.Option(
+        "",
+        help="Only use specific Tax IDs",
+    ),
+    pdf_out: Path = typer.Option(
+        "pdf_export.pdf",
+        file_okay=True,
+        help="Output PDF file (pdf_export.pdf).",
+    ),
+):
+    """Filter and save the results to either a combined csv or tsv file."""
+
+    from metaDMG.filters import load_results, filter_results
+    from metaDMG.utils import get_results_dir
+
+    try:
+        from metaDMG_viz.figures import save_pdf_plots
+        from metaDMG_viz.results import Results
+    except ModuleNotFoundError:
+        print("""metaDMG-viz has to be installed: pip install "metaDMG[all]" """)
+        typer.Abort()
+
+    results_dir = get_results_dir(
+        config_path=config_path,
+        results_dir=results_dir,
+    )
+
+    results = Results(results_dir)
+
+    if tax_ids:
+        tax_ids_list = list(map(int, tax_ids.split(", ")))
+        query += f" & tax_id in {tax_ids_list}"
+
+    if samples:
+        samples_list = samples.split(", ")
+        query += f" & sample in {samples_list}"
+
+    df_results = filter_results(results.df, query)
+
+    save_pdf_plots(df_results, results, pdf_path=pdf_out, do_tqdm=True)
 
 
 #%%
@@ -372,6 +436,9 @@ def mismatch_to_mapDamage(
     from metaDMG.fit import mismatch_to_mapDamage
 
     mismatch_to_mapDamage.convert(filename=filename, csv_out=csv_out)
+
+
+#%%
 
 
 #%%

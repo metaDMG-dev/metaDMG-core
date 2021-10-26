@@ -36,4 +36,28 @@ for tax_id, group in serial.fits.get_groupby(df_mismatches):
     if tax_id == 61870:
         break
 
+#%%
+
+from metaDMG.filters import load_results, filter_results
+from metaDMG.utils import get_results_dir
+from metaDMG_viz.figures import save_pdf_plots
+from metaDMG_viz.results import Results
+
+config_path = None
+results_dir = None
+query = ""
+query = "100_000 <= N_reads & 8_000 <= phi"
+
+
+results_dir = get_results_dir(
+    config_path=config_path,
+    results_dir=results_dir,
+)
+
+results = Results(results_dir)
+df_results = filter_results(results.df, query)
+
+save_pdf_plots(df_results, results, pdf_path="pdf_export.pdf",)
+
+
 # %%
