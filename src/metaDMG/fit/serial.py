@@ -327,7 +327,7 @@ def get_df_results(config, df_mismatches, df_fit_results, forced=False):
 #%%
 
 
-def run_single_config(config, forced=False):
+def run_single_config(config):
 
     # if not main process (and haven't been initialized before)
     name = current_process().name
@@ -343,6 +343,8 @@ def run_single_config(config, forced=False):
         logger.error(f"The sample bam file does not exist: {config['bam']}.")
         return None
 
+    forced = config["forced"]
+
     try:
         run_LCA(config, forced=forced)
     except metadamageError:
@@ -354,7 +356,7 @@ def run_single_config(config, forced=False):
     except KeyboardInterrupt:
         logger.info("Got KeyboardInterrupt. Cleaning up.")
         delete_all_sample_files(config)
-        return None
+        raise KeyboardInterrupt
 
     df_mismatches = get_df_mismatches(config, forced=forced)
     df_fit_results = get_df_fit_results(config, df_mismatches, forced=forced)

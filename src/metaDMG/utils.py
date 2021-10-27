@@ -5,7 +5,7 @@ from logger_tt import logger
 import psutil
 
 
-def load_config(config_path=None, log_port=None, log_path=None):
+def load_config(config_path=None, log_port=None, log_path=None, forced=False):
     if config_path is None:
         config_path = "config.yaml"
 
@@ -29,6 +29,12 @@ def load_config(config_path=None, log_port=None, log_path=None):
 
     if "cores_pr_fit" not in config:
         config["cores_pr_fit"] = 1
+
+    if not forced:
+        if not "forced" in config:
+            config["forced"] = False
+    else:
+        config["forced"] = True
 
     return config
 

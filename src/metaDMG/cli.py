@@ -118,6 +118,11 @@ def create_config(
         "--forward-only",
         help="Only use the forward direction.",
     ),
+    forced: bool = typer.Option(
+        False,
+        "--forced",
+        help="Forced computation (even though the files already exists)..",
+    ),
     storage_dir: Path = typer.Option(
         storage_dir_default,
         help="Path where the generated output files and folders are stored.",
@@ -174,6 +179,7 @@ def create_config(
             "fix_ncbi": fix_ncbi,
             "forward_only": forward_only,
             #
+            "forced": forced,
             "dir": storage_dir,
             "cores": cores,
             "cores_pr_fit": cores_pr_fit,
@@ -215,9 +221,10 @@ def compute(
         config_path=config_path,
         log_port=log_port,
         log_path=log_path,
+        forced=forced,
     )
 
-    run_workflow(config, forced)
+    run_workflow(config)
 
 
 #%%

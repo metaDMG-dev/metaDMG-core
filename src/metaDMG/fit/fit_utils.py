@@ -26,7 +26,7 @@ def get_samples_from_config(config):
     return list(config["samples"].keys())
 
 
-def get_config_from_sample(sample, config):
+def get_config_from_sample(sample, config, forced=False):
     config = config.copy()
     config["sample"] = sample
     config["bam"] = config["samples"][sample]
