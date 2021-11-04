@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from metaDMG.errors import MismatchFileError
 
 #
 from metaDMG.fit import fit_utils
@@ -153,10 +154,28 @@ def rename_columns(df):
     return df.rename(columns={"#taxid": "tax_id"})
 
 
+def csv_contains_less_than_N_lines(filename, N=2):
+    import csv
+
+    counter = 0
+    with open(filename) as f:
+        rows = csv.reader(f)
+        for row in rows:
+            counter += 1
+            if counter >= N:
+                return False
+    return True
+
+
 def compute(config):
 
+    filename = config["path_mismatches_txt"]
+
+    if csv_contains_less_than_N_lines(filename, N=2):
+        raise MismatchFileError(f"{filename} does contain only a header, no data.")
+
     df = (
-        pd.read_csv(config["path_mismatches_txt"], sep="\t")
+        pd.read_csv(filename, sep="\t")
         .pipe(rename_columns)
         .pipe(add_reference_counts, ref=bases_forward[0])
         .pipe(add_reference_counts, ref=bases_reverse[0])

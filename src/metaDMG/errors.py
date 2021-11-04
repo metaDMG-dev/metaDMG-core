@@ -15,3 +15,9 @@ class FittingError(Error):
     """Raised when we get an error with the fit of a specific Tax ID"""
 
     pass
+
+
+class MismatchFileError(Error):
+    """Raised when the {sample}.mismatches.txt does not contain any data"""
+
+    pass

@@ -1,0 +1,29 @@
+samples:
+  Streptococcus_dysgalactiae_subsp_dysgalactiae_ATCC_27957-tax663952-GCF_000188315: Streptococcus_dysgalactiae_subsp_dysgalactiae_ATCC_27957-tax663952-GCF_000188315.1_ASM18831v1_genomic-dustmasked_RISE681.srt.mrkdup.bam
+  Streptococcus_parauberis_NCFD_2020-tax873447-GCF_000187935: Streptococcus_parauberis_NCFD_2020-tax873447-GCF_000187935.1_ASM18793v2_genomic-dustmasked_RISE681.srt.mrkdup.bam
+  Streptococcus_sp_HSISB1-tax1316409-GCF_000448625: Streptococcus_sp_HSISB1-tax1316409-GCF_000448625.1_HSISB1_1.0_genomic-dustmasked_RISE681.srt.mrkdup.bam
+  Streptococcus_sp_HSISM1-tax1316408-GCF_000448565: Streptococcus_sp_HSISM1-tax1316408-GCF_000448565.1_HSISM1_1.0_genomic-dustmasked_RISE681.srt.mrkdup.bam
+  Streptococcus_sp_HSISS1-tax1316410-GCF_000448645: Streptococcus_sp_HSISS1-tax1316410-GCF_000448645.1_HSISS1_1.0_genomic-dustmasked_RISE681.srt.mrkdup.bam
+  Streptococcus_sp_HSISS2-tax1316411-GCF_000448665: Streptococcus_sp_HSISS2-tax1316411-GCF_000448665.1_HSISS2_1.0_genomic-dustmasked_RISE681.srt.mrkdup.bam
+  Streptococcus_sp_HSISS3-tax1316412-GCF_000448605: Streptococcus_sp_HSISS3-tax1316412-GCF_000448605.1_HSISS3_1.0_genomic-dustmasked_RISE681.srt.mrkdup.bam
+  Streptococcus_sp_oral_taxon_064_strain_W10853-tax712624-GCF_001683375: Streptococcus_sp_oral_taxon_064_strain_W10853-tax712624-GCF_001683375.1_ASM168337v1_genomic-dustmasked_RISE681.srt.mrkdup.bam
+metaDMG-lca: /willerslev/edna/metadamage/metadamage
+names: /willerslev/edna/ncbi_taxonomy3dec2020/names.dmp
+nodes: /willerslev/edna/ncbi_taxonomy3dec2020/nodes.dmp
+acc2tax: /willerslev/edna/ncbi_taxonomy3dec2020/combined_taxid_accssionNO_20201120.gz
+simscorelow: 0.95
+simscorehigh: 1.0
+editdistmin: 0
+editdistmax: 10
+minmapq: 0
+lca_rank: ''
+max_position: 15
+weighttype: 1
+fix_ncbi: 1
+forward_only: false
+forced: false
+dir: data
+cores: 1
+cores_pr_fit: 1
+bayesian: true
+config_path: config.yaml
