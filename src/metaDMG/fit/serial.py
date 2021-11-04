@@ -9,7 +9,7 @@ from multiprocessing import current_process
 # import json
 from collections import Counter
 from metaDMG.loggers.loggers import setup_logger
-from metaDMG.errors import metadamageError, Error
+from metaDMG.errors import metadamageError, Error, MismatchFileError
 from metaDMG.fit import mismatches, fits, results
 
 #%%
@@ -358,7 +358,15 @@ def run_single_config(config):
         delete_all_sample_files(config)
         raise KeyboardInterrupt
 
-    df_mismatches = get_df_mismatches(config, forced=forced)
+    try:
+        df_mismatches = get_df_mismatches(config, forced=forced)
+    except MismatchFileError:
+        logger.exception(
+            f"{config['sample']} | MismatchFileError with get_df_mismatches. "
+            f"See log-file for more information."
+        )
+        return None
+
     df_fit_results = get_df_fit_results(config, df_mismatches, forced=forced)
     df_results = get_df_results(config, df_mismatches, df_fit_results, forced=forced)
     # read_ids_mapping = get_database_read_ids(config)
