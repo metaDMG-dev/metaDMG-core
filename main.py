@@ -31,8 +31,8 @@ df_mismatches = serial.get_df_mismatches(config, forced=forced)
 df_fit_results = serial.get_df_fit_results(config, df_mismatches, forced=forced)
 df_results = serial.get_df_results(config, df_mismatches, df_fit_results, forced=forced)
 
-for tax_id, group in serial.fits.get_groupby(df_mismatches):
-    if tax_id == 61870:
-        break
+# for tax_id, group in serial.fits.get_groupby(df_mismatches):
+#     if tax_id == 61870:
+#         break
 
 #%%
