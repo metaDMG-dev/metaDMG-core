@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.13.3 (2021-11-08)
+### Fix
+* Fix error when not doing progressbar in parallel Bayesian fits ([`097785a`](https://github.com/metaDMG/metaDMG/commit/097785a53e253789e4cdf248deab7a9b34bff3d6))
+
 ## v0.13.2 (2021-11-04)
 ### Fix
 * Make update ([`f249210`](https://github.com/metaDMG/metaDMG/commit/f2492105460f354080593cf3edb789f4e90761d6))
