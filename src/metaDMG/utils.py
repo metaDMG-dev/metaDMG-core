@@ -30,11 +30,10 @@ def load_config(config_path=None, log_port=None, log_path=None, forced=False):
     if "cores_pr_fit" not in config:
         config["cores_pr_fit"] = 1
 
-    if not forced:
-        if not "forced" in config:
-            config["forced"] = False
-    else:
+    if forced or config.get("forced"):
         config["forced"] = True
+    else:
+        config["forced"] = False
 
     return config
 
