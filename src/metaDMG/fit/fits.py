@@ -235,6 +235,7 @@ def compute_fits_parallel_Bayesian(config, df_mismatches, N_in_each_group=100):
 
     do_progressbar = config["cores"] == 1 or len(config["samples"]) == 1
 
+    it = grouper(dfs, cores_pr_fit)
     if do_progressbar:
         it = tqdm(
             grouper(dfs, cores_pr_fit),
