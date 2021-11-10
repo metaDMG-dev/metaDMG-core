@@ -100,6 +100,7 @@ The options are listed below:
 
 - Boolean flags (does not take any values, only the flag). Default is false.
   - `--bayesian`: Include a fully Bayesian model (probably better, but also _a lot_ slower, about a factor of 100).
+  - `--long-name`: Use the full, long, name for the sample.
 
 
 

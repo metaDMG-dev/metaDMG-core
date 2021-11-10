@@ -118,6 +118,11 @@ def create_config(
         "--forward-only",
         help="Only use the forward direction.",
     ),
+    bayesian: bool = typer.Option(
+        False,
+        "--bayesian",
+        help="Include a fully Bayesian model (probably better, but also _a lot_ slower, about a factor of 100.",
+    ),
     forced: bool = typer.Option(
         False,
         "--forced",
@@ -147,10 +152,10 @@ def create_config(
         "",
         help="Suffix for the sample names.",
     ),
-    bayesian: bool = typer.Option(
+    sample_long: bool = typer.Option(
         False,
-        "--bayesian",
-        help="Include a fully Bayesian model (probably better, but also _a lot_ slower, about a factor of 100.",
+        "--long-name",
+        help="Use the full name of the sample file as sample name..",
     ),
 ):
     """Generate the config file."""
@@ -161,7 +166,10 @@ def create_config(
     config = utils.remove_paths(
         {
             "samples": utils.extract_alignments(
-                samples, prefix=sample_prefix, suffix=sample_suffix
+                samples,
+                prefix=sample_prefix,
+                suffix=sample_suffix,
+                long_name=sample_long,
             ),
             #
             "metaDMG-lca": metaDMG_cpp,

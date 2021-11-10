@@ -3,6 +3,7 @@ import yaml
 import typer
 from logger_tt import logger
 import psutil
+from functools import partial
 
 
 def load_config(config_path=None, log_port=None, log_path=None, forced=False):
@@ -65,19 +66,18 @@ def path_endswith(path, s):
     return str(path.name).endswith(s)
 
 
-def extract_name(filename, max_length=100, prefix="", suffix=""):
-    name = Path(filename).stem.split(".")[0]
+def extract_name(filename, max_length=100, prefix="", suffix="", long_name=False):
+    name = Path(filename).stem
+    if not long_name:
+        name = name.split(".")[0]
     if len(name) > max_length:
         name = name[:max_length] + "..."
     name = prefix + name + suffix
     return name
 
 
-def extract_names(file_list, prefix, suffix):
-    names = []
-    for filename in file_list:
-        names.append(extract_name(filename, prefix=prefix, suffix=suffix))
-    return names
+def extract_names(file_list, **kwargs):
+    return list(map(partial(extract_name, **kwargs), file_list))
 
 
 def extract_alignment_files(paths):
@@ -103,10 +103,15 @@ def extract_alignment_files(paths):
     return alignments
 
 
-def extract_alignments(paths, prefix="", suffix=""):
+def extract_alignments(paths, prefix="", suffix="", long_name=False):
 
     alignments = extract_alignment_files(paths)
-    samples = extract_names(alignments, prefix=prefix, suffix=suffix)
+    samples = extract_names(
+        alignments,
+        prefix=prefix,
+        suffix=suffix,
+        long_name=long_name,
+    )
 
     d_alignments = {}
     for sample, path in zip(samples, alignments):
