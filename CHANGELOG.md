@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.13.4 (2021-11-10)
+### Fix
+* Add --long-name as bool flag to CLI ([`b2b64cb`](https://github.com/metaDMG/metaDMG/commit/b2b64cb528ab871ac73e91412616208b07c2d47a))
+
 ## v0.13.3 (2021-11-08)
 ### Fix
 * Fix error when not doing progressbar in parallel Bayesian fits ([`097785a`](https://github.com/metaDMG/metaDMG/commit/097785a53e253789e4cdf248deab7a9b34bff3d6))
