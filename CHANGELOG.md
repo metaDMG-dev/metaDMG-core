@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.14.0 (2022-01-05)
+### Feature
+* Update dependencies (including metaDMG-viz) ([`ed281e5`](https://github.com/metaDMG/metaDMG/commit/ed281e564fefd279f3678c9f7b710225155a02dd))
+
 ## v0.13.4 (2021-11-10)
 ### Fix
 * Add --long-name as bool flag to CLI ([`b2b64cb`](https://github.com/metaDMG/metaDMG/commit/b2b64cb528ab871ac73e91412616208b07c2d47a))
