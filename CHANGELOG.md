@@ -2,6 +2,17 @@
 
 <!--next-version-placeholder-->
 
+## v0.15.0 (2022-01-31)
+### Feature
+* Add the option to include the fit predictions in the output csv files ([`a12d585`](https://github.com/metaDMG/metaDMG/commit/a12d585e53c2a8f497258a8706a2bfebe70d3520))
+
+### Fix
+* Read .gz zipped files ([`639873b`](https://github.com/metaDMG/metaDMG/commit/639873b505c564374b005cf4dd6fcdb4dd7c1241))
+* Update dependencies ([`33f46fb`](https://github.com/metaDMG/metaDMG/commit/33f46fb1819864c5f66e426f760c70fa8ff67016))
+
+### Documentation
+* Update docs ([`202d484`](https://github.com/metaDMG/metaDMG/commit/202d48402d7eae06e011a620a3b96765542dabf3))
+
 ## v0.14.0 (2022-01-05)
 ### Feature
 * Update dependencies (including metaDMG-viz) ([`ed281e5`](https://github.com/metaDMG/metaDMG/commit/ed281e564fefd279f3678c9f7b710225155a02dd))
