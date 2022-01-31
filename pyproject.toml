@@ -15,7 +15,7 @@ typer = "^0.3.2"
 click-help-colors = "^0.9.1"
 PyYAML = "^5.4.1"
 iminuit = "^2.8.4"
-numpyro = "0.8"
+numpyro = "^0.9.0"
 joblib = "^1.1.0"
 pyarrow = "^5.0.0"
 logger-tt = "^1.6.1"
@@ -26,6 +26,7 @@ psutil = "^5.9.0"
 # A list of all of the optional dependencies, some of which are included in the
 # below `extras`. They can be opted into by apps.
 metaDMG-viz = { version = "^0.7.2", optional = true }
+jax = "^0.2.27"
 
 
 # can be installed as e.g. poetry install --extras "all"
