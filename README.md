@@ -266,6 +266,7 @@ The `metaDMG convert` command takes first an optional config-file as argument
 
 - `--output`: Mandatory output path.
 - `--results-dir`: Direct path to the results directory.
+- `--add-fit-predictions`: Include fit predictions D(x) in the output.
 
 Note that neither the config-file nor `--results-dir` have to be specified
 (in which just the default `config.yaml` is used), however,
@@ -278,7 +279,7 @@ $ metaDMG convert --output ./directory/to/contain/results.csv
 ```
 
 ```console
-$ metaDMG convert non-default-config.yaml --output ./directory/to/contain/results.csv
+$ metaDMG convert non-default-config.yaml --output ./directory/to/contain/results.csv --add-fit-predictions
 ```
 
 ---
@@ -295,6 +296,7 @@ The `metaDMG filter` command takes first an optional config-file as argument
 - `--query`: The query string to use for filtering. Follows the [Pandas Query()]([www.link.dk](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method)) syntax.
 Default is `""` which applies no filtering and is thus similar to the `metaDMG convert` command.
 - `--results-dir`: Direct path to the results directory.
+- `--add-fit-predictions`: Include fit predictions D(x) in the output.
 
 Note that neither the config-file nor `--results-dir` have to be specified
 (in which just the default `config.yaml` is used), however,
@@ -309,7 +311,7 @@ $ metaDMG filter --output convert-no-query.csv # similar to metaDMG convert
 ```
 
 ```console
-$ metaDMG filter --output convert-test.csv --query "N_reads > 5_000 & sample in ['subs', 'SPL_195_9299'] & tax_name == 'root'"
+$ metaDMG filter --output convert-test.csv --query "N_reads > 5_000 & sample in ['subs', 'SPL_195_9299'] & tax_name == 'root'" --add-fit-predictions
 ```
 
 ---
