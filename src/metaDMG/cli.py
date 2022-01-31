@@ -322,6 +322,10 @@ def filter(
         "",
         help="Filtering query",
     ),
+    add_fit_predictions: bool = typer.Option(
+        False,
+        help="Add fit predictions D(x) to the output",
+    ),
 ):
     """Filter and save the results to either a combined csv or tsv file."""
 
@@ -332,6 +336,7 @@ def filter(
         query=query,
         config_path=config_path,
         results_dir=results_dir,
+        add_fit_predictions=add_fit_predictions,
     )
 
 
@@ -353,6 +358,10 @@ def convert(
         ...,
         help="Where to save the converted file.",
     ),
+    add_fit_predictions: bool = typer.Option(
+        False,
+        help="Add fit predictions D(x) to the output",
+    ),
 ):
     """Convert the results to either a combined csv or tsv file."""
 
@@ -363,6 +372,7 @@ def convert(
         query="",
         config_path=config_path,
         results_dir=results_dir,
+        add_fit_predictions=add_fit_predictions,
     )
 
 

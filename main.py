@@ -33,6 +33,38 @@ df_mismatches = serial.get_df_mismatches(config, forced=forced)
 df_fit_results = serial.get_df_fit_results(config, df_mismatches, forced=forced)
 df_results = serial.get_df_results(config, df_mismatches, df_fit_results, forced=forced)
 
+
+config_path = None
+results_dir = "./data/results"
+
+df_results = load_results(
+    config_path=config_path,
+    results_dir=results_dir,
+)
+
+
+# with pd.option_context("display.max_rows", 100, "display.max_columns", 10):
+#     display(
+#         df_results.iloc[0, :]
+#     )  # need display to show the dataframe when using with in jupyter
+
+
+# pd.set_option("display.max_rows", 50)
+# pd.set_option("display.max_columns", 500)
+# df_results.iloc[0, :]
+
+
+import metaDMG
+
+metaDMG.fit.results.append_fit_predictions(df_results)
+
+#%%
+
+# append_fit_predictions(df_results)
+
+#%%
+
+
 # for tax_id, group in serial.fits.get_groupby(df_mismatches):
 #     if tax_id == 61870:
 #         break

@@ -1,6 +1,7 @@
 from pathlib import Path
 from metaDMG.utils import load_config, get_results_dir
 import pandas as pd
+from metaDMG.fit.results import append_fit_predictions
 
 
 def load_results(config_path=None, results_dir=None):
@@ -18,6 +19,9 @@ def filter_results(df_results, query):
     return df_results
 
 
+append_fit_predictions
+
+
 def save_results(df_results, output):
 
     suffix = output.suffix
@@ -32,7 +36,13 @@ def save_results(df_results, output):
     df_results.to_csv(output, sep=sep, index=False)
 
 
-def filter_and_save_results(output, query, config_path=None, results_dir=None):
+def filter_and_save_results(
+    output,
+    query,
+    config_path=None,
+    results_dir=None,
+    add_fit_predictions=False,
+):
 
     df_results = load_results(
         config_path=config_path,
@@ -40,4 +50,8 @@ def filter_and_save_results(output, query, config_path=None, results_dir=None):
     )
 
     df_results = filter_results(df_results, query)
+
+    if add_fit_predictions:
+        df_results = append_fit_predictions(df_results)
+
     save_results(df_results, output)
