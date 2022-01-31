@@ -9,7 +9,8 @@ from metaDMG.filters import load_results, filter_results
 
 from metaDMG.fit import serial, fit_utils  # , fits
 
-config_path = Path("config_old.yaml")
+config_path = Path("config.yaml")
+# config_path = Path("config_old.yaml")
 # config_path = Path("metaDMG_config.yaml")
 # config_path = Path("5cdd545807-config.weight-0.yaml")
 # config_path = Path("efd40f0223-config.weight-0.yaml")

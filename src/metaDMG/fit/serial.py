@@ -87,12 +87,13 @@ def get_LCA_mismatches_command(config):
 
 
 def move_files(config):
+
     sample = config["sample"]
 
     d_move_source_target = {
-        f"{sample}.bdamage.gz.uglyprint.mismatch.txt": config["path_mismatches_txt"],
-        f"{sample}.bdamage.gz.uglyprint.stat.txt": config["path_mismatches_stat"],
-        f"{sample}.lca": config["path_lca"],
+        f"{sample}.bdamage.gz.uglyprint.mismatch.txt.gz": config["path_mismatches_txt"],
+        f"{sample}.bdamage.gz.uglyprint.stat.txt.gz": config["path_mismatches_stat"],
+        f"{sample}.lca.gz": config["path_lca"],
         f"{sample}.log": config["path_lca_log"],
     }
     for source_path, target_path in d_move_source_target.items():
@@ -104,6 +105,7 @@ def move_files(config):
 
 
 def delete_files(config):
+
     sample = config["sample"]
 
     bam = Path(config["bam"]).stem  # .name
@@ -350,7 +352,7 @@ def run_single_config(config):
     except metadamageError:
         logger.exception(
             f"{config['sample']} | metadamageError with run_LCA. "
-            f"See log-file for more information"
+            f"See log-file for more information."
         )
         return None
     except KeyboardInterrupt:

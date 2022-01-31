@@ -325,6 +325,9 @@ def split(strng, sep, pos):
 
 def read_stats(config):
 
+    import gzip
+    from io import StringIO
+
     columns = [
         "tax_id",
         "tax_name",
@@ -338,10 +341,9 @@ def read_stats(config):
         "tax_path",
     ]
 
-    from io import StringIO
 
     # TODO: remove when Thorfinn updates his code
-    with open(config["path_mismatches_stat"], "r") as f:
+    with gzip.open(config["path_mismatches_stat"], "rt") as f:
         data = f.read()
 
     data = data.replace("\t\t", "\t'")

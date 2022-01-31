@@ -156,9 +156,10 @@ def rename_columns(df):
 
 def csv_contains_less_than_N_lines(filename, N=2):
     import csv
+    import gzip
 
     counter = 0
-    with open(filename) as f:
+    with gzip.open(filename, "rt") as f:
         rows = csv.reader(f)
         for row in rows:
             counter += 1
