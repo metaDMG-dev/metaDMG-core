@@ -341,11 +341,11 @@ def read_stats(config):
         "tax_path",
     ]
 
-
     # TODO: remove when Thorfinn updates his code
     with gzip.open(config["path_mismatches_stat"], "rt") as f:
         data = f.read()
 
+    data = data.replace("'", "")  # remove '
     data = data.replace("\t\t", "\t'")
     data = data.replace('1:root:"no rank"', """1:root:"no rank"'""")
 
@@ -446,3 +446,7 @@ def compute(config, df_mismatches):
     df_fit_results = df_fit_results[cols_ordered]
 
     return df_fit_results
+
+
+# %%
+#

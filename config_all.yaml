@@ -21,6 +21,6 @@ forward_only: false
 forced: false
 dir: data
 cores: 1
-cores_pr_fit: 4
+cores_pr_fit: 1
 bayesian: false
 config_path: config_all.yaml

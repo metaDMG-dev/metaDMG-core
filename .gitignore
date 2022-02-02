@@ -17,6 +17,7 @@ metaDMG-cpp
 *.uglyprint.*
 *.bam.bin
 *.csv
+*.lca.gz
 
 build.sh
 publish.sh
