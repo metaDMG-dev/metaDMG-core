@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.16.1 (2022-02-02)
+### Fix
+* Remove error when parsing taxes with apostrophe in tax name ([`e0e0405`](https://github.com/metaDMG/metaDMG/commit/e0e0405b1c719d5a06c64565e70a4872ab680374))
+* Also remove lca.gz files ([`a8dbf91`](https://github.com/metaDMG/metaDMG/commit/a8dbf914b0b46382a15c309d5057daf933bda68c))
+
 ## v0.16.0 (2022-02-02)
 ### Feature
 * Update dependencies for M1 macs ([`5f80629`](https://github.com/metaDMG/metaDMG/commit/5f80629b85d5515fa38350bccc216af985b47b9e))
