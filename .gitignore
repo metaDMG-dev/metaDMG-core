@@ -191,3 +191,5 @@ config_getdamage0_subs.yaml
 config_getdamage1_subs.yaml
 config_old.yaml
 config_lca_subs.yaml
+pyproject_old.toml
+metadmg.code-workspace

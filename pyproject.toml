@@ -10,26 +10,26 @@ repository = "https://github.com/metaDMG/metaDMG/"
 
 
 [tool.poetry.dependencies]
-python = "^3.8"
-typer = "^0.3.2"
+python = ">=3.8,<3.11"
+typer = "^0.4.0"
 click-help-colors = "^0.9.1"
-PyYAML = "^5.4.1"
-iminuit = "^2.8.4"
+PyYAML = "^6.0"
+iminuit = "^2.9.0"
+scipy = "^1.7.3"
 numpyro = "^0.9.0"
 joblib = "^1.1.0"
-pyarrow = "^5.0.0"
+pyarrow = "^6.0.1"
 logger-tt = "^1.6.1"
-scipy = { version = "^1.7.3", python = ">=3.8,<3.11" }
-numba = { version = "^0.54.1", python = ">=3.8,<3.10" }
 psutil = "^5.9.0"
+numba = "^0.55.1"
+pandas = "^1.4.0"
+# scipy = { version = "^1.7.3", python = ">=3.8,<3.11" }
 
 # A list of all of the optional dependencies, some of which are included in the
 # below `extras`. They can be opted into by apps.
-metaDMG-viz = { version = "^0.7.2", optional = true }
-jax = "^0.2.27"
-
-
 # can be installed as e.g. poetry install --extras "all"
+metadmg-viz = {version = "^0.8.0", optional = true}
+
 [tool.poetry.extras]
 viz = ["metaDMG-viz"]
 all = ["metaDMG-viz"]
@@ -37,15 +37,14 @@ all = ["metaDMG-viz"]
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.12.2"
-flake8 = "^3.9.2"
-black = {version = "^21.12b0", allow-prereleases = true}
-ipykernel = "^6.6.1"
+flake8 = "^4.0.1"
+black = "^22.1.0"
+ipykernel = "^6.8.0"
 nbformat = "^5.1.3"
-# poethepoet = "^0.10.0"
-python-semantic-release = "^7.23.0"
+python-semantic-release = "^7.24.0"
 pytest = "^6.2.5"
-pytest-cov = "^2.12.1"
-Pympler = "^0.9"
+pytest-cov = "^3.0.0"
+Pympler = "^1.0.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
