@@ -128,7 +128,7 @@ def delete_all_sample_files(config):
     bam = Path(config["bam"]).stem  # .name
 
     paths_to_remove = [
-        f"{sample}.lca",
+        f"{sample}.lca.gz",
         f"{sample}.lca.stat",
         f"{sample}.log",
         f"{sample}.bdamage.gz",
