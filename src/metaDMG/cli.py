@@ -50,20 +50,20 @@ def create_config(
         ...,
         help="Single or multiple alignment-files (or a directory containing them).",
     ),
-    names: Path = typer.Option(
-        ...,
+    names: Optional[Path] = typer.Option(
+        None,
         exists=True,
         file_okay=True,
         help="Path to the (NCBI) names.dmp.gz.",
     ),
-    nodes: Path = typer.Option(
-        ...,
+    nodes: Optional[Path] = typer.Option(
+        None,
         exists=True,
         file_okay=True,
         help="Path to the (NCBI) nodes.dmp.gz.",
     ),
-    acc2tax: Path = typer.Option(
-        ...,
+    acc2tax: Optional[Path] = typer.Option(
+        None,
         exists=True,
         file_okay=True,
         help="Path to the (NCBI) acc2tax.gz.",
@@ -167,6 +167,10 @@ def create_config(
 
     import yaml
     from metaDMG import utils
+
+    if damage_mode.lower() == "lca" & any(x is None for x in [names, nodes, acc2tax]):
+        typer.echo("--names, --nodes, and --acc2tax are mandatory when doing LCA.")
+        raise typer.Exit(code=1)
 
     config = utils.remove_paths(
         {
