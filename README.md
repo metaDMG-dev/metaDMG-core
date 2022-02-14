@@ -89,6 +89,8 @@ The options are listed below:
   - `--lca-rank`: The LCA rank used in ngsLCA. Can be either `family`, `genus`, `species` or `""` (everything). Default is `""`.
   <!-- - `--forward-only`: Only fit the forward strand. -->
 
+- Non-LCA parameters:
+  - `--damage-mode`: `[lca|local|global]`. `lca` is the recommended, and automatic setting. If using `local` it means that damage patterns will be calculated for each chr/scaffold contig. If using `global` it means one global estimate. Note that when using `[local|global]` all of the parameters in the LCA section above won't matter, except `--max-position`.
 
 - General parameters:
   - `--storage-dir`: Path where the generated output files and folders are stored. Default: `./data/`.
