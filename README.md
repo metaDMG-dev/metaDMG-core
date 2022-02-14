@@ -73,9 +73,9 @@ Finally the results are saved in `{storage-dir}/results` directory (`data/result
 The options are listed below:
 
 - Input files:
-  - `--names`: Path to the (NCBI) `names.dmp.gz`. Mandatory.
-  - `--nodes`: Path to the (NCBI) `nodes.dmp.gz`. Mandatory.
-  - `--acc2tax`: Path to the (NCBI) `acc2tax.gz`. Mandatory.
+  - `--names`: Path to the (NCBI) `names.dmp.gz`. Mandatory for LCA.
+  - `--nodes`: Path to the (NCBI) `nodes.dmp.gz`. Mandator for LCA.
+  - `--acc2tax`: Path to the (NCBI) `acc2tax.gz`. Mandatory for LCA.
 
 - LCA parameters:
   - `--simscorelow`: Normalised edit distance (read to reference similarity) minimum. Number between 0-1. Default: 0.95.
@@ -122,6 +122,11 @@ $ metaDMG config ./raw_data/*.bam [...]
 or even an entire directory containing alignment files (`.bam`, `.sam`, and `.sam.gz`):
 ```console
 $ metaDMG config ./raw_data/ [...]
+```
+
+To run metaDMG in non-LCA mode, an example could be:
+```
+$ metaDMG config ./raw_data/example.bam `--damage-mode local --max-position 15 --bayesian
 ```
 
 ---
