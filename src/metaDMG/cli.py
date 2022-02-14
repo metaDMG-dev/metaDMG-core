@@ -168,7 +168,9 @@ def create_config(
     import yaml
     from metaDMG import utils
 
-    if damage_mode.lower() == "lca" & any(x is None for x in [names, nodes, acc2tax]):
+    if (damage_mode.lower() == "lca") and (
+        any(x is None for x in [names, nodes, acc2tax])
+    ):
         typer.echo("--names, --nodes, and --acc2tax are mandatory when doing LCA.")
         raise typer.Exit(code=1)
 
