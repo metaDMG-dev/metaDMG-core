@@ -38,6 +38,9 @@ def get_config_from_sample(sample, config, forced=False):
     config["path_lca"] = str(dir_lca / f"{sample}.lca.txt.gz")
     config["path_lca_log"] = str(dir_lca / f"{sample}.log.txt")
 
+    dir_tmp = Path(config["dir"]) / "tmp" / sample
+    config["path_tmp"] = dir_tmp
+
     return config
 
 

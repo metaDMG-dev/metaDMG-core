@@ -1,3 +1,5 @@
+#%%
+
 import pandas as pd
 from pathlib import Path
 import subprocess
@@ -45,13 +47,13 @@ def data_dir(config, name, suffix="parquet"):
 
 
 def get_LCA_command(config):
-    sample = config["sample"]
+    outnames = config["path_tmp"] / config["sample"]
     lca_rank = f"-lca_rank {config['lca_rank']}" if config["lca_rank"] != "" else ""
 
     command = (
         f"{config['metaDMG-lca']} lca "
         f"-bam {config['bam']} "
-        f"-outnames {sample} "
+        f"-outnames {outnames} "
         f"-names {config['names']} "
         f"-nodes {config['nodes']} "
         f"-acc2tax {config['acc2tax']} "
@@ -64,14 +66,15 @@ def get_LCA_command(config):
         f"-howmany {config['max_position']} "
         f"-weighttype {config['weighttype']} "
         f"-fix_ncbi {config['fix_ncbi']} "
+        f"-tempfolder {config['path_tmp']}/ "
     )
     return command[:-1]
 
 
 def get_LCA_mismatches_command(config):
     sample = config["sample"]
-    bdamage = f"{sample}.bdamage.gz"
-    lca_stat = f"{sample}.lca.stat"
+    bdamage = config["path_tmp"] / f"{sample}.bdamage.gz"
+    lca_stat = config["path_tmp"] / f"{sample}.stat"
 
     command = (
         f"{config['metaDMG-lca']} print_ugly "
@@ -89,12 +92,16 @@ def get_LCA_mismatches_command(config):
 def move_files(config):
 
     sample = config["sample"]
+    path_tmp = config["path_tmp"]
+
+    mismatch = path_tmp / f"{sample}.bdamage.gz.uglyprint.mismatch.txt.gz"
+    stat = path_tmp / f"{sample}.bdamage.gz.uglyprint.stat.txt.gz"
 
     d_move_source_target = {
-        f"{sample}.bdamage.gz.uglyprint.mismatch.txt.gz": config["path_mismatches_txt"],
-        f"{sample}.bdamage.gz.uglyprint.stat.txt.gz": config["path_mismatches_stat"],
-        f"{sample}.lca.gz": config["path_lca"],
-        f"{sample}.log": config["path_lca_log"],
+        mismatch: config["path_mismatches_txt"],
+        stat: config["path_mismatches_stat"],
+        path_tmp / f"{sample}.lca.gz": config["path_lca"],
+        path_tmp / f"{sample}.log": config["path_lca_log"],
     }
     for source_path, target_path in d_move_source_target.items():
         logger.debug(f"Moving {source_path} to {target_path}.")
@@ -104,40 +111,51 @@ def move_files(config):
         shutil.move(source_path, target_path)
 
 
-def delete_files(config):
+# def delete_files(config):
 
-    sample = config["sample"]
+#     sample = config["sample"]
 
-    bam = Path(config["bam"]).stem  # .name
+#     bam = Path(config["bam"]).stem  # .name
 
-    paths_to_remove = [
-        f"{sample}.lca.stat",
-        f"{sample}.bdamage.gz",
-        *list(Path(".").glob(f"*{bam}*.bin")),
-    ]
-    for path in paths_to_remove:
-        logger.debug(f"Removing {path}.")
-        if not Path(path).is_file():
-            raise metadamageError(f"{path} does not exist.")
-        Path(path).unlink()
+#     paths_to_remove = [
+#         f"{sample}.lca.stat",
+#         f"{sample}.bdamage.gz",
+#         *list(Path(".").glob(f"*{bam}*.bin")),
+#     ]
+#     for path in paths_to_remove:
+#         logger.debug(f"Removing {path}.")
+#         if not Path(path).is_file():
+#             raise metadamageError(f"{path} does not exist.")
+#         Path(path).unlink()
 
 
-def delete_all_sample_files(config):
-    sample = config["sample"]
+# def delete_all_sample_files(config):
+#     sample = config["sample"]
 
-    bam = Path(config["bam"]).stem  # .name
+#     bam = Path(config["bam"]).stem  # .name
 
-    paths_to_remove = [
-        f"{sample}.lca.gz",
-        f"{sample}.lca.stat",
-        f"{sample}.log",
-        f"{sample}.bdamage.gz",
-        *list(Path(".").glob(f"*{bam}*.bin")),
-    ]
-    for path in paths_to_remove:
-        if Path(path).is_file():
-            logger.debug(f"Removing {path}.")
-            Path(path).unlink()
+#     paths_to_remove = [
+#         f"{sample}.lca.gz",
+#         f"{sample}.lca.stat",
+#         f"{sample}.log",
+#         f"{sample}.bdamage.gz",
+#         *list(Path(".").glob(f"*{bam}*.bin")),
+#     ]
+#     for path in paths_to_remove:
+#         if Path(path).is_file():
+#             logger.debug(f"Removing {path}.")
+#             Path(path).unlink()
+
+
+def create_tmp_dir(config):
+    Path(config["path_tmp"]).mkdir(parents=True, exist_ok=True)
+
+
+def delete_tmp_dir(config):
+    path_tmp = Path(config["path_tmp"])
+    for file in path_tmp.glob("*"):
+        file.unlink()
+    path_tmp.rmdir()
 
 
 #%%
@@ -220,6 +238,8 @@ def run_LCA(config, forced=False):
         command_LCA = get_LCA_command(config)
         command_LCA_mismatches = get_LCA_mismatches_command(config)
 
+        create_tmp_dir(config)
+
         logger.debug(command_LCA)
         run_command_helper(config, command_LCA)
 
@@ -227,7 +247,7 @@ def run_LCA(config, forced=False):
         run_command_helper(config, command_LCA_mismatches)
 
         move_files(config)
-        delete_files(config)
+        delete_tmp_dir(config)
 
     else:
         logger.info(f"LCA already been run before.")
@@ -357,7 +377,7 @@ def run_single_config(config):
         return None
     except KeyboardInterrupt:
         logger.info("Got KeyboardInterrupt. Cleaning up.")
-        delete_all_sample_files(config)
+        delete_tmp_dir(config)
         raise KeyboardInterrupt
 
     try:
