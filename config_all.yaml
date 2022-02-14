@@ -3,6 +3,7 @@ samples:
   ESW_D44A_Library_blank2: raw_data/ESW_D44A_Library_blank2.file.sort.bam
   SPL_015_1444: raw_data/SPL_015_1444.tmp.bam.merged.sort.bam
   SPL_195_9299: raw_data/SPL_195_9299.tmp.bam.merged.sort.bam
+  gumpaper: raw_data/gumpaper.sort.bam
   subs: raw_data/subs.bam
 metaDMG-lca: ./metaDMG-cpp
 names: raw_data/names.dmp.gz
@@ -21,6 +22,6 @@ forward_only: false
 forced: false
 dir: data
 cores: 1
-cores_pr_fit: 1
-bayesian: false
+cores_pr_fit: 6
+bayesian: true
 config_path: config_all.yaml
