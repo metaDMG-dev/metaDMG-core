@@ -90,7 +90,7 @@ The options are listed below:
   <!-- - `--forward-only`: Only fit the forward strand. -->
 
 - Non-LCA parameters:
-  - `--damage-mode`: `[lca|local|global]`. `lca` is the recommended, and automatic setting. If using `local` it means that damage patterns will be calculated for each chr/scaffold contig. If using `global` it means one global estimate. Note that when using `[local|global]` all of the parameters in the LCA section above won't matter, except `--max-position`.
+  - `--damage-mode`: `[lca|local|global]`. `lca` is the recommended and automatic setting. If using `local`, it means that damage patterns will be calculated for each chr/scaffold contig. If using `global`, it means one global estimate. Note that when using `[local|global]` all of the parameters in the LCA section above won't matter, except `--max-position`.
 
 - General parameters:
   - `--storage-dir`: Path where the generated output files and folders are stored. Default: `./data/`.
@@ -126,7 +126,7 @@ $ metaDMG config ./raw_data/ [...]
 
 To run metaDMG in non-LCA mode, an example could be:
 ```
-$ metaDMG config ./raw_data/example.bam `--damage-mode local --max-position 15 --bayesian
+$ metaDMG config ./raw_data/example.bam --damage-mode local --max-position 15 --bayesian
 ```
 
 ---
