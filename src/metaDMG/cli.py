@@ -157,6 +157,11 @@ def create_config(
         "--long-name",
         help="Use the full name of the sample file as sample name..",
     ),
+    damage_mode: cli_utils.DAMAGE_MODE = typer.Option(
+        cli_utils.DAMAGE_MODE.LCA,
+        case_sensitive=False,
+        help="The Damage Mode. Use 'LCA' unless you know what you are doing.",
+    ),
 ):
     """Generate the config file."""
 
@@ -193,6 +198,7 @@ def create_config(
             "cores_pr_fit": cores_pr_fit,
             "bayesian": bayesian,
             "config_path": str(config_path),
+            "damage_mode": damage_mode.lower(),
         }
     )
 

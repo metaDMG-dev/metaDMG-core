@@ -1,3 +1,4 @@
+#%%
 from collections import defaultdict
 import warnings
 import joblib
@@ -323,7 +324,10 @@ def split(strng, sep, pos):
     return sep.join(strng[:pos]), sep.join(strng[pos:])
 
 
-def read_stats(config):
+#%%
+
+
+def read_stats_lca(config):
 
     import gzip
     from io import StringIO
@@ -367,6 +371,32 @@ def read_stats(config):
     df_stats["std_L"] = np.sqrt(df_stats["var_L"])
     df_stats["std_GC"] = np.sqrt(df_stats["var_GC"])
     return df_stats
+
+
+def read_stats_non_lca(config):
+
+    columns = ["tax_id", "N_reads", "mean_L", "var_L", "mean_GC", "var_GC"]
+
+    df_stats = pd.read_csv(
+        config["path_mismatches_stat"],
+        sep="\t",
+        names=columns,
+        usecols=columns,
+    )
+
+    df_stats["std_L"] = np.sqrt(df_stats["var_L"])
+    df_stats["std_GC"] = np.sqrt(df_stats["var_GC"])
+    return df_stats
+
+
+def read_stats(config):
+    if config["damage_mode"] == "lca":
+        return read_stats_lca(config)
+    else:
+        return read_stats_non_lca(config)
+
+
+#%%
 
 
 def compute(config, df_mismatches):
@@ -442,6 +472,11 @@ def compute(config, df_mismatches):
         "tax_path",
         *df_fit_results.loc[:, "D_max_std":"sample"].columns.drop("tax_id"),
     ]
+
+    # if local or global damage
+    if config["damage_mode"] in ("local", "global"):
+        for col in ["tax_name", "tax_rank", "N_alignments", "tax_path"]:
+            cols_ordered.remove(col)
 
     df_fit_results = df_fit_results[cols_ordered]
 

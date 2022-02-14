@@ -72,3 +72,9 @@ class RANKS(str, Enum):
     genus = "genus"
     species = "species"
     none = ""
+
+
+class DAMAGE_MODE(str, Enum):
+    LCA = "lca"
+    LOCAL = "local"
+    GLOBAL = "global"

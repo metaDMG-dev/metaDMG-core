@@ -1,3 +1,4 @@
+#%%
 from collections import defaultdict
 import numpy as np
 import pandas as pd
@@ -95,6 +96,7 @@ def compute_df_mismatches_wide(df_mismatches):
 
 
 def merge(
+    config,
     df_mismatches,
     df_fit_results,
 ):
@@ -123,6 +125,11 @@ def merge(
         "valid",
         "asymmetry",
     ]
+
+    # if local or global damage
+    if config["damage_mode"] in ("local", "global"):
+        for col in ["tax_name", "tax_rank", "N_alignments"]:
+            columns_order.remove(col)
 
     columns_order += [col for col in df_fit_results.columns if not col in columns_order]
     columns_order += list(df_mismatches_wide.columns)

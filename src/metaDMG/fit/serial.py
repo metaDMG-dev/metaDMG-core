@@ -89,6 +89,51 @@ def get_LCA_mismatches_command(config):
 #%%
 
 
+def get_runmode(config):
+
+    runmode = config["damage_mode"]
+
+    if runmode == "lca":
+        raise AssertionError(f"mixing getdamage and lca")
+
+    # damage patterns will be calculated for each chr/scaffold contig.
+    elif runmode == "local":
+        return 1
+
+    # one global estimate
+    elif runmode == "global":
+        return 0
+
+    raise AssertionError(f"Got wrong runmode. Got: {runmode}")
+
+
+def get_damage_command(config):
+    "'Direct' damage, no LCA"
+
+    outname = config["path_tmp"] / config["sample"]
+    runmode = get_runmode(config)
+
+    command = (
+        f"{config['metaDMG-lca']} getdamage "
+        f"--minlength 10 "
+        f"--printlength {config['max_position']} "
+        f"--threads 8 "
+        f"--runmode {runmode} "
+        f"--outname {outname} "
+        f"{config['bam']} "
+    )
+    return command[:-1]
+
+
+def get_damage_ugly_command(config):
+    bdamage = config["path_tmp"] / f"{config['sample']}.bdamage.gz"
+    command = f"{config['metaDMG-lca']} print_ugly " f"{bdamage} "
+    return command[:-1]
+
+
+#%%
+
+
 def move_files(config):
 
     sample = config["sample"]
@@ -111,40 +156,27 @@ def move_files(config):
         shutil.move(source_path, target_path)
 
 
-# def delete_files(config):
+def move_files_non_lca(config):
 
-#     sample = config["sample"]
+    sample = config["sample"]
+    path_tmp = config["path_tmp"]
 
-#     bam = Path(config["bam"]).stem  # .name
+    mismatch = path_tmp / f"{sample}.bdamage.gz.uglyprint.mismatch.txt.gz"
+    stat = path_tmp / f"{sample}.stat"
 
-#     paths_to_remove = [
-#         f"{sample}.lca.stat",
-#         f"{sample}.bdamage.gz",
-#         *list(Path(".").glob(f"*{bam}*.bin")),
-#     ]
-#     for path in paths_to_remove:
-#         logger.debug(f"Removing {path}.")
-#         if not Path(path).is_file():
-#             raise metadamageError(f"{path} does not exist.")
-#         Path(path).unlink()
+    d_move_source_target = {
+        mismatch: config["path_mismatches_txt"],
+        stat: config["path_mismatches_stat"],
+    }
+    for source_path, target_path in d_move_source_target.items():
+        logger.debug(f"Moving {source_path} to {target_path}.")
+        if not Path(source_path).is_file():
+            raise metadamageError(f"{source_path} does not exist.")
+        Path(target_path).parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(source_path, target_path)
 
 
-# def delete_all_sample_files(config):
-#     sample = config["sample"]
-
-#     bam = Path(config["bam"]).stem  # .name
-
-#     paths_to_remove = [
-#         f"{sample}.lca.gz",
-#         f"{sample}.lca.stat",
-#         f"{sample}.log",
-#         f"{sample}.bdamage.gz",
-#         *list(Path(".").glob(f"*{bam}*.bin")),
-#     ]
-#     for path in paths_to_remove:
-#         if Path(path).is_file():
-#             logger.debug(f"Removing {path}.")
-#             Path(path).unlink()
+#%%
 
 
 def create_tmp_dir(config):
@@ -256,6 +288,49 @@ def run_LCA(config, forced=False):
 #%%
 
 
+def run_damage_no_lca(config, forced=False):
+
+    logger.info(f"Getting damage. NOTE: NO LCA.")
+
+    targets = [
+        config["path_mismatches_txt"],
+        config["path_mismatches_stat"],
+    ]
+
+    if do_run(targets, forced=forced):
+        logger.info(f"Getting damage. NOTE: NO LCA.")
+
+        command_damage = get_damage_command(config)
+        command_damage_ugly = get_damage_ugly_command(config)
+
+        create_tmp_dir(config)
+
+        logger.debug(command_damage)
+        run_command_helper(config, command_damage)
+
+        logger.debug(command_damage_ugly)
+        run_command_helper(config, command_damage_ugly)
+
+        move_files_non_lca(config)
+        delete_tmp_dir(config)
+
+    else:
+        logger.info(f"LCA already been run before.")
+
+
+#%%
+
+
+def run_thorfinn(config, forced=False):
+    if config["damage_mode"] == "lca":
+        run_LCA(config, forced=forced)
+    else:
+        run_damage_no_lca(config, forced=forced)
+
+
+#%%
+
+
 def get_df_mismatches(config, forced=False):
 
     logger.info(f"Getting df_mismatches")
@@ -339,7 +414,7 @@ def get_df_results(config, df_mismatches, df_fit_results, forced=False):
 
     # Compute the results:
     logger.info(f"Computing df_results.")
-    df_results = results.merge(df_mismatches, df_fit_results)
+    df_results = results.merge(config, df_mismatches, df_fit_results)
     Path(target).parent.mkdir(parents=True, exist_ok=True)
     df_results.to_parquet(target)
 
@@ -368,7 +443,7 @@ def run_single_config(config):
     forced = config["forced"]
 
     try:
-        run_LCA(config, forced=forced)
+        run_thorfinn(config, forced=forced)
     except metadamageError:
         logger.exception(
             f"{config['sample']} | metadamageError with run_LCA. "

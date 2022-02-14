@@ -12,8 +12,8 @@ from metaDMG.filters import load_results, filter_results
 from metaDMG.fit import serial, fit_utils  # , fits
 
 #%%
-
-config_path = Path("config.yaml")
+# config_path = Path("config.yaml")
+config_path = Path("config_local.yaml")
 # config_path = Path("config_all.yaml")
 # config_path = Path("config_old.yaml")
 # config_path = Path("metaDMG_config.yaml")
@@ -38,13 +38,14 @@ x = x
 
 #%%
 
-serial.run_LCA(config, forced=forced)
+serial.run_thorfinn(config, forced=forced)
 df_mismatches = serial.get_df_mismatches(config, forced=forced)
 df_fit_results = serial.get_df_fit_results(config, df_mismatches, forced=forced)
 df_results = serial.get_df_results(config, df_mismatches, df_fit_results, forced=forced)
 
 
 results_dir = "./data/results"
+config_path = None
 
 df_results = load_results(
     config_path=config_path,
@@ -54,9 +55,6 @@ df_results = load_results(
 
 #%%
 
-
 # for tax_id, group in serial.fits.get_groupby(df_mismatches):
 #     if tax_id == 61870:
 #         break
-
-#%%

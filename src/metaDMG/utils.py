@@ -36,6 +36,9 @@ def load_config(config_path=None, log_port=None, log_path=None, forced=False):
     else:
         config["forced"] = False
 
+    if "damage_mode" not in config:
+        config["damage_mode"] = "lca"
+
     return config
 
 

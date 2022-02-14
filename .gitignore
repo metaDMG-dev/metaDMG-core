@@ -181,6 +181,9 @@ errors.yaml
 5922fb11a0.woltka-mdmg.weight-0/lca/5922fb11a0.mismatches.txt
 5922fb11a0.woltka-mdmg.weight-0/lca/5922fb11a0.mismatches.stat.txt
 5922fb11a0.woltka-mdmg.weight-0/mismatches/5922fb11a0.mismatches.parquet
+config_all.yaml
+config_local.yaml
+
 
 cache/cache.db*
 
@@ -193,4 +196,4 @@ config_getdamage1_subs.yaml
 config_old.yaml
 config_lca_subs.yaml
 pyproject_old.toml
-metadmg.code-workspace
+*.code-workspace

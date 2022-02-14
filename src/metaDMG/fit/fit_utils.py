@@ -34,7 +34,12 @@ def get_config_from_sample(sample, config, forced=False):
     dir_lca = Path(config["dir"]) / "lca"
 
     config["path_mismatches_txt"] = str(dir_lca / f"{sample}.mismatches.txt.gz")
-    config["path_mismatches_stat"] = str(dir_lca / f"{sample}.mismatches.stat.txt.gz")
+    if config["damage_mode"] == "lca":
+        config["path_mismatches_stat"] = str(
+            dir_lca / f"{sample}.mismatches.stat.txt.gz"
+        )
+    else:
+        config["path_mismatches_stat"] = str(dir_lca / f"{sample}.stat.txt")
     config["path_lca"] = str(dir_lca / f"{sample}.lca.txt.gz")
     config["path_lca_log"] = str(dir_lca / f"{sample}.log.txt")
 
