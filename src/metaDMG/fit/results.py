@@ -197,6 +197,7 @@ def get_single_fit_prediction(df_results):
 
     df_Dx = pd.concat(
         (
+            # pd.DataFrame(df_results.tax_id, columns=["tax_id"]),
             pd.DataFrame(Dx.T, columns=[f"Dx{xi:+}" for xi in x.flatten()]),
             pd.DataFrame(std, columns=[f"Dx_std{xi:+}" for xi in x.flatten()]),
         ),
@@ -208,4 +209,7 @@ def get_single_fit_prediction(df_results):
 
 def append_fit_predictions(df_results):
     df_Dx = get_single_fit_prediction(df_results)
-    return pd.concat((df_results, df_Dx), axis=1)
+    return pd.concat((df_results.reset_index(drop=True), df_Dx), axis=1)
+
+
+# %%

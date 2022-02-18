@@ -19,9 +19,6 @@ def filter_results(df_results, query):
     return df_results
 
 
-append_fit_predictions
-
-
 def save_results(df_results, output):
 
     suffix = output.suffix
