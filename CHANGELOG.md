@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.17.3 (2022-02-18)
+### Fix
+* Fix bug when concatenating two dataframes when appending fit predictions ([`ac3bd67`](https://github.com/metaDMG/metaDMG/commit/ac3bd67d1d5a889a47a91e2bc51b8314b0291b57))
+
 ## v0.17.2 (2022-02-14)
 ### Fix
 * Fix CLI bug ([`d8c1dee`](https://github.com/metaDMG/metaDMG/commit/d8c1dee44b49f6d834bca7cc95178e14d5b8c942))
