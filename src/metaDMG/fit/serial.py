@@ -290,7 +290,7 @@ def run_LCA(config, forced=False):
 
 def run_damage_no_lca(config, forced=False):
 
-    logger.info(f"Getting damage. NOTE: NO LCA.")
+    logger.info(f"Getting damage.")
 
     targets = [
         config["path_mismatches_txt"],
@@ -298,7 +298,7 @@ def run_damage_no_lca(config, forced=False):
     ]
 
     if do_run(targets, forced=forced):
-        logger.info(f"Getting damage. NOTE: NO LCA.")
+        logger.info(f"Computing damage. NOTE: NO LCA.")
 
         command_damage = get_damage_command(config)
         command_damage_ugly = get_damage_ugly_command(config)
@@ -315,7 +315,7 @@ def run_damage_no_lca(config, forced=False):
         delete_tmp_dir(config)
 
     else:
-        logger.info(f"LCA already been run before.")
+        logger.info(f"Damage has already been computed before. NOTE: NO LCA.")
 
 
 #%%
