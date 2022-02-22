@@ -55,6 +55,26 @@ df_results = load_results(
 
 #%%
 
-# for tax_id, group in serial.fits.get_groupby(df_mismatches):
-#     if tax_id == 61870:
-#         break
+for tax_id, group in serial.fits.get_groupby(df_mismatches):
+    if tax_id == 61870:
+        break
+
+
+from metaDMG.fit.fits import group_to_numpyro_data
+
+data = group_to_numpyro_data(config, group)
+sample = config["sample"]
+
+from metaDMG.fit import bayesian
+
+config["bayesian"] = True
+mcmc_PMD, mcmc_null = bayesian.init_mcmcs(config)
+
+
+# bayesian.fit_mcmc(mcmc_PMD, data)
+# bayesian.fit_mcmc(mcmc_null, data)
+# d_results_PMD = bayesian.get_lppd_and_waic(mcmc_PMD, data)
+# d_results_null = bayesian.get_lppd_and_waic(mcmc_null, data)
+# z = bayesian.compute_z(d_results_PMD, d_results_null)
+
+# %%

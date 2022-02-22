@@ -1,3 +1,4 @@
+#%%
 from jax import jit
 import jax.numpy as jnp
 from jax.random import PRNGKey as Key
@@ -8,6 +9,7 @@ from numpyro.infer import log_likelihood, MCMC, NUTS, Predictive
 import pandas as pd
 from scipy.special import logsumexp
 from metaDMG.fit import fit_utils
+from numba import njit
 
 
 #%%
@@ -198,14 +200,42 @@ def compute_rho_Ac(mcmc):
     return np.corrcoef(A, c)[0, 1]
 
 
-def compute_z(d_results_PMD, d_results_null):
-    n = len(d_results_PMD["waic_i"])
-    waic_i_PMD = d_results_PMD["waic_i"]
-    waic_i_null = d_results_null["waic_i"]
-    dse = np.sqrt(n * np.var(waic_i_PMD - waic_i_null))
-    d_waic = d_results_null["waic"] - d_results_PMD["waic"]
+@njit
+def compute_dse(waic_i_x, waic_i_y):
+    N = len(waic_i_x)
+    return np.sqrt(N * np.var(waic_i_x - waic_i_y))
+
+
+@njit
+def compute_z_from_waic_is(waic_i_x, waic_i_y):
+    dse = compute_dse(waic_i_x, waic_i_y)
+    d_waic = waic_i_y.sum() - waic_i_x.sum()
     z = d_waic / dse
-    return z.item()
+    return z
+
+
+def compute_z(d_results_PMD, d_results_null):
+    z = compute_z_from_waic_is(d_results_PMD["waic_i"], d_results_null["waic_i"])
+    return z
+
+
+@njit
+def compute_z_jackknife_error_from_waic_is(waic_i_x, waic_i_y):
+    N = len(waic_i_x)
+    all_ids = np.arange(N)
+    zs = np.empty(N)
+    for i in range(N):
+        mask = all_ids != i
+        zs[i] = compute_z_from_waic_is(waic_i_x[mask], waic_i_y[mask])
+    z_jack_std = np.std(zs)
+    return z_jack_std
+
+
+def compute_z_jackknife_error(d_results_PMD, d_results_null):
+    return compute_z_jackknife_error_from_waic_is(
+        d_results_PMD["waic_i"],
+        d_results_null["waic_i"],
+    )
 
 
 #%%
