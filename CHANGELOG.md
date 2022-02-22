@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.17.5 (2022-02-22)
+### Fix
+* Add jackknife possibility for computing z error ([`a486431`](https://github.com/metaDMG/metaDMG/commit/a486431af2bb706378086747161828bba6b5c7e9))
+
 ## v0.17.4 (2022-02-21)
 ### Fix
 * Update dependencies ([`a1d04e3`](https://github.com/metaDMG/metaDMG/commit/a1d04e34103887ce6457eb2c06f0019f4e550d42))
