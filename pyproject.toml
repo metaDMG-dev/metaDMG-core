@@ -28,7 +28,7 @@ pandas = "^1.4.0"
 # A list of all of the optional dependencies, some of which are included in the
 # below `extras`. They can be opted into by apps.
 # can be installed as e.g. poetry install --extras "all"
-metadmg-viz = "^0.9.0"
+metadmg-viz = {version = "^0.9.1", optional = true}
 
 [tool.poetry.extras]
 viz = ["metaDMG-viz"]
