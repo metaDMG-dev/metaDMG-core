@@ -1,4 +1,4 @@
-from logger_tt import setup_logging, internal_config, logger
+from logger_tt import setup_logging, logger
 from datetime import datetime
 from importlib import resources
 from pathlib import Path
@@ -21,10 +21,10 @@ def setup_logger(log_port=None, log_path=None):
     with resources.path("metaDMG.loggers", "log_config.yaml") as p:
         config_path = p
 
-    internal_config.port = log_port
     setup_logging(
         config_path=config_path,
         log_path=log_path,
+        port=log_port,
         # full_context=2,
     )
 
