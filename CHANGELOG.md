@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.18.0 (2022-03-08)
+### Feature
+* Update docs ([`ff0c830`](https://github.com/metaDMG/metaDMG/commit/ff0c830c1a198f3ad439ab5b69d23d4737cf3356))
+
 ## v0.17 (2022-03-08)
 * Update logger-tt dependency ([`30814f7`](https://github.com/metaDMG/metaDMG/commit/30814f7f67867fd543c07eba241bb7aa1ce4e458))
 * Update logging port ([`e193985`](https://github.com/metaDMG/metaDMG/commit/e193985f004dfd839dc40f8f88265bafea62699f))
