@@ -2,91 +2,42 @@
 
 <!--next-version-placeholder-->
 
-## v0.17.7 (2022-03-08)
-### Fix
+## v0.17 (2022-03-08)
 * Update logger-tt dependency ([`30814f7`](https://github.com/metaDMG/metaDMG/commit/30814f7f67867fd543c07eba241bb7aa1ce4e458))
 * Update logging port ([`e193985`](https://github.com/metaDMG/metaDMG/commit/e193985f004dfd839dc40f8f88265bafea62699f))
-
-## v0.17.6 (2022-03-01)
-### Fix
 * Update metaDMG_viz ([`48b1838`](https://github.com/metaDMG/metaDMG/commit/48b1838f24062d8bdf417f753541c7f400d4503e))
-
-## v0.17.5 (2022-02-22)
-### Fix
 * Add jackknife possibility for computing z error ([`a486431`](https://github.com/metaDMG/metaDMG/commit/a486431af2bb706378086747161828bba6b5c7e9))
-
-## v0.17.4 (2022-02-21)
-### Fix
 * Update dependencies ([`a1d04e3`](https://github.com/metaDMG/metaDMG/commit/a1d04e34103887ce6457eb2c06f0019f4e550d42))
-
-## v0.17.3 (2022-02-18)
-### Fix
 * Fix bug when concatenating two dataframes when appending fit predictions ([`ac3bd67`](https://github.com/metaDMG/metaDMG/commit/ac3bd67d1d5a889a47a91e2bc51b8314b0291b57))
-
-## v0.17.2 (2022-02-14)
-### Fix
 * Fix CLI bug ([`d8c1dee`](https://github.com/metaDMG/metaDMG/commit/d8c1dee44b49f6d834bca7cc95178e14d5b8c942))
-
-## v0.17.1 (2022-02-14)
-### Fix
 * Make --names, nodes and acc2tax mandatory for LCA but not for local and global ([`b2ae2a2`](https://github.com/metaDMG/metaDMG/commit/b2ae2a29dbca5b7b8b9b947da8aade7dc6cc6575))
-
-### Documentation
 * Improve readme regarding non-LCA mode ([`bbb36b5`](https://github.com/metaDMG/metaDMG/commit/bbb36b53a2a7fc9ab93d66666a6ec79a9f8b8e89))
-
-## v0.17.0 (2022-02-14)
-### Feature
 * Add damage-mode "local" or "global" as options ([`5e153bb`](https://github.com/metaDMG/metaDMG/commit/5e153bb8dddacb32ac4cccad5903950a315c0175))
 * Add temporary folders for LCA ([`21201c7`](https://github.com/metaDMG/metaDMG/commit/21201c71c5ce45dba384cb0e2ef9abd99aaa69f1))
-
-### Documentation
 * Update docs to reflect update in metadamage ([`72b055f`](https://github.com/metaDMG/metaDMG/commit/72b055ffb2623bdc0cef9bc46dcd17f7657570c6))
 
-## v0.16.1 (2022-02-02)
-### Fix
+## v0.16 (2022-02-02)
 * Remove error when parsing taxes with apostrophe in tax name ([`e0e0405`](https://github.com/metaDMG/metaDMG/commit/e0e0405b1c719d5a06c64565e70a4872ab680374))
 * Also remove lca.gz files ([`a8dbf91`](https://github.com/metaDMG/metaDMG/commit/a8dbf914b0b46382a15c309d5057daf933bda68c))
-
-## v0.16.0 (2022-02-02)
-### Feature
 * Update dependencies for M1 macs ([`5f80629`](https://github.com/metaDMG/metaDMG/commit/5f80629b85d5515fa38350bccc216af985b47b9e))
 
-## v0.15.0 (2022-01-31)
-### Feature
+## v0.15 (2022-01-31)
 * Add the option to include the fit predictions in the output csv files ([`a12d585`](https://github.com/metaDMG/metaDMG/commit/a12d585e53c2a8f497258a8706a2bfebe70d3520))
-
-### Fix
 * Read .gz zipped files ([`639873b`](https://github.com/metaDMG/metaDMG/commit/639873b505c564374b005cf4dd6fcdb4dd7c1241))
 * Update dependencies ([`33f46fb`](https://github.com/metaDMG/metaDMG/commit/33f46fb1819864c5f66e426f760c70fa8ff67016))
-
-### Documentation
 * Update docs ([`202d484`](https://github.com/metaDMG/metaDMG/commit/202d48402d7eae06e011a620a3b96765542dabf3))
 
-## v0.14.0 (2022-01-05)
-### Feature
+## v0.14 (2022-01-05)
 * Update dependencies (including metaDMG-viz) ([`ed281e5`](https://github.com/metaDMG/metaDMG/commit/ed281e564fefd279f3678c9f7b710225155a02dd))
 
-## v0.13.4 (2021-11-10)
-### Fix
+## v0.13 (2021-11-10)
 * Add --long-name as bool flag to CLI ([`b2b64cb`](https://github.com/metaDMG/metaDMG/commit/b2b64cb528ab871ac73e91412616208b07c2d47a))
-
-## v0.13.3 (2021-11-08)
-### Fix
 * Fix error when not doing progressbar in parallel Bayesian fits ([`097785a`](https://github.com/metaDMG/metaDMG/commit/097785a53e253789e4cdf248deab7a9b34bff3d6))
-
-## v0.13.2 (2021-11-04)
-### Fix
 * Make update ([`f249210`](https://github.com/metaDMG/metaDMG/commit/f2492105460f354080593cf3edb789f4e90761d6))
 * Add try except for MismatchFileError ([`76cc35c`](https://github.com/metaDMG/metaDMG/commit/76cc35c8c216c96a20cce5123a0096139a8441b7))
 * Add MismatchFileError for when  mismatch.txt has error ([`a8662b0`](https://github.com/metaDMG/metaDMG/commit/a8662b08f8b732b0dd7f56c63d7aa974dcbd5c92))
-
-## v0.13.1 (2021-10-27)
-### Fix
 * Fix error with forced and multiprocessing ([`fc8e4e0`](https://github.com/metaDMG/metaDMG/commit/fc8e4e0b35ace21c4f5586acf588e802c79221a6))
-
-### Documentation
 * Improve changelog ([`a065411`](https://github.com/metaDMG/metaDMG/commit/a06541165ffa5cfa9216a34b7dae0ad7d3defdc1))
-## v0.13 (2021-10-26)
 * Limit number of cores to be maximum the number of configs ([`60e4d92`](https://github.com/metaDMG/metaDMG/commit/60e4d92305e7a8973b1d65ffb836b745cee6e5c2))
 * Add forced option to compute ([`ef01915`](https://github.com/metaDMG/metaDMG/commit/ef01915b1c4aaf647d3891835771b5bb372ae786))
 * Add sample and tax_id information to the fits ([`c308262`](https://github.com/metaDMG/metaDMG/commit/c3082623fcfde23eb7ec04194543824add20693f))
