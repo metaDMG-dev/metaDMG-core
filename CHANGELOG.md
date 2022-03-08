@@ -2,11 +2,13 @@
 
 <!--next-version-placeholder-->
 
-## v0.18.0 (2022-03-08)
-### Feature
-* Update docs ([`ff0c830`](https://github.com/metaDMG/metaDMG/commit/ff0c830c1a198f3ad439ab5b69d23d4737cf3356))
+## v0.18 (2022-03-08)
 
 ## v0.17 (2022-03-08)
+* Add damage-mode "local" or "global" as options ([`5e153bb`](https://github.com/metaDMG/metaDMG/commit/5e153bb8dddacb32ac4cccad5903950a315c0175))
+* Make --names, nodes and acc2tax mandatory for LCA but not for local and global ([`b2ae2a2`](https://github.com/metaDMG/metaDMG/commit/b2ae2a29dbca5b7b8b9b947da8aade7dc6cc6575))
+* Improve readme regarding non-LCA mode ([`bbb36b5`](https://github.com/metaDMG/metaDMG/commit/bbb36b53a2a7fc9ab93d66666a6ec79a9f8b8e89))
+* Add temporary folders for LCA ([`21201c7`](https://github.com/metaDMG/metaDMG/commit/21201c71c5ce45dba384cb0e2ef9abd99aaa69f1))
 * Update logger-tt dependency ([`30814f7`](https://github.com/metaDMG/metaDMG/commit/30814f7f67867fd543c07eba241bb7aa1ce4e458))
 * Update logging port ([`e193985`](https://github.com/metaDMG/metaDMG/commit/e193985f004dfd839dc40f8f88265bafea62699f))
 * Update metaDMG_viz ([`48b1838`](https://github.com/metaDMG/metaDMG/commit/48b1838f24062d8bdf417f753541c7f400d4503e))
@@ -14,10 +16,6 @@
 * Update dependencies ([`a1d04e3`](https://github.com/metaDMG/metaDMG/commit/a1d04e34103887ce6457eb2c06f0019f4e550d42))
 * Fix bug when concatenating two dataframes when appending fit predictions ([`ac3bd67`](https://github.com/metaDMG/metaDMG/commit/ac3bd67d1d5a889a47a91e2bc51b8314b0291b57))
 * Fix CLI bug ([`d8c1dee`](https://github.com/metaDMG/metaDMG/commit/d8c1dee44b49f6d834bca7cc95178e14d5b8c942))
-* Make --names, nodes and acc2tax mandatory for LCA but not for local and global ([`b2ae2a2`](https://github.com/metaDMG/metaDMG/commit/b2ae2a29dbca5b7b8b9b947da8aade7dc6cc6575))
-* Improve readme regarding non-LCA mode ([`bbb36b5`](https://github.com/metaDMG/metaDMG/commit/bbb36b53a2a7fc9ab93d66666a6ec79a9f8b8e89))
-* Add damage-mode "local" or "global" as options ([`5e153bb`](https://github.com/metaDMG/metaDMG/commit/5e153bb8dddacb32ac4cccad5903950a315c0175))
-* Add temporary folders for LCA ([`21201c7`](https://github.com/metaDMG/metaDMG/commit/21201c71c5ce45dba384cb0e2ef9abd99aaa69f1))
 * Update docs to reflect update in metadamage ([`72b055f`](https://github.com/metaDMG/metaDMG/commit/72b055ffb2623bdc0cef9bc46dcd17f7657570c6))
 
 ## v0.16 (2022-02-02)
