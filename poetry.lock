@@ -844,7 +844,7 @@ python-versions = ">=3.7,<3.11"
 
 [[package]]
 name = "logger-tt"
-version = "1.6.1"
+version = "1.7.0"
 description = "Make logging simple, log even exception that you forgot to catch. Make multiprocessing logging becomes a breeze"
 category = "main"
 optional = false
@@ -1907,7 +1907,7 @@ viz = ["metadmg-viz"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "a90998a43fe7cf485a6cc2241292edd5edbbd7e221ce3dc777a7a167e1158263"
+content-hash = "c74a20423db920b3a022f8ba9d699b1d6ad04bf076cef422129d7df4cfb013f4"
 
 [metadata.files]
 absl-py = [
@@ -2542,8 +2542,8 @@ llvmlite = [
     {file = "llvmlite-0.38.0.tar.gz", hash = "sha256:a99d166ccf3b116f3b9ed23b9b70ba2415640a9c978f3aaa13fad49c58f4965c"},
 ]
 logger-tt = [
-    {file = "logger_tt-1.6.1-py3-none-any.whl", hash = "sha256:eb8077573fc4763cbb1798a0d0ccbdc7f24f806940eac460adb70d0d16a82657"},
-    {file = "logger_tt-1.6.1.tar.gz", hash = "sha256:5057e0d0474689594e1570313bb552d003dc311293b6c29f5b8e7444c227543c"},
+    {file = "logger_tt-1.7.0-py3-none-any.whl", hash = "sha256:ae0743d30c409b5c02576b10f095fc6690ae3aa1fa99769f776b7aff5db86fa2"},
+    {file = "logger_tt-1.7.0.tar.gz", hash = "sha256:5627d6efda16ec90864b9a0b3ce46ec8eecec46d3d7d37e5d5c68f47e81c76ec"},
 ]
 markupsafe = [
     {file = "MarkupSafe-2.1.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:3028252424c72b2602a323f70fbf50aa80a5d3aa616ea6add4ba21ae9cc9da4c"},
