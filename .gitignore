@@ -198,3 +198,4 @@ config_lca_subs.yaml
 pyproject_old.toml
 *.code-workspace
 config_simulation.yaml
+metadamage
