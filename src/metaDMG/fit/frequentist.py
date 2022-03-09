@@ -1,3 +1,4 @@
+#%%
 import numpy as np
 from iminuit import Minuit
 from numba import njit
@@ -565,7 +566,7 @@ def compute_LR_ForRev_All(fit_all, fit_forward, fit_reverse):
 #%%
 
 
-def make_fits(fit_result, data, sample, tax_id):
+def make_forward_reverse_fits(fit_result, data, sample, tax_id):
     np.random.seed(42)
 
     fit_all = Frequentist(data, sample, tax_id, method="posterior")
@@ -610,7 +611,7 @@ def make_fits(fit_result, data, sample, tax_id):
         fit_result[f"{var}"] = getattr(fit_all, var)
 
     numerator = fit_forward.D_max - fit_reverse.D_max
-    delimiter = np.sqrt(fit_forward.D_max_std ** 2 + fit_reverse.D_max_std ** 2)
+    delimiter = np.sqrt(fit_forward.D_max_std**2 + fit_reverse.D_max_std**2)
     fit_result["asymmetry"] = np.abs(numerator) / delimiter
 
     for var in vars_to_keep:
@@ -631,3 +632,43 @@ def make_fits(fit_result, data, sample, tax_id):
     fit_result["chi2_ForRev"] = fit_forward.chi2 + fit_reverse.chi2
 
     return fit_all, fit_forward, fit_reverse
+
+
+def make_forward_fits(fit_result, data, sample, tax_id):
+    np.random.seed(42)
+
+    fit_all = Frequentist(data, sample, tax_id, method="posterior")
+
+    vars_to_keep = [
+        "lambda_LR",
+        "D_max",
+        "D_max_std",
+        "q",
+        "q_std",
+        "phi",
+        "phi_std",
+        "A",
+        "A_std",
+        "c",
+        "c_std",
+        "rho_Ac",
+        "lambda_LR_P",
+        "lambda_LR_z",
+        "valid",
+    ]
+
+    for var in vars_to_keep:
+        fit_result[f"{var}"] = getattr(fit_all, var)
+
+    fit_result["asymmetry"] = np.nan
+    fit_result["LR_All"] = compute_LR_All(fit_all)
+    fit_result["chi2_all"] = fit_all.chi2
+
+    return fit_all
+
+
+def make_fits(config, fit_result, data, sample, tax_id):
+    if config["forward_only"]:
+        return make_forward_fits(fit_result, data, sample, tax_id)
+    else:
+        return make_forward_reverse_fits(fit_result, data, sample, tax_id)

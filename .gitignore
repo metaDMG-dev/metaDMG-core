@@ -199,3 +199,5 @@ pyproject_old.toml
 *.code-workspace
 config_simulation.yaml
 metadamage
+src/metaDMG/fit/fits.py
+.gitignore

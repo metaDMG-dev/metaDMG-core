@@ -26,44 +26,78 @@ def get_groupby(df_mismatches):
 
 def group_to_numpyro_data(config, group):
 
-    forward = "CT"
-    forward_ref = forward[0]
-    reverse = "GA"
-    reverse_ref = reverse[0]
-
     x = np.array(group.iloc[: config["max_position"]]["position"], dtype=int)
 
-    k_forward = np.array(group.iloc[: config["max_position"]][forward], dtype=int)
-    N_forward = np.array(group.iloc[: config["max_position"]][forward_ref], dtype=int)
+    if config["forward_only"]:
 
-    k_reverse = np.array(group.iloc[-config["max_position"] :][reverse], dtype=int)
-    N_reverse = np.array(group.iloc[-config["max_position"] :][reverse_ref], dtype=int)
+        forward = "CT"
+        forward_ref = forward[0]
 
-    data = {
-        "x": np.concatenate([x, -x]),
-        "k": np.concatenate([k_forward, k_reverse]),
-        "N": np.concatenate([N_forward, N_reverse]),
-    }
+        k = np.array(group.iloc[: config["max_position"]][forward], dtype=int)
+        N = np.array(group.iloc[: config["max_position"]][forward_ref], dtype=int)
 
-    return data
+        data = {"x": x, "k": k, "N": N}
+        return data
+
+    else:
+
+        forward = "CT"
+        forward_ref = forward[0]
+        reverse = "GA"
+        reverse_ref = reverse[0]
+
+        k_forward = np.array(group.iloc[: config["max_position"]][forward], dtype=int)
+        N_forward = np.array(
+            group.iloc[: config["max_position"]][forward_ref], dtype=int
+        )
+
+        k_reverse = np.array(group.iloc[-config["max_position"] :][reverse], dtype=int)
+        N_reverse = np.array(
+            group.iloc[-config["max_position"] :][reverse_ref], dtype=int
+        )
+
+        data = {
+            "x": np.concatenate([x, -x]),
+            "k": np.concatenate([k_forward, k_reverse]),
+            "N": np.concatenate([N_forward, N_reverse]),
+        }
+
+        return data
 
 
 #%%
 
 
 def add_count_information(fit_result, config, group, data):
-    fit_result["N_x=1_forward"] = data["N"][0]
-    fit_result["N_x=1_reverse"] = data["N"][config["max_position"]]
 
-    fit_result["N_sum_total"] = data["N"].sum()
-    fit_result["N_sum_forward"] = data["N"][: config["max_position"]].sum()
-    fit_result["N_sum_reverse"] = data["N"][config["max_position"] :].sum()
+    if config["forward_only"]:
+        fit_result["N_x=1_forward"] = data["N"][0]
+        # fit_result["N_x=1_reverse"] = np.nan
 
-    fit_result["N_min"] = data["N"].min()
+        fit_result["N_sum_total"] = data["N"].sum()
+        fit_result["N_sum_forward"] = fit_result["N_sum_total"]
+        # fit_result["N_sum_reverse"] = np.nan
 
-    fit_result["k_sum_total"] = data["k"].sum()
-    fit_result["k_sum_forward"] = data["k"][: config["max_position"]].sum()
-    fit_result["k_sum_reverse"] = data["k"][config["max_position"] :].sum()
+        fit_result["N_min"] = data["N"].min()
+
+        fit_result["k_sum_total"] = data["k"].sum()
+        fit_result["k_sum_forward"] = fit_result["k_sum_total"]
+        # fit_result["k_sum_reverse"] = np.nan
+
+    else:
+
+        fit_result["N_x=1_forward"] = data["N"][0]
+        fit_result["N_x=1_reverse"] = data["N"][config["max_position"]]
+
+        fit_result["N_sum_total"] = data["N"].sum()
+        fit_result["N_sum_forward"] = data["N"][: config["max_position"]].sum()
+        fit_result["N_sum_reverse"] = data["N"][config["max_position"] :].sum()
+
+        fit_result["N_min"] = data["N"].min()
+
+        fit_result["k_sum_total"] = data["k"].sum()
+        fit_result["k_sum_forward"] = data["k"][: config["max_position"]].sum()
+        fit_result["k_sum_reverse"] = data["k"][config["max_position"] :].sum()
 
 
 #%%
@@ -103,12 +137,14 @@ def fit_single_group(
 
     with warnings.catch_warnings():
         warnings.filterwarnings("ignore")
-        fit_all, fit_forward, fit_reverse = frequentist.make_fits(
+
+        frequentist.make_fits(
+            config,
             fit_result,
             data,
             sample,
             tax_id,
-        )
+        )  # fit_all, fit_forward, fit_reverse
 
     add_count_information(fit_result, config, group, data)
 

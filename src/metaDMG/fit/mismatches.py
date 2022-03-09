@@ -38,6 +38,13 @@ def get_base_columns(df):
     return base_columns
 
 
+def select_read_directions(df, config):
+    if config["forward_only"]:
+        return fit_utils.get_forward(df)
+    else:
+        return df
+
+
 def get_reference_columns(df, ref):
     ref_columns = []
     for column in get_base_columns(df):
@@ -46,9 +53,16 @@ def get_reference_columns(df, ref):
     return ref_columns
 
 
-def add_reference_counts(df, ref):
+def add_reference_count(df, ref):
     reference_columns = get_reference_columns(df, ref)
     df[ref] = df[reference_columns].sum(axis=1)
+    return df
+
+
+def add_reference_counts(df, config, bases_forward, bases_reverse):
+    df = add_reference_count(df, bases_forward[0])
+    if not config["forward_only"]:
+        df = add_reference_count(df, bases_reverse[0])
     return df
 
 
@@ -68,11 +82,18 @@ def compute_error_rates(df, ref, obs):
     return f, sf
 
 
-def add_error_rates(df, ref, obs, include_uncertainties=False):
+def add_error_rate(df, ref, obs, include_uncertainties=False):
     f, sf = compute_error_rates(df, ref, obs)
     df[f"f_{ref}{obs}"] = f
     if include_uncertainties:
         df[f"sf_{ref}{obs}"] = sf
+    return df
+
+
+def add_error_rates(df, config, bases_forward, bases_reverse):
+    df = add_error_rate(df, ref=bases_forward[0], obs=bases_forward[1])
+    if not config["forward_only"]:
+        df = add_error_rate(df, ref=bases_reverse[0], obs=bases_reverse[1])
     return df
 
 
@@ -120,14 +141,17 @@ def add_k_sum_counts(df):
     return df
 
 
-def compute_min_N_in_group(group):
-    min_N_forward = group[group.position > 0][bases_forward[0]].min()
-    min_N_reverse = group[group.position < 0][bases_reverse[0]].min()
-    return min(min_N_forward, min_N_reverse)
+def compute_min_N_in_group(group, config):
+    if config["forward_only"]:
+        return group[group.position > 0][bases_forward[0]].min()
+    else:
+        min_N_forward = group[group.position > 0][bases_forward[0]].min()
+        min_N_reverse = group[group.position < 0][bases_reverse[0]].min()
+        return min(min_N_forward, min_N_reverse)
 
 
-def add_min_N_in_group(df):
-    ds = df.groupby("tax_id").apply(compute_min_N_in_group)
+def add_min_N_in_group(df, config):
+    ds = df.groupby("tax_id").apply(compute_min_N_in_group, config)
     ds = ds.reset_index().rename(columns={0: "min_N_in_group"})
     df = pd.merge(df, ds, on=["tax_id"])
     return df
@@ -140,11 +164,15 @@ def add_min_N_in_group(df):
 #     return df.query(query)
 
 
-def add_k_N_x_names(df):
+def add_k_N_x_names(df, config):
     # mask_forward = df["direction"] == "5'"
-    mask_forward = fit_utils.is_forward(df)
-    df["k"] = np.where(mask_forward, df["CT"], df["GA"])
-    df["N"] = np.where(mask_forward, df["C"], df["G"])
+    if config["forward_only"]:
+        df["k"] = df["CT"]
+        df["N"] = df["C"]
+    else:
+        mask_forward = fit_utils.is_forward(df)
+        df["k"] = np.where(mask_forward, df["CT"], df["GA"])
+        df["N"] = np.where(mask_forward, df["C"], df["G"])
     df["f"] = df["k"] / df["N"]
     df["|x|"] = np.abs(df["position"])
     return df
@@ -178,15 +206,14 @@ def compute(config):
     df = (
         pd.read_csv(filename, sep="\t")
         .pipe(rename_columns)
-        .pipe(add_reference_counts, ref=bases_forward[0])
-        .pipe(add_reference_counts, ref=bases_reverse[0])
-        .pipe(add_error_rates, ref=bases_forward[0], obs=bases_forward[1])
-        .pipe(add_error_rates, ref=bases_reverse[0], obs=bases_reverse[1])
+        .pipe(select_read_directions, config)
+        .pipe(add_reference_counts, config, bases_forward, bases_reverse)
+        .pipe(add_error_rates, config, bases_forward, bases_reverse)
         .pipe(make_position_1_indexed)
         .pipe(make_reverse_position_negative)
-        .pipe(add_k_N_x_names)
+        .pipe(add_k_N_x_names, config)
         .pipe(add_k_sum_counts)
-        .pipe(add_min_N_in_group)
+        .pipe(add_min_N_in_group, config)
         # .pipe(filter_cut_based_on_cfg, cfg)
         .reset_index(drop=True)
         .fillna(0)

@@ -100,6 +100,9 @@ def downcast_dataframe(df, categories=None, fully_automatic=False):
 def is_forward(df):
     return df["direction"] == "5'"
 
+def get_forward(df):
+    s = "5'"
+    return df.query("direction == @s")
 
 def get_priors():
 

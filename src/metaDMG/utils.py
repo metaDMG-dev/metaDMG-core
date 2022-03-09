@@ -18,9 +18,8 @@ def load_config(config_path=None, log_port=None, log_path=None, forced=False):
     with open(config_path, "r") as file:
         config = yaml.safe_load(file)
 
-    if "forward_only" in config and config["forward_only"]:
-        logger.error("--forward_only is not implemented yet.")
-        raise typer.Abort()
+    if "forward_only" not in config:
+        config["forward_only"] = False
 
     if log_port is not None:
         config["log_port"] = log_port

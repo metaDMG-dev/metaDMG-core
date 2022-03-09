@@ -12,8 +12,9 @@ from metaDMG.filters import load_results, filter_results
 from metaDMG.fit import serial, fit_utils  # , fits
 
 #%%
-# config_path = Path("config.yaml")
-config_path = Path("config_local.yaml")
+config_path = Path("config.yaml")
+# config_path = Path("config_local.yaml")
+# config_path = Path("config_forward.yaml")
 # config_path = Path("config_all.yaml")
 # config_path = Path("config_old.yaml")
 # config_path = Path("metaDMG_config.yaml")
@@ -26,9 +27,11 @@ configs = fit_utils.make_configs(config)
 
 config = configs[0]
 
-config["cores"] = 1
+# config["cores"] = 1
 # config["bayesian"] = True
 # config["bayesian"] = False
+# config["forward_only"] = False
+# config["forward_only"] = True
 forced = True
 forced = False
 
@@ -76,5 +79,3 @@ mcmc_PMD, mcmc_null = bayesian.init_mcmcs(config)
 # d_results_PMD = bayesian.get_lppd_and_waic(mcmc_PMD, data)
 # d_results_null = bayesian.get_lppd_and_waic(mcmc_null, data)
 # z = bayesian.compute_z(d_results_PMD, d_results_null)
-
-# %%
