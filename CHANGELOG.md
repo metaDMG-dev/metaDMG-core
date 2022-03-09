@@ -2,6 +2,17 @@
 
 <!--next-version-placeholder-->
 
+## v0.19.0 (2022-03-09)
+### Feature
+* Allow forward-only ([`c0a8cb1`](https://github.com/metaDMG/metaDMG/commit/c0a8cb148d17e37fcb369e70356fdb8d99677f0a))
+
+### Fix
+* Update dashboard to allow the use of forward-only ([`35eeebc`](https://github.com/metaDMG/metaDMG/commit/35eeebc81010737a3add302ad76a13680e4452f5))
+
+### Documentation
+* Update readme to reflect the forward-only use ([`5f0e760`](https://github.com/metaDMG/metaDMG/commit/5f0e760e4ea7f3884f6e6bdc94e2a5c515c7b29c))
+* Update changelog ([`b32a0dd`](https://github.com/metaDMG/metaDMG/commit/b32a0dd3368ca9300b8dc2fc319ba6ebec8b2ae7))
+
 ## v0.18 (2022-03-08)
 
 ## v0.17 (2022-03-08)
