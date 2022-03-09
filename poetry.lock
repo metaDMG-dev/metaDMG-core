@@ -898,7 +898,7 @@ python-versions = "*"
 
 [[package]]
 name = "metadmg-viz"
-version = "0.9.1"
+version = "0.10.0"
 description = "metaDMG-viz"
 category = "main"
 optional = true
@@ -1907,7 +1907,7 @@ viz = ["metadmg-viz"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "c74a20423db920b3a022f8ba9d699b1d6ad04bf076cef422129d7df4cfb013f4"
+content-hash = "912ae1bb8576e478a9b036b4a190bedfa87d943a1cda0ad350dce809170032f2"
 
 [metadata.files]
 absl-py = [
@@ -2633,8 +2633,8 @@ mccabe = [
     {file = "mccabe-0.6.1.tar.gz", hash = "sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"},
 ]
 metadmg-viz = [
-    {file = "metaDMG-viz-0.9.1.tar.gz", hash = "sha256:ac9d6ac3254e53fe4ceae104292471f63d4ed9d673bc05150ae93dcf6118ce26"},
-    {file = "metaDMG_viz-0.9.1-py3-none-any.whl", hash = "sha256:7d1e4bba6e51aef49d0703f460661f3a20b681622b9a388b14b31943da12f7e9"},
+    {file = "metaDMG-viz-0.10.0.tar.gz", hash = "sha256:946a0e5b4c61f2e83d96af62a31a343705de9b8e4522acbe1b6faec8855467a9"},
+    {file = "metaDMG_viz-0.10.0-py3-none-any.whl", hash = "sha256:0407122cc25abf6801e4f6eb08e566888ad215c03a4c76791e6c6d3ec1b22f3a"},
 ]
 mistune = [
     {file = "mistune-0.8.4-py2.py3-none-any.whl", hash = "sha256:88a1051873018da288eee8538d476dffe1262495144b33ecb586c4ab266bb8d4"},
