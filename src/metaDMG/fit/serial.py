@@ -126,8 +126,8 @@ def get_damage_command(config):
 
 def get_damage_ugly_command(config):
     bdamage = config["path_tmp"] / f"{config['sample']}.bdamage.gz"
-    command = f"{config['metaDMG-lca']} print_ugly " f"{bdamage} "
-    return command[:-1]
+    command = f"{config['metaDMG-lca']} print_ugly {bdamage} -bam {config['bam']}"
+    return command
 
 
 #%%

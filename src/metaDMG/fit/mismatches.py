@@ -38,6 +38,10 @@ def get_base_columns(df):
     return base_columns
 
 
+def rename_columns(df):
+    return df.rename(columns={"#taxid": "tax_id", "#taxidStr": "tax_id"})
+
+
 def select_read_directions(df, config):
     if config["forward_only"]:
         return fit_utils.get_forward(df)
@@ -176,10 +180,6 @@ def add_k_N_x_names(df, config):
     df["f"] = df["k"] / df["N"]
     df["|x|"] = np.abs(df["position"])
     return df
-
-
-def rename_columns(df):
-    return df.rename(columns={"#taxid": "tax_id"})
 
 
 def csv_contains_less_than_N_lines(filename, N=2):
