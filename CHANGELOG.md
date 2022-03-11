@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v0.20.0 (2022-03-11)
+### Feature
+* Update dashboard to also work with non-LCA ([`0495d81`](https://github.com/metaDMG/metaDMG/commit/0495d811a179bb6842b2c9d6afafe8f0d6baa1d4))
+* Allow for non-LCA mode ([`2bd5901`](https://github.com/metaDMG/metaDMG/commit/2bd5901ced1897dd71cf9a5ee9c6dabfff00789a))
+
+### Fix
+* Make all tax_ids to strings ([`fc1fee4`](https://github.com/metaDMG/metaDMG/commit/fc1fee463a6d70e79de6a5dd39471c1ab5edb62b))
+
 ## v0.19.0 (2022-03-09)
 ### Feature
 * Allow forward-only ([`c0a8cb1`](https://github.com/metaDMG/metaDMG/commit/c0a8cb148d17e37fcb369e70356fdb8d99677f0a))
