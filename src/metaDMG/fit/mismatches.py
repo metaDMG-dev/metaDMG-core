@@ -182,6 +182,10 @@ def add_k_N_x_names(df, config):
     return df
 
 
+def make_tax_id_str(df):
+    return df.astype({"tax_id": "str"})
+
+
 def csv_contains_less_than_N_lines(filename, N=2):
     import csv
     import gzip
@@ -214,6 +218,7 @@ def compute(config):
         .pipe(add_k_N_x_names, config)
         .pipe(add_k_sum_counts)
         .pipe(add_min_N_in_group, config)
+        .pipe(make_tax_id_str)
         # .pipe(filter_cut_based_on_cfg, cfg)
         .reset_index(drop=True)
         .fillna(0)
@@ -221,6 +226,7 @@ def compute(config):
 
     df["sample"] = config["sample"]
     categories = ["tax_id", "direction", "sample"]
+
     df_mismatches = fit_utils.downcast_dataframe(df, categories, fully_automatic=False)
 
     return df_mismatches

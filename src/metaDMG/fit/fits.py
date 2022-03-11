@@ -389,7 +389,7 @@ def read_stats_lca(config):
     data = data.replace("\t\t", "\t'")
     data = data.replace('1:root:"no rank"', """1:root:"no rank"'""")
 
-    string_columns = ["tax_name", "tax_rank", "tax_path"]
+    string_columns = ["tax_id", "tax_name", "tax_rank", "tax_path"]
 
     df_stats = pd.read_csv(
         StringIO(data),  # config["path_mismatches_stat"]
