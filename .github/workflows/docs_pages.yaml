@@ -1,8 +1,14 @@
 name: Documentation
+
 on:
+
   push:
-    branches: [ master ]
-    tags: '*'
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build-docs:
