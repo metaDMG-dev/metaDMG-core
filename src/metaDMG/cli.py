@@ -478,8 +478,5 @@ def mismatch_to_mapDamage(
 #%%
 
 
-#%%
-
-
 def cli_main():
     cli_app(prog_name="metaDMG")
