@@ -53,7 +53,7 @@ def get_LCA_command(config: Config) -> str:
     lca_rank = f"-lca_rank {config['lca_rank']}" if config["lca_rank"] != "" else ""
 
     command = (
-        f"{config['metaDMG-lca']} lca "
+        f"./{config['metaDMG-lca']} lca "
         f"-bam {config['bam']} "
         f"-outnames {outnames} "
         f"-names {config['names']} "
