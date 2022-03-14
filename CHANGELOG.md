@@ -2,6 +2,17 @@
 
 <!--next-version-placeholder-->
 
+## v0.20.1 (2022-03-14)
+### Fix
+* Use Python v3.9 ([`b93d97c`](https://github.com/metaDMG/metaDMG/commit/b93d97cee763d2c39c2b2e2b1050822ce2d38c08))
+* Fix error with mapDamage formats ([`c8746ce`](https://github.com/metaDMG/metaDMG/commit/c8746cecb96ff42842765ac316646fb79d95a10e))
+* Fix parsing with metaDMG-lca binary ([`f69e5f0`](https://github.com/metaDMG/metaDMG/commit/f69e5f0d87ccd492dc3ad57c7180a429403b7299))
+* Fix error with Path and metaDMG-lca ([`c7a57c1`](https://github.com/metaDMG/metaDMG/commit/c7a57c128877bebe97a4bd6d1c6d451aa9d52fba))
+* Adding type hints, rewrite config files and adding confirmation prompt ([`a046687`](https://github.com/metaDMG/metaDMG/commit/a046687af4339429f5b73aebfe2d0c329ebca11a))
+
+### Documentation
+* Try to add docs ([`3daa450`](https://github.com/metaDMG/metaDMG/commit/3daa450f23e74100d5dee837ec52f695b3026acf))
+
 ## v0.20.0 (2022-03-11)
 ### Feature
 * Update dashboard to also work with non-LCA ([`0495d81`](https://github.com/metaDMG/metaDMG/commit/0495d811a179bb6842b2c9d6afafe8f0d6baa1d4))
