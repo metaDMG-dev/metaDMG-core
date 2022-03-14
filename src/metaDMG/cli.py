@@ -152,7 +152,7 @@ def create_config(
         "",
         help="Suffix for the sample names.",
     ),
-    sample_long: bool = typer.Option(
+    long_name: bool = typer.Option(
         False,
         "--long-name",
         help="Use the full name of the sample file as sample name..",
@@ -174,13 +174,13 @@ def create_config(
         typer.echo("--names, --nodes, and --acc2tax are mandatory when doing LCA.")
         raise typer.Exit(code=1)
 
-    config = utils.remove_paths(
+    config = utils.paths_to_strings(
         {
             "samples": utils.extract_alignments(
                 samples,
                 prefix=sample_prefix,
                 suffix=sample_suffix,
-                long_name=sample_long,
+                long_name=long_name,
             ),
             #
             "metaDMG-lca": metaDMG_cpp,
@@ -457,7 +457,7 @@ def plot(
 
     df_results = filter_results(results.df, query)
 
-    save_pdf_plots(df_results, results, pdf_path=pdf_out, do_tqdm=True)
+    save_pdf_plots(df_results, results, pdf_path=pdf_out, do_tqdm=True)  # type: ignore
 
 
 #%%
