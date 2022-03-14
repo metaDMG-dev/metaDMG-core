@@ -145,7 +145,7 @@ def gammaln_vec(xs):
 @njit
 def log_betabinom_PMD(k, N, alpha, beta):
     return (
-        gammaln_vec(N + 1)
+        gammaln_vec(N + 1)  # type: ignore
         + gammaln_vec(k + alpha)
         + gammaln_vec(N - k + beta)
         + gammaln_vec(alpha + beta)

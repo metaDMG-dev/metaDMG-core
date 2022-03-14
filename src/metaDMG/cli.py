@@ -69,7 +69,7 @@ def create_config(
         help="Path to the (NCBI) acc2tax.gz.",
     ),
     metaDMG_cpp: str = typer.Option(
-        "./metaDMG-cpp",
+        Path("./metaDMG-cpp"),
         help="The command needed to run the metaDMG-lca program.",
     ),
     simscorelow: float = typer.Option(
@@ -312,7 +312,7 @@ def dashboard(
         results_dir=results,
     )
 
-    start_dashboard(
+    start_dashboard(  # type: ignore
         results_dir=results_dir,
         debug=debug,
         host=host,
@@ -445,7 +445,7 @@ def plot(
         results_dir=results_dir,
     )
 
-    results = Results(results_dir)
+    results = Results(results_dir)  # type: ignore
 
     if tax_ids:
         tax_ids_list = list(map(int, tax_ids.split(", ")))

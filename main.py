@@ -37,7 +37,7 @@ forced = False
 
 #%%
 
-x = x
+x = x  # type: ignore
 
 #%%
 
@@ -65,7 +65,7 @@ for tax_id, group in serial.fits.get_groupby(df_mismatches):
 
 from metaDMG.fit.fits import group_to_numpyro_data
 
-data = group_to_numpyro_data(config, group)
+data = group_to_numpyro_data(config, group)  # type: ignore
 sample = config["sample"]
 
 from metaDMG.fit import bayesian

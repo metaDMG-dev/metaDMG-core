@@ -78,7 +78,7 @@ def make_configs(
     d.setdefault("damage_mode", "lca")
     d.setdefault("forced", False)
 
-    paths = ["metaDMG-lca", "names", "nodes", "acc2tax", "dir"]
+    paths = ["names", "nodes", "acc2tax", "dir"]
     for path in paths:
         d[path] = Path(d[path])
 

@@ -79,7 +79,7 @@ def get_LCA_mismatches_command(config: Config) -> str:
     lca_stat = config["path_tmp"] / f"{sample}.stat"
 
     command = (
-        f"{config['metaDMG-lca']} print_ugly "
+        f"./{config['metaDMG-lca']} print_ugly "
         f"{bdamage} "
         f"-names {config['names']} "
         f"-nodes {config['nodes']} "
@@ -116,7 +116,7 @@ def get_damage_command(config: Config) -> str:
     runmode = get_runmode(config)
 
     command = (
-        f"{config['metaDMG-lca']} getdamage "
+        f"./{config['metaDMG-lca']} getdamage "
         f"--minlength 10 "
         f"--printlength {config['max_position']} "
         f"--threads 8 "
@@ -129,7 +129,7 @@ def get_damage_command(config: Config) -> str:
 
 def get_damage_ugly_command(config: Config) -> str:
     bdamage = config["path_tmp"] / f"{config['sample']}.bdamage.gz"
-    command = f"{config['metaDMG-lca']} print_ugly {bdamage} -bam {config['bam']}"
+    command = f"./{config['metaDMG-lca']} print_ugly {bdamage} -bam {config['bam']}"
     return command
 
 
@@ -202,7 +202,7 @@ def run_command(command: str):
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
     )
-    for line in iter(p.stdout.readline, b""):
+    for line in iter(p.stdout.readline, b""):  # type: ignore
         if line:
             line = line.decode("utf-8")
             if line.endswith("\n"):
