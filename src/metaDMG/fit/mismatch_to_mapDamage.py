@@ -30,8 +30,8 @@ def df_mismatch_to_mapDamage(df_mismatch):
 
     df_mapDamage = df_mismatch.copy()
 
-    mismatches.add_reference_counts(df_mapDamage, ref="A")
-    mismatches.add_reference_counts(df_mapDamage, ref="T")
+    mismatches.add_reference_count(df_mapDamage, ref="A")
+    mismatches.add_reference_count(df_mapDamage, ref="T")
     df_mapDamage["Total"] = df_mapDamage[["A", "C", "G", "T"]].sum(axis=1)
 
     df_mapDamage = df_mapDamage.rename(columns=d_rename)
