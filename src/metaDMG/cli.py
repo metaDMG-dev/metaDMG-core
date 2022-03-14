@@ -1,7 +1,7 @@
-from xmlrpc.client import Boolean
+#%%
 import typer
 from pathlib import Path
-from typing import List, Optional
+from typing import Optional
 
 from metaDMG import cli_utils
 
@@ -46,7 +46,7 @@ def callback(
 
 @cli_app.command("config")
 def create_config(
-    samples: List[Path] = typer.Argument(
+    samples: list[Path] = typer.Argument(
         ...,
         help="Single or multiple alignment-files (or a directory containing them).",
     ),
@@ -208,8 +208,16 @@ def create_config(
         }
     )
 
+    if config_path.is_file():
+        s = "Config file already exists. Do you want to overwrite it?"
+        overwrite = typer.confirm(s)
+        if not overwrite:
+            typer.echo("Exiting")
+            raise typer.Abort()
+
     with open(config_path, "w") as file:
         yaml.dump(config, file, sort_keys=False)
+    typer.echo("Config file was created")
 
 
 #%%
@@ -237,14 +245,14 @@ def compute(
 
     setup_logger(log_port=log_port, log_path=log_path)
 
-    config = utils.load_config(
+    configs = utils.make_configs(
         config_path=config_path,
         log_port=log_port,
         log_path=log_path,
         forced=forced,
     )
 
-    run_workflow(config)
+    run_workflow(configs)
 
 
 #%%

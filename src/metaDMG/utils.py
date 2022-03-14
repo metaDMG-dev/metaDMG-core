@@ -1,50 +1,97 @@
+#%%
 from pathlib import Path
+from attr import dataclass
 import yaml
 import typer
 from logger_tt import logger
 import psutil
 from functools import partial
+from typing import Optional
+from typing import Iterator
+from itertools import islice
+
+#%%
 
 
-def load_config(config_path=None, log_port=None, log_path=None, forced=False):
+class Config(dict):
+    pass
+
+
+class Configs(dict):
+    def __iter__(self) -> Iterator[Config]:
+        dir_lca = self["dir"] / "lca"
+        samples = self["samples"].keys()
+        for sample in samples:
+            config = Config(self)
+            config["sample"] = sample
+            config["bam"] = config["samples"][sample]
+
+            config["path_mismatches_txt"] = dir_lca / f"{sample}.mismatches.txt.gz"
+
+            if config["damage_mode"] == "lca":
+                config["path_mismatches_stat"] = (
+                    dir_lca / f"{sample}.mismatches.stat.txt.gz"
+                )
+            else:
+                config["path_mismatches_stat"] = dir_lca / f"{sample}.stat.txt"
+
+            config["path_lca"] = dir_lca / f"{sample}.lca.txt.gz"
+            config["path_lca_log"] = dir_lca / f"{sample}.log.txt"
+            config["path_tmp"] = config["dir"] / "tmp" / sample
+            yield config
+
+    def get_nth(self, n: int) -> Config:
+        return next(islice(self, n, None))
+
+    def get_first(self) -> Config:
+        return self.get_nth(n=0)
+
+    def __len__(self) -> int:
+        return len(self["samples"].keys())
+
+
+def make_configs(
+    config_path: Optional[Path],
+    log_port: Optional[int] = None,
+    log_path: Optional[str] = None,
+    forced: bool = False,
+) -> Configs:
+
     if config_path is None:
-        config_path = "config.yaml"
+        config_path = Path("config.yaml")
 
-    if not Path(config_path).exists():
+    if not config_path.exists():
         logger.error("Error! Please select a proper config file!")
         raise typer.Abort()
 
-    logger.info(f"Opening {config_path} as config file.")
+    logger.info(f"Using {config_path} as config file.")
     with open(config_path, "r") as file:
-        config = yaml.safe_load(file)
+        d = yaml.safe_load(file)
 
-    if "forward_only" not in config:
-        config["forward_only"] = False
+    d["log_port"] = log_port
+    d["log_path"] = log_path
+    if forced:
+        d["forced"] = True
 
-    if log_port is not None:
-        config["log_port"] = log_port
+    d.setdefault("forward_only", False)
+    d.setdefault("cores_pr_fit", 1)
+    d.setdefault("damage_mode", "lca")
+    d.setdefault("forced", False)
 
-    if log_path is not None:
-        config["log_path"] = log_path
+    paths = ["metaDMG-lca", "names", "nodes", "acc2tax", "dir"]
+    for path in paths:
+        d[path] = Path(d[path])
 
-    if "cores_pr_fit" not in config:
-        config["cores_pr_fit"] = 1
-
-    if forced or config.get("forced"):
-        config["forced"] = True
-    else:
-        config["forced"] = False
-
-    if "damage_mode" not in config:
-        config["damage_mode"] = "lca"
-
-    return config
+    return Configs(d)
 
 
-def check_number_of_jobs(config):
+#%%
 
-    cores = min(config["cores"], len(config["samples"]))
-    cores_pr_fit = config["cores_pr_fit"]
+
+def check_number_of_jobs(configs: Configs) -> None:
+
+    cores = min(configs["cores"], len(configs["samples"]))
+    cores_pr_fit = configs["cores_pr_fit"]
     N_jobs = cores * cores_pr_fit
     max_cores = psutil.cpu_count(logical=True)
     max_cores_real = psutil.cpu_count(logical=False)
@@ -53,14 +100,14 @@ def check_number_of_jobs(config):
         logger.warning(
             f"The total number of jobs {N_jobs} are higher "
             f"than the number of cores {max_cores}. "
-            "Do not do this unless you know what you are doing. "
-            "Try decreasing either 'cores' or 'cores-pr-fit'."
+            f"Do not do this unless you know what you are doing. "
+            f"Try decreasing either 'cores' or 'cores-pr-fit'."
         )
     elif N_jobs > max_cores_real:
         logger.info(
             f"The total number of jobs {N_jobs} are higher "
             f"than the real number of cores {max_cores_real} (non-logical). "
-            "This might decrease performance. "
+            f"This might decrease performance. "
         )
 
 
@@ -152,18 +199,15 @@ def remove_paths(d, ignore_keys=None):
 #%%
 
 
-def get_results_dir(config_path=None, results_dir=None):
+def get_results_dir(
+    config_path: Optional[Path] = None,
+    results_dir: Optional[Path] = None,
+) -> Path:
 
     if config_path is not None and results_dir is not None:
-        raise AssertionError(
-            "Only a single one of 'config' and 'results_dir' can be set"
-        )
+        raise AssertionError("'config_path' and 'results_dir' cannot both be set")
 
-    results_dir = Path(results_dir) if isinstance(results_dir, str) else results_dir
-    config_path = Path(config_path) if isinstance(config_path, str) else config_path
-
-    if isinstance(results_dir, Path):
+    if results_dir:
         return results_dir
 
-    results_dir = Path(load_config(config_path)["dir"]) / "results"
-    return results_dir
+    return make_configs(config_path)["dir"] / "results"

@@ -1,5 +1,5 @@
 from pathlib import Path
-from metaDMG.utils import load_config, get_results_dir
+from metaDMG.utils import get_results_dir
 import pandas as pd
 from metaDMG.fit.results import append_fit_predictions
 

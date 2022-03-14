@@ -3,16 +3,12 @@ from concurrent.futures import ProcessPoolExecutor as Pool
 from logger_tt import logger
 from datetime import datetime
 from metaDMG.fit import serial, fit_utils
-from metaDMG.utils import check_number_of_jobs
+from metaDMG.utils import check_number_of_jobs, Configs
 
 
-def run_workflow(config):
+def run_workflow(configs: Configs):
 
-    configs = fit_utils.make_configs(config)
-
-    cores = config["cores"]
-    if cores > len(configs):
-        cores = len(configs)
+    cores = min(configs["cores"], len(configs))
 
     logger.info(f"Running metaDMG on {len(configs)} files in total.")
 
@@ -24,7 +20,7 @@ def run_workflow(config):
 
     else:
         logger.info(f"Running with {cores} processes in parallel")
-        check_number_of_jobs(config)
+        check_number_of_jobs(configs)
 
         with Pool(max_workers=cores) as pool:
             # for dfs in pool.imap_unordered(serial.run_single_config, configs):

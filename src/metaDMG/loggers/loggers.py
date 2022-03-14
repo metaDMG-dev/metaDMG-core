@@ -3,14 +3,18 @@ from datetime import datetime
 from importlib import resources
 from pathlib import Path
 from multiprocessing import parent_process
+from typing import Optional, Tuple
 import random
 
 
-def is_main_process():
+def is_main_process() -> bool:
     return parent_process() is None
 
 
-def setup_logger(log_port=None, log_path=None):
+def setup_logger(
+    log_port: Optional[int] = None,
+    log_path: Optional[str] = None,
+) -> None:
 
     if log_port is None:
         log_port = get_logger_port()
@@ -22,7 +26,7 @@ def setup_logger(log_port=None, log_path=None):
         config_path = p
 
     setup_logging(
-        config_path=config_path,
+        config_path=str(config_path),
         log_path=log_path,
         port=log_port,
         # full_context=2,
@@ -36,7 +40,7 @@ def setup_logger(log_port=None, log_path=None):
         logger.debug(f"Using port {log_port} for logging.")
 
 
-def port_is_available(log_port):
+def port_is_available(log_port) -> bool:
     from logger_tt.core import LogRecordSocketReceiver
 
     try:
@@ -46,7 +50,7 @@ def port_is_available(log_port):
         return False
 
 
-def get_logger_port():
+def get_logger_port() -> int:
     loop = 0
     max__loops = 1000
     while loop < max__loops:
@@ -56,13 +60,15 @@ def get_logger_port():
         else:
             loop += 1
 
+    raise AssertionError("Couldn't find a port")
 
-def get_logger_path():
+
+def get_logger_path() -> str:
     now = datetime.now()
     now_str = now.strftime("%Y-%m-%d__%H-%M-%S")
     log_path = f"logs/log__{now_str}.log"
     return log_path
 
 
-def get_logger_port_and_path():
+def get_logger_port_and_path() -> Tuple[int, Optional[str]]:
     return get_logger_port(), get_logger_path()

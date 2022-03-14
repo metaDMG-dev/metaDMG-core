@@ -12,6 +12,9 @@ from collections import Counter
 from metaDMG.loggers.loggers import setup_logger
 from metaDMG.errors import metadamageError, Error, MismatchFileError
 from metaDMG.fit import mismatches, fits, results
+from metaDMG.utils import Config
+from typing import Optional, Tuple
+
 
 #%%
 
@@ -37,15 +40,15 @@ def do_load(targets, forced=False):
     return not do_run(targets, forced=forced)
 
 
-def data_dir(config, name, suffix="parquet"):
-    target = Path(config["dir"]) / name / f"{config['sample']}.{name}.{suffix}"
-    return str(target)
+def data_dir(config: Config, name, suffix="parquet"):
+    target = config["dir"] / name / f"{config['sample']}.{name}.{suffix}"
+    return target
 
 
 #%%
 
 
-def get_LCA_command(config):
+def get_LCA_command(config: Config) -> str:
     outnames = config["path_tmp"] / config["sample"]
     lca_rank = f"-lca_rank {config['lca_rank']}" if config["lca_rank"] != "" else ""
 
@@ -70,7 +73,7 @@ def get_LCA_command(config):
     return command[:-1]
 
 
-def get_LCA_mismatches_command(config):
+def get_LCA_mismatches_command(config: Config) -> str:
     sample = config["sample"]
     bdamage = config["path_tmp"] / f"{sample}.bdamage.gz"
     lca_stat = config["path_tmp"] / f"{sample}.stat"
@@ -88,7 +91,7 @@ def get_LCA_mismatches_command(config):
 #%%
 
 
-def get_runmode(config):
+def get_runmode(config: Config) -> int:
 
     runmode = config["damage_mode"]
 
@@ -106,7 +109,7 @@ def get_runmode(config):
     raise AssertionError(f"Got wrong runmode. Got: {runmode}")
 
 
-def get_damage_command(config):
+def get_damage_command(config: Config) -> str:
     "'Direct' damage, no LCA"
 
     outname = config["path_tmp"] / config["sample"]
@@ -124,7 +127,7 @@ def get_damage_command(config):
     return command[:-1]
 
 
-def get_damage_ugly_command(config):
+def get_damage_ugly_command(config: Config) -> str:
     bdamage = config["path_tmp"] / f"{config['sample']}.bdamage.gz"
     command = f"{config['metaDMG-lca']} print_ugly {bdamage} -bam {config['bam']}"
     return command
@@ -133,7 +136,7 @@ def get_damage_ugly_command(config):
 #%%
 
 
-def move_files(config):
+def move_files(config: Config) -> None:
 
     sample = config["sample"]
     path_tmp = config["path_tmp"]
@@ -155,7 +158,7 @@ def move_files(config):
         shutil.move(source_path, target_path)
 
 
-def move_files_non_lca(config):
+def move_files_non_lca(config: Config) -> None:
 
     sample = config["sample"]
     path_tmp = config["path_tmp"]
@@ -178,11 +181,11 @@ def move_files_non_lca(config):
 #%%
 
 
-def create_tmp_dir(config):
+def create_tmp_dir(config: Config) -> None:
     Path(config["path_tmp"]).mkdir(parents=True, exist_ok=True)
 
 
-def delete_tmp_dir(config):
+def delete_tmp_dir(config: Config) -> None:
     path_tmp = Path(config["path_tmp"])
     for file in path_tmp.glob("*"):
         file.unlink()
@@ -192,7 +195,7 @@ def delete_tmp_dir(config):
 #%%
 
 
-def run_command(command):
+def run_command(command: str):
 
     p = subprocess.Popen(
         shlex.split(command),
@@ -226,7 +229,7 @@ def handle_returncode(command, line, counter):
     return None
 
 
-def run_command_helper(config, command):
+def run_command_helper(config: Config, command: str) -> None:
 
     # add a counter to avoid too many similar lines
     counter = Counter()
@@ -253,7 +256,7 @@ def run_command_helper(config, command):
 #%%
 
 
-def run_LCA(config, forced=False):
+def run_LCA(config: Config, forced: bool = False) -> None:
 
     logger.info(f"Getting LCA.")
 
@@ -287,7 +290,7 @@ def run_LCA(config, forced=False):
 #%%
 
 
-def run_damage_no_lca(config, forced=False):
+def run_damage_no_lca(config: Config, forced: bool = False) -> None:
 
     logger.info(f"Getting damage.")
 
@@ -320,7 +323,7 @@ def run_damage_no_lca(config, forced=False):
 #%%
 
 
-def run_thorfinn(config, forced=False):
+def run_thorfinn(config: Config, forced: bool = False) -> None:
     if config["damage_mode"] == "lca":
         run_LCA(config, forced=forced)
     else:
@@ -330,7 +333,7 @@ def run_thorfinn(config, forced=False):
 #%%
 
 
-def get_df_mismatches(config, forced=False):
+def get_df_mismatches(config: Config, forced: bool = False) -> pd.DataFrame:
 
     logger.info(f"Getting df_mismatches")
 
@@ -352,11 +355,15 @@ def get_df_mismatches(config, forced=False):
 #%%
 
 
-def dataframe_columns_contains(df, s):
+def dataframe_columns_contains(df: pd.DataFrame, s: str) -> bool:
     return any(s in column for column in df.columns)
 
 
-def get_df_fit_results(config, df_mismatches, forced=False):
+def get_df_fit_results(
+    config: Config,
+    df_mismatches: pd.DataFrame,
+    forced: bool = False,
+) -> pd.DataFrame:
 
     logger.info(f"Getting df_fit_results.")
 
@@ -393,7 +400,12 @@ def get_df_fit_results(config, df_mismatches, forced=False):
 #%%
 
 
-def get_df_results(config, df_mismatches, df_fit_results, forced=False):
+def get_df_results(
+    config: Config,
+    df_mismatches: pd.DataFrame,
+    df_fit_results: pd.DataFrame,
+    forced: bool = False,
+) -> pd.DataFrame:
 
     logger.info(f"Getting df_results.")
 
@@ -423,7 +435,9 @@ def get_df_results(config, df_mismatches, df_fit_results, forced=False):
 #%%
 
 
-def run_single_config(config):
+def run_single_config(
+    config: Config,
+) -> Optional[Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]:
 
     # if not main process (and haven't been initialized before)
     name = current_process().name

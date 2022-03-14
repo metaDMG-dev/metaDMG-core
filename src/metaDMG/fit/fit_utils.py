@@ -22,45 +22,6 @@ for ref in ACTG:
 #%%
 
 
-def get_samples_from_config(config):
-    return list(config["samples"].keys())
-
-
-def get_config_from_sample(sample, config, forced=False):
-    config = config.copy()
-    config["sample"] = sample
-    config["bam"] = config["samples"][sample]
-
-    dir_lca = Path(config["dir"]) / "lca"
-
-    config["path_mismatches_txt"] = str(dir_lca / f"{sample}.mismatches.txt.gz")
-    if config["damage_mode"] == "lca":
-        config["path_mismatches_stat"] = str(
-            dir_lca / f"{sample}.mismatches.stat.txt.gz"
-        )
-    else:
-        config["path_mismatches_stat"] = str(dir_lca / f"{sample}.stat.txt")
-    config["path_lca"] = str(dir_lca / f"{sample}.lca.txt.gz")
-    config["path_lca_log"] = str(dir_lca / f"{sample}.log.txt")
-
-    dir_tmp = Path(config["dir"]) / "tmp" / sample
-    config["path_tmp"] = dir_tmp
-
-    return config
-
-
-def make_configs(config):
-    samples = get_samples_from_config(config)
-    configs = [get_config_from_sample(sample, config) for sample in samples]
-    return configs
-
-
-#%%
-
-
-#%%
-
-
 def downcast_dataframe(df, categories=None, fully_automatic=False):
 
     if categories is None:
@@ -100,9 +61,11 @@ def downcast_dataframe(df, categories=None, fully_automatic=False):
 def is_forward(df):
     return df["direction"] == "5'"
 
+
 def get_forward(df):
     s = "5'"
     return df.query("direction == @s")
+
 
 def get_priors():
 
