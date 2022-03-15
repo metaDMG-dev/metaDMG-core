@@ -323,7 +323,7 @@ def run_damage_no_lca(config: Config, forced: bool = False) -> None:
 #%%
 
 
-def run_thorfinn(config: Config, forced: bool = False) -> None:
+def run_cpp(config: Config, forced: bool = False) -> None:
     if config["damage_mode"] == "lca":
         run_LCA(config, forced=forced)
     else:
@@ -456,7 +456,7 @@ def run_single_config(
     forced = config["forced"]
 
     try:
-        run_thorfinn(config, forced=forced)
+        run_cpp(config, forced=forced)
     except metadamageError:
         logger.exception(
             f"{config['sample']} | metadamageError with run_LCA. "

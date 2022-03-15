@@ -1,14 +1,14 @@
-CLI API
-===
+.. CLI API
+.. =======
 
-To access the help menu:
+.. To access the help menu:
 
-.. code-block:: bash
+.. .. code-block:: bash
 
-   $ metaDMG --help
+..    $ metaDMG --help
 
-The list of arguments of options is detailed below.
+.. The list of arguments of options is detailed below.
 
 .. click:: metaDMG.cli:typer_click_object
-   :prog: API
+   :prog: CLI
    :nested: full

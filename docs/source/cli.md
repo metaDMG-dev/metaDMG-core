@@ -129,7 +129,7 @@ The `metaDMG plot` command takes first an optional config-file as argument
 
 - Options:
   - `--results-dir`: Direct path to the results directory.
-  - `--query`: The query string to use for filtering. Follows the [Pandas Query()]([www.link.dk](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method)) syntax. Default is `""` which applies no filtering.
+  - `--query`: The query string to use for filtering. Follows the [Pandas Query()](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method) syntax. Default is `""` which applies no filtering.
   - `--samples`: A comma-space seperated string containing the samples to use in the plots. Default is `""` which applies no filtering.
   - `--tax-ids`: A comma-space seperated string containing the tax-ids to use in the plots. Default is `""` which applies no filtering.
   - `--pdf-out`: The path to the output pdf-file. Defaults to `pdf_export.pdf`.
@@ -187,7 +187,7 @@ The `metaDMG filter` command takes first an optional config-file as argument
 
 - Options:
   - `--output`: Mandatory output path.
-  - `--query`: The query string to use for filtering. Follows the [Pandas Query()]([www.link.dk](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method)) syntax.
+  - `--query`: The query string to use for filtering. Follows the [Pandas Query()](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method) syntax.
   - `--results-dir`: Direct path to the results directory.
 Default is `""` which applies no filtering and is thus similar to the `metaDMG convert` command.
 

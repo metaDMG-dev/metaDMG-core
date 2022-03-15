@@ -37,12 +37,7 @@ extensions = [
     "sphinx_rtd_theme",
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
-    # "sphinx.ext.doctest",
-    # "sphinx.ext.intersphinx",
-    # "sphinx.ext.todo",
-    # "sphinx.ext.viewcode",
     "sphinx.ext.githubpages",
-    # "sphinx.ext.mathjax",
     "sphinx_click.ext",
     "myst_parser",  # to read markdown files
 ]
@@ -62,6 +57,8 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # a list of builtin themes.
 #
 html_theme = "sphinx_rtd_theme"
+# html_theme = "furo"
+
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -71,3 +68,5 @@ html_theme = "sphinx_rtd_theme"
 source_suffix = [".rst", ".md", ".ipynb"]
 
 master_doc = "index"
+
+myst_enable_extensions = ["dollarmath", "amsmath"]
