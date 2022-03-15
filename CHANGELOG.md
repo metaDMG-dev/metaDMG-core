@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.20.3 (2022-03-15)
+### Fix
+* Improve Paths parsing ([`1ab3cd1`](https://github.com/metaDMG/metaDMG/commit/1ab3cd170bfb000ad64a8898b9f66c1fe5b5bf56))
+* Parse metaDMG-cpp path as str ([`0943a29`](https://github.com/metaDMG/metaDMG/commit/0943a291b7c244599168313c59b4e761f649cc57))
+
 ## v0.20.2 (2022-03-15)
 ### Fix
 * Fix error with attrs / dataclass ([`8a507b9`](https://github.com/metaDMG/metaDMG/commit/8a507b9f81ea2860558b7923e90ba050f0d7da5e))
