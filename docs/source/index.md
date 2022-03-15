@@ -49,13 +49,9 @@ maxdepth: 1
 hidden:
 ---
 
-API/rst
+API/md
 cli-api
 ```
-
-<!-- API/testrst -->
-<!-- API/testmd -->
-
 
 <!-- &ensp; &ensp;&ensp;&ensp; -->
 <!-- <span style="font-size:larger;">word</span> -->
