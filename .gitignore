@@ -30,6 +30,9 @@ bla*
 *.eggs
 
 
+./docs/build/
+
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

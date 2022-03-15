@@ -29,13 +29,16 @@ pandas = "^1.4.0"
 # below `extras`. They can be opted into by apps.
 # can be installed as e.g. poetry install --extras "all"
 metadmg-viz = {version = "^0.11.0", optional = true}
+
 Sphinx = {version = "^4.4.0", optional = true}
 sphinx-rtd-theme = {version = "^1.0.0", optional = true}
 sphinxcontrib-napoleon = {version = "^0.7", optional = true}
+sphinx-click = {version = "^3.1.0", optional = true}
+myst-parser = {version = "^0.17.0", optional = true}
 
 [tool.poetry.extras]
 viz = ["metaDMG-viz"]
-docs = ["Sphinx", "sphinx-rtd-theme", "sphinxcontrib-napoleon"]
+docs = ["Sphinx", "sphinx-rtd-theme", "sphinxcontrib-napoleon", "sphinx-click", "myst-parser"]
 
 
 [tool.poetry.dev-dependencies]

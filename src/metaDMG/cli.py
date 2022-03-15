@@ -485,6 +485,8 @@ def mismatch_to_mapDamage(
 
 #%%
 
+typer_click_object = typer.main.get_command(cli_app)
+
 
 def cli_main():
     cli_app(prog_name="metaDMG")
