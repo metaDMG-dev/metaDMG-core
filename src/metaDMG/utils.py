@@ -13,11 +13,7 @@ from itertools import islice
 
 
 class Config(dict):
-    """Config contains the parameters related to specific alignment file.
-
-    Parameters
-    ----------
-    """
+    """Config contains the parameters related to specific alignment file."""
 
     pass
 
@@ -25,11 +21,6 @@ class Config(dict):
 class Configs(dict):
     """Configs contains the parameters related to config file.
     Inherits from dict. Implements iterations.
-
-    Parameters
-    ----------
-    dict :
-        Input dict.
     """
 
     def __iter__(self) -> Iterator[Config]:
@@ -66,7 +57,7 @@ class Configs(dict):
 
         Parameters
         ----------
-        n : int
+        n
             The index
 
         Returns
@@ -130,18 +121,17 @@ def make_configs(
 
     Parameters
     ----------
-    config_path : Optional[Path]
+    config_path
         The config file to load
-    log_port : Optional[int], optional
+    log_port, optional
         Optional log port, by default None
-    log_path : Optional[str], optional
+    log_path, optional
         Optional log path, by default None
-    forced : bool, optional
+    forced, optional
         Whether or not the computations are forced, by default False
 
     Returns
     -------
-    Configs
         An instance of Configs
 
     Raises
@@ -199,25 +189,24 @@ def extract_name(
     suffix: str = "",
     long_name: bool = False,
 ) -> str:
-    """Extract the name from a file.
+    """Extract the name from a file
 
     Parameters
     ----------
-    filename : Path
+    filename
         The input file
-    max_length : int, optional
+    max_length, optional
         The maximum length of the name, by default 100
-    prefix : str, optional
+    prefix, optional
         The prefix to be added to the name, by default ""
-    suffix : str, optional
+    suffix, optional
         The suffix to be added to the name, by default ""
-    long_name : bool, optional
+    long_name, optional
         Whether or not to use the full name, by default False
 
     Returns
     -------
-    str
-        Name
+        The name
     """
     name = Path(filename).stem
     if not long_name:
@@ -238,12 +227,11 @@ def extract_alignment_files(paths: list[Path]) -> list[Path]:
 
     Parameters
     ----------
-    paths : list[Path]
+    paths
         Input list of paths
 
     Returns
     -------
-    list[Path]
         Output list of alignment files
     """
     alignments = []
@@ -279,18 +267,17 @@ def extract_alignments(
 
     Parameters
     ----------
-    paths : list[Path]
+    paths
         List of paths to be extracted
-    prefix : str, optional
+    prefix, optional
         The prefix to be added to the name, by default ""
-    suffix : str, optional
+    suffix, optional
         The suffix to be added to the name, by default ""
-    long_name : bool, optional
+    long_name, optional
         Whether or not to use the full name, by default False
 
     Returns
     -------
-    dict
         Dictionary with names as keys and files as values.
     """
 
@@ -317,14 +304,13 @@ def paths_to_strings(
 
     Parameters
     ----------
-    d : dict
+    d
         Input dict to be converted
-    ignore_keys : Optional[Iterable], optional
+    ignore_keys, optional
         Ignore the following keys in the iterable, by default None
 
     Returns
     -------
-    dict
         Dictionary with strings instead of paths
     """
 
@@ -360,14 +346,13 @@ def get_results_dir(
 
     Parameters
     ----------
-    config_path : Optional[Path], optional
+    config_path, optional
         Config file, by default None
-    results_dir : Optional[Path], optional
+    results_dir, optional
         Results directory, by default None
 
     Returns
     -------
-    Path
         Path to the results directory
 
     Raises
