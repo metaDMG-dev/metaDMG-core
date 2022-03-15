@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v0.20.2 (2022-03-15)
+### Fix
+* Fix error with attrs / dataclass ([`8a507b9`](https://github.com/metaDMG/metaDMG/commit/8a507b9f81ea2860558b7923e90ba050f0d7da5e))
+
+### Documentation
+* Try to add docs ([`f683151`](https://github.com/metaDMG/metaDMG/commit/f6831512878f63d14cf2aafa9ca7b6c0ededc814))
+* Add docstrings ([`bbc6fd3`](https://github.com/metaDMG/metaDMG/commit/bbc6fd35f213e6470d15f444bd27e98f79dea5e6))
+
 ## v0.20.1 (2022-03-14)
 ### Fix
 * Use Python v3.9 ([`b93d97c`](https://github.com/metaDMG/metaDMG/commit/b93d97cee763d2c39c2b2e2b1050822ce2d38c08))
