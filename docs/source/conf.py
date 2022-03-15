@@ -41,6 +41,8 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx_click.ext",
     "myst_parser",  # to read markdown files
+    "sphinx_copybutton",
+    "autodocsumm",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -71,3 +73,7 @@ source_suffix = [".rst", ".md", ".ipynb"]
 master_doc = "index"
 
 myst_enable_extensions = ["dollarmath", "amsmath"]
+
+autodoc_default_options = {
+    "autosummary": True,
+}
