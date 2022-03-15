@@ -69,7 +69,7 @@ def create_config(
         help="Path to the (NCBI) acc2tax.gz.",
     ),
     metaDMG_cpp: str = typer.Option(
-        Path("./metaDMG-cpp"),
+        "./metaDMG-cpp",
         help="The command needed to run the metaDMG-lca program.",
     ),
     simscorelow: float = typer.Option(
