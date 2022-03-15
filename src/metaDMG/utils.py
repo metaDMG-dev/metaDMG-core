@@ -168,9 +168,16 @@ def make_configs(
     d.setdefault("damage_mode", "lca")
     d.setdefault("forced", False)
 
-    paths = ["names", "nodes", "acc2tax", "dir"]
+    paths = ["names", "nodes", "acc2tax", "dir", "config_path"]
     for path in paths:
         d[path] = Path(d[path])
+    for key, val in d["samples"].items():
+        d["samples"][key] = Path(val)
+
+    for key, val in d.items():
+        if isinstance(val, str):
+            if val.isdigit():
+                d[key] = int(key)
 
     return Configs(d)
 
@@ -331,8 +338,10 @@ def paths_to_strings(
             d_out[key] = tuple(map(str, val))
         elif isinstance(val, dict):
             d_out[key] = paths_to_strings(val)
-        else:
+        elif isinstance(val, Path):
             d_out[key] = str(val)
+        else:
+            d_out[key] = val
     return d_out
 
 
