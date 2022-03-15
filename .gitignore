@@ -204,3 +204,4 @@ config_simulation.yaml
 metadamage
 src/metaDMG/fit/fits.py
 .gitignore
+main.py
