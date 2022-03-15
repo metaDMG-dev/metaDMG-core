@@ -13,15 +13,18 @@ from itertools import islice
 
 
 class Config(dict):
+    """Config contains the parameters related to specific alignment file.
+
+    Parameters
+    ----------
+    """
+
     pass
 
 
 class Configs(dict):
-    """Configs is a class containing the parameters related to a configuration object.
-    Inherits from dict. Implements iterations, such that:
-    for config in configs:
-        pass
-    works.
+    """Configs contains the parameters related to config file.
+    Inherits from dict. Implements iterations.
 
     Parameters
     ----------

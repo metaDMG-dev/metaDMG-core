@@ -19,7 +19,6 @@ The documentation is structured as follows:
 
 ---
 
-
 ## API:
 
 - [CLI](cli-api)
@@ -50,6 +49,7 @@ maxdepth: 1
 hidden:
 ---
 
+API/test
 cli-api
 ```
 

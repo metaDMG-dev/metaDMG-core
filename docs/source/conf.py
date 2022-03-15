@@ -37,6 +37,7 @@ extensions = [
     "sphinx_rtd_theme",
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
+    "sphinx_autodoc_typehints",
     "sphinx.ext.githubpages",
     "sphinx_click.ext",
     "myst_parser",  # to read markdown files
