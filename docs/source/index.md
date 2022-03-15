@@ -49,10 +49,12 @@ maxdepth: 1
 hidden:
 ---
 
-API/test
+API/rst
 cli-api
 ```
 
+<!-- API/testrst -->
+<!-- API/testmd -->
 
 
 <!-- &ensp; &ensp;&ensp;&ensp; -->

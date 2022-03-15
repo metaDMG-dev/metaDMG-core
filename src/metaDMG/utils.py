@@ -123,11 +123,11 @@ def make_configs(
     ----------
     config_path
         The config file to load
-    log_port, optional
+    log_port
         Optional log port, by default None
-    log_path, optional
+    log_path
         Optional log path, by default None
-    forced, optional
+    forced
         Whether or not the computations are forced, by default False
 
     Returns
@@ -195,13 +195,13 @@ def extract_name(
     ----------
     filename
         The input file
-    max_length, optional
+    max_length
         The maximum length of the name, by default 100
-    prefix, optional
+    prefix
         The prefix to be added to the name, by default ""
-    suffix, optional
+    suffix
         The suffix to be added to the name, by default ""
-    long_name, optional
+    long_name
         Whether or not to use the full name, by default False
 
     Returns
@@ -263,17 +263,17 @@ def extract_alignments(
     long_name: bool = False,
 ) -> dict:
     """Extract all alignment files from a list of files.
-    Truncates the name of the files, controlled by prefix, suffix, and long_name.
+    Truncates the name of the files, controlled by prefix, suffix, and long_name
 
     Parameters
     ----------
     paths
         List of paths to be extracted
-    prefix, optional
+    prefix
         The prefix to be added to the name, by default ""
-    suffix, optional
+    suffix
         The suffix to be added to the name, by default ""
-    long_name, optional
+    long_name
         Whether or not to use the full name, by default False
 
     Returns
@@ -306,7 +306,7 @@ def paths_to_strings(
     ----------
     d
         Input dict to be converted
-    ignore_keys, optional
+    ignore_keys
         Ignore the following keys in the iterable, by default None
 
     Returns
@@ -346,9 +346,9 @@ def get_results_dir(
 
     Parameters
     ----------
-    config_path, optional
+    config_path
         Config file, by default None
-    results_dir, optional
+    results_dir
         Results directory, by default None
 
     Returns
