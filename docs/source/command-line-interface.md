@@ -1,4 +1,4 @@
-# CLI
+# Command Line Interface
 
 `metaDMG` has the following commands: `config`, `compute`, `dashboard`, `convert`,`filter`,`plot`.
 

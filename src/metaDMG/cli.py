@@ -25,17 +25,16 @@ def callback(
     """
     Welcome to metaDMG.
 
-    First run the LCA and compute the ancient damage statistics with the 'compute' command:
+    First generate a config file::
 
-    \b
         $ metaDMG config --help
 
-    \b
+    And then compute the ancient damage statistics::
+
         $ metaDMG compute --help
 
-    And subsequently visualise the results using the dashboard:
+    And subsequently visualise the results using the dashboard::
 
-    \b
         $ metaDMG dashboard --help
 
     """
@@ -287,14 +286,12 @@ def dashboard(
     """Visualise the results in an interactive dashboard.
     Requires metaDMG-viz to be installed.
 
-    run as e.g.:
+    run as e.g.::
 
-    \b
         $ metaDMG dashboard
 
-    or for another config than default:
+    or for another config than default::
 
-    \b
         $ metaDMG dashboard non-default-config.yaml --port 8050 --host 0.0.0.0 --debug
 
     """

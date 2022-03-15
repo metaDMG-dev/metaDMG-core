@@ -13,7 +13,7 @@ The documentation is structured as follows:
 
 - [Tutorial](tutorial): How to classify ancient taxa in a metagenomic sample.
 
-- [CLI](cli): The command line interface. See also XXX for full API documentation.
+- [Command Line Interface](command-line-interface): The command line interface.
 
 - [Results](results): Explanation of the fit results.
 
@@ -21,7 +21,7 @@ The documentation is structured as follows:
 
 ## API:
 
-- [CLI](cli-api)
+- [CLI](api-cli): Full API for the command line interface.
 
 
 For the source code, see [Github](https://github.com/metaDMG/metaDMG)
@@ -37,7 +37,7 @@ hidden:
 introduction
 getting-started
 tutorial
-cli
+command-line-interface
 results
 ```
 
@@ -49,8 +49,8 @@ maxdepth: 1
 hidden:
 ---
 
-API/md
-cli-api
+api-utils
+api-cli
 ```
 
 <!-- &ensp; &ensp;&ensp;&ensp; -->
