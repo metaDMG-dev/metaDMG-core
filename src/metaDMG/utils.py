@@ -1,13 +1,11 @@
 #%%
 from pathlib import Path
-from attr import dataclass
 import yaml
 import typer
 from logger_tt import logger
 import psutil
 from functools import partial
-from typing import Optional
-from typing import Iterator, Iterable
+from typing import Optional, Iterator, Iterable
 from itertools import islice
 
 
