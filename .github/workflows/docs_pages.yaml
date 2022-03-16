@@ -31,11 +31,11 @@ jobs:
         cd docs/
         poetry run make clean
         poetry run make html
-        poetry run sphinx-build -b html . _build
-        cp -r _build/* ../gh-pages/
-    - name: Deploy documentation
-      if: ${{ github.event_name == 'push' }}
-      uses: JamesIves/github-pages-deploy-action@v4.2.5
-      with:
-        branch: gh-pages
-        folder: gh-pages
+      # poetry run sphinx-build -b html . _build
+      # cp -r _build/* ../gh-pages/
+    # - name: Deploy documentation
+    #   if: ${{ github.event_name == 'push' }}
+    #   uses: JamesIves/github-pages-deploy-action@v4.2.5
+    #   with:
+    #     branch: gh-pages
+    #     folder: gh-pages
