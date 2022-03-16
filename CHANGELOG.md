@@ -2,6 +2,23 @@
 
 <!--next-version-placeholder-->
 
+## v0.20.4 (2022-03-16)
+### Fix
+* Fix issue with dashboard and old parquet files ([`0506d5a`](https://github.com/metaDMG/metaDMG/commit/0506d5a387c4b302389abc320d42a2af435d7eed))
+
+### Documentation
+* Fix permalink icon ([`271b912`](https://github.com/metaDMG/metaDMG/commit/271b9129737f7cb2b372ef6e4460cad5e193e00a))
+* Use sphinx_book_theme ([`0b3d377`](https://github.com/metaDMG/metaDMG/commit/0b3d377c9c559bac4725655cd7301f2c17d1cad7))
+* Add viewcode ([`980aa65`](https://github.com/metaDMG/metaDMG/commit/980aa65b8bce82eb3f02619960c69b6b90209e95))
+* Add auto doc summary ([`88345f8`](https://github.com/metaDMG/metaDMG/commit/88345f86cf8bc99f8944f470fd4a49268ccb2ebd))
+* Working version ([`d43b46e`](https://github.com/metaDMG/metaDMG/commit/d43b46ea3f835b33f3fdea48775f1243ea63b15d))
+* Add working autodoc for markdown ([`31212d6`](https://github.com/metaDMG/metaDMG/commit/31212d6b3f1e7bae8deedd8d99fc9b1b1cc46514))
+* Working autodocs ([`dacb0d2`](https://github.com/metaDMG/metaDMG/commit/dacb0d251e10dcf4dc604aeef0d29ae85b156edc))
+* Remove types from docstrings ([`1b24266`](https://github.com/metaDMG/metaDMG/commit/1b242660e8ab1f8e38eafcdc3d89e18485b4d86a))
+* Add autodocs for utils ([`7f31196`](https://github.com/metaDMG/metaDMG/commit/7f31196dc736132ccb3b083c56be9de9c10ff11e))
+* Update docs ([`6e0767a`](https://github.com/metaDMG/metaDMG/commit/6e0767a4a695f67509f6c8a231780d73b049e502))
+* Add first version of docs ([`72a23d9`](https://github.com/metaDMG/metaDMG/commit/72a23d949e7fc88a062d7207933d892a9627db60))
+
 ## v0.20.3 (2022-03-15)
 ### Fix
 * Improve Paths parsing ([`1ab3cd1`](https://github.com/metaDMG/metaDMG/commit/1ab3cd170bfb000ad64a8898b9f66c1fe5b5bf56))
