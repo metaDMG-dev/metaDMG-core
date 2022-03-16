@@ -2,8 +2,7 @@
 import typer
 from pathlib import Path
 from typing import Optional
-
-from metaDMG import cli_utils
+from metaDMG import cli_utils, utils
 
 cli_app = cli_utils.get_cli_app()
 
@@ -164,9 +163,6 @@ def create_config(
 ):
     """Generate the config file."""
 
-    import yaml
-    from metaDMG import utils
-
     if (damage_mode.lower() == "lca") and (
         any(x is None for x in [names, nodes, acc2tax])
     ):
@@ -207,16 +203,7 @@ def create_config(
         }
     )
 
-    if config_path.is_file():
-        s = "Config file already exists. Do you want to overwrite it?"
-        overwrite = typer.confirm(s)
-        if not overwrite:
-            typer.echo("Exiting")
-            raise typer.Abort()
-
-    with open(config_path, "w") as file:
-        yaml.dump(config, file, sort_keys=False)
-    typer.echo("Config file was created")
+    utils.save_config_file(config, config_path)
 
 
 #%%
@@ -237,14 +224,20 @@ def compute(
 ):
     """Compute the LCA and Ancient Damage given the configuration file."""
 
-    from metaDMG import utils
-    from metaDMG.fit import run_workflow, get_logger_port_and_path, setup_logger
+    utils.check_metaDMG_fit()
+
+    from metaDMG.fit import (
+        make_configs,
+        run_workflow,
+        get_logger_port_and_path,
+        setup_logger,
+    )
 
     log_port, log_path = get_logger_port_and_path()
 
     setup_logger(log_port=log_port, log_path=log_path)
 
-    configs = utils.make_configs(
+    configs = make_configs(
         config_path=config_path,
         log_port=log_port,
         log_path=log_path,
@@ -296,12 +289,9 @@ def dashboard(
 
     """
 
-    try:
-        from metaDMG_viz import start_dashboard  # type: ignore
-    except ModuleNotFoundError:
-        print("""metaDMG-viz has to be installed: pip install "metaDMG[all]" """)
-        typer.Abort()
+    utils.check_metaDMG_viz()
 
+    from metaDMG_viz import start_dashboard  # type: ignore
     from metaDMG.utils import get_results_dir
 
     results_dir = get_results_dir(
@@ -427,15 +417,12 @@ def plot(
 ):
     """Filter and save the results to either a combined csv or tsv file."""
 
-    from metaDMG.filters import load_results, filter_results
-    from metaDMG.utils import get_results_dir
+    utils.check_metaDMG_viz()
 
-    try:
-        from metaDMG_viz.figures import save_pdf_plots  # type: ignore
-        from metaDMG_viz.results import Results  # type: ignore
-    except ModuleNotFoundError:
-        print("""metaDMG-viz has to be installed: pip install "metaDMG[all]" """)
-        typer.Abort()
+    from metaDMG.filters import filter_results
+    from metaDMG.utils import get_results_dir
+    from metaDMG_viz.figures import save_pdf_plots  # type: ignore
+    from metaDMG_viz.results import Results  # type: ignore
 
     results_dir = get_results_dir(
         config_path=config_path,
@@ -475,6 +462,8 @@ def mismatch_to_mapDamage(
 ):
     """Convert the mismatch file to mapDamage misincorporation.txt format."""
 
+    utils.check_metaDMG_fit()
+
     from metaDMG.fit import mismatch_to_mapDamage
 
     mismatch_to_mapDamage.convert(filename=filename, csv_out=csv_out)
@@ -482,6 +471,7 @@ def mismatch_to_mapDamage(
 
 #%%
 
+# needed for sphinx documentation
 typer_click_object = typer.main.get_command(cli_app)
 
 

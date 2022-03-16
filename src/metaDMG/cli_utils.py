@@ -1,9 +1,9 @@
 from enum import Enum
 from typing import Iterable
-import click
-from click import Context
+from click import Context, Group
 from click_help_colors import HelpColorsCommand, HelpColorsGroup
 import typer
+
 
 #%%
 
@@ -39,7 +39,7 @@ class ColorfulApp(typer.Typer):
         return super().command(*args, cls=cls, **kwargs)
 
 
-class OrderedCommands(click.Group):
+class OrderedCommands(Group):
     def list_commands(self, ctx: Context) -> Iterable[str]:
         return self.commands.keys()
 
@@ -78,3 +78,7 @@ class DAMAGE_MODE(str, Enum):
     LCA = "lca"
     LOCAL = "local"
     GLOBAL = "global"
+
+
+#%%
+

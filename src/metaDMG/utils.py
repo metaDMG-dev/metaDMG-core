@@ -1,179 +1,15 @@
 #%%
+import numpy as np
+import pandas as pd
 from pathlib import Path
 import yaml
+from typing import Optional, Iterable
+from scipy.stats import betabinom as sp_betabinom
+import warnings
 import typer
-from logger_tt import logger
-import psutil
+from pathlib import Path
 from functools import partial
-from typing import Optional, Iterator, Iterable
-from itertools import islice
-
-
-#%%
-
-
-class Config(dict):
-    """Config contains the parameters related to specific alignment file."""
-
-    pass
-
-
-class Configs(dict):
-    """Configs contains the parameters related to config file.
-    Inherits from dict. Implements iterations.
-    """
-
-    def __iter__(self) -> Iterator[Config]:
-        """Iteration
-
-        Yields
-        ------
-        Iterator[Config]
-            Allow for iteration
-        """
-        dir_lca = self["dir"] / "lca"
-        samples = self["samples"].keys()
-        for sample in samples:
-            config = Config(self)
-            config["sample"] = sample
-            config["bam"] = config["samples"][sample]
-
-            config["path_mismatches_txt"] = dir_lca / f"{sample}.mismatches.txt.gz"
-
-            if config["damage_mode"] == "lca":
-                config["path_mismatches_stat"] = (
-                    dir_lca / f"{sample}.mismatches.stat.txt.gz"
-                )
-            else:
-                config["path_mismatches_stat"] = dir_lca / f"{sample}.stat.txt"
-
-            config["path_lca"] = dir_lca / f"{sample}.lca.txt.gz"
-            config["path_lca_log"] = dir_lca / f"{sample}.log.txt"
-            config["path_tmp"] = config["dir"] / "tmp" / sample
-            yield config
-
-    def get_nth(self, n: int) -> Config:
-        """Gets the n'th config
-
-        Parameters
-        ----------
-        n
-            The index
-
-        Returns
-        -------
-        Config
-            A single configuration
-        """
-        return next(islice(self, n, None))
-
-    def get_first(self) -> Config:
-        """Get the first config
-
-        Returns
-        -------
-        Config
-            A single configuration
-        """
-        return self.get_nth(n=0)
-
-    def __len__(self) -> int:
-        """The number of configs
-
-        Returns
-        -------
-        int
-            The number of configs
-        """
-        return len(self["samples"].keys())
-
-    def check_number_of_jobs(self) -> None:
-        """Compare the number of configs to the number of cores used."""
-
-        cores = min(self["cores"], len(self["samples"]))
-        cores_pr_fit = self["cores_pr_fit"]
-        N_jobs = cores * cores_pr_fit
-        max_cores = psutil.cpu_count(logical=True)
-        max_cores_real = psutil.cpu_count(logical=False)
-
-        if N_jobs > max_cores:
-            logger.warning(
-                f"The total number of jobs {N_jobs} are higher "
-                f"than the number of cores {max_cores}. "
-                f"Do not do this unless you know what you are doing. "
-                f"Try decreasing either 'cores' or 'cores-pr-fit'."
-            )
-        elif N_jobs > max_cores_real:
-            logger.info(
-                f"The total number of jobs {N_jobs} are higher "
-                f"than the real number of cores {max_cores_real} (non-logical). "
-                f"This might decrease performance. "
-            )
-
-
-def make_configs(
-    config_path: Optional[Path],
-    log_port: Optional[int] = None,
-    log_path: Optional[str] = None,
-    forced: bool = False,
-) -> Configs:
-    """Create an instance of Configs from a config file
-
-    Parameters
-    ----------
-    config_path
-        The config file to load
-    log_port
-        Optional log port, by default None
-    log_path
-        Optional log path, by default None
-    forced
-        Whether or not the computations are forced, by default False
-
-    Returns
-    -------
-        An instance of Configs
-
-    Raises
-    ------
-    typer.Abort
-        If not a proper config file
-    """
-
-    if config_path is None:
-        config_path = Path("config.yaml")
-
-    if not config_path.exists():
-        logger.error("Error! Please select a proper config file!")
-        raise typer.Abort()
-
-    logger.info(f"Using {config_path} as config file.")
-    with open(config_path, "r") as file:
-        d = yaml.safe_load(file)
-
-    d["log_port"] = log_port
-    d["log_path"] = log_path
-    if forced:
-        d["forced"] = True
-
-    d.setdefault("forward_only", False)
-    d.setdefault("cores_pr_fit", 1)
-    d.setdefault("damage_mode", "lca")
-    d.setdefault("forced", False)
-
-    paths = ["names", "nodes", "acc2tax", "dir", "config_path"]
-    for path in paths:
-        d[path] = Path(d[path])
-    for key, val in d["samples"].items():
-        d["samples"][key] = Path(val)
-
-    for key, val in d.items():
-        if isinstance(val, str):
-            if val.isdigit():
-                d[key] = int(key)
-
-    return Configs(d)
-
+import yaml
 
 #%%
 
@@ -337,6 +173,59 @@ def paths_to_strings(
 #%%
 
 
+def save_config_file(config: dict, config_path: Path) -> None:
+    """Save the config file.
+    Does not overwrite if file already exists, unless explicitly specified.
+
+    Parameters
+    ----------
+    config
+        _description_
+    config_path
+        _description_
+
+    Raises
+    ------
+    typer.Abort
+        _description_
+    """
+
+    if config_path.is_file():
+        s = "Config file already exists. Do you want to overwrite it?"
+        overwrite = typer.confirm(s)
+        if not overwrite:
+            typer.echo("Exiting")
+            raise typer.Abort()
+
+    with open(config_path, "w") as file:
+        yaml.dump(config, file, sort_keys=False)
+    typer.echo("Config file was created")
+
+
+#%%
+
+
+def check_metaDMG_fit():
+    try:
+        import metaDMG.fit
+
+    except ModuleNotFoundError:
+        print("""The 'fit' extras has to be installed: pip install "metaDMG[fit]" """)
+        raise typer.Abort()
+
+
+def check_metaDMG_viz():
+    try:
+        import metaDMG_viz  # type: ignore
+
+    except ModuleNotFoundError:
+        print("""The 'viz' extras has to be installed: pip install "metaDMG[viz]" """)
+        raise typer.Abort()
+
+
+#%%
+
+
 def get_results_dir(
     config_path: Optional[Path] = None,
     results_dir: Optional[Path] = None,
@@ -367,4 +256,74 @@ def get_results_dir(
     if results_dir:
         return results_dir
 
-    return make_configs(config_path)["dir"] / "results"
+    if config_path is None:
+        config_path = Path("config.yaml")
+
+    with open(config_path, "r") as file:
+        d = yaml.safe_load(file)
+
+    return Path(d["dir"]) / "results"
+
+
+#%%
+
+
+def get_single_fit_prediction(df_results):
+
+    Bayesian = any(["Bayesian" in column for column in df_results.columns])
+
+    if Bayesian:
+        prefix = "Bayesian_"
+    else:
+        prefix = ""
+
+    A = df_results[f"{prefix}A"].values
+    q = df_results[f"{prefix}q"].values
+    c = df_results[f"{prefix}c"].values
+    phi = df_results[f"{prefix}phi"].values
+
+    max_position = max(
+        [
+            int(name.split("+")[1])
+            for name in df_results.columns
+            if name.startswith("k+")
+        ]
+    )
+
+    x = np.hstack(
+        [np.arange(max_position) + 1, np.arange(-1, -max_position - 1, -1)]
+    ).reshape((-1, 1))
+
+    mask_N = [
+        (name.startswith("N+") or name.startswith("N-")) for name in df_results.columns
+    ]
+    N = df_results.iloc[:, mask_N].values
+
+    Dx = A * (1 - q) ** (np.abs(x) - 1) + c
+
+    alpha = Dx * phi
+    beta = (1 - Dx) * phi
+
+    dist = sp_betabinom(n=N, a=alpha.T, b=beta.T)
+
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore")
+        std = dist.std() / N
+
+    std[np.isnan(std)] = 0
+
+    df_Dx = pd.concat(
+        (
+            # pd.DataFrame(df_results.tax_id, columns=["tax_id"]),
+            pd.DataFrame(Dx.T, columns=[f"Dx{xi:+}" for xi in x.flatten()]),
+            pd.DataFrame(std, columns=[f"Dx_std{xi:+}" for xi in x.flatten()]),
+        ),
+        axis=1,
+    )
+
+    return df_Dx
+
+
+def append_fit_predictions(df_results):
+    df_Dx = get_single_fit_prediction(df_results)
+    return pd.concat((df_results.reset_index(drop=True), df_Dx), axis=1)
