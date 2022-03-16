@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.20.6 (2022-03-16)
+### Fix
+* Update dependencies (inlcuding dashboard= ([`003e0c8`](https://github.com/metaDMG/metaDMG/commit/003e0c8f119096aee3dca40e261e4e9036271623))
+
 ## v0.20.5 (2022-03-16)
 ### Fix
 * Update dependencies ([`222cfbf`](https://github.com/metaDMG/metaDMG/commit/222cfbf18d75e82d318b9f1fcb1060de480ded29))
