@@ -297,7 +297,7 @@ def dashboard(
     """
 
     try:
-        from metaDMG_viz import start_dashboard
+        from metaDMG_viz import start_dashboard  # type: ignore
     except ModuleNotFoundError:
         print("""metaDMG-viz has to be installed: pip install "metaDMG[all]" """)
         typer.Abort()
@@ -431,8 +431,8 @@ def plot(
     from metaDMG.utils import get_results_dir
 
     try:
-        from metaDMG_viz.figures import save_pdf_plots
-        from metaDMG_viz.results import Results
+        from metaDMG_viz.figures import save_pdf_plots  # type: ignore
+        from metaDMG_viz.results import Results  # type: ignore
     except ModuleNotFoundError:
         print("""metaDMG-viz has to be installed: pip install "metaDMG[all]" """)
         typer.Abort()
