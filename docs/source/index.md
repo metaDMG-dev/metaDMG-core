@@ -4,7 +4,6 @@
 This website documents the features and options available in metaDMG.
 
 The documentation is structured as follows:
-
 ## Documentation:
 
 - [Introduction](introduction): Introducton to the field of metagenomics and the problem of estimating damage in the case of ancient DNA.
@@ -17,12 +16,21 @@ The documentation is structured as follows:
 
 - [Results](results): Explanation of the fit results.
 
+```{margin} Look, some margin content!
+On wider screens, this content will pop out to the side!
+```
+
+````{margin} Code blocks in margins
+```python
+print("here is some python")
+```
+````
+
 ---
 
 ## API:
 
 - [CLI](api-cli): Full API for the command line interface.
-
 
 For the source code, see [Github](https://github.com/metaDMG/metaDMG)
 

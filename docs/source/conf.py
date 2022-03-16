@@ -47,7 +47,7 @@ extensions = [
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-# templates_path = ["_templates"]
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -60,20 +60,42 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_rtd_theme"
+# html_theme = "sphinx_rtd_theme"
 # html_theme = "furo"
+
+# sphinx_book_theme options
+
+html_theme = "sphinx_book_theme"
+
+html_theme_options = {
+    "repository_url": "https://github.com/metaDMG/metaDMG",
+    "use_repository_button": True,
+    # "logo_only": True,
+    "home_page_in_toc": True,
+    "show_navbar_depth": 2,  # left sidebar
+    # "toc_title": "Content:", # right sidebar
+    "show_toc_level": 1,
+}
+
+# html_logo = "path/to/myimage.png"
+html_title = "metaDMG"
 
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 # html_static_path = ["_static"]
+# html_css_files = ["custom.css"]
+
 
 source_suffix = [".rst", ".md", ".ipynb"]
 
 master_doc = "index"
 
-myst_enable_extensions = ["dollarmath", "amsmath"]
+myst_enable_extensions = [
+    "dollarmath",
+    "amsmath",
+]
 
 autodoc_default_options = {
     "autosummary": True,
