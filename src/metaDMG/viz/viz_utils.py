@@ -122,13 +122,16 @@ def log_transform_slider(x):
     return np.where(x < 0, 0, 10 ** np.clip(x, 0, a_max=None))
 
 
-def open_browser():
-    # webbrowser.open_new("http://localhost:8050")
-    webbrowser.open("http://localhost:8050")
+#%%
 
 
-def open_browser_in_background():
-    Timer(3, open_browser).start()
+def open_browser(port: int = 8050):
+    webbrowser.open(f"http://0.0.0.0:{port}")
+
+
+def open_browser_in_background(port: int = 8050):
+    Timer(3, open_browser, [port]).start()
+    # Timer(3, open_browser, [port]).start()
 
 
 #%%

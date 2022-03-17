@@ -297,14 +297,14 @@ def dashboard(
 
     utils.check_metaDMG_viz()
 
-    from metaDMG.viz import start_dashboard  # type: ignore
+    from metaDMG.viz import start_dashboard
 
     results_dir = utils.get_results_dir(
         config_path=config_path,
         results_dir=results,
     )
 
-    start_dashboard(  # type: ignore
+    start_dashboard(
         results_dir=results_dir,
         debug=debug,
         host=host,
@@ -428,15 +428,15 @@ def plot(
 
     from metaDMG.filters import filter_results
     from metaDMG.utils import get_results_dir
-    from metaDMG.viz.figures import save_pdf_plots  # type: ignore
-    from metaDMG.viz.results import Results  # type: ignore
+    from metaDMG.viz.figures import save_pdf_plots
+    from metaDMG.viz.results import Results
 
     results_dir = get_results_dir(
         config_path=config_path,
         results_dir=results_dir,
     )
 
-    results = Results(results_dir)  # type: ignore
+    results = Results(results_dir)
 
     if tax_ids:
         tax_ids_list = list(map(int, tax_ids.split(", ")))
