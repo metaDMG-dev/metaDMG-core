@@ -24,7 +24,10 @@ repos:
     rev: v4.0.1
     hooks:
       - id: trailing-whitespace
-        exclude: ^tests/.*/fixtures/.*
       - id: end-of-file-fixer
-        exclude: ^tests/.*/fixtures/.*
+      - id: check-yaml
       - id: debug-statements
+      - id: check-added-large-files
+        name: Check for added large files
+        description: Prevent giant files from being committed
+        args: ['--maxkb=10000'] # 10 mb
