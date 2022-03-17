@@ -2,6 +2,19 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.0 (2022-03-17)
+### Feature
+* Merge viz (dashboard) ([`28e56bc`](https://github.com/metaDMG/metaDMG/commit/28e56bc0007a3b0c05c747adabf897b218e28f67))
+* Add slimmer base install of metaDMG (with fit, viz, and all as extras) ([`75b4ecc`](https://github.com/metaDMG/metaDMG/commit/75b4ecc3879d340260a5d4764aa088c738819107))
+* Change default install ([`d8cc434`](https://github.com/metaDMG/metaDMG/commit/d8cc434585ccd597d5f19d7ddeb7d5e4af43d506))
+* Make fitting part of package optional ([`5efd447`](https://github.com/metaDMG/metaDMG/commit/5efd447a92a0a0f78e3ebfefa880df9d782c7e44))
+
+### Fix
+* Try to fix action ([`6c736a0`](https://github.com/metaDMG/metaDMG/commit/6c736a0314daf434704cd9321d617f932d4b5804))
+* Fix actions ([`e1e6e8d`](https://github.com/metaDMG/metaDMG/commit/e1e6e8d5bb53fc448ca9491f6aac7cdfef20d573))
+* Disable auto-reloading in dashboard to allow for debugging ([`8a4e845`](https://github.com/metaDMG/metaDMG/commit/8a4e8453f93b98c9869f9144ed87268727a77305))
+* Move CLI-related code to cli folder ([`6ad0293`](https://github.com/metaDMG/metaDMG/commit/6ad0293d8f684deee20a11e6093527a6154d21b1))
+
 ## v0.20.6 (2022-03-16)
 ### Fix
 * Update dependencies (inlcuding dashboard= ([`003e0c8`](https://github.com/metaDMG/metaDMG/commit/003e0c8f119096aee3dca40e261e4e9036271623))
