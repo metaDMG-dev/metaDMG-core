@@ -1,5 +1,6 @@
-from typing import Optional
 from pathlib import Path
+from typing import Optional
+
 from metaDMG.viz import app, viz_utils
 
 

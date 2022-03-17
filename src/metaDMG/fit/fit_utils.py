@@ -1,12 +1,13 @@
 import math
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
+import yaml
 from iminuit import describe
 from numba import njit
 from scipy.special import erf, erfinv
 from scipy.stats import chi2 as sp_chi2
-import yaml
-from pathlib import Path
 
 
 #%%
@@ -20,11 +21,12 @@ for ref in ACTG:
 
 #%%
 
-from logger_tt import logger
-import psutil
-from typing import Optional, Iterator, Iterable
 from itertools import islice
+from typing import Iterable, Iterator, Optional
+
+import psutil
 import typer
+from logger_tt import logger
 
 
 class Config(dict):

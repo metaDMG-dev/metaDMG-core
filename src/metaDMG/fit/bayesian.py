@@ -1,15 +1,16 @@
 #%%
-from jax import jit
 import jax.numpy as jnp
-from jax.random import PRNGKey as Key
 import numpy as np
 import numpyro
-from numpyro import distributions as dist
-from numpyro.infer import log_likelihood, MCMC, NUTS, Predictive
 import pandas as pd
-from scipy.special import logsumexp
-from metaDMG.fit import fit_utils
+from jax import jit
+from jax.random import PRNGKey as Key
 from numba import njit
+from numpyro import distributions as dist
+from numpyro.infer import MCMC, NUTS, Predictive, log_likelihood
+from scipy.special import logsumexp
+
+from metaDMG.fit import fit_utils
 
 
 #%%

@@ -1,8 +1,10 @@
 # from multiprocessing import Pool
 from concurrent.futures import ProcessPoolExecutor as Pool
-from logger_tt import logger
 from datetime import datetime
-from metaDMG.fit import serial, fit_utils
+
+from logger_tt import logger
+
+from metaDMG.fit import fit_utils, serial
 from metaDMG.utils import Configs
 
 

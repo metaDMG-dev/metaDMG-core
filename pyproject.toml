@@ -46,7 +46,6 @@ sphinxcontrib-napoleon = {version = "^0.7", optional = true}
 myst-parser = {version = "^0.17.0", optional = true}
 autodocsumm = {version = "^0.2.7", optional = true}
 
-# new packages that needs sorting
 
 
 # extras:
@@ -112,23 +111,13 @@ python-semantic-release = "^7.24.0"
 pytest = "^6.2.5"
 pytest-cov = "^3.0.0"
 notebook = "^6.4.8"
-
-
-
-# [tool.poetry.build]
-# generate-setup-file = false
-# script = "build.py"
+isort = "^5.10.1"
 
 
 [build-system]
-requires = ["poetry-core>=1.1.0a6"]
-# requires = ["setuptools", "poetry_core>=1.0"]
-
+# requires = ["poetry-core>=1.1.0a6"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
-
-# [build-system]
-# requires = ["poetry-core>=1.0.0"]
-# build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 metaDMG = "metaDMG.cli.cli:cli_main"
@@ -143,19 +132,9 @@ upload_to_pypi = false                      # don't auto-upload to PyPI
 remove_dist = false                         # don't remove dists
 major_on_zero = false                       # keeps the major version at 0
 
-
-# [tool.poe.tasks]
-# clean = """
-# # Multiline commands including comments work too. Unescaped whitespace is ignored.
-# rm -rf .coverage
-#        .mypy_cache
-#        .pytest_cache
-#        dist
-#        ./**/__pycache__
-# """
-# format = "black ."  # strings are interpreted as commands by default
-# _build = "poetry build"
-# _publish = "poetry publish"
-# version = { "shell" = "poetry version $(git describe --tags --abbrev=0)" }
-# build = ["version", "_build"]
-# release = ["clean", "format", "build", "_publish"]
+[tool.isort]
+profile = "black"
+include_trailing_comma = true
+lines_after_imports = 2
+use_parentheses = true
+known_first_party = "metaDMG"

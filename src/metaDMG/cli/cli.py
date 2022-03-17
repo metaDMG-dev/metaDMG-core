@@ -1,8 +1,11 @@
 #%%
-import typer
 from pathlib import Path
 from typing import Optional
+
+import typer
+
 from metaDMG.cli import cli_utils
+
 
 cli_app = cli_utils.get_cli_app()
 
@@ -231,9 +234,9 @@ def compute(
     utils.check_metaDMG_fit()
 
     from metaDMG.fit import (
+        get_logger_port_and_path,
         make_configs,
         run_workflow,
-        get_logger_port_and_path,
         setup_logger,
     )
 

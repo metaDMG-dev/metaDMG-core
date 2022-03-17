@@ -1,13 +1,16 @@
 import matplotlib
 
+
 matplotlib.use("Agg")
 
-from dash.exceptions import PreventUpdate
+import matplotlib.pyplot as plt
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
-import matplotlib.pyplot as plt
-from metaDMG.viz import viz_utils, figures
+from dash.exceptions import PreventUpdate
+
+from metaDMG.viz import figures, viz_utils
+
 
 #%%
 
@@ -636,8 +639,8 @@ def count_all_plots(df, results):
 
 #%%
 
-from tqdm import tqdm
 from matplotlib.backends.backend_pdf import PdfPages
+from tqdm import tqdm
 
 
 def generate_plt_plots(df, results):

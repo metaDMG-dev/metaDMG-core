@@ -1,14 +1,17 @@
 #%%
-from collections import defaultdict
+import itertools
 import warnings
+from collections import defaultdict
+from multiprocessing import Pool
+
 import joblib
 import numpy as np
 import numpyro
 import pandas as pd
-from multiprocessing import Pool
-import itertools
 from logger_tt import logger
-from metaDMG.fit import bayesian, frequentist, fit_utils
+
+from metaDMG.fit import bayesian, fit_utils, frequentist
+
 
 numpyro.enable_x64()
 

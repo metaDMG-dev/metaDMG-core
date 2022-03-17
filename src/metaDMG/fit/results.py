@@ -1,10 +1,12 @@
 #%%
+import warnings
 from collections import defaultdict
+
 import numpy as np
 import pandas as pd
 from logger_tt import logger
 from scipy.stats import betabinom as sp_betabinom
-import warnings
+
 
 #%%
 

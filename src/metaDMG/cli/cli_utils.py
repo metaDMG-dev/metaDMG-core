@@ -1,8 +1,9 @@
 from enum import Enum
 from typing import Iterable
+
+import typer
 from click import Context, Group
 from click_help_colors import HelpColorsCommand, HelpColorsGroup
-import typer
 
 
 #%%

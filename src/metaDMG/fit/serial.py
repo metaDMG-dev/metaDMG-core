@@ -1,19 +1,21 @@
 #%%
-import pandas as pd
-from pathlib import Path
-import subprocess
 import shlex
 import shutil
-from logger_tt import logger
-from multiprocessing import current_process
+import subprocess
 
 # import json
 from collections import Counter
-from metaDMG.loggers.loggers import setup_logger
-from metaDMG.errors import metadamageError, Error, MismatchFileError
-from metaDMG.fit import mismatches, fits, results
-from metaDMG.utils import Config
+from multiprocessing import current_process
+from pathlib import Path
 from typing import Optional, Tuple
+
+import pandas as pd
+from logger_tt import logger
+
+from metaDMG.errors import Error, MismatchFileError, metadamageError
+from metaDMG.fit import fits, mismatches, results
+from metaDMG.loggers.loggers import setup_logger
+from metaDMG.utils import Config
 
 
 #%%

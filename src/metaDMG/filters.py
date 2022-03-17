@@ -1,5 +1,6 @@
 import pandas as pd
-from metaDMG.utils import get_results_dir, append_fit_predictions
+
+from metaDMG.utils import append_fit_predictions, get_results_dir
 
 
 def load_results(config_path=None, results_dir=None):

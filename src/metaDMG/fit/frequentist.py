@@ -1,13 +1,14 @@
 #%%
 import numpy as np
 from iminuit import Minuit
+from logger_tt import logger
 from numba import njit
 from scipy.stats import beta as sp_beta
 from scipy.stats import betabinom as sp_betabinom
 from scipy.stats import expon as sp_exponential
-from logger_tt import logger
 
 from metaDMG.fit import fit_utils
+
 
 #%%
 

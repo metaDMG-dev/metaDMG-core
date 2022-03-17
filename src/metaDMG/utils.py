@@ -1,15 +1,15 @@
 #%%
+import warnings
+from functools import partial
+from pathlib import Path
+from typing import Iterable, Optional
+
 import numpy as np
 import pandas as pd
-from pathlib import Path
-import yaml
-from typing import Optional, Iterable
-from scipy.stats import betabinom as sp_betabinom
-import warnings
 import typer
-from pathlib import Path
-from functools import partial
 import yaml
+from scipy.stats import betabinom as sp_betabinom
+
 
 #%%
 

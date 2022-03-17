@@ -1,8 +1,9 @@
+import warnings
 from pathlib import Path
+
 import numpy as np
 import pandas as pd
 from scipy.stats import betabinom as sp_betabinom
-import warnings
 
 from metaDMG.viz import viz_utils
 

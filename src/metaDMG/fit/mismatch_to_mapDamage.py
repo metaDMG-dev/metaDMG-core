@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 
-from metaDMG.fit import mismatches
 from metaDMG import __version__ as version
+from metaDMG.fit import mismatches
 
 
 def df_mismatch_to_mapDamage(df_mismatch):

@@ -1,9 +1,10 @@
 import itertools
-import numpy as np
-import dash_bootstrap_components as dbc
-from dash import html, dcc
 
-from metaDMG.viz import viz_utils, figures
+import dash_bootstrap_components as dbc
+import numpy as np
+from dash import dcc, html
+
+from metaDMG.viz import figures, viz_utils
 
 
 #%%

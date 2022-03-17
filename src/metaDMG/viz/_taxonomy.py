@@ -1,6 +1,8 @@
 from pathlib import Path
+
 from ete3 import NCBITaxa
 from joblib import Memory
+
 
 cachedir = ".memoization"
 memory = Memory(cachedir, verbose=0)

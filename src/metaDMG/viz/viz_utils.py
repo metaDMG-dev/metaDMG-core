@@ -1,15 +1,17 @@
-from collections import namedtuple
-from threading import Timer
 import webbrowser
-from PIL import ImageColor
-from dash.exceptions import PreventUpdate
-from dash import dcc
+from collections import namedtuple
+from distutils.spawn import find_executable
+from importlib import resources
+from pathlib import Path
+from threading import Timer
+
 import numpy as np
 import plotly.graph_objects as go
 import plotly.io as pio
-from pathlib import Path
-from importlib import resources
-from distutils.spawn import find_executable
+from dash import dcc
+from dash.exceptions import PreventUpdate
+from PIL import ImageColor
+
 
 #%%
 

@@ -1,14 +1,15 @@
-import pandas as pd
 from pathlib import Path
-import dash
-from dash import html, dcc, Input, Output, State, MATCH, ALL
-from dash.exceptions import PreventUpdate
-import dash_bootstrap_components as dbc
 
-from dash.long_callback import DiskcacheLongCallbackManager
+import dash
+import dash_bootstrap_components as dbc
 import diskcache
+import pandas as pd
+from dash import ALL, MATCH, Input, Output, State, dcc, html
+from dash.exceptions import PreventUpdate
+from dash.long_callback import DiskcacheLongCallbackManager
+
+from metaDMG.viz import content, figures, viz_utils
 from metaDMG.viz.results import Results
-from metaDMG.viz import viz_utils, figures, content
 
 
 def get_app(results_dir):

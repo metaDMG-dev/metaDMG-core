@@ -1,9 +1,11 @@
 import numpy as np
 import pandas as pd
+
 from metaDMG.errors import MismatchFileError
 
 #
 from metaDMG.fit import fit_utils
+
 
 columns = [
     "tax_id",
