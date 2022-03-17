@@ -291,7 +291,7 @@ def dashboard(
 
     utils.check_metaDMG_viz()
 
-    from metaDMG_viz import start_dashboard  # type: ignore
+    from metaDMG.viz import start_dashboard  # type: ignore
     from metaDMG.utils import get_results_dir
 
     results_dir = get_results_dir(
@@ -421,8 +421,8 @@ def plot(
 
     from metaDMG.filters import filter_results
     from metaDMG.utils import get_results_dir
-    from metaDMG_viz.figures import save_pdf_plots  # type: ignore
-    from metaDMG_viz.results import Results  # type: ignore
+    from metaDMG.viz.figures import save_pdf_plots  # type: ignore
+    from metaDMG.viz.results import Results  # type: ignore
 
     results_dir = get_results_dir(
         config_path=config_path,
