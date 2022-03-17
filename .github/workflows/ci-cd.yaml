@@ -29,7 +29,7 @@ jobs:
         python-version: 3.9
 
     - name: Check out repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
     # install & configure poetry
     - name: Install Poetry
@@ -43,7 +43,7 @@ jobs:
     # load cached venv if cache exists
     - name: Load cached venv
       id: cached-poetry-dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v2
       with:
         path: .venv
         key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
