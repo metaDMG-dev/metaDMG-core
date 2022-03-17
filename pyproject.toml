@@ -1,15 +1,16 @@
 [tool.poetry]
 name = "metaDMG"
-version = "0.20.6"
+version = "0.20.7"
 description = "metaDMG: Estimating ancient damage in (meta)genomic DNA rapidly"
 authors = ["Christian Michelsen <christianmichelsen@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [{ include = "metaDMG", from = "src" }]
+# homepage = "https://pendulum.eustace.io"
 repository = "https://github.com/metaDMG/metaDMG/"
+packages = [{ include = "metaDMG", from = "src" }]
 
 # poetry install
-# poetry install --with dev,fit,viz
+# poetry install --without dev
 [tool.poetry.dependencies]
 python = ">=3.9,<3.11"
 typer = "^0.4.0"
@@ -18,44 +19,64 @@ PyYAML = "^6.0"
 pandas = "^1.4.1"
 scipy = "^1.8.0"
 pyarrow = "^7.0.0"
-
-# fit related packages: poetry install --with fit
-[tool.poetry.group.fit]
-optional = true
-[tool.poetry.group.fit.dependencies]
-logger-tt = "^1.7.0"
-iminuit = "^2.10.0"
-numpyro = "^0.9.1"
-joblib = "^1.1.0"
-psutil = "^5.9.0"
-numba = "^0.55.1"
-
-# viz related packages poetry install --with viz
-[tool.poetry.group.viz]
-optional = true
-[tool.poetry.group.viz.dependencies]
-metadmg-viz = "^0.12.0"
-
-# docs related packages: poetry install --with docs
-[tool.poetry.group.docs]
-optional = true
-[tool.poetry.group.docs.dependencies]
-Sphinx = "^4.4.0"
-sphinx-rtd-theme = "^1.0.0"
-sphinxcontrib-napoleon = "^0.7"
-sphinx-click = "^3.1.0"
-myst-parser = "^0.17.0"
-sphinx-autodoc-typehints = "^1.17.0"
-sphinx-copybutton = "^0.5.0"
-autodocsumm = "^0.2.7"
-sphinx-book-theme = "^0.2.0"
-
 # scipy = { version = "^1.7.3", python = ">=3.9,<3.11" }
 
-# if without dev: poetry install --with dev
-[tool.poetry.group.dev]
-optional = true
-[tool.poetry.group.dev.dependencies]
+# Fit related packages
+logger-tt = {version = "^1.7.0", optional = true}
+iminuit = {version = "^2.10.0", optional = true}
+numpyro = {version = "^0.9.1", optional = true}
+joblib = {version = "^1.1.0", optional = true}
+psutil = {version = "^5.9.0", optional = true}
+numba = {version = "^0.55.1", optional = true}
+
+# Viz related packages
+metadmg-viz = {version = "^0.12.0", optional = true}
+
+# docs related packages
+Sphinx = {version = "^4.4.0", optional = true}
+sphinx-click = {version = "^3.1.0", optional = true}
+sphinx-autodoc-typehints = {version = "^1.17.0", optional = true}
+sphinx-copybutton = {version = "^0.5.0", optional = true}
+sphinx-book-theme = {version = "^0.2.0", optional = true}
+sphinxcontrib-napoleon = {version = "^0.7", optional = true}
+myst-parser = {version = "^0.17.0", optional = true}
+autodocsumm = {version = "^0.2.7", optional = true}
+
+[tool.poetry.extras]
+fit = [
+    "logger-tt",
+    "iminuit",
+    "numpyro",
+    "joblib",
+    "psutil",
+    "numba",
+]
+viz = [
+    "metaDMG-viz",
+]
+all = [
+    "logger-tt",
+    "iminuit",
+    "numpyro",
+    "joblib",
+    "psutil",
+    "numba",
+    "metaDMG-viz",
+]
+docs = [
+    "Sphinx",
+    "sphinx-click",
+    "sphinx-autodoc-typehints",
+    "sphinx-copybutton",
+    "sphinx-book-theme",
+    "sphinxcontrib-napoleon",
+    "myst-parser",
+    "autodocsumm",
+]
+
+
+
+[tool.poetry.dev-dependencies]
 pylint = "^2.12.2"
 flake8 = "^4.0.1"
 black = "^22.1.0"
