@@ -47,6 +47,10 @@ jobs:
         path: .venv
         key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
 
+    # update lock file dependencies if cache does not exist
+    - name: Update .lock file
+      run: poetry update
+
     # install dependencies if cache does not exist
     - name: Install dependencies
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
