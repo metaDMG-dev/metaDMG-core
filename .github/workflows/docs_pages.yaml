@@ -23,7 +23,7 @@ jobs:
         python-version: 3.9
     - uses: abatilo/actions-poetry@v2.1.3
     - name: install
-      run: poetry install --extras docs
+      run: poetry install --with docs
     - name: Build documentation
       run: |
         mkdir gh-pages

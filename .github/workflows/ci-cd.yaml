@@ -29,7 +29,7 @@ jobs:
         python-version: 3.9
 
     - name: Check out repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     # install & configure poetry
     - name: Install Poetry
@@ -43,7 +43,7 @@ jobs:
     # load cached venv if cache exists
     - name: Load cached venv
       id: cached-poetry-dependencies
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .venv
         key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
@@ -55,11 +55,11 @@ jobs:
     # install dependencies if cache does not exist
     - name: Install dependencies
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      run: poetry install --no-interaction --no-root
+      run: poetry install --only default,lint,test
 
     # install your root project, if required
     - name: Install library
-      run: poetry install --no-interaction
+      run: poetry install --with default,lint,test
 
     - name: Format with Black
       run: poetry run black .
@@ -104,7 +104,7 @@ jobs:
         python-version: 3.9
 
     # Step 3. Check-out repository so we can access its contents
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
