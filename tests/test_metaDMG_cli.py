@@ -1,6 +1,6 @@
 from metaDMG import __version__
 from typer.testing import CliRunner
-from metaDMG.cli import cli_app
+from metaDMG.cli.cli import cli_app
 
 
 def test_version():

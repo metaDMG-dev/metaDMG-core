@@ -2,7 +2,7 @@
 import typer
 from pathlib import Path
 from typing import Optional
-from metaDMG import cli_utils, utils
+from metaDMG.cli import cli_utils
 
 cli_app = cli_utils.get_cli_app()
 
@@ -169,6 +169,8 @@ def create_config(
         typer.echo("--names, --nodes, and --acc2tax are mandatory when doing LCA.")
         raise typer.Exit(code=1)
 
+    from metaDMG import utils
+
     config = utils.paths_to_strings(
         {
             "samples": utils.extract_alignments(
@@ -223,6 +225,8 @@ def compute(
     ),
 ):
     """Compute the LCA and Ancient Damage given the configuration file."""
+
+    from metaDMG import utils
 
     utils.check_metaDMG_fit()
 
@@ -289,12 +293,13 @@ def dashboard(
 
     """
 
+    from metaDMG import utils
+
     utils.check_metaDMG_viz()
 
     from metaDMG.viz import start_dashboard  # type: ignore
-    from metaDMG.utils import get_results_dir
 
-    results_dir = get_results_dir(
+    results_dir = utils.get_results_dir(
         config_path=config_path,
         results_dir=results,
     )
@@ -417,6 +422,8 @@ def plot(
 ):
     """Filter and save the results to either a combined csv or tsv file."""
 
+    from metaDMG import utils
+
     utils.check_metaDMG_viz()
 
     from metaDMG.filters import filter_results
@@ -461,6 +468,8 @@ def mismatch_to_mapDamage(
     ),
 ):
     """Convert the mismatch file to mapDamage misincorporation.txt format."""
+
+    from metaDMG import utils
 
     utils.check_metaDMG_fit()
 
