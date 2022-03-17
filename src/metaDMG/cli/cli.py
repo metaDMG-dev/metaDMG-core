@@ -281,7 +281,6 @@ def dashboard(
     ),
 ):
     """Visualise the results in an interactive dashboard.
-    Requires metaDMG-viz to be installed.
 
     run as e.g.::
 

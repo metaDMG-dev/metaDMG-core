@@ -216,7 +216,7 @@ def check_metaDMG_fit():
 
 def check_metaDMG_viz():
     try:
-        import metaDMG.viz  
+        import metaDMG.viz
 
     except ModuleNotFoundError:
         print("""The 'viz' extras has to be installed: pip install "metaDMG[viz]" """)

@@ -35,7 +35,6 @@ pip install "metaDMG[all]"  --upgrade
 With Poetry:
 ```console
 poetry add metaDMG["all"]
-poetry add metaDMG-viz@latest
 ```
 
 ## Workflow
