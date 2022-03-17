@@ -113,7 +113,7 @@ def make_figure(
         hovertemplate=results.hovertemplate,
         marker_line_width=0,
         marker_sizemode="area",
-        marker_sizeref=2.0 * results.max_of_size / (results.marker_size**2),
+        marker_sizeref=2.0 * results.max_of_size / (results.marker_size ** 2),
     )
 
     fig.update_layout(

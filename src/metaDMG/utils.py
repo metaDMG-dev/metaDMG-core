@@ -283,11 +283,7 @@ def get_single_fit_prediction(df_results):
     phi = df_results[f"{prefix}phi"].values
 
     max_position = max(
-        [
-            int(name.split("+")[1])
-            for name in df_results.columns
-            if name.startswith("k+")
-        ]
+        int(name.split("+")[1]) for name in df_results.columns if name.startswith("k+")
     )
 
     x = np.hstack(

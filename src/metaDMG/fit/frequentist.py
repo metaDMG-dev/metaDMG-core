@@ -612,7 +612,7 @@ def make_forward_reverse_fits(fit_result, data, sample, tax_id):
         fit_result[f"{var}"] = getattr(fit_all, var)
 
     numerator = fit_forward.D_max - fit_reverse.D_max
-    delimiter = np.sqrt(fit_forward.D_max_std**2 + fit_reverse.D_max_std**2)
+    delimiter = np.sqrt(fit_forward.D_max_std ** 2 + fit_reverse.D_max_std ** 2)
     fit_result["asymmetry"] = np.abs(numerator) / delimiter
 
     for var in vars_to_keep:

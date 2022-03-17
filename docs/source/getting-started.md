@@ -66,4 +66,3 @@ The results are saved in `{storage-dir}/results` directory (`data/results` by de
 ```console
 $ metaDMG dashboard
 ```
-
