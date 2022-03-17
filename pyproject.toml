@@ -59,6 +59,7 @@ optional = true
 [tool.poetry.group.test.dependencies]
 pytest = "^6.2.5"
 pytest-cov = "^3.0.0"
+coverage = "^6.3.2"
 
 [tool.poetry.group.release]
 optional = true
