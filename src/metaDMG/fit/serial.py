@@ -14,8 +14,8 @@ from logger_tt import logger
 
 from metaDMG.errors import Error, MismatchFileError, metadamageError
 from metaDMG.fit import fits, mismatches, results
+from metaDMG.fit.fit_utils import Config
 from metaDMG.loggers.loggers import setup_logger
-from metaDMG.utils import Config
 
 
 #%%
@@ -437,10 +437,7 @@ def get_df_results(
 #%%
 
 
-def run_single_config(
-    config: Config,
-) -> Optional[Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]:
-
+def _setup_logger(config: Config) -> None:
     # if not main process (and haven't been initialized before)
     name = current_process().name
     if "SpawnPoolWorker" in name or "SpawnProcess" in name:
@@ -448,11 +445,32 @@ def run_single_config(
             log_port=config["log_port"],
             log_path=config["log_path"],
         )
-
     current_process().name = config["sample"]
 
-    if not Path(config["bam"]).is_file():
+
+def BAM_file_is_valid(config: Config) -> bool:
+
+    if not config["bam"].is_file():
         logger.error(f"The sample bam file does not exist: {config['bam']}.")
+        return False
+
+    if config["bam"].stat().st_size == 0:
+        logger.error(f"The sample bam file is of size 0: {config['bam']}.")
+        return False
+
+    return True
+
+
+#%%
+
+
+def run_single_config(
+    config: Config,
+) -> Optional[Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]:
+
+    _setup_logger(config)
+
+    if not BAM_file_is_valid(config):
         return None
 
     forced = config["forced"]

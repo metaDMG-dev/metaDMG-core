@@ -5,10 +5,9 @@ from datetime import datetime
 from logger_tt import logger
 
 from metaDMG.fit import fit_utils, serial
-from metaDMG.utils import Configs
 
 
-def run_workflow(configs: Configs):
+def run_workflow(configs: fit_utils.Configs):
 
     cores = min(configs["cores"], len(configs))
 
