@@ -55,11 +55,11 @@ jobs:
     # install dependencies if cache does not exist
     - name: Install dependencies
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      run: poetry install --only default,lint,test,release
+      run: poetry install --only default,lint,test,release --extras fit --extras viz
 
     # install your root project
     - name: Install library
-      run: poetry install --with default,lint,test,release
+      run: poetry install --with default,lint,test,release --extras fit --extras viz
 
     - name: Format with Black
       run: poetry run black .

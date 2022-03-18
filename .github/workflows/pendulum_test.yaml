@@ -81,7 +81,7 @@ jobs:
 
       - name: Install test dependencies
         shell: bash
-        run: poetry install --with test
+        run: poetry install --with test --extras fit --extras viz
 
       - name: Test
         shell: bash
