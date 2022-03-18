@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.3 (2022-03-18)
+### Fix
+* Check BAM size ([`982d2d4`](https://github.com/metaDMG/metaDMG/commit/982d2d4a62522e76a91bec8e1930b7d9e9bf1567))
+
 ## v0.21.2 (2022-03-18)
 ### Fix
 * Update Poetry in pendulum action ([`8dc6d8c`](https://github.com/metaDMG/metaDMG/commit/8dc6d8c1f8443d3c7a717e6af812447b17f13b96))
