@@ -18,16 +18,16 @@ def clean_test_dir() -> None:
 
     print("Cleaning")
 
-    utils.remove_directory("tests/data/", missing_ok=True)
-    utils.remove_directory("tests/logs/", missing_ok=True)
+    utils.remove_directory(Path("tests") / "data", missing_ok=True)
+    utils.remove_directory(Path("tests") / "logs", missing_ok=True)
 
-    for file in Path(".").glob("*.yaml"):
+    for file in Path("tests").glob("config_*.yaml"):
         utils.remove_file(file)
 
-    for file in Path(".").glob("*.csv"):
+    for file in Path("tests").glob("*.csv"):
         utils.remove_file(file)
 
-    for file in Path(".").glob("*.pdf"):
+    for file in Path("tests").glob("*.pdf"):
         utils.remove_file(file)
 
 
@@ -53,6 +53,12 @@ def test_CLI_config_LCA_without_names():
     assert "are mandatory when doing" in result.stdout
 
 
+config_lca_path = Path("tests") / "config_lca.yaml"
+csv_convert_path = Path("tests") / "out-convert.csv"
+csv_convert_with_preds_path = Path("tests") / "out-convert-with-predictions.csv"
+csv_filter_path = Path("tests") / "out-filter.csv"
+pdf_plot_path = Path("tests") / "pdf_export.pdf"
+
 LCA_commands = [
     "config",
     "tests/testdata/alignment.bam",
@@ -67,7 +73,7 @@ LCA_commands = [
     "--fix-ncbi",  # is not a NCBI database, so do not fix
     "0",
     "--config-path",
-    "config_lca.yaml",
+    str(config_lca_path),
 ]
 
 
@@ -117,7 +123,7 @@ def test_CLI_compute_bad2():
 
 
 def test_CLI_compute():
-    result = runner.invoke(cli_app, ["compute", "config_lca.yaml"])
+    result = runner.invoke(cli_app, ["compute", str(config_lca_path)])
     assert result.exit_code == 0
 
 
@@ -128,7 +134,7 @@ def test_CLI_dashboard_bad():
 
 # # CANNOT TEST WORKING DASHBOARD CLI
 # def test_CLI_dashboard():
-#     result = runner.invoke(cli_app, ["dashboard", "config_lca.yaml"])
+#     result = runner.invoke(cli_app, ["dashboard", str(config_lca_path)])
 #     assert result.exit_code == 0
 
 
@@ -139,13 +145,13 @@ def test_CLI_convert_bad1():
 
 
 def test_CLI_convert_bad2():
-    result = runner.invoke(cli_app, ["convert", "config_lca.yaml"])
+    result = runner.invoke(cli_app, ["convert", str(config_lca_path)])
     assert "Missing option '--output'" in result.stdout
     assert result.exit_code != 0
 
 
 def test_CLI_convert_bad3():
-    result = runner.invoke(cli_app, ["convert", "--output", "out-convert.csv"])
+    result = runner.invoke(cli_app, ["convert", "--output", str(csv_convert_path)])
     assert result.exit_code != 0
 
 
@@ -154,21 +160,19 @@ def test_CLI_convert1():
         cli_app,
         [
             "convert",
-            "config_lca.yaml",
+            str(config_lca_path),
             "--output",
-            "out-convert.csv",
+            str(csv_convert_path),
         ],
     )
     # no errors
     assert result.exit_code == 0
 
-    outfile = Path("out-convert.csv")
-
     # outfile exists
-    assert outfile.is_file()
+    assert csv_convert_path.is_file()
 
     # outfile is not empty
-    assert outfile.stat().st_size > 0
+    assert csv_convert_path.stat().st_size > 0
 
 
 def test_CLI_convert2():
@@ -176,26 +180,24 @@ def test_CLI_convert2():
         cli_app,
         [
             "convert",
-            "config_lca.yaml",
+            str(config_lca_path),
             "--output",
-            "out-convert-with-fit-predictions.csv",
+            str(csv_convert_with_preds_path),
             "--add-fit-predictions",
         ],
     )
     # no errors
     assert result.exit_code == 0
 
-    outfile = Path("out-convert-with-fit-predictions.csv")
-
     # outfile exists
-    assert outfile.is_file()
+    assert csv_convert_with_preds_path.is_file()
 
     # outfile is not empty
-    assert outfile.stat().st_size > 0
+    assert csv_convert_with_preds_path.stat().st_size > 0
 
     import pandas as pd
 
-    df = pd.read_csv(outfile)
+    df = pd.read_csv(csv_convert_with_preds_path)
     assert df.shape == (14, 223)
 
     assert "Dx+1" in df.columns
@@ -210,9 +212,9 @@ def test_CLI_filter():
         cli_app,
         [
             "filter",
-            "config_lca.yaml",
+            str(config_lca_path),
             "--output",
-            "out-filter.csv",
+            str(csv_filter_path),
             "--query",
             "N_reads > 10_000",
         ],
@@ -220,17 +222,15 @@ def test_CLI_filter():
     # no errors
     assert result.exit_code == 0
 
-    outfile = Path("out-filter.csv")
-
     # outfile exists
-    assert outfile.is_file()
+    assert csv_filter_path.is_file()
 
     # outfile is not empty
-    assert outfile.stat().st_size > 0
+    assert csv_filter_path.stat().st_size > 0
 
     import pandas as pd
 
-    df = pd.read_csv(outfile)
+    df = pd.read_csv(csv_filter_path)
     assert df.shape == (8, 163)
 
 
@@ -239,7 +239,7 @@ def test_CLI_plot():
         cli_app,
         [
             "plot",
-            "config_lca.yaml",
+            str(config_lca_path),
             "--query",
             "N_reads > 10_000",
             "--tax-ids",
@@ -247,17 +247,15 @@ def test_CLI_plot():
             "--query",
             "N_reads < 100_000",
             "--pdf-out",
-            "pdf_export.pdf",
+            str(pdf_plot_path),
         ],
     )
 
     # no errors
     assert result.exit_code == 0
 
-    outfile = Path("pdf_export.pdf")
-
     # outfile exists
-    assert outfile.is_file()
+    assert pdf_plot_path.is_file()
 
     # outfile is not empty
-    assert outfile.stat().st_size > 0
+    assert pdf_plot_path.stat().st_size > 0
