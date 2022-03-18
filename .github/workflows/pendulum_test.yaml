@@ -57,8 +57,7 @@ jobs:
       - name: Install poetry
         shell: bash
         run: |
-          curl -fsS -o install-poetry.py https://raw.githubusercontent.com/sdispater/poetry/master/install-poetry.py
-          python install-poetry.py --preview -y
+          curl -sSL https://install.python-poetry.org | python - --preview
 
       - name: Update PATH
         shell: bash
