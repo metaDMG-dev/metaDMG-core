@@ -221,29 +221,34 @@ def paths_to_strings(
 #%%
 
 
-def save_config_file(config: dict, config_path: Path) -> None:
+def save_config_file(
+    config: dict,
+    config_path: Path,
+    over_write_config_file: bool = False,
+) -> None:
     """Save the config file.
     Does not overwrite if file already exists, unless explicitly specified.
 
     Parameters
     ----------
     config
-        _description_
+        Input dict
     config_path
-        _description_
+        Save location
 
     Raises
     ------
     typer.Abort
-        _description_
+        Do not overwrite automatically
     """
 
-    if config_path.is_file():
-        s = "Config file already exists. Do you want to overwrite it?"
-        overwrite = typer.confirm(s)
-        if not overwrite:
-            typer.echo("Exiting")
-            raise typer.Abort()
+    if not over_write_config_file:
+        if config_path.is_file():
+            s = "Config file already exists. Do you want to overwrite it?"
+            confirmed = typer.confirm(s)
+            if not confirmed:
+                typer.echo("Exiting")
+                raise typer.Abort()
 
     with open(config_path, "w") as file:
         yaml.dump(config, file, sort_keys=False)

@@ -85,5 +85,4 @@ jobs:
 
       - name: Test
         shell: bash
-        run: |
-          poetry run pytest -q tests
+        run: poetry run pytest -q tests

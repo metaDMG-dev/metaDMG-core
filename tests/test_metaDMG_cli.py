@@ -18,8 +18,8 @@ def clean_test_dir() -> None:
 
     print("Cleaning")
 
-    utils.remove_directory("data/", missing_ok=True)
-    utils.remove_directory("logs/", missing_ok=True)
+    utils.remove_directory("tests/data/", missing_ok=True)
+    utils.remove_directory("tests/logs/", missing_ok=True)
 
     for file in Path(".").glob("*.yaml"):
         utils.remove_file(file)
@@ -55,15 +55,15 @@ def test_CLI_config_LCA_without_names():
 
 LCA_commands = [
     "config",
-    "./testdata/alignment.bam",
+    "tests/testdata/alignment.bam",
     "--names",
-    "testdata/names-mdmg.dmp",
+    "tests/testdata/names-mdmg.dmp",
     "--nodes",
-    "testdata/nodes-mdmg.dmp",
+    "tests/testdata/nodes-mdmg.dmp",
     "--acc2tax",
-    "testdata/acc2taxid.map.gz",
+    "tests/testdata/acc2taxid.map.gz",
     "--metadmg-cpp",
-    "../metaDMG-cpp",
+    "./metaDMG-cpp",
     "--fix-ncbi",  # is not a NCBI database, so do not fix
     "0",
     "--config-path",

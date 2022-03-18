@@ -59,7 +59,28 @@ def version_callback(value: bool):
         raise typer.Exit()
 
 
-def is_in_range(x, val_min, val_max):
+def is_in_range(x: float, val_min: float, val_max: float) -> float:
+    """Confirms that x is val_min <= x <= val_max
+
+    Parameters
+    ----------
+    x
+        Value to check
+    val_min
+        Minimum
+    val_max
+        Maximum
+
+    Returns
+    -------
+        Confirmed value
+
+    Raises
+    ------
+    typer.BadParameter
+        If x is outside bounds
+    """
+
     if x < val_min or val_max < x:
         raise typer.BadParameter(
             f"x has to be between {val_min} and {val_max}. Got: {x}"
@@ -69,6 +90,8 @@ def is_in_range(x, val_min, val_max):
 
 #%%
 class RANKS(str, Enum):
+    "Ranks allowed in the LCA"
+
     family = "family"
     genus = "genus"
     species = "species"
@@ -76,6 +99,8 @@ class RANKS(str, Enum):
 
 
 class DAMAGE_MODE(str, Enum):
+    "Damage mode allowed in the LCA"
+
     LCA = "lca"
     LOCAL = "local"
     GLOBAL = "global"
