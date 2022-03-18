@@ -39,7 +39,7 @@ jobs:
     runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
-        os: [Ubuntu, MacOS] # Windows
+        os: [Ubuntu, MacOS]
         python-version: [3.9, "3.10"]
     steps:
       - uses: actions/checkout@v3
@@ -61,14 +61,8 @@ jobs:
           python install-poetry.py --preview -y
 
       - name: Update PATH
-        if: ${{ matrix.os != 'Windows' }}
         shell: bash
         run: echo "$HOME/.local/bin" >> $GITHUB_PATH
-
-      - name: Update Path for Windows
-        if: ${{ matrix.os == 'Windows' }}
-        shell: bash
-        run: echo "$APPDATA\Python\Scripts" >> $GITHUB_PATH
 
       - name: Configure poetry
         shell: bash

@@ -33,7 +33,6 @@ jobs:
         virtualenvs-in-project: true
         installer-parallel: true
 
-
     - name: install
       run: poetry install --with docs
 
