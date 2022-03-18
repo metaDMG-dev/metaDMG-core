@@ -2,6 +2,16 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.1 (2022-03-17)
+### Fix
+* Update actions ([`f16e4e2`](https://github.com/metaDMG/metaDMG/commit/f16e4e223d4dbd5d45654fea212b5be4198a96f1))
+* Try new action ([`dd1cf97`](https://github.com/metaDMG/metaDMG/commit/dd1cf979b7e9ad11cea5feee4bf3a0fdaf1d0b21))
+* Use dependency groups for dev tools ([`e1c010a`](https://github.com/metaDMG/metaDMG/commit/e1c010aa4c9cb6130c93539f80deb926c774d9a1))
+* Pre-commit ([`b1fd695`](https://github.com/metaDMG/metaDMG/commit/b1fd695ed4db1cafc52d0a0930cc77cf79c93ed8))
+
+### Documentation
+* Update docs ([`004700f`](https://github.com/metaDMG/metaDMG/commit/004700f755a869332f27e04a97ef412e86b5f2b8))
+
 ## v0.21.0 (2022-03-17)
 ### Feature
 * Merge viz (dashboard) ([`28e56bc`](https://github.com/metaDMG/metaDMG/commit/28e56bc0007a3b0c05c747adabf897b218e28f67))
