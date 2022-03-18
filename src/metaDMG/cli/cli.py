@@ -431,14 +431,14 @@ def plot(
     from metaDMG.filters import filter_results
     from metaDMG.utils import get_results_dir
     from metaDMG.viz.figures import save_pdf_plots
-    from metaDMG.viz.results import Results
+    from metaDMG.viz.results import VizResults
 
     results_dir = get_results_dir(
         config_path=config_path,
         results_dir=results_dir,
     )
 
-    results = Results(results_dir)
+    viz_results = VizResults(results_dir)
 
     if tax_ids:
         tax_ids_list = list(map(int, tax_ids.split(", ")))
@@ -448,7 +448,7 @@ def plot(
         samples_list = samples.split(", ")
         query += f" & sample in {samples_list}"
 
-    df_results = filter_results(results.df, query)
+    df_results = filter_results(viz_results.df, query)
 
     save_pdf_plots(df_results, results, pdf_path=pdf_out, do_tqdm=True)  # type: ignore
 

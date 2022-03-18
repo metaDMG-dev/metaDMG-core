@@ -9,7 +9,7 @@ from dash.exceptions import PreventUpdate
 from dash.long_callback import DiskcacheLongCallbackManager
 
 from metaDMG.viz import content, figures, viz_utils
-from metaDMG.viz.results import Results
+from metaDMG.viz.results import VizResults
 
 
 def get_app(results_dir):
@@ -18,7 +18,7 @@ def get_app(results_dir):
     cache = diskcache.Cache("./.cache")
     long_callback_manager = DiskcacheLongCallbackManager(cache)
 
-    results = Results(results_dir)
+    viz_results = VizResults(results_dir)
 
     #%%
 
@@ -57,11 +57,13 @@ def get_app(results_dir):
     )
     start_configuration = configurations[start_configuration_id]
 
-    d_columns_latex, columns, columns_no_log = viz_utils.get_d_columns_latex(results)
+    d_columns_latex, columns, columns_no_log = viz_utils.get_d_columns_latex(
+        viz_results
+    )
 
     #%%
 
-    app.layout = content.get_app_layout(results, start_configuration)
+    app.layout = content.get_app_layout(viz_results, start_configuration)
 
     #%%
 
@@ -191,7 +193,7 @@ def get_app(results_dir):
     )
     def update_sidebar_right_plot_combined(click_data):
         return figures.update_raw_count_plots(
-            results,
+            viz_results,
             click_data,
             forward_reverse="",
         )
@@ -208,7 +210,7 @@ def get_app(results_dir):
     )
     def update_sidebar_right_plot_forward(click_data):
         return figures.update_raw_count_plots(
-            results,
+            viz_results,
             click_data,
             forward_reverse="Forward",
         )
@@ -225,7 +227,7 @@ def get_app(results_dir):
     )
     def update_sidebar_right_plot_reverse(click_data):
         return figures.update_raw_count_plots(
-            results,
+            viz_results,
             click_data,
             forward_reverse="Reverse",
         )
@@ -243,21 +245,21 @@ def get_app(results_dir):
     def update_sidebar_right_datatable_results(click_data):
         if click_data:
             sample, tax_id = viz_utils.get_sample_tax_id_from_click_data(
-                results, click_data
+                viz_results, click_data
             )
 
-            df_fit = results.filter({"sample": sample, "tax_id": tax_id})
+            df_fit = viz_results.filter({"sample": sample, "tax_id": tax_id})
             if len(df_fit) != 1:
                 raise AssertionError(f"Should only be length 1")
 
             ds = df_fit.iloc[0]
 
             forward_only = []
-            if results.forward_only:
+            if viz_results.forward_only:
                 forward_only = ["Forward only!", html.Br(), html.Br()]
 
             bayesian_list = []
-            if results.Bayesian:
+            if viz_results.Bayesian:
                 bayesian_list = [
                     "Fit results:",
                     html.Br(),
@@ -444,14 +446,14 @@ def get_app(results_dir):
         if not sidebar_left_dropdown_samples:
             raise PreventUpdate
 
-        results.set_marker_size(
+        viz_results.set_marker_size(
             marker_transformation_variable,
             marker_transformation_function,
             marker_transformation_slider,
         )
 
         df_results_filtered = filter_dataframe(
-            results,
+            viz_results,
             sidebar_left_dropdown_samples,
             sidebar_left_results_dynamic_ids,
             sidebar_left_results_dynamic_value,
@@ -465,7 +467,7 @@ def get_app(results_dir):
             return dash.no_update, True
 
         fig = figures.make_figure(
-            results,
+            viz_results,
             df=df_results_filtered,
             xaxis_column_name=xaxis_column_name,
             yaxis_column_name=yaxis_column_name,
@@ -491,12 +493,14 @@ def get_app(results_dir):
             sidebar_left_dropdown_samples,
             "Select all",
         ):
-            sidebar_left_dropdown_samples = results.samples
+            sidebar_left_dropdown_samples = viz_results.samples
         elif viz_utils.key_is_in_list_case_insensitive(
             sidebar_left_dropdown_samples,
             "Default selection",
         ):
-            sidebar_left_dropdown_samples = viz_utils.get_samples_each(results.samples)
+            sidebar_left_dropdown_samples = viz_utils.get_samples_each(
+                viz_results.samples
+            )
 
         sidebar_left_dropdown_samples = list(sorted(sidebar_left_dropdown_samples))
 
@@ -534,7 +538,7 @@ def get_app(results_dir):
         # add new slider
         if content.slider_is_added(current_names, dropdown_names):
             column = content.get_name_of_added_slider(current_names, dropdown_names)
-            new_element = content.make_new_slider(results, column, id_type=id_type)
+            new_element = content.make_new_slider(viz_results, column, id_type=id_type)
             children.append(new_element)
 
         # remove selected slider
@@ -811,7 +815,7 @@ def get_app(results_dir):
         if navbar_btn_export_csv or navbar_btn_export_pdf:
 
             df_results_filtered = filter_dataframe(
-                results,
+                viz_results,
                 sidebar_left_dropdown_samples,
                 sidebar_left_results_dynamic_ids,
                 sidebar_left_results_dynamic_value,
@@ -910,7 +914,7 @@ def get_app(results_dir):
         pdf_path = "pdf_export.pdf"
         figures.save_pdf_plots(
             df_results_filtered,
-            results,
+            viz_results,
             pdf_path=pdf_path,
             set_progress=set_progress,
         )
@@ -924,7 +928,7 @@ def get_app(results_dir):
 #%%
 
 
-def apply_sidebar_left_tax_id(results, d_filter, sidebar_left_taxa_input_specific):
+def apply_sidebar_left_tax_id(viz_results, d_filter, sidebar_left_taxa_input_specific):
 
     d_filter = d_filter.copy()
 
@@ -935,11 +939,11 @@ def apply_sidebar_left_tax_id(results, d_filter, sidebar_left_taxa_input_specifi
         return d_filter
 
     for tax in sidebar_left_taxa_input_specific:
-        if tax in results.all_tax_ids:
+        if tax in viz_results.all_tax_ids:
             d_filter = viz_utils.append_to_list_if_exists(d_filter, "tax_ids", tax)
-        elif tax in results.all_tax_names:
+        elif tax in viz_results.all_tax_names:
             d_filter = viz_utils.append_to_list_if_exists(d_filter, "tax_names", tax)
-        elif tax in results.all_tax_ranks:
+        elif tax in viz_results.all_tax_ranks:
             d_filter = viz_utils.append_to_list_if_exists(d_filter, "tax_ranks", tax)
         else:
             raise AssertionError(f"Tax {tax} could not be found. ")
@@ -951,7 +955,7 @@ def apply_sidebar_left_tax_id(results, d_filter, sidebar_left_taxa_input_specifi
 
 
 def filter_dataframe(
-    results,
+    viz_results,
     sidebar_left_dropdown_samples,
     sidebar_left_results_dynamic_ids,
     sidebar_left_results_dynamic_value,
@@ -966,12 +970,12 @@ def filter_dataframe(
         d_filter[sample] = values
 
     d_filter = apply_sidebar_left_tax_id(
-        results,
+        viz_results,
         d_filter,
         sidebar_left_taxa_input_specific,
     )
 
-    df_results_filtered = results.filter(
+    df_results_filtered = viz_results.filter(
         d_filter,
         rank=sidebar_left_taxa_input_path_contains,
     )

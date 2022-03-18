@@ -737,7 +737,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "jax"
-version = "0.3.2"
+version = "0.3.3"
 description = "Differentiate, compile, and transform Numpy code."
 category = "main"
 optional = true
@@ -751,7 +751,7 @@ scipy = ">=1.2.1"
 typing_extensions = "*"
 
 [package.extras]
-ci = ["jaxlib (==0.3.0)"]
+ci = ["jaxlib (==0.3.2)"]
 cpu = ["jaxlib (==0.3.2)"]
 cuda = ["jaxlib (==0.3.2+cuda11.cudnn82)"]
 cuda11_cudnn805 = ["jaxlib (==0.3.2+cuda11.cudnn805)"]
@@ -2319,7 +2319,7 @@ viz = ["matplotlib", "plotly", "dash", "dash-bootstrap-components", "orjson"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.11" # 3.11 due to numba
-content-hash = "24e5cef79faa5930e7a70c8374b7344bbb923a6f49a91c08170940abb1db553c"
+content-hash = "17cf26b9d5d863199d926d5448f60a4c5d5e0f989e9d411673bbdb1cec75923a"
 
 [metadata.files]
 absl-py = [
@@ -2824,7 +2824,7 @@ itsdangerous = [
     {file = "itsdangerous-2.1.1.tar.gz", hash = "sha256:7b7d3023cd35d9cb0c1fd91392f8c95c6fa02c59bf8ad64b8849be3401b95afb"},
 ]
 jax = [
-    {file = "jax-0.3.2.tar.gz", hash = "sha256:136a6cf6bf0ddf834e5e6c49f69ca4401425654512ab2b66144137dc82967d40"},
+    {file = "jax-0.3.3.tar.gz", hash = "sha256:e21b2411f95892f25193d1b804bb6b1b84ef4c48d418568860c52238edfdc42c"},
 ]
 jaxlib = [
     {file = "jaxlib-0.3.2-cp310-none-macosx_10_9_x86_64.whl", hash = "sha256:338daac14405104b1d193ff8b7ab1e91eb8cdfdf6329cd189f6d041e29a57355"},

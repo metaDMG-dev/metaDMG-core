@@ -1,3 +1,4 @@
+#%%
 import webbrowser
 from collections import namedtuple
 from distutils.spawn import find_executable
