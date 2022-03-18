@@ -224,7 +224,7 @@ def paths_to_strings(
 def save_config_file(
     config: dict,
     config_path: Path,
-    over_write_config_file: bool = False,
+    overwrite_config: bool = False,
 ) -> None:
     """Save the config file.
     Does not overwrite if file already exists, unless explicitly specified.
@@ -242,7 +242,7 @@ def save_config_file(
         Do not overwrite automatically
     """
 
-    if not over_write_config_file:
+    if not overwrite_config:
         if config_path.is_file():
             s = "Config file already exists. Do you want to overwrite it?"
             confirmed = typer.confirm(s)

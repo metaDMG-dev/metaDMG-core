@@ -163,7 +163,7 @@ def create_config(
         case_sensitive=False,
         help="The Damage Mode. Use 'LCA' unless you know what you are doing.",
     ),
-    over_write_config_file: bool = typer.Option(
+    overwrite_config: bool = typer.Option(
         False,
         "--overwrite",
         help="Overwrite config file without user confirmation.",
@@ -213,7 +213,7 @@ def create_config(
         }
     )
 
-    utils.save_config_file(config, config_path, over_write_config_file)
+    utils.save_config_file(config, config_path, overwrite_config)
 
 
 #%%

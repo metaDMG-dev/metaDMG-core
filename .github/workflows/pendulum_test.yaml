@@ -83,6 +83,6 @@ jobs:
         shell: bash
         run: poetry install --with test --extras fit --extras viz
 
-      - name: Test
-        shell: bash
-        run: poetry run pytest -q tests
+      # - name: Test
+      #   shell: bash
+      #   run: poetry run pytest -q tests

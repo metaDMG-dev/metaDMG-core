@@ -64,15 +64,15 @@ jobs:
     - name: Format with Black
       run: poetry run black .
 
-    - name: Test with pytest
-      run: poetry run pytest tests/ --cov=metaDMG --cov-report=xml
+    # - name: Test with pytest
+    #   run: poetry run pytest tests/ --cov=metaDMG --cov-report=xml
 
-    # Use Codecov to track coverage
-    - uses: codecov/codecov-action@v2
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }} # required for private repos
-        file: ./coverage.xml    # coverage report
-        fail_ci_if_error: false  # terminate workflow if an error occurs
+    # # Use Codecov to track coverage
+    # - uses: codecov/codecov-action@v2
+    #   with:
+    #     token: ${{ secrets.CODECOV_TOKEN }} # required for private repos
+    #     file: ./coverage.xml    # coverage report
+    #     fail_ci_if_error: false  # terminate workflow if an error occurs
 
     # # Build documentation
     # - name: Build documentation
