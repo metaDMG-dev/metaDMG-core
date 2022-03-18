@@ -2319,7 +2319,7 @@ viz = ["matplotlib", "plotly", "dash", "dash-bootstrap-components", "orjson"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.11" # 3.11 due to numba
-content-hash = "24e5cef79faa5930e7a70c8374b7344bbb923a6f49a91c08170940abb1db553c"
+content-hash = "17cf26b9d5d863199d926d5448f60a4c5d5e0f989e9d411673bbdb1cec75923a"
 
 [metadata.files]
 absl-py = [

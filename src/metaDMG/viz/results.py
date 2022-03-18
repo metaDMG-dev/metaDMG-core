@@ -105,7 +105,7 @@ def correct_for_non_LCA(df):
 #%%
 
 
-class Results:
+class VizResults:
     def __init__(self, results_dir):
         self.results_dir = Path(results_dir)
         self._load_df_results()
@@ -130,14 +130,6 @@ class Results:
         df["D_max_significance"] = df["D_max"] / df["D_max_std"]
         df["rho_Ac_abs"] = np.abs(df["rho_Ac"])
 
-        # with_LCA = False
-        # if (
-        #     ("N_alignments" in df.columns)
-        #     and ("tax_name" in df.columns)
-        #     and ("tax_rank" in df.columns)
-        # ):
-        #     with_LCA = True
-
         log_columns = [
             "N_reads",
             "N_alignments",
@@ -146,8 +138,6 @@ class Results:
             "k_sum_total",
             "N_sum_total",
         ]
-        # if not with_LCA:
-        #     log_columns = remove_LCA_columns(log_columns)
 
         for column in log_columns:
             log_column = "log_" + column
@@ -163,7 +153,6 @@ class Results:
         Bayesian = any(["Bayesian" in column for column in df.columns])
         self.Bayesian = Bayesian
 
-        # self.with_LCA = with_LCA
         self.all_tax_ids = set(self.df["tax_id"].unique())
         self.all_tax_names = set(self.df["tax_name"].unique())  # if with_LCA else set()
         self.all_tax_ranks = set(self.df["tax_rank"].unique())  # if with_LCA else set()
@@ -513,7 +502,3 @@ class Results:
         # text += "\n"
 
         return text
-
-
-# def load_results(results_dir):
-#     return Results(results_dir)
