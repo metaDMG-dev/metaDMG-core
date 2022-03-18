@@ -1,14 +1,62 @@
 #%%
+import re
 import warnings
 from functools import partial
 from pathlib import Path
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Union
 
 import numpy as np
 import pandas as pd
 import typer
 import yaml
 from scipy.stats import betabinom as sp_betabinom
+
+
+#%%
+
+
+def remove_file(file: Union[Path, str], missing_ok: bool = False) -> None:
+    Path(file).unlink(missing_ok=missing_ok)
+
+
+def remove_directory(path: Union[Path, str], missing_ok: bool = False) -> None:
+    """Remove everything in a directory
+
+    Parameters
+    ----------
+    path
+        Directory to be deleted
+    """
+
+    try:
+        path = Path(path)
+        for child in path.iterdir():
+            if child.is_file():
+                remove_file(child)
+            else:
+                remove_directory(child)
+        path.rmdir()
+    except FileNotFoundError:
+        if not missing_ok:
+            raise
+
+
+#%%
+
+
+def split_string(s: str) -> list[str]:
+    """Split a string by comma, space, or both.
+
+    Parameters
+    ----------
+    s
+        Input string
+
+    Returns
+    -------
+        List of strings
+    """
+    return re.findall(r"[^,\s]+", s)
 
 
 #%%

@@ -317,6 +317,42 @@ def dashboard(
 #%%
 
 
+@cli_app.command("convert")
+def convert(
+    config_path: Optional[Path] = typer.Argument(
+        None,
+        file_okay=True,
+        help="Path to the config-file.",
+    ),
+    results_dir: Optional[Path] = typer.Option(
+        None,
+        help="Path to the results directory.",
+    ),
+    output: Path = typer.Option(
+        ...,
+        help="Where to save the converted file.",
+    ),
+    add_fit_predictions: bool = typer.Option(
+        False,
+        help="Add fit predictions D(x) to the output",
+    ),
+):
+    """Convert the results to either a combined csv or tsv file."""
+
+    from metaDMG.filters import filter_and_save_results
+
+    filter_and_save_results(
+        output=output,
+        query="",
+        config_path=config_path,
+        results_dir=results_dir,
+        add_fit_predictions=add_fit_predictions,
+    )
+
+
+#%%
+
+
 @cli_app.command("filter")
 def filter(
     config_path: Optional[Path] = typer.Argument(
@@ -357,42 +393,6 @@ def filter(
 #%%
 
 
-@cli_app.command("convert")
-def convert(
-    config_path: Optional[Path] = typer.Argument(
-        None,
-        file_okay=True,
-        help="Path to the config-file.",
-    ),
-    results_dir: Optional[Path] = typer.Option(
-        None,
-        help="Path to the results directory.",
-    ),
-    output: Path = typer.Option(
-        ...,
-        help="Where to save the converted file.",
-    ),
-    add_fit_predictions: bool = typer.Option(
-        False,
-        help="Add fit predictions D(x) to the output",
-    ),
-):
-    """Convert the results to either a combined csv or tsv file."""
-
-    from metaDMG.filters import filter_and_save_results
-
-    filter_and_save_results(
-        output=output,
-        query="",
-        config_path=config_path,
-        results_dir=results_dir,
-        add_fit_predictions=add_fit_predictions,
-    )
-
-
-#%%
-
-
 @cli_app.command("plot")
 def plot(
     config_path: Optional[Path] = typer.Argument(
@@ -410,11 +410,11 @@ def plot(
     ),
     samples: str = typer.Option(
         "",
-        help="Only use specific Tax IDs",
+        help="Only use specific Tax samples",
     ),
     tax_ids: str = typer.Option(
         "",
-        help="Only use specific Tax IDs",
+        help="""Only use specific Tax IDs. Example: "" """,
     ),
     pdf_out: Path = typer.Option(
         "pdf_export.pdf",
@@ -441,16 +441,16 @@ def plot(
     viz_results = VizResults(results_dir)
 
     if tax_ids:
-        tax_ids_list = list(map(int, tax_ids.split(", ")))
+        tax_ids_list = utils.split_string(tax_ids)
         query += f" & tax_id in {tax_ids_list}"
 
     if samples:
-        samples_list = samples.split(", ")
+        samples_list = utils.split_string(samples)
         query += f" & sample in {samples_list}"
 
     df_results = filter_results(viz_results.df, query)
 
-    save_pdf_plots(df_results, results, pdf_path=pdf_out, do_tqdm=True)  # type: ignore
+    save_pdf_plots(df_results, viz_results, pdf_path=pdf_out, do_tqdm=True)  # type: ignore
 
 
 #%%

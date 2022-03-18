@@ -12,8 +12,10 @@ def load_results(config_path=None, results_dir=None):
     return df_results
 
 
-def filter_results(df_results, query):
+def filter_results(df_results: pd.DataFrame, query: str):
     if query:
+        if query.startswith(" & "):
+            query = query[3:]
         df_results = df_results.query(query)
     return df_results
 

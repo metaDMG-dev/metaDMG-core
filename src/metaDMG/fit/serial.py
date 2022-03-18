@@ -12,6 +12,7 @@ from typing import Optional, Tuple
 import pandas as pd
 from logger_tt import logger
 
+from metaDMG import utils
 from metaDMG.errors import Error, MismatchFileError, metadamageError
 from metaDMG.fit import fits, mismatches, results
 from metaDMG.fit.fit_utils import Config
@@ -154,9 +155,9 @@ def move_files(config: Config) -> None:
     }
     for source_path, target_path in d_move_source_target.items():
         logger.debug(f"Moving {source_path} to {target_path}.")
-        if not Path(source_path).is_file():
+        if not source_path.is_file():
             raise metadamageError(f"{source_path} does not exist.")
-        Path(target_path).parent.mkdir(parents=True, exist_ok=True)
+        target_path.parent.mkdir(parents=True, exist_ok=True)
         shutil.move(source_path, target_path)
 
 
@@ -174,9 +175,9 @@ def move_files_non_lca(config: Config) -> None:
     }
     for source_path, target_path in d_move_source_target.items():
         logger.debug(f"Moving {source_path} to {target_path}.")
-        if not Path(source_path).is_file():
+        if not source_path.is_file():
             raise metadamageError(f"{source_path} does not exist.")
-        Path(target_path).parent.mkdir(parents=True, exist_ok=True)
+        target_path.parent.mkdir(parents=True, exist_ok=True)
         shutil.move(source_path, target_path)
 
 
@@ -184,14 +185,11 @@ def move_files_non_lca(config: Config) -> None:
 
 
 def create_tmp_dir(config: Config) -> None:
-    Path(config["path_tmp"]).mkdir(parents=True, exist_ok=True)
+    config["path_tmp"].mkdir(parents=True, exist_ok=True)
 
 
 def delete_tmp_dir(config: Config) -> None:
-    path_tmp = Path(config["path_tmp"])
-    for file in path_tmp.glob("*"):
-        file.unlink()
-    path_tmp.rmdir()
+    utils.remove_directory(config["path_tmp"])
 
 
 #%%
@@ -344,7 +342,7 @@ def get_df_mismatches(config: Config, forced: bool = False) -> pd.DataFrame:
     if do_run(target, forced=forced):
         logger.info(f"Computing df_mismatches.")
         df_mismatches = mismatches.compute(config)
-        Path(target).parent.mkdir(parents=True, exist_ok=True)
+        target.parent.mkdir(parents=True, exist_ok=True)
         df_mismatches.to_parquet(target)
 
     else:
@@ -393,7 +391,7 @@ def get_df_fit_results(
 
     logger.info(info)
     df_fit_results = fits.compute(config, df_mismatches)
-    Path(target).parent.mkdir(parents=True, exist_ok=True)
+    target.parent.mkdir(parents=True, exist_ok=True)
     df_fit_results.to_parquet(target)
 
     return df_fit_results
@@ -428,7 +426,7 @@ def get_df_results(
     # Compute the results:
     logger.info(f"Computing df_results.")
     df_results = results.merge(config, df_mismatches, df_fit_results)
-    Path(target).parent.mkdir(parents=True, exist_ok=True)
+    target.parent.mkdir(parents=True, exist_ok=True)
     df_results.to_parquet(target)
 
     return df_results
