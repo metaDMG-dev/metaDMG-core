@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.4 (2022-03-18)
+### Fix
+* Add --overwrite as option in config ([`f73bda3`](https://github.com/metaDMG/metaDMG/commit/f73bda3239f2f6ecf4f216554f0312dd42f23593))
+
 ## v0.21.3 (2022-03-18)
 ### Fix
 * Check BAM size ([`982d2d4`](https://github.com/metaDMG/metaDMG/commit/982d2d4a62522e76a91bec8e1930b7d9e9bf1567))
