@@ -78,13 +78,13 @@ The options are listed below:
   - `--acc2tax`: Path to the (NCBI) `acc2tax.gz`. Mandatory for LCA.
 
 - LCA parameters:
-  - `--min_similarity_score`: Normalised edit distance (read to reference similarity) minimum. Number between 0-1. Default: 0.95.
-  - `--max_similarity_score`: Normalised edit distance (read to reference similarity) maximum. Number between 0-1 Default: 1.0.
-  - `--min_edit_dist`: Minimum edit distance (read to reference similarity). Number between 0-10. Default: 0.
-  - `--max_edit_dist`: Maximum edit distance (read to reference similarity). Number between 0-10. Default: 10.
-  - `--min_mapping_quality`: Minimum mapping quality. Default: 0.
+  - `--min-similarity-score`: Normalised edit distance (read to reference similarity) minimum. Number between 0-1. Default: 0.95.
+  - `--max-similarity-score`: Normalised edit distance (read to reference similarity) maximum. Number between 0-1 Default: 1.0.
+  - `--min-edit-dist`: Minimum edit distance (read to reference similarity). Number between 0-10. Default: 0.
+  - `--max-edit-dist`: Maximum edit distance (read to reference similarity). Number between 0-10. Default: 10.
+  - `--min-mapping-quality`: Minimum mapping quality. Default: 0.
   - `--max-position`: Maximum position in the sequence to include. Default is (+/-) 15 (forward/reverse).
-  - `--weight_type`: Method for calculating weights. Default is 1.
+  - `--weight-type`: Method for calculating weights. Default is 1.
   - `--fix-ncbi`: Fix the (ncbi) database. Disable (0) if using a custom database. Default is 1.
   - `--lca-rank`: The LCA rank used in ngsLCA. Can be either `family`, `genus`, `species` or `""` (everything). Default is `""`.
 
@@ -94,7 +94,7 @@ The options are listed below:
 - General parameters:
   - `--forward-only`: Only fit the forward strand.
   - `--output-dir`: Path where the generated output files and folders are stored. Default: `./data/`.
-  - `--parallel_samples`: The maximum number of cores to use. Default is 1.
+  - `--parallel-samples`: The maximum number of cores to use. Default is 1.
   - `--cores-per-sample`: Number of cores pr. sample. Do not change unless you know what you are doing.
   - `--sample-prefix`: Prefix for the sample names.
   - `--sample-suffix`: Suffix for the sample names.
@@ -111,7 +111,7 @@ $ metaDMG config ./raw_data/example.bam \
     --names raw_data/names.dmp.gz \
     --nodes raw_data/nodes.dmp.gz \
     --acc2tax raw_data/combined_taxid_accssionNO_20200425.gz \
-    --parallel_samples 4
+    --parallel-samples 4
 ```
 
 
