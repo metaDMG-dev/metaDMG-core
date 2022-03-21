@@ -141,7 +141,7 @@ The `metaDMG compute` command takes an optional config-file as argument
 
 #### CLI options:
 
-- `--forced`: Forced computation (even though the files already exists). Bool flag.
+- `--force`: Forced computation (even though the files already exists). Bool flag.
 
 #### Example:
 
@@ -150,7 +150,7 @@ $ metaDMG compute
 ```
 
 ```console
-$ metaDMG compute non-default-config.yaml --forced
+$ metaDMG compute non-default-config.yaml --force
 ```
 
 ---

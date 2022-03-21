@@ -71,7 +71,7 @@ def create_config(
     ),
     metaDMG_cpp: str = typer.Option(
         "./metaDMG-cpp",
-        help="The command needed to run the metaDMG-lca program.",
+        help="The command needed to run the metaDMG-cpp program.",
     ),
     min_similarity_score: float = typer.Option(
         0.95,
@@ -184,7 +184,7 @@ def create_config(
                 long_name=long_name,
             ),
             #
-            "metaDMG-lca": metaDMG_cpp,
+            "metaDMG_cpp": metaDMG_cpp,
             "names": names,
             "nodes": nodes,
             "acc2tax": acc2tax,
@@ -222,9 +222,9 @@ def compute(
         file_okay=True,
         help="Path to the config-file.",
     ),
-    forced: bool = typer.Option(
+    force: bool = typer.Option(
         False,
-        "--forced",
+        "--force",
         help="Forced computation (even though the files already exists).",
     ),
 ):
@@ -249,7 +249,7 @@ def compute(
         config_file=config_file,
         log_port=log_port,
         log_path=log_path,
-        forced=forced,
+        force=force,
     )
 
     run_workflow(configs)

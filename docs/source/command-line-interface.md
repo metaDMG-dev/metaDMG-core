@@ -75,7 +75,7 @@ The `metaDMG compute` command takes an optional config-file as argument
 ### Parameters
 
 - Flags:
-  - `--forced`: Forced computation (even though the files already exists).
+  - `--force`: Forced computation (even though the files already exists).
 
 
 ### Examples
@@ -85,7 +85,7 @@ $ metaDMG compute
 ```
 
 ```console
-$ metaDMG compute non-default-config.yaml --forced
+$ metaDMG compute non-default-config.yaml --force
 ```
 
 

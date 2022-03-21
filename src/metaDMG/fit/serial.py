@@ -22,12 +22,12 @@ from metaDMG.loggers.loggers import setup_logger
 #%%
 
 
-def do_run(targets, forced=False):
+def do_run(targets, force=False):
 
-    if forced:
-        logger.info("Using forced load, beware.")
+    if force:
+        logger.info("Using force load, beware.")
 
-    if forced:
+    if force:
         return True
 
     if not isinstance(targets, list):
@@ -39,8 +39,8 @@ def do_run(targets, forced=False):
         return True
 
 
-def do_load(targets, forced=False):
-    return not do_run(targets, forced=forced)
+def do_load(targets, force=False):
+    return not do_run(targets, force=force)
 
 
 def data_dir(config: Config, name, suffix="parquet"):
@@ -56,7 +56,7 @@ def get_LCA_command(config: Config) -> str:
     lca_rank = f"-lca_rank {config['lca_rank']}" if config["lca_rank"] != "" else ""
 
     command = (
-        f"{config['metaDMG-lca']} lca "
+        f"{config['metaDMG_cpp']} lca "
         f"-bam {config['bam']} "
         f"-outnames {outnames} "
         f"-names {config['names']} "
@@ -82,7 +82,7 @@ def get_LCA_mismatches_command(config: Config) -> str:
     lca_stat = config["path_tmp"] / f"{sample}.stat"
 
     command = (
-        f"{config['metaDMG-lca']} print_ugly "
+        f"{config['metaDMG_cpp']} print_ugly "
         f"{bdamage} "
         f"-names {config['names']} "
         f"-nodes {config['nodes']} "
@@ -119,7 +119,7 @@ def get_damage_command(config: Config) -> str:
     runmode = get_runmode(config)
 
     command = (
-        f"{config['metaDMG-lca']} getdamage "
+        f"{config['metaDMG_cpp']} getdamage "
         f"--minlength 10 "
         f"--printlength {config['max_position']} "
         f"--threads 8 "
@@ -132,7 +132,7 @@ def get_damage_command(config: Config) -> str:
 
 def get_damage_ugly_command(config: Config) -> str:
     bdamage = config["path_tmp"] / f"{config['sample']}.bdamage.gz"
-    command = f"{config['metaDMG-lca']} print_ugly {bdamage} -bam {config['bam']}"
+    command = f"{config['metaDMG_cpp']} print_ugly {bdamage} -bam {config['bam']}"
     return command
 
 
@@ -256,7 +256,7 @@ def run_command_helper(config: Config, command: str) -> None:
 #%%
 
 
-def run_LCA(config: Config, forced: bool = False) -> None:
+def run_LCA(config: Config, force: bool = False) -> None:
 
     logger.info(f"Getting LCA.")
 
@@ -266,7 +266,7 @@ def run_LCA(config: Config, forced: bool = False) -> None:
         config["path_lca"],
     ]
 
-    if do_run(targets, forced=forced):
+    if do_run(targets, force=force):
         logger.info(f"LCA has to be computed. This can take a while, please wait.")
 
         command_LCA = get_LCA_command(config)
@@ -290,7 +290,7 @@ def run_LCA(config: Config, forced: bool = False) -> None:
 #%%
 
 
-def run_damage_no_lca(config: Config, forced: bool = False) -> None:
+def run_damage_no_lca(config: Config, force: bool = False) -> None:
 
     logger.info(f"Getting damage.")
 
@@ -299,7 +299,7 @@ def run_damage_no_lca(config: Config, forced: bool = False) -> None:
         config["path_mismatches_stat"],
     ]
 
-    if do_run(targets, forced=forced):
+    if do_run(targets, force=force):
         logger.info(f"Computing damage. NOTE: NO LCA.")
 
         command_damage = get_damage_command(config)
@@ -323,23 +323,23 @@ def run_damage_no_lca(config: Config, forced: bool = False) -> None:
 #%%
 
 
-def run_cpp(config: Config, forced: bool = False) -> None:
+def run_cpp(config: Config, force: bool = False) -> None:
     if config["damage_mode"] == "lca":
-        run_LCA(config, forced=forced)
+        run_LCA(config, force=force)
     else:
-        run_damage_no_lca(config, forced=forced)
+        run_damage_no_lca(config, force=force)
 
 
 #%%
 
 
-def get_df_mismatches(config: Config, forced: bool = False) -> pd.DataFrame:
+def get_df_mismatches(config: Config, force: bool = False) -> pd.DataFrame:
 
     logger.info(f"Getting df_mismatches")
 
     target = data_dir(config, name="mismatches")
 
-    if do_run(target, forced=forced):
+    if do_run(target, force=force):
         logger.info(f"Computing df_mismatches.")
         df_mismatches = mismatches.compute(config)
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -362,13 +362,13 @@ def dataframe_columns_contains(df: pd.DataFrame, s: str) -> bool:
 def get_df_fit_results(
     config: Config,
     df_mismatches: pd.DataFrame,
-    forced: bool = False,
+    force: bool = False,
 ) -> pd.DataFrame:
 
     logger.info(f"Getting df_fit_results.")
 
     target = data_dir(config, name="fit_results")
-    if do_load(target, forced=forced):
+    if do_load(target, force=force):
         logger.info(f"Try to load df_fit_results.")
         df_fit_results = pd.read_parquet(target)
 
@@ -404,14 +404,14 @@ def get_df_results(
     config: Config,
     df_mismatches: pd.DataFrame,
     df_fit_results: pd.DataFrame,
-    forced: bool = False,
+    force: bool = False,
 ) -> pd.DataFrame:
 
     logger.info(f"Getting df_results.")
 
     target = data_dir(config, name="results")
 
-    if do_load(target, forced=forced):
+    if do_load(target, force=force):
         logger.info(f"Loading df_results.")
         df_results = pd.read_parquet(target)
 
@@ -471,10 +471,10 @@ def run_single_config(
     if not BAM_file_is_valid(config):
         return None
 
-    forced = config["forced"]
+    force = config["force"]
 
     try:
-        run_cpp(config, forced=forced)
+        run_cpp(config, force=force)
     except metadamageError:
         logger.exception(
             f"{config['sample']} | metadamageError with run_LCA. "
@@ -487,7 +487,7 @@ def run_single_config(
         raise KeyboardInterrupt
 
     try:
-        df_mismatches = get_df_mismatches(config, forced=forced)
+        df_mismatches = get_df_mismatches(config, force=force)
     except MismatchFileError:
         logger.exception(
             f"{config['sample']} | MismatchFileError with get_df_mismatches. "
@@ -495,8 +495,8 @@ def run_single_config(
         )
         return None
 
-    df_fit_results = get_df_fit_results(config, df_mismatches, forced=forced)
-    df_results = get_df_results(config, df_mismatches, df_fit_results, forced=forced)
+    df_fit_results = get_df_fit_results(config, df_mismatches, force=force)
+    df_results = get_df_results(config, df_mismatches, df_fit_results, force=force)
     # read_ids_mapping = get_database_read_ids(config)
 
     logger.info("Finished.")

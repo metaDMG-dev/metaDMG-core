@@ -1,5 +1,6 @@
 import math
 from pathlib import Path
+from warnings import warn
 
 import numpy as np
 import pandas as pd
@@ -132,7 +133,7 @@ def make_configs(
     config_file: Optional[Path],
     log_port: Optional[int] = None,
     log_path: Optional[str] = None,
-    forced: bool = False,
+    force: bool = False,
 ) -> Configs:
     """Create an instance of Configs from a config file
 
@@ -144,8 +145,8 @@ def make_configs(
         Optional log port, by default None
     log_path
         Optional log path, by default None
-    forced
-        Whether or not the computations are forced, by default False
+    force
+        Whether or not the computations are force, by default False
 
     Returns
     -------
@@ -168,15 +169,15 @@ def make_configs(
     with open(config_file, "r") as file:
         d = yaml.safe_load(file)
 
+    d = update_old_config(d)
+
     d["log_port"] = log_port
     d["log_path"] = log_path
-    if forced:
-        d["forced"] = True
 
     d.setdefault("forward_only", False)
     d.setdefault("cores_per_sample", 1)
     d.setdefault("damage_mode", "lca")
-    d["forced"] = forced
+    d["force"] = force
 
     paths = ["names", "nodes", "acc2tax", "output_dir", "config_file"]
     for path in paths:
@@ -192,6 +193,45 @@ def make_configs(
     d["custom_database"] = 0 if d["custom_database"] else 1
 
     return Configs(d)
+
+
+#%%
+
+
+def update_old_config(d: dict) -> dict:
+    if "version" in d:
+        # new version, not changing anything
+        return d
+
+    # updating the old version
+
+    logger.warning(
+        "Using an old version of the config file. Please remake the config file."
+    )
+
+    d_old2new = {
+        "metaDMG-lca": "metaDMG_cpp",
+        "minmapq": "min_mapping_quality",
+        "editdistmin": "min_edit_dist",
+        "editdistmax": "max_edit_dist",
+        "simscorelow": "min_similarity_score",
+        "simscorehigh": "max_similarity_score",
+        "weighttype": "weight_type",
+        "storage_dir": "output_dir",
+        "dir": "output_dir",
+        "fix_ncbi": "custom_database",
+        "cores": "parallel_samples",
+        "cores_per_sample": "cores_per_sample",
+        "config_path": "config_file",
+    }
+
+    d_new = {}
+    for key, value in d.items():
+        if key in d_old2new:
+            key = d_old2new[key]
+        d_new[key] = value
+    d_new.pop("forced")
+    return d_new
 
 
 #%%

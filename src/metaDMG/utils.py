@@ -379,16 +379,3 @@ def append_fit_predictions(df_results):
 
 
 #%%
-
-
-# "minmapq": "mapping_quality_minimum"
-# "editdistmin": "min_edit_dist"
-# "editdistmax": "max_edit_dist"
-# "simscorelow": "min_similarity_score"
-# "simscorehigh": "max_similarity_score"
-# "weighttype": "weight_type"
-# "storage_dir": "output_dir"
-# "dir": "output_dir"
-# "fix_ncbi": "custom_database"  # XXX
-# "cores": "parallel_samples"
-# "cores_per_sample": "cores_per_sample"
