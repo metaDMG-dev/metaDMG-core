@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.5 (2022-03-21)
+### Fix
+* Auto-update old config files, but raise warning ([`b3b8f32`](https://github.com/metaDMG/metaDMG/commit/b3b8f32ad3e6412289a36f50ba6054d921812bd3))
+
 ## v0.21.4 (2022-03-18)
 ### Fix
 * Add --overwrite as option in config ([`f73bda3`](https://github.com/metaDMG/metaDMG/commit/f73bda3239f2f6ecf4f216554f0312dd42f23593))
