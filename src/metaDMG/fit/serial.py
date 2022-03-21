@@ -44,7 +44,7 @@ def do_load(targets, forced=False):
 
 
 def data_dir(config: Config, name, suffix="parquet"):
-    target = config["dir"] / name / f"{config['sample']}.{name}.{suffix}"
+    target = config["output_dir"] / name / f"{config['sample']}.{name}.{suffix}"
     return target
 
 
@@ -62,15 +62,15 @@ def get_LCA_command(config: Config) -> str:
         f"-names {config['names']} "
         f"-nodes {config['nodes']} "
         f"-acc2tax {config['acc2tax']} "
-        f"-simscorelow {config['simscorelow']} "
-        f"-simscorehigh {config['simscorehigh']} "
-        f"-editdistmin {config['editdistmin']} "
-        f"-editdistmax {config['editdistmax']} "
+        f"-simscorelow {config['min_similarity_score']} "
+        f"-simscorehigh {config['max_similarity_score']} "
+        f"-editdistmin {config['min_edit_dist']} "
+        f"-editdistmax {config['max_edit_dist']} "
         f"{lca_rank} "
-        f"-minmapq {config['minmapq']} "
+        f"-minmapq {config['min_mapping_quality']} "
         f"-howmany {config['max_position']} "
-        f"-weighttype {config['weighttype']} "
-        f"-fix_ncbi {config['fix_ncbi']} "
+        f"-weighttype {config['weight_type']} "
+        f"-fix_ncbi {config['custom_database']} "
         f"-tempfolder {config['path_tmp']}/ "
     )
     return command[:-1]

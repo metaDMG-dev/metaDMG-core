@@ -3,9 +3,9 @@ import pandas as pd
 from metaDMG.utils import append_fit_predictions, get_results_dir
 
 
-def load_results(config_path=None, results_dir=None):
+def load_results(config_file=None, results_dir=None):
     results_dir = get_results_dir(
-        config_path=config_path,
+        config_file=config_file,
         results_dir=results_dir,
     )
     df_results = pd.read_parquet(results_dir)
@@ -37,13 +37,13 @@ def save_results(df_results, output):
 def filter_and_save_results(
     output,
     query,
-    config_path=None,
+    config_file=None,
     results_dir=None,
     add_fit_predictions=False,
 ):
 
     df_results = load_results(
-        config_path=config_path,
+        config_file=config_file,
         results_dir=results_dir,
     )
 

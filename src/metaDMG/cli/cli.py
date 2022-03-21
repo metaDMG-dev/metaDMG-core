@@ -9,9 +9,9 @@ from metaDMG.cli import cli_utils
 
 cli_app = cli_utils.get_cli_app()
 
-storage_dir_default = Path("./data/")
-results_dir_default = storage_dir_default / "results"
-config_path_default = Path("config.yaml")
+output_dir_default = Path("./data/")
+results_dir_default = output_dir_default / "results"
+config_file_default = Path("config.yaml")
 
 #%%
 
@@ -73,27 +73,27 @@ def create_config(
         "./metaDMG-cpp",
         help="The command needed to run the metaDMG-lca program.",
     ),
-    simscorelow: float = typer.Option(
+    min_similarity_score: float = typer.Option(
         0.95,
         help="Normalised edit distance (read to reference similarity) minimum. Number between 0-1.",
         callback=lambda x: cli_utils.is_in_range(x, 0, 1),
     ),
-    simscorehigh: float = typer.Option(
+    max_similarity_score: float = typer.Option(
         1.0,
         help="Normalised edit distance (read to reference similarity) maximum. Number between 0-1.",
         callback=lambda x: cli_utils.is_in_range(x, 0, 1),
     ),
-    editdistmin: int = typer.Option(
+    min_edit_dist: int = typer.Option(
         0,
         help="Minimum edit distance (read to reference similarity). Number between 0-10.",
         callback=lambda x: cli_utils.is_in_range(x, 0, 10),
     ),
-    editdistmax: int = typer.Option(
+    max_edit_dist: int = typer.Option(
         10,
         help="Maximum edit distance (read to reference similarity). Number between 0-10.",
         callback=lambda x: cli_utils.is_in_range(x, 0, 10),
     ),
-    minmapq: int = typer.Option(
+    min_mapping_quality: int = typer.Option(
         0,
         help="Minimum mapping quality.",
     ),
@@ -101,12 +101,13 @@ def create_config(
         15,
         help="Number of positions to include (|x| < max_position).",
     ),
-    weighttype: int = typer.Option(
+    weight_type: int = typer.Option(
         1,
         help="Method for calculating weights",
     ),
-    fix_ncbi: int = typer.Option(
-        1,
+    custom_database: bool = typer.Option(
+        False,
+        "--custom-database",
         help="Fix the (ncbi) database. Disable if using a custom database.",
     ),
     lca_rank: cli_utils.RANKS = typer.Option(
@@ -124,25 +125,20 @@ def create_config(
         "--bayesian",
         help="Include a fully Bayesian model (probably better, but also _a lot_ slower, about a factor of 100.",
     ),
-    forced: bool = typer.Option(
-        False,
-        "--forced",
-        help="Forced computation (even though the files already exists)..",
-    ),
-    storage_dir: Path = typer.Option(
-        storage_dir_default,
+    output_dir: Path = typer.Option(
+        output_dir_default,
         help="Path where the generated output files and folders are stored.",
     ),
-    cores: int = typer.Option(
+    parallel_samples: int = typer.Option(
         1,
-        help="The maximum number of cores to use in the ancient damage estimation.",
+        help="The number of samples to run in parallel. Default is running in seriel.",
     ),
-    cores_pr_fit: int = typer.Option(
+    cores_per_sample: int = typer.Option(
         1,
-        help="Number of cores pr. fit. Do not change unless you know what you are doing.",
+        help="Number of cores to use pr. sample. ",
     ),
-    config_path: Path = typer.Option(
-        config_path_default,
+    config_file: Path = typer.Option(
+        config_file_default,
         help="The name of the config file. ",
     ),
     sample_prefix: str = typer.Option(
@@ -177,7 +173,7 @@ def create_config(
         typer.echo("--names, --nodes, and --acc2tax are mandatory when doing LCA.")
         raise typer.Exit(code=1)
 
-    from metaDMG import utils
+    from metaDMG import __version__, utils
 
     config = utils.paths_to_strings(
         {
@@ -192,28 +188,28 @@ def create_config(
             "names": names,
             "nodes": nodes,
             "acc2tax": acc2tax,
-            "simscorelow": simscorelow,
-            "simscorehigh": simscorehigh,
-            "editdistmin": editdistmin,
-            "editdistmax": editdistmax,
-            "minmapq": minmapq,
+            "min_similarity_score": min_similarity_score,
+            "max_similarity_score": max_similarity_score,
+            "min_edit_dist": min_edit_dist,
+            "max_edit_dist": max_edit_dist,
+            "min_mapping_quality": min_mapping_quality,
             "lca_rank": lca_rank.value,  # important to get string
             "max_position": max_position,
-            "weighttype": weighttype,
-            "fix_ncbi": fix_ncbi,
+            "weight_type": weight_type,
+            "custom_database": custom_database,
             "forward_only": forward_only,
             #
-            "forced": forced,
-            "dir": storage_dir,
-            "cores": cores,
-            "cores_pr_fit": cores_pr_fit,
+            "output_dir": output_dir,
+            "parallel_samples": parallel_samples,
+            "cores_per_sample": cores_per_sample,
             "bayesian": bayesian,
-            "config_path": str(config_path),
+            "config_file": str(config_file),
             "damage_mode": damage_mode.lower(),
+            "version": __version__,
         }
     )
 
-    utils.save_config_file(config, config_path, overwrite_config)
+    utils.save_config_file(config, config_file, overwrite_config)
 
 
 #%%
@@ -221,7 +217,7 @@ def create_config(
 
 @cli_app.command("compute")
 def compute(
-    config_path: Optional[Path] = typer.Argument(
+    config_file: Optional[Path] = typer.Argument(
         None,
         file_okay=True,
         help="Path to the config-file.",
@@ -250,7 +246,7 @@ def compute(
     setup_logger(log_port=log_port, log_path=log_path)
 
     configs = make_configs(
-        config_path=config_path,
+        config_file=config_file,
         log_port=log_port,
         log_path=log_path,
         forced=forced,
@@ -264,7 +260,7 @@ def compute(
 
 @cli_app.command("dashboard")
 def dashboard(
-    config_path: Optional[Path] = typer.Argument(
+    config_file: Optional[Path] = typer.Argument(
         None,
         exists=True,
         file_okay=True,
@@ -307,7 +303,7 @@ def dashboard(
     from metaDMG.viz import start_dashboard
 
     results_dir = utils.get_results_dir(
-        config_path=config_path,
+        config_file=config_file,
         results_dir=results,
     )
 
@@ -324,7 +320,7 @@ def dashboard(
 
 @cli_app.command("convert")
 def convert(
-    config_path: Optional[Path] = typer.Argument(
+    config_file: Optional[Path] = typer.Argument(
         None,
         file_okay=True,
         help="Path to the config-file.",
@@ -349,7 +345,7 @@ def convert(
     filter_and_save_results(
         output=output,
         query="",
-        config_path=config_path,
+        config_file=config_file,
         results_dir=results_dir,
         add_fit_predictions=add_fit_predictions,
     )
@@ -360,7 +356,7 @@ def convert(
 
 @cli_app.command("filter")
 def filter(
-    config_path: Optional[Path] = typer.Argument(
+    config_file: Optional[Path] = typer.Argument(
         None,
         file_okay=True,
         help="Path to the config-file.",
@@ -389,7 +385,7 @@ def filter(
     filter_and_save_results(
         output=output,
         query=query,
-        config_path=config_path,
+        config_file=config_file,
         results_dir=results_dir,
         add_fit_predictions=add_fit_predictions,
     )
@@ -400,7 +396,7 @@ def filter(
 
 @cli_app.command("plot")
 def plot(
-    config_path: Optional[Path] = typer.Argument(
+    config_file: Optional[Path] = typer.Argument(
         None,
         file_okay=True,
         help="Path to the config-file.",
@@ -439,7 +435,7 @@ def plot(
     from metaDMG.viz.results import VizResults
 
     results_dir = get_results_dir(
-        config_path=config_path,
+        config_file=config_file,
         results_dir=results_dir,
     )
 

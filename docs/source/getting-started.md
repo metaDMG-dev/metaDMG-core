@@ -61,7 +61,7 @@ $ metaDMG compute
 
 ### Dashboard
 
-The results are saved in `{storage-dir}/results` directory (`data/results` by default). These can be viewed with the interactive dashboard using the `dashboard` command.
+The results are saved in `{output-dir}/results` directory (`data/results` by default). These can be viewed with the interactive dashboard using the `dashboard` command.
 
 ```console
 $ metaDMG dashboard

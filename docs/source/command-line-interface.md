@@ -18,12 +18,12 @@ The `samples` refer to a single or multiple alignment-files (or a directory cont
 - `--names`: Path to the (NCBI) `names.dmp.gz`. Mandatory for LCA.
 - `--nodes`: Path to the (NCBI) `nodes.dmp.gz`. Mandator for LCA.
 - `--acc2tax`: Path to the (NCBI) `acc2tax.gz`. Mandatory for LCA.
-- `--simscorelow`: Normalised edit distance (read to reference similarity) minimum. Number between 0-1. Default: 0.95.
-- `--simscorehigh`: Normalised edit distance (read to reference similarity) maximum. Number between 0-1 Default: 1.0.
-- `--editdistmin`: Minimum edit distance (read to reference similarity). Number between 0-10. Default: 0.
-- `--editdistmax`: Maximum edit distance (read to reference similarity). Number between 0-10. Default: 10.
-- `--minmapq`: Minimum mapping quality. Default: 0.
-- `--weighttype`: Method for calculating weights. Default is 1.
+- `--min_similarity_score`: Normalised edit distance (read to reference similarity) minimum. Number between 0-1. Default: 0.95.
+- `--max_similarity_score`: Normalised edit distance (read to reference similarity) maximum. Number between 0-1 Default: 1.0.
+- `--min_edit_dist`: Minimum edit distance (read to reference similarity). Number between 0-10. Default: 0.
+- `--max_edit_dist`: Maximum edit distance (read to reference similarity). Number between 0-10. Default: 10.
+- `--min_mapping_quality`: Minimum mapping quality. Default: 0.
+- `--weight_type`: Method for calculating weights. Default is 1.
 - `--fix-ncbi`: Fix the (ncbi) database. Disable (0) if using a custom database. Default is 1.
 - `--lca-rank`: The LCA rank used in ngsLCA. Can be either `family`, `genus`, `species` or `""` (everything). Default is `""`.
 
@@ -31,9 +31,9 @@ The `samples` refer to a single or multiple alignment-files (or a directory cont
 
 - Options:
     - `--max-position`: Maximum position in the sequence to include. Default is (+/-) 15 (forward/reverse).
-    - `--storage-dir`: Path where the generated output files and folders are stored. Default: `./data/`.
-    - `--cores`: The maximum number of cores to use. Default is 1.
-    - `--cores-pr-fit`: Number of cores pr. fit. Do not change unless you know what you are doing.
+    - `--output-dir`: Path where the generated output files and folders are stored. Default: `./data/`.
+    - `--parallel-samples`: The maximum number of cores to use. Default is 1.
+    - `--cores-per-sample`: Number of cores pr. fit. Do not change unless you know what you are doing.
     - `--sample-prefix`: Prefix for the sample names.
     - `--sample-suffix`: Suffix for the sample names.
     - `--config-path`: The name of the generated config file. Default: `config.yaml`.
@@ -49,7 +49,7 @@ $ metaDMG config ./raw_data/example.bam \
     --names raw_data/names.dmp.gz \
     --nodes raw_data/nodes.dmp.gz \
     --acc2tax raw_data/combined_taxid_accssionNO_20200425.gz \
-    --cores 4
+    --parallel-samples 4
 ```
 
 `metaDMG` is pretty versatile regarding its input argument and also accepts multiple alignment files:

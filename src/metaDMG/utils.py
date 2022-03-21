@@ -223,7 +223,7 @@ def paths_to_strings(
 
 def save_config_file(
     config: dict,
-    config_path: Path,
+    config_file: Path,
     overwrite_config: bool = False,
 ) -> None:
     """Save the config file.
@@ -233,7 +233,7 @@ def save_config_file(
     ----------
     config
         Input dict
-    config_path
+    config_file
         Save location
 
     Raises
@@ -243,16 +243,16 @@ def save_config_file(
     """
 
     if not overwrite_config:
-        if config_path.is_file():
+        if config_file.is_file():
             s = "Config file already exists. Do you want to overwrite it?"
             confirmed = typer.confirm(s)
             if not confirmed:
                 typer.echo("Exiting")
                 raise typer.Abort()
 
-    with open(config_path, "w") as file:
+    with open(config_file, "w") as file:
         yaml.dump(config, file, sort_keys=False)
-    typer.echo("Config file was created")
+    typer.echo(f"{str(config_file)} was created")
 
 
 #%%
@@ -280,7 +280,7 @@ def check_metaDMG_viz():
 
 
 def get_results_dir(
-    config_path: Optional[Path] = None,
+    config_file: Optional[Path] = None,
     results_dir: Optional[Path] = None,
 ) -> Path:
     """Helper function that gets the results directory from either the
@@ -288,7 +288,7 @@ def get_results_dir(
 
     Parameters
     ----------
-    config_path
+    config_file
         Config file, by default None
     results_dir
         Results directory, by default None
@@ -303,19 +303,19 @@ def get_results_dir(
         If both config file and results directory are set, raise error
     """
 
-    if config_path is not None and results_dir is not None:
-        raise AssertionError("'config_path' and 'results_dir' cannot both be set")
+    if config_file is not None and results_dir is not None:
+        raise AssertionError("'config_file' and 'results_dir' cannot both be set")
 
     if results_dir:
         return results_dir
 
-    if config_path is None:
-        config_path = Path("config.yaml")
+    if config_file is None:
+        config_file = Path("config.yaml")
 
-    with open(config_path, "r") as file:
+    with open(config_file, "r") as file:
         d = yaml.safe_load(file)
 
-    return Path(d["dir"]) / "results"
+    return Path(d["output_dir"]) / "results"
 
 
 #%%
@@ -376,3 +376,19 @@ def get_single_fit_prediction(df_results):
 def append_fit_predictions(df_results):
     df_Dx = get_single_fit_prediction(df_results)
     return pd.concat((df_results.reset_index(drop=True), df_Dx), axis=1)
+
+
+#%%
+
+
+# "minmapq": "mapping_quality_minimum"
+# "editdistmin": "min_edit_dist"
+# "editdistmax": "max_edit_dist"
+# "simscorelow": "min_similarity_score"
+# "simscorehigh": "max_similarity_score"
+# "weighttype": "weight_type"
+# "storage_dir": "output_dir"
+# "dir": "output_dir"
+# "fix_ncbi": "custom_database"  # XXX
+# "cores": "parallel_samples"
+# "cores_per_sample": "cores_per_sample"

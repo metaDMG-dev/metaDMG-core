@@ -48,7 +48,7 @@ class Configs(dict):
         Iterator[Config]
             Allow for iteration
         """
-        dir_lca = self["dir"] / "lca"
+        dir_lca = self["output_dir"] / "lca"
         samples = self["samples"].keys()
         for sample in samples:
             config = Config(self)
@@ -66,7 +66,7 @@ class Configs(dict):
 
             config["path_lca"] = dir_lca / f"{sample}.lca.txt.gz"
             config["path_lca_log"] = dir_lca / f"{sample}.log.txt"
-            config["path_tmp"] = config["dir"] / "tmp" / sample
+            config["path_tmp"] = config["output_dir"] / "tmp" / sample
             yield config
 
     def get_nth(self, n: int) -> Config:
@@ -105,31 +105,31 @@ class Configs(dict):
         return len(self["samples"].keys())
 
     def check_number_of_jobs(self) -> None:
-        """Compare the number of configs to the number of cores used."""
+        """Compare the number of configs to the number of parallel_samples used."""
 
-        cores = min(self["cores"], len(self["samples"]))
-        cores_pr_fit = self["cores_pr_fit"]
-        N_jobs = cores * cores_pr_fit
+        parallel_samples = min(self["parallel_samples"], len(self["samples"]))
+        cores_per_sample = self["cores_per_sample"]
+        N_jobs = parallel_samples * cores_per_sample
         max_cores = psutil.cpu_count(logical=True)
         max_cores_real = psutil.cpu_count(logical=False)
 
         if N_jobs > max_cores:
             logger.warning(
                 f"The total number of jobs {N_jobs} are higher "
-                f"than the number of cores {max_cores}. "
+                f"than the number of parallel_samples {max_cores}. "
                 f"Do not do this unless you know what you are doing. "
-                f"Try decreasing either 'cores' or 'cores-pr-fit'."
+                f"Try decreasing either 'parallel_samples' or 'parallel_samples-per-sample'."
             )
         elif N_jobs > max_cores_real:
             logger.info(
                 f"The total number of jobs {N_jobs} are higher "
-                f"than the real number of cores {max_cores_real} (non-logical). "
+                f"than the real number of parallel_samples {max_cores_real} (non-logical). "
                 f"This might decrease performance. "
             )
 
 
 def make_configs(
-    config_path: Optional[Path],
+    config_file: Optional[Path],
     log_port: Optional[int] = None,
     log_path: Optional[str] = None,
     forced: bool = False,
@@ -138,7 +138,7 @@ def make_configs(
 
     Parameters
     ----------
-    config_path
+    config_file
         The config file to load
     log_port
         Optional log port, by default None
@@ -157,15 +157,15 @@ def make_configs(
         If not a proper config file
     """
 
-    if config_path is None:
-        config_path = Path("config.yaml")
+    if config_file is None:
+        config_file = Path("config.yaml")
 
-    if not config_path.exists():
+    if not config_file.exists():
         logger.error("Error! Please select a proper config file!")
         raise typer.Abort()
 
-    logger.info(f"Using {config_path} as config file.")
-    with open(config_path, "r") as file:
+    logger.info(f"Using {config_file} as config file.")
+    with open(config_file, "r") as file:
         d = yaml.safe_load(file)
 
     d["log_port"] = log_port
@@ -174,11 +174,11 @@ def make_configs(
         d["forced"] = True
 
     d.setdefault("forward_only", False)
-    d.setdefault("cores_pr_fit", 1)
+    d.setdefault("cores_per_sample", 1)
     d.setdefault("damage_mode", "lca")
-    d.setdefault("forced", False)
+    d["forced"] = forced
 
-    paths = ["names", "nodes", "acc2tax", "dir", "config_path"]
+    paths = ["names", "nodes", "acc2tax", "output_dir", "config_file"]
     for path in paths:
         d[path] = Path(d[path])
     for key, val in d["samples"].items():
@@ -188,6 +188,8 @@ def make_configs(
         if isinstance(val, str):
             if val.isdigit():
                 d[key] = int(key)
+
+    d["custom_database"] = 0 if d["custom_database"] else 1
 
     return Configs(d)
 

@@ -209,7 +209,7 @@ def use_progressbar(config, position):
     if config["bayesian"]:
         return False
 
-    if config["cores"] == 1 or len(config["samples"]) == 1:
+    if config["parallel_samples"] == 1 or len(config["samples"]) == 1:
         if position == 0:
             return True
 
@@ -218,12 +218,12 @@ def use_progressbar(config, position):
 
 def get_list_of_groups(config, df_mismatches, N_in_each_group=100):
 
-    cores_pr_fit = config["cores_pr_fit"]
+    cores_per_sample = config["cores_per_sample"]
 
     tax_ids = df_mismatches["tax_id"].unique()
 
     if not config["bayesian"]:
-        N_splits = cores_pr_fit
+        N_splits = cores_per_sample
     else:
         # make splits, each with N_in_each_group groups in them
         N_splits = len(tax_ids) // N_in_each_group + 1
@@ -244,7 +244,7 @@ def get_list_of_groups(config, df_mismatches, N_in_each_group=100):
 
 def compute_fits_parallel(config, df_mismatches, N_in_each_group=100):
 
-    cores_pr_fit = config["cores_pr_fit"]
+    cores_per_sample = config["cores_per_sample"]
 
     dfs = get_list_of_groups(
         config,
@@ -253,7 +253,7 @@ def compute_fits_parallel(config, df_mismatches, N_in_each_group=100):
     )
 
     d_fit_results = {}
-    with Pool(processes=cores_pr_fit) as pool:
+    with Pool(processes=cores_per_sample) as pool:
         for d_fit_results_ in pool.imap_unordered(
             compute_fits_parallel_worker,
             dfs,
@@ -265,7 +265,7 @@ def compute_fits_parallel(config, df_mismatches, N_in_each_group=100):
 
 def compute_fits_parallel_Bayesian(config, df_mismatches, N_in_each_group=100):
 
-    cores_pr_fit = config["cores_pr_fit"]
+    cores_per_sample = config["cores_per_sample"]
 
     dfs = get_list_of_groups(
         config=config,
@@ -273,13 +273,13 @@ def compute_fits_parallel_Bayesian(config, df_mismatches, N_in_each_group=100):
         N_in_each_group=N_in_each_group,
     )
 
-    do_progressbar = config["cores"] == 1 or len(config["samples"]) == 1
+    do_progressbar = config["parallel_samples"] == 1 or len(config["samples"]) == 1
 
-    it = grouper(dfs, cores_pr_fit)
+    it = grouper(dfs, cores_per_sample)
     if do_progressbar:
         it = tqdm(
-            grouper(dfs, cores_pr_fit),
-            total=len(dfs) // cores_pr_fit,
+            grouper(dfs, cores_per_sample),
+            total=len(dfs) // cores_per_sample,
             unit="chunks",
         )
 
@@ -291,7 +291,7 @@ def compute_fits_parallel_Bayesian(config, df_mismatches, N_in_each_group=100):
             size = dfs_[0][0]["tax_id"].nunique()
             it.set_description(f"Fitting in chunks of size {size}")
 
-        with Pool(processes=cores_pr_fit) as pool:
+        with Pool(processes=cores_per_sample) as pool:
             for d_fit_results_ in pool.imap_unordered(
                 compute_fits_parallel_worker,
                 dfs_,
@@ -463,10 +463,10 @@ def compute(config, df_mismatches):
         d_fit_results = compute_fits_parallel_Bayesian(config, df_mismatches_unique)
 
     else:
-        if config["cores_pr_fit"] == 1:
+        if config["cores_per_sample"] == 1:
             logger.debug(f"Fitting in seriel.")
 
-            if config["cores"] == 1 or len(config["samples"]) == 1:
+            if config["parallel_samples"] == 1 or len(config["samples"]) == 1:
                 with_progressbar = True
             else:
                 with_progressbar = False
@@ -478,7 +478,9 @@ def compute(config, df_mismatches):
             )
 
         else:
-            logger.debug(f"Fitting in parallel with {config['cores_pr_fit']} cores.")
+            logger.debug(
+                f"Fitting in parallel with {config['cores_per_sample']} cores."
+            )
             d_fit_results = compute_fits_parallel(
                 config,
                 df_mismatches_unique,
