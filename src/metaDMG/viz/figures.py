@@ -1,13 +1,15 @@
-import matplotlib
-
-
-matplotlib.use("Agg")
+# import matplotlib
+# matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 from dash.exceptions import PreventUpdate
+from matplotlib import ticker
+from matplotlib.backends.backend_pdf import PdfPages
+from matplotlib.ticker import EngFormatter
+from tqdm import tqdm
 
 from metaDMG.viz import figures, viz_utils
 
@@ -423,9 +425,6 @@ def get_dataseries(df, viz_results):
     return d
 
 
-from matplotlib.ticker import EngFormatter
-
-
 def plt_bar_chart(ds, sample, max_rows=20):
 
     ds_plot = ds.iloc[:max_rows].iloc[::-1]
@@ -480,8 +479,6 @@ def plt_bar_charts(df, viz_results):
 
 
 #%%
-
-from matplotlib import ticker
 
 
 class MultipleOffsetLocator(ticker.MultipleLocator):
@@ -638,9 +635,6 @@ def count_all_plots(df, viz_results):
 
 
 #%%
-
-from matplotlib.backends.backend_pdf import PdfPages
-from tqdm import tqdm
 
 
 def generate_plt_plots(df, viz_results):

@@ -1,6 +1,8 @@
 from pathlib import Path
 from typing import Optional
 
+import matplotlib.pyplot as plt
+
 from metaDMG.viz import app, viz_utils
 
 
@@ -13,6 +15,8 @@ def start_dashboard(
 
     if results_dir is None:
         raise Exception(f"Has to be specified.")
+
+    plt.switch_backend("Agg")
 
     if not debug:
         viz_utils.open_browser_in_background(port)
