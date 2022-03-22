@@ -140,7 +140,7 @@ def extract_alignment_files(paths: list[Path]) -> list[Path]:
     return alignments
 
 
-def extract_alignments(
+def extract_samples(
     paths: list[Path],
     prefix: str = "",
     suffix: str = "",

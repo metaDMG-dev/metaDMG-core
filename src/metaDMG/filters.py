@@ -1,9 +1,28 @@
+from pathlib import Path
+from typing import Optional
+
 import pandas as pd
 
 from metaDMG.utils import append_fit_predictions, get_results_dir
 
 
-def load_results(config_file=None, results_dir=None):
+def load_results(
+    config_file: Optional[Path] = None,
+    results_dir: Optional[Path] = None,
+) -> pd.DataFrame:
+    """Load the results from either a config file or a results-directory
+
+    Parameters
+    ----------
+    config_file, optional
+        The the config file to use to locate the results directory, by default None
+    results_dir, optional
+        The results directory, by default None
+
+    Returns
+    -------
+        A dataframe of all the results
+    """
     results_dir = get_results_dir(
         config_file=config_file,
         results_dir=results_dir,
@@ -12,7 +31,23 @@ def load_results(config_file=None, results_dir=None):
     return df_results
 
 
-def filter_results(df_results: pd.DataFrame, query: str):
+def filter_results(
+    df_results: pd.DataFrame,
+    query: str,
+) -> pd.DataFrame:
+    """Filter the results given a Pandas query
+
+    Parameters
+    ----------
+    df_results
+        Input dataframe
+    query
+        Pandas query
+
+    Returns
+    -------
+        Output dataframe
+    """
     if query:
         if query.startswith(" & "):
             query = query[3:]
