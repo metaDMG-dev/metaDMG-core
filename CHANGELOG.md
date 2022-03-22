@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.6 (2022-03-22)
+### Fix
+* Inlcude helper functions in metaDMG.main ([`e8fc27d`](https://github.com/metaDMG/metaDMG/commit/e8fc27d828af2a629d27eaf67201682eb154274b))
+
 ## v0.21.5 (2022-03-21)
 ### Fix
 * Auto-update old config files, but raise warning ([`b3b8f32`](https://github.com/metaDMG/metaDMG/commit/b3b8f32ad3e6412289a36f50ba6054d921812bd3))
