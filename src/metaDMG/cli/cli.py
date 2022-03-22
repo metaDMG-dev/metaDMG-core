@@ -52,6 +52,7 @@ def create_config(
         ...,
         help="Single or multiple alignment-files (or a directory containing them).",
     ),
+    # LCA parameters
     names: Optional[Path] = typer.Option(
         None,
         exists=True,
@@ -69,12 +70,6 @@ def create_config(
         exists=True,
         file_okay=True,
         help="Path to the (NCBI) acc2tax.gz.",
-    ),
-    metaDMG_cpp: str = typer.Option(
-        "./metaDMG-cpp",
-        "--metaDMG-cpp",
-        "-m",
-        help="The command needed to run the metaDMG-cpp program.",
     ),
     min_similarity_score: float = typer.Option(
         0.95,
@@ -110,18 +105,6 @@ def create_config(
         "-q",
         help="Minimum mapping quality.",
     ),
-    max_position: int = typer.Option(
-        15,
-        "--max-position",
-        "-P",
-        help="Number of positions to include (|x| < max_position).",
-    ),
-    weight_type: int = typer.Option(
-        1,
-        "--weight-type",
-        "-w",
-        help="Method for calculating weights",
-    ),
     custom_database: bool = typer.Option(
         False,
         "--custom-database",
@@ -134,6 +117,25 @@ def create_config(
         "-r",
         case_sensitive=False,
         help="The LCA rank used in ngsLCA.",
+    ),
+    # GENERAL PARAMETERS
+    metaDMG_cpp: str = typer.Option(
+        "./metaDMG-cpp",
+        "--metaDMG-cpp",
+        "-m",
+        help="The command needed to run the metaDMG-cpp program.",
+    ),
+    max_position: int = typer.Option(
+        15,
+        "--max-position",
+        "-P",
+        help="Number of positions to include (|x| < max_position).",
+    ),
+    weight_type: int = typer.Option(
+        1,
+        "--weight-type",
+        "-w",
+        help="Method for calculating weights",
     ),
     forward_only: bool = typer.Option(
         False,
@@ -186,7 +188,7 @@ def create_config(
     ),
     damage_mode: cli_utils.DAMAGE_MODE = typer.Option(
         cli_utils.DAMAGE_MODE.LCA,
-        "--damage_mode",
+        "--damage-mode",
         "-d",
         case_sensitive=False,
         help="The Damage Mode. Use 'LCA' unless you know what you are doing.",

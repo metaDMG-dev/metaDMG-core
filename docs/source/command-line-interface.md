@@ -2,6 +2,8 @@
 
 `metaDMG` has the following commands: `config`, `compute`, `dashboard`, `convert`,`filter`,`plot`.
 
+---
+
 ## Config
 
 `metaDMG config` takes a single argument, `samples`, and a bunch of additional options and flags.
@@ -14,33 +16,41 @@ The `samples` refer to a single or multiple alignment-files (or a directory cont
 - `--damage-mode`: `[lca|local|global]`. `lca` is the recommended and automatic setting. If using `local`, it means that damage patterns will be calculated for each chr/scaffold contig. If using `global`, it means one global estimate. Note that when using `[local|global]` the LCA parameters won't matter.
 
 #### LCA
+- Options:
 
-- `--names`: Path to the (NCBI) `names.dmp.gz`. Mandatory for LCA.
-- `--nodes`: Path to the (NCBI) `nodes.dmp.gz`. Mandator for LCA.
-- `--acc2tax`: Path to the (NCBI) `acc2tax.gz`. Mandatory for LCA.
-- `--min-similarity-score`: Normalised edit distance (read to reference similarity) minimum. Number between 0-1. Default: 0.95.
-- `--max-similarity-score`: Normalised edit distance (read to reference similarity) maximum. Number between 0-1 Default: 1.0.
-- `--min-edit-dist`: Minimum edit distance (read to reference similarity). Number between 0-10. Default: 0.
-- `--max-edit-dist`: Maximum edit distance (read to reference similarity). Number between 0-10. Default: 10.
-- `--min-mapping-quality`: Minimum mapping quality. Default: 0.
-- `--weight-type`: Method for calculating weights. Default is 1.
-- `--fix-ncbi`: Fix the (ncbi) database. Disable (0) if using a custom database. Default is 1.
-- `--lca-rank`: The LCA rank used in ngsLCA. Can be either `family`, `genus`, `species` or `""` (everything). Default is `""`.
+  - `--names`: Path to the (NCBI) `names.dmp.gz`. Mandatory for LCA.
+  - `--nodes`: Path to the (NCBI) `nodes.dmp.gz`. Mandator for LCA.
+  - `--acc2tax`: Path to the (NCBI) `acc2tax.gz`. Mandatory for LCA.
+  - `--min-similarity-score`: Normalised edit distance (read to reference similarity) minimum. Number between 0-1. Default: 0.95.
+  - `--max-similarity-score`: Normalised edit distance (read to reference similarity) maximum. Number between 0-1 Default: 1.0.
+  - `--min-edit-dist`: Minimum edit distance (read to reference similarity). Number between 0-10. Default: 0.
+  - `--max-edit-dist`: Maximum edit distance (read to reference similarity). Number between 0-10. Default: 10.
+  - `--min-mapping-quality`: Minimum mapping quality. Default: 0.
+  - `--lca-rank`: The LCA rank used in ngsLCA. Can be either `family`, `genus`, `species` or `""` (everything). Default is `""`.
+
+- Flags:
+  - `--custom-database`: Flag. Using a custom database or the NCBI. If NCBI, automatically corrects for a couple of bad taxa. Default is False.
 
 #### General
 
 - Options:
-    - `--max-position`: Maximum position in the sequence to include. Default is (+/-) 15 (forward/reverse).
-    - `--output-dir`: Path where the generated output files and folders are stored. Default: `./data/`.
-    - `--parallel-samples`: The maximum number of cores to use. Default is 1.
-    - `--cores-per-sample`: Number of cores pr. fit. Do not change unless you know what you are doing.
-    - `--sample-prefix`: Prefix for the sample names.
-    - `--sample-suffix`: Suffix for the sample names.
-    - `--config-path`: The name of the generated config file. Default: `config.yaml`.
+  - `--damage-mode`: The damage mode. Use `LCA` unless you know what you are doing.
+  - `--max-position`: Maximum position in the sequence to include. Default is (+/-) 15 (forward/reverse).
+  - `--output-dir`: Path where the generated output files and folders are stored. Default: `./data/`.
+  - `--config-path`: The name of the generated config file. Default: `config.yaml`.
+  - `--parallel-samples`: The number of samples to run in parallel. Default is running in seriel.
+  - `--cores-per-sample`: Number of cores to use pr. sample. Do not change unless you know what you are doing.
+  - `--sample-prefix`: Prefix for the sample names.
+  - `--sample-suffix`: Suffix for the sample names.
+  - `--weight-type`: Method for calculating weights. Default is 1.
+
 - Flags:
   - `--forward-only`: Only fit the forward strand.
   - `--bayesian`: Include a fully Bayesian model (probably better, but also _a lot_ slower, about a factor of 100).
   - `--long-name`: Use the full, long, name for the sample.
+  - `--overwrite`: Overwrite config file without user confirmation.
+
+
 
 ### Examples
 
@@ -66,6 +76,7 @@ To run `metaDMG` in non-LCA mode, an example could be:
 $ metaDMG config ./raw_data/example.bam --damage-mode local --max-position 15 --bayesian
 ```
 
+---
 
 ## Compute
 
@@ -88,7 +99,7 @@ $ metaDMG compute
 $ metaDMG compute non-default-config.yaml --force
 ```
 
-
+---
 
 ## Dashboard
 
@@ -117,36 +128,7 @@ $ metaDMG dashboard
 $ metaDMG dashboard non-default-config.yaml --port 8050 --host 0.0.0.0
 ```
 
-
-
-## Plot
-
-The `metaDMG plot` command takes first an optional config-file as argument
-(defaults to `config.yaml` if not specified).
-
-
-### Parameters
-
-- Options:
-  - `--results-dir`: Direct path to the results directory.
-  - `--query`: The query string to use for filtering. Follows the [Pandas Query()](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method) syntax. Default is `""` which applies no filtering.
-  - `--samples`: A comma-space seperated string containing the samples to use in the plots. Default is `""` which applies no filtering.
-  - `--tax-ids`: A comma-space seperated string containing the tax-ids to use in the plots. Default is `""` which applies no filtering.
-  - `--pdf-out`: The path to the output pdf-file. Defaults to `pdf_export.pdf`.
-
-
-### Examples
-
-```console
-$ metaDMG plot
-```
-
-```console
-$ metaDMG plot --query "100_000 <= N_reads & 8_000 <= phi" --tax-ids "1, 2, 42" --samples "sampleA, another-sample" --pdf-out name-of-plots.pdf
-```
-
-
-
+---
 
 ## Convert
 
@@ -157,13 +139,13 @@ The `metaDMG convert` command takes first an optional config-file as argument
 
 - Options:
   - `--output`: Mandatory output path.
-  - `--results-dir`: Direct path to the results directory.
+  - `--results`: Direct path to the results directory.
 
 - Flags:
   - `--add-fit-predictions`: Include fit predictions D(x) in the output.
 
 
-Note that neither the config-file nor `--results-dir` have to be specified
+Note that neither the config-file nor `--results` have to be specified
 (in which just the default `config.yaml` is used), however,
 both cannot be set at the same time.
 
@@ -177,7 +159,7 @@ $ metaDMG convert --output ./directory/to/contain/results.csv
 $ metaDMG convert non-default-config.yaml --output ./directory/to/contain/results.csv --add-fit-predictions
 ```
 
-
+---
 ## Filter
 
 The `metaDMG filter` command takes first an optional config-file as argument
@@ -188,14 +170,14 @@ The `metaDMG filter` command takes first an optional config-file as argument
 - Options:
   - `--output`: Mandatory output path.
   - `--query`: The query string to use for filtering. Follows the [Pandas Query()](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method) syntax.
-  - `--results-dir`: Direct path to the results directory.
+  - `--results`: Direct path to the results directory.
 Default is `""` which applies no filtering and is thus similar to the `metaDMG convert` command.
 
 - Flags:
   - `--add-fit-predictions`: Include fit predictions D(x) in the output.
 
 
-Note that neither the config-file nor `--results-dir` have to be specified
+Note that neither the config-file nor `--results` have to be specified
 (in which just the default `config.yaml` is used), however,
 both cannot be set at the same time.
 
@@ -209,6 +191,36 @@ $ metaDMG filter --output convert-no-query.csv # similar to metaDMG convert
 $ metaDMG filter --output convert-test.csv --query "N_reads > 5_000 & sample in ['subs', 'SPL_195_9299'] & tax_name == 'root'" --add-fit-predictions
 ```
 
+
+---
+
+## Plot
+
+The `metaDMG plot` command takes first an optional config-file as argument
+(defaults to `config.yaml` if not specified).
+
+
+### Parameters
+
+- Options:
+  - `--results`: Direct path to the results directory.
+  - `--query`: The query string to use for filtering. Follows the [Pandas Query()](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method) syntax. Default is `""` which applies no filtering.
+  - `--samples`: A comma-space seperated string containing the samples to use in the plots. Default is `""` which applies no filtering.
+  - `--tax-ids`: A comma-space seperated string containing the tax-ids to use in the plots. Default is `""` which applies no filtering.
+  - `--output`: The path to the output pdf-file. Defaults to `pdf_export.pdf`.
+
+
+### Examples
+
+```console
+$ metaDMG plot
+```
+
+```console
+$ metaDMG plot --query "100_000 <= N_reads & 8_000 <= phi" --tax-ids "1, 2, 42" --samples "sampleA, another-sample" --pdf-out name-of-plots.pdf
+```
+
+---
 
 ## mismatch-to-mapDamage
 
