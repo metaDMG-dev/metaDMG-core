@@ -79,7 +79,7 @@ def set_opacity_for_trace(
 
 
 def make_figure(
-    results,
+    viz_results,
     df=None,
     xaxis_column_name="lambda_LR",
     yaxis_column_name="D_max",
@@ -87,10 +87,10 @@ def make_figure(
 ):
 
     if df is None:
-        df = results.df
+        df = viz_results.df
 
     if d_columns_latex is None:
-        d_columns_latex = viz_utils.get_d_columns_latex(results)[0]
+        d_columns_latex = viz_utils.get_d_columns_latex(viz_results)[0]
 
     fig = px.scatter(
         # df,
@@ -100,20 +100,20 @@ def make_figure(
         size="size",
         color="sample",
         hover_name="sample",
-        color_discrete_map=results.d_cmap,
-        custom_data=results.custom_data_columns,
+        color_discrete_map=viz_results.d_cmap,
+        custom_data=viz_results.custom_data_columns,
         render_mode="webgl",
         symbol="sample",
-        symbol_map=results.d_symbols,
+        symbol_map=viz_results.d_symbols,
     )
 
     # 2. * max(array of size values) / (desired maximum marker size ** 2)
 
     fig.update_traces(
-        hovertemplate=results.hovertemplate,
+        hovertemplate=viz_results.hovertemplate,
         marker_line_width=0,
         marker_sizemode="area",
-        marker_sizeref=2.0 * results.max_of_size / (results.marker_size ** 2),
+        marker_sizeref=2.0 * viz_results.max_of_size / (viz_results.marker_size ** 2),
     )
 
     fig.update_layout(
@@ -157,7 +157,7 @@ def make_figure(
 #%%
 
 
-def plot_group(results, group, fit=None, forward_reverse=""):
+def plot_group(viz_results, group, fit=None, forward_reverse=""):
 
     custom_data_columns = [
         "direction",
@@ -179,7 +179,7 @@ def plot_group(results, group, fit=None, forward_reverse=""):
         x="|x|",
         y="f",
         color="direction",
-        color_discrete_map=results.d_cmap_fit,
+        color_discrete_map=viz_results.d_cmap_fit,
         hover_name="direction",
         custom_data=custom_data_columns,
     )
@@ -257,7 +257,7 @@ def plot_group(results, group, fit=None, forward_reverse=""):
         )
         return fig
 
-    green_color = results.d_cmap_fit["Fit"]
+    green_color = viz_results.d_cmap_fit["Fit"]
     green_color_transparent = viz_utils.hex_to_rgb(green_color, opacity=0.1)
 
     # fit with errorbars
@@ -274,7 +274,7 @@ def plot_group(results, group, fit=None, forward_reverse=""):
             mode="markers",
             name="Fit",
             marker_color=green_color,
-            hovertemplate=results.hovertemplate_fit,
+            hovertemplate=viz_results.hovertemplate_fit,
         )
     )
 
@@ -311,25 +311,25 @@ def plot_group(results, group, fit=None, forward_reverse=""):
 #%%
 
 
-def update_raw_count_plots(results, click_data, forward_reverse):
+def update_raw_count_plots(viz_results, click_data, forward_reverse):
     if click_data is not None:
 
         sample, tax_id = viz_utils.get_sample_tax_id_from_click_data(
-            results,
+            viz_results,
             click_data,
         )
 
-        group = results.get_single_count_group(
+        group = viz_results.get_single_count_group(
             sample,
             tax_id,
             forward_reverse,
         )
-        fit = results.get_single_fit_prediction(
+        fit = viz_results.get_single_fit_prediction(
             sample,
             tax_id,
             forward_reverse,
         )
-        fig = figures.plot_group(results, group, fit, forward_reverse)
+        fig = figures.plot_group(viz_results, group, fit, forward_reverse)
         return fig
     else:
         raise PreventUpdate
@@ -350,10 +350,10 @@ def compute_markersize(
     ) + markersize_min
 
 
-def plt_scatterplot(df, results):
+def plt_scatterplot(df, viz_results):
 
-    x = "Bayesian_z" if results.Bayesian else "lambda_LR"
-    y = "Bayesian_D_max" if results.Bayesian else "D_max"
+    x = "Bayesian_z" if viz_results.Bayesian else "lambda_LR"
+    y = "Bayesian_D_max" if viz_results.Bayesian else "D_max"
 
     size_max = df["size"].max()
     size_min = df["size"].min()
@@ -374,14 +374,14 @@ def plt_scatterplot(df, results):
             ax.scatter(
                 group[x],
                 group[y],
-                c=results.d_cmap[sample],
+                c=viz_results.d_cmap[sample],
                 s=markersize,
-                marker=results.d_markers[sample],
+                marker=viz_results.d_markers[sample],
                 label=r"$\verb|" + sample + r"|$" if viz_utils.has_latex() else sample,
             )
 
         ax.set_xlabel(
-            r"$z$" if results.Bayesian else r"$\lambda_\mathrm{LR}$",
+            r"$z$" if viz_results.Bayesian else r"$\lambda_\mathrm{LR}$",
             fontsize=12,
         )
         ax.set_ylabel(
@@ -408,7 +408,7 @@ def plt_scatterplot(df, results):
 #%%
 
 
-def get_dataseries(df, results):
+def get_dataseries(df, viz_results):
     d = {}
     for sample, group in df.groupby("sample", sort=False):
         group["N_reads_rel"] = group["N_reads"] / group["N_reads"].sum()
@@ -418,7 +418,7 @@ def get_dataseries(df, results):
             .reset_index(drop=True)
             .sort_values("N_reads_rel", ascending=False)
         )
-        ds["color"] = results.d_cmap[sample]
+        ds["color"] = viz_results.d_cmap[sample]
         d[sample] = ds
     return d
 
@@ -470,8 +470,8 @@ def plt_bar_chart(ds, sample, max_rows=20):
     return fig, ax
 
 
-def plt_bar_charts(df, results):
-    d_ds = get_dataseries(df, results)
+def plt_bar_charts(df, viz_results):
+    d_ds = get_dataseries(df, viz_results)
     figs = []
     for sample, ds in d_ds.items():
         fig, ax = plt_bar_chart(ds, sample)
@@ -499,14 +499,14 @@ class MultipleOffsetLocator(ticker.MultipleLocator):
         return self.raise_if_exceeds(locs)
 
 
-def plt_errorplot(results, group, fit=None):
+def plt_errorplot(viz_results, group, fit=None):
 
     mask_forward = group["direction"].str.lower() == "forward"
     mask_reverse = group["direction"].str.lower() == "reverse"
 
     sample = group["sample"].iloc[0]
-    color = results.d_cmap[sample]
-    marker = results.d_markers[sample]
+    color = viz_results.d_cmap[sample]
+    marker = viz_results.d_markers[sample]
 
     styles = viz_utils.get_mpl_styles()
     with plt.style.context(styles):
@@ -523,7 +523,7 @@ def plt_errorplot(results, group, fit=None):
             label="Forward",
         )
 
-        if not results.forward_only:
+        if not viz_results.forward_only:
             ax.plot(
                 group.loc[mask_reverse, ["|x|"]].values,
                 group.loc[mask_reverse, ["f"]].values,
@@ -614,7 +614,7 @@ def plt_errorplot(results, group, fit=None):
     return fig
 
 
-def count_errorplots(results, df):
+def count_errorplots(viz_results, df):
     counter = 0
     for sample, sample_group in df.groupby("sample", sort=False):
         for tax_id in sample_group["tax_id"]:
@@ -622,18 +622,18 @@ def count_errorplots(results, df):
     return counter
 
 
-def plt_errorplots(results, df):
+def plt_errorplots(viz_results, df):
     for sample, sample_group in df.groupby("sample", sort=False):
         for tax_id in sample_group["tax_id"]:
             # x=x
-            group = results.get_single_count_group(sample=sample, tax_id=tax_id)
-            fit = results.get_single_fit_prediction(sample, tax_id)
-            fig = plt_errorplot(results=results, group=group, fit=fit)
+            group = viz_results.get_single_count_group(sample=sample, tax_id=tax_id)
+            fit = viz_results.get_single_fit_prediction(sample, tax_id)
+            fig = plt_errorplot(viz_results=viz_results, group=group, fit=fit)
             yield fig
 
 
-def count_all_plots(df, results):
-    total = 1 + df["sample"].nunique() + count_errorplots(results, df)
+def count_all_plots(df, viz_results):
+    total = 1 + df["sample"].nunique() + count_errorplots(viz_results, df)
     return total
 
 
@@ -643,29 +643,29 @@ from matplotlib.backends.backend_pdf import PdfPages
 from tqdm import tqdm
 
 
-def generate_plt_plots(df, results):
+def generate_plt_plots(df, viz_results):
 
-    fig_scatter = plt_scatterplot(df, results)[0]
+    fig_scatter = plt_scatterplot(df, viz_results)[0]
     yield fig_scatter
 
-    fig_bar_charts = plt_bar_charts(df, results)
+    fig_bar_charts = plt_bar_charts(df, viz_results)
     for fig_bar_chart in fig_bar_charts:
         yield fig_bar_chart
 
-    for fig_error_plot in plt_errorplots(results, df):
+    for fig_error_plot in plt_errorplots(viz_results, df):
         yield fig_error_plot
 
 
 def save_pdf_plots(
     df,
-    results,
+    viz_results,
     pdf_path="pdf_export.pdf",
     set_progress=None,
     do_tqdm=False,
 ):
 
-    figs = generate_plt_plots(df=df, results=results)
-    total = count_all_plots(df=df, results=results)
+    figs = generate_plt_plots(df=df, viz_results=viz_results)
+    total = count_all_plots(df=df, viz_results=viz_results)
 
     if do_tqdm:
         figs = tqdm(figs, desc=f"Making plots", total=total)

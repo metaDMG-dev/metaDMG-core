@@ -168,11 +168,11 @@ def get_samples_each(all_samples):
     return values
 
 
-def get_dropdown_file_selection(results, id, samples_to_show="all"):
+def get_dropdown_file_selection(viz_results, id, samples_to_show="all"):
 
     special_samples = ["Select all", "Default selection"]
     N_special_samples = len(special_samples)
-    all_samples = special_samples + results.samples
+    all_samples = special_samples + viz_results.samples
 
     if samples_to_show is None:
         values = all_samples
@@ -186,7 +186,7 @@ def get_dropdown_file_selection(results, id, samples_to_show="all"):
             values = all_samples
 
         elif samples_to_show == "each":
-            values = get_samples_each(results.samples)
+            values = get_samples_each(viz_results.samples)
 
     values = list(sorted(values))
 
@@ -218,12 +218,12 @@ def _insert_mark_values(mark_values):
     return mark_labels
 
 
-def get_range_slider_keywords(results, column="N_reads", N_steps=100):
+def get_range_slider_keywords(viz_results, column="N_reads", N_steps=100):
 
     no_min = "Min"
     no_max = "Max"
 
-    df = results.df
+    df = viz_results.df
 
     if is_log_transform_column(column):
 
@@ -310,10 +310,10 @@ def get_range_slider_keywords(results, column="N_reads", N_steps=100):
 #%%
 
 
-def get_sample_tax_id_from_click_data(results, click_data):
+def get_sample_tax_id_from_click_data(viz_results, click_data):
     try:
-        sample = results.parse_click_data(click_data, column="sample")
-        tax_id = results.parse_click_data(click_data, column="tax_id")
+        sample = viz_results.parse_click_data(click_data, column="sample")
+        tax_id = viz_results.parse_click_data(click_data, column="tax_id")
     except KeyError:
         raise PreventUpdate
     return sample, tax_id
@@ -606,7 +606,7 @@ def get_graph_kwargs_no_buttons():
     return graph_kwargs_no_buttons
 
 
-def get_d_columns_latex(results):
+def get_d_columns_latex(viz_results):
     d_columns_latex = {
         "lambda_LR": r"$\lambda_\text{LR} \text{(MAP)}$",
         "D_max": r"$D_\text{max} \text{(MAP)}$",
@@ -702,7 +702,7 @@ def get_d_columns_latex(results):
     }
 
     keys_to_remove = [
-        key for key in d_columns_latex.keys() if not key in results.df.columns
+        key for key in d_columns_latex.keys() if not key in viz_results.df.columns
     ]
     [d_columns_latex.pop(key) for key in keys_to_remove]
 

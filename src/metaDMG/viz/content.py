@@ -74,20 +74,20 @@ def get_navbar():
 #%%
 
 
-def get_content_main(results, start_configuration):
+def get_content_main(viz_results, start_configuration):
 
-    _, columns, columns_no_log = viz_utils.get_d_columns_latex(results)
+    _, columns, columns_no_log = viz_utils.get_d_columns_latex(viz_results)
 
     dropdown_x_axis = dcc.Dropdown(
         id="xaxis_column",
         options=[{"label": i, "value": i} for i in columns],
-        value="Bayesian_z" if results.Bayesian else "lambda_LR",
+        value="Bayesian_z" if viz_results.Bayesian else "lambda_LR",
     )
 
     dropdown_y_axis = dcc.Dropdown(
         id="yaxis_column",
         options=[{"label": i, "value": i} for i in columns],
-        value="Bayesian_D_max" if results.Bayesian else "D_max",
+        value="Bayesian_D_max" if viz_results.Bayesian else "D_max",
     )
 
     XY_axis_dropdowns = [
@@ -216,13 +216,15 @@ def get_content_main(results, start_configuration):
 #%%
 
 
-def get_sidebar_left(results, start_configuration):
+def get_sidebar_left(viz_results, start_configuration):
 
-    d_columns_latex, columns, columns_no_log = viz_utils.get_d_columns_latex(results)
+    d_columns_latex, columns, columns_no_log = viz_utils.get_d_columns_latex(
+        viz_results
+    )
 
     filter_dropdown_file = dbc.Form(
         viz_utils.get_dropdown_file_selection(
-            results=results,
+            viz_results=viz_results,
             id="sidebar_left_dropdown_samples",
             samples_to_show="each",  # one for each first letter in sample
         ),
@@ -260,9 +262,9 @@ def get_sidebar_left(results, start_configuration):
                             {"label": tax, "value": tax}
                             for tax in itertools.chain.from_iterable(
                                 [
-                                    results.all_tax_ranks,
-                                    results.all_tax_names,
-                                    results.all_tax_ids,
+                                    viz_results.all_tax_ranks,
+                                    viz_results.all_tax_names,
+                                    viz_results.all_tax_ids,
                                 ]
                             )
                         ],
@@ -330,21 +332,21 @@ def get_sidebar_left(results, start_configuration):
     # default sliders (with default values)
 
     slider_N_reads = make_new_slider(
-        results,
+        viz_results,
         column="N_reads",
         id_type="dbc",
         min_value=np.log10(100),
     )
     slider_k_sum_total = make_new_slider(
-        results,
+        viz_results,
         column="k_sum_total",
         id_type="dbc",
         min_value=np.log10(10),
     )
 
-    slider_phi_column = "Bayesian_phi" if results.Bayesian else "phi"
+    slider_phi_column = "Bayesian_phi" if viz_results.Bayesian else "phi"
     slider_phi = make_new_slider(
-        results,
+        viz_results,
         column=slider_phi_column,
         id_type="dbc",
         min_value=np.log10(100),
@@ -543,11 +545,11 @@ def get_sidebar_right(start_configuration):
 #%%
 
 
-def get_app_layout(results, start_configuration):
+def get_app_layout(viz_results, start_configuration):
 
     navbar = get_navbar()
-    content_main = get_content_main(results, start_configuration)
-    sidebar_left = get_sidebar_left(results, start_configuration)
+    content_main = get_content_main(viz_results, start_configuration)
+    sidebar_left = get_sidebar_left(viz_results, start_configuration)
     sidebar_right = get_sidebar_right(start_configuration)
 
     modal_filtering = dbc.Modal(
@@ -659,10 +661,12 @@ def get_slider_name(column, low_high):
     return f"{column}: [{low}, {high}]"
 
 
-def make_new_slider(results, column, id_type, N_steps=100, value=None, min_value=None):
+def make_new_slider(
+    viz_results, column, id_type, N_steps=100, value=None, min_value=None
+):
 
     d_range_slider = viz_utils.get_range_slider_keywords(
-        results,
+        viz_results,
         column=column,
         N_steps=N_steps,
     )

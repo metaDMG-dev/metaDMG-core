@@ -358,10 +358,6 @@ class VizResults:
                 + self.hovertemplate[index:]
             )
 
-        # forward_only = []
-        # if results.forward_only:
-        #     forward_only = ["FORWARD ONLY", html.Br(), html.Br()]
-
         # fill in the templates with data
         data_counter = 0
         i = 0
