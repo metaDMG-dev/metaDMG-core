@@ -21,6 +21,7 @@ def callback(
     version: Optional[bool] = typer.Option(
         None,
         "--version",
+        "-v",
         callback=cli_utils.version_callback,
     ),
 ):
@@ -71,74 +72,103 @@ def create_config(
     ),
     metaDMG_cpp: str = typer.Option(
         "./metaDMG-cpp",
+        "--metaDMG-cpp",
+        "-m",
         help="The command needed to run the metaDMG-cpp program.",
     ),
     min_similarity_score: float = typer.Option(
         0.95,
+        "--min-similarity-score",
+        "-s",
         help="Normalised edit distance (read to reference similarity) minimum. Number between 0-1.",
         callback=lambda x: cli_utils.is_in_range(x, 0, 1),
     ),
     max_similarity_score: float = typer.Option(
         1.0,
+        "--max-similarity-score",
+        "-S",
         help="Normalised edit distance (read to reference similarity) maximum. Number between 0-1.",
         callback=lambda x: cli_utils.is_in_range(x, 0, 1),
     ),
     min_edit_dist: int = typer.Option(
         0,
+        "--min-edit-dist",
+        "-e",
         help="Minimum edit distance (read to reference similarity). Number between 0-10.",
         callback=lambda x: cli_utils.is_in_range(x, 0, 10),
     ),
     max_edit_dist: int = typer.Option(
         10,
+        "--max-edit-dist",
+        "-E",
         help="Maximum edit distance (read to reference similarity). Number between 0-10.",
         callback=lambda x: cli_utils.is_in_range(x, 0, 10),
     ),
     min_mapping_quality: int = typer.Option(
         0,
+        "--min-mapping-quality",
+        "-q",
         help="Minimum mapping quality.",
     ),
     max_position: int = typer.Option(
         15,
+        "--max-position",
+        "-P",
         help="Number of positions to include (|x| < max_position).",
     ),
     weight_type: int = typer.Option(
         1,
+        "--weight-type",
+        "-w",
         help="Method for calculating weights",
     ),
     custom_database: bool = typer.Option(
         False,
         "--custom-database",
+        "-u",
         help="Fix the (ncbi) database. Disable if using a custom database.",
     ),
     lca_rank: cli_utils.RANKS = typer.Option(
         cli_utils.RANKS.none,
+        "--lca-rank",
+        "-r",
         case_sensitive=False,
         help="The LCA rank used in ngsLCA.",
     ),
     forward_only: bool = typer.Option(
         False,
         "--forward-only",
+        "-l",
         help="Only use the forward direction.",
     ),
     bayesian: bool = typer.Option(
         False,
         "--bayesian",
+        "-b",
         help="Include a fully Bayesian model (probably better, but also _a lot_ slower, about a factor of 100.",
     ),
     output_dir: Path = typer.Option(
         output_dir_default,
+        "--output-dir",
+        "-o",
         help="Path where the generated output files and folders are stored.",
     ),
     parallel_samples: int = typer.Option(
         1,
+        "--parallel-samples",
+        "-j",
         help="The number of samples to run in parallel. Default is running in seriel.",
     ),
     cores_per_sample: int = typer.Option(
         1,
+        "--cores-per-sample",
+        "-i",
         help="Number of cores to use pr. sample. ",
     ),
     config_file: Path = typer.Option(
         config_file_default,
+        "--config-file",
+        "-c",
         help="The name of the config file. ",
     ),
     sample_prefix: str = typer.Option(
@@ -156,12 +186,15 @@ def create_config(
     ),
     damage_mode: cli_utils.DAMAGE_MODE = typer.Option(
         cli_utils.DAMAGE_MODE.LCA,
+        "--damage_mode",
+        "-d",
         case_sensitive=False,
         help="The Damage Mode. Use 'LCA' unless you know what you are doing.",
     ),
     overwrite_config: bool = typer.Option(
         False,
         "--overwrite",
+        "-f",
         help="Overwrite config file without user confirmation.",
     ),
 ):
@@ -177,7 +210,7 @@ def create_config(
 
     config = utils.paths_to_strings(
         {
-            "samples": utils.extract_alignments(
+            "samples": utils.extract_samples(
                 samples,
                 prefix=sample_prefix,
                 suffix=sample_suffix,
@@ -225,6 +258,7 @@ def compute(
     force: bool = typer.Option(
         False,
         "--force",
+        "-f",
         help="Forced computation (even though the files already exists).",
     ),
 ):
@@ -268,19 +302,26 @@ def dashboard(
     ),
     results: Optional[Path] = typer.Option(
         None,
+        "--results",
+        "-r",
         help="Path to the results directory.",
     ),
     debug: bool = typer.Option(
         False,
         "--debug",
+        "-d",
         help="Whether or not the debug-button should be displayed.",
     ),
     port: int = typer.Option(
         8050,
+        "--port",
+        "-p",
         help="Dashboard port.",
     ),
     host: str = typer.Option(
         "0.0.0.0",
+        "--host",
+        "-h",
         help="Dashboard host address",
     ),
 ):
@@ -327,14 +368,20 @@ def convert(
     ),
     results_dir: Optional[Path] = typer.Option(
         None,
+        "--results",
+        "-r",
         help="Path to the results directory.",
     ),
     output: Path = typer.Option(
         ...,
+        "--output",
+        "-o",
         help="Where to save the converted file.",
     ),
     add_fit_predictions: bool = typer.Option(
         False,
+        "--add-fit-predictions",
+        "-a",
         help="Add fit predictions D(x) to the output",
     ),
 ):
@@ -363,18 +410,26 @@ def filter(
     ),
     results_dir: Optional[Path] = typer.Option(
         None,
+        "--results",
+        "-r",
         help="Path to the results directory.",
     ),
     output: Path = typer.Option(
         ...,
+        "--output",
+        "-o",
         help="Where to save the converted file.",
     ),
     query: str = typer.Option(
         "",
+        "--query",
+        "-q",
         help="Filtering query",
     ),
     add_fit_predictions: bool = typer.Option(
         False,
+        "--add-fit-predictions",
+        "-a",
         help="Add fit predictions D(x) to the output",
     ),
 ):
@@ -403,22 +458,32 @@ def plot(
     ),
     results_dir: Optional[Path] = typer.Option(
         None,
+        "--results",
+        "-r",
         help="Path to the results directory.",
     ),
     query: str = typer.Option(
         "",
+        "--query",
+        "-q",
         help="Filtering query",
     ),
     samples: str = typer.Option(
         "",
+        "--samples",
+        "-s",
         help="Only use specific Tax samples",
     ),
     tax_ids: str = typer.Option(
         "",
+        "--tax-ids",
+        "-t",
         help="""Only use specific Tax IDs. Example: "" """,
     ),
     pdf_out: Path = typer.Option(
         "pdf_export.pdf",
+        "--output",
+        "-o",
         file_okay=True,
         help="Output PDF file (pdf_export.pdf).",
     ),
@@ -466,6 +531,8 @@ def mismatch_to_mapDamage(
     ),
     csv_out: Path = typer.Option(
         "misincorporation.txt",
+        "--output",
+        "-o",
         file_okay=True,
         help="Output CSV file (misincorporation.txt).",
     ),
