@@ -29,20 +29,20 @@ The `samples` refer to a single or multiple alignment-files (or a directory cont
   - `--lca-rank`: The LCA rank used in ngsLCA. Can be either `family`, `genus`, `species` or `""` (everything). Default is `""`.
 
 - Flags:
-  - `--custom-database`: Flag. Using a custom database or the NCBI. If NCBI, automatically corrects for a couple of bad taxa. Default is False.
+  - `--custom-database`: Using a custom database or the NCBI. If NCBI, automatically corrects for a couple of bad taxa. Default is False.
 
 #### General
 
 - Options:
-  - `--damage-mode`: The damage mode. Use `LCA` unless you know what you are doing.
-  - `--max-position`: Maximum position in the sequence to include. Default is (+/-) 15 (forward/reverse).
   - `--output-dir`: Path where the generated output files and folders are stored. Default: `./data/`.
   - `--config-path`: The name of the generated config file. Default: `config.yaml`.
+  - `--metaDMG-cpp`: The command needed to run the `metaDMG-cpp` program.
+  - `--max-position`: Maximum position in the sequence to include. Default is (+/-) 15 (forward/reverse).
   - `--parallel-samples`: The number of samples to run in parallel. Default is running in seriel.
   - `--cores-per-sample`: Number of cores to use pr. sample. Do not change unless you know what you are doing.
   - `--sample-prefix`: Prefix for the sample names.
   - `--sample-suffix`: Suffix for the sample names.
-  - `--weight-type`: Method for calculating weights. Default is 1.
+  - `--weight-type`: Method for calculating weights. Default is 1. Do not change unless you know what you are doing.
 
 - Flags:
   - `--forward-only`: Only fit the forward strand.

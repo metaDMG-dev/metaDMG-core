@@ -14,9 +14,9 @@ def load_results(
 
     Parameters
     ----------
-    config_file, optional
+    config_file
         The the config file to use to locate the results directory, by default None
-    results_dir, optional
+    results_dir
         The results directory, by default None
 
     Returns

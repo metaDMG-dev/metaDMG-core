@@ -28,16 +28,19 @@ print("here is some python")
 
 ---
 
-## API:
+## Reference:
 
+- [Main](api-main): The main functions to use if importing `metaDMG` as a package.
+- [Utils](api-utils): General functions.
 - [CLI](api-cli): Full API for the command line interface.
 
 For the source code, see [Github](https://github.com/metaDMG/metaDMG)
 
+<!-- --- -->
 
 ```{toctree}
 ---
-caption: Contents
+caption: Documentation
 maxdepth: 2
 hidden:
 ---
@@ -52,11 +55,12 @@ results
 
 ```{toctree}
 ---
-caption: API
+caption: Reference
 maxdepth: 1
 hidden:
 ---
 
+api-main
 api-utils
 api-cli
 ```
