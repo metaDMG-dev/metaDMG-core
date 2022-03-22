@@ -637,6 +637,9 @@ def get_d_columns_latex(viz_results):
         "mean_GC": r"$\text{mean GC}$",
         "std_GC": r"$\text{std GC}$",
         #
+        "D_max_significance": r"$D_\text{max} \,\, \text{sig.} \,\, \text{(MAP)}$",
+        "variance_scaling": r"$\text{variance} \,\, \text{scaling} \,\, \text{(MAP)}$",
+        #
         "log_lambda_LR": r"$\log_{10}(1+\lambda_\text{LR})$",
         "log_phi": r"$\log_{10}(1+\phi)$",
         "log_N_reads": r"$\log_{10}(1+N_\text{reads})$",
@@ -692,6 +695,9 @@ def get_d_columns_latex(viz_results):
         "Bayesian_A": r"$A$",
         "Bayesian_c": r"$c$",
         "Bayesian_rho_Ac": r"$\rho_{A, c}$",
+        "Bayesian_rho_Ac_abs": r"$|\rho_{A, c}|$",
+        "Bayesian_D_max_significance": r"$D_\text{max} \,\, \text{sig.}$",
+        "Bayesian_variance_scaling": r"$\text{variance} \,\, \text{scaling}$",
         #
         "LR_All": r"$\text{LR All}$",
         "LR_ForRev": r"$\text{LR ForRev}$",

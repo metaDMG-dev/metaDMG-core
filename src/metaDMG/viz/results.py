@@ -105,6 +105,15 @@ def correct_for_non_LCA(df):
 #%%
 
 
+def compute_variance_scaling(df, phi_string):
+    phi = df[phi_string]
+    N = np.mean([df["N_x=1_forward"], df["N_x=1_reverse"]])
+    return (phi + N) / (phi + 1)
+
+
+#%%
+
+
 class VizResults:
     def __init__(self, results_dir):
         self.results_dir = Path(results_dir)
@@ -127,8 +136,21 @@ class VizResults:
         for column in ["lambda_LR", "forward_lambda_LR", "reverse_lambda_LR"]:
             clip_df(df, column)
 
+        Bayesian = any(["Bayesian" in column for column in df.columns])
+        self.Bayesian = Bayesian
+
         df["D_max_significance"] = df["D_max"] / df["D_max_std"]
         df["rho_Ac_abs"] = np.abs(df["rho_Ac"])
+        df["variance_scaling"] = compute_variance_scaling(df, phi_string="phi")
+
+        if Bayesian:
+            df["Bayesian_D_max_significance"] = (
+                df["Bayesian_D_max"] / df["Bayesian_D_max_std"]
+            )
+            df["Bayesian_rho_Ac_abs"] = np.abs(df["Bayesian_rho_Ac"])
+            df["Bayesian_variance_scaling"] = compute_variance_scaling(
+                df, phi_string="Bayesian_phi"
+            )
 
         log_columns = [
             "N_reads",
@@ -149,9 +171,6 @@ class VizResults:
             self.forward_only = False
 
         self.df = df
-
-        Bayesian = any(["Bayesian" in column for column in df.columns])
-        self.Bayesian = Bayesian
 
         self.all_tax_ids = set(self.df["tax_id"].unique())
         self.all_tax_names = set(self.df["tax_name"].unique())  # if with_LCA else set()
