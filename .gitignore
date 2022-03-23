@@ -206,3 +206,4 @@ src/metaDMG/fit/fits.py
 .gitignore
 main.py
 config_lda.yaml
+binary_classifier.py
