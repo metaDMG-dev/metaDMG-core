@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.8 (2022-03-23)
+### Fix
+* Add tqdm to viz ([`87f670b`](https://github.com/metaDMG/metaDMG/commit/87f670b44462c4c39276ede0a5b48e5059edcbb1))
+
 ## v0.21.7 (2022-03-23)
 ### Fix
 * Add D_max significance and variance_scaling ([`4c5f7f7`](https://github.com/metaDMG/metaDMG/commit/4c5f7f74ef473538f33c3989ba71ea962a6ea6ee))
