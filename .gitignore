@@ -207,3 +207,4 @@ src/metaDMG/fit/fits.py
 main.py
 config_lda.yaml
 binary_classifier.py
+config_Bayesian.yaml
