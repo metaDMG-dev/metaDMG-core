@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.7 (2022-03-23)
+### Fix
+* Add D_max significance and variance_scaling ([`4c5f7f7`](https://github.com/metaDMG/metaDMG/commit/4c5f7f74ef473538f33c3989ba71ea962a6ea6ee))
+
 ## v0.21.6 (2022-03-22)
 ### Fix
 * Inlcude helper functions in metaDMG.main ([`e8fc27d`](https://github.com/metaDMG/metaDMG/commit/e8fc27d828af2a629d27eaf67201682eb154274b))
