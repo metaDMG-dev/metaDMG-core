@@ -136,7 +136,9 @@ class VizResults:
         for column in ["lambda_LR", "forward_lambda_LR", "reverse_lambda_LR"]:
             clip_df(df, column)
 
-        Bayesian = any(["Bayesian" in column for column in df.columns])
+        Bayesian = any(["Bayesian" in column for column in df.columns]) and (
+            not any(df["Bayesian_z"].isna())
+        )
         self.Bayesian = Bayesian
 
         df["D_max_significance"] = df["D_max"] / df["D_max_std"]
