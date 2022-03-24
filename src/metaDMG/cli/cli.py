@@ -524,6 +524,25 @@ def plot(
 #%%
 
 
+@cli_app.command("get-data")
+def get_data(
+    output_dir: Path = typer.Option(
+        ...,
+        "--output-dir",
+        "-o",
+        help="Path to the output directory.",
+    ),
+):
+    """Get test data and save it in the output-dir. Useful for e.g. the online tutorial."""
+
+    from metaDMG.data import get_data
+
+    get_data(output_dir=output_dir)
+
+
+#%%
+
+
 @cli_app.command("mismatch-to-mapDamage")
 def mismatch_to_mapDamage(
     filename: Path = typer.Argument(
