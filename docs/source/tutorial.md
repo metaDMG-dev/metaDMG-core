@@ -56,8 +56,104 @@ or, in the case of another name for the config file:
 $ metaDMG compute config_simple.yaml
 ```
 
-When you enter the command, `metaDMG` will first parse the config file and extract the relevant parameters for the LCA. The C++ part of the program will perform the LCA of the reads in the alignment file and output its intermediary files in `{output-dir}/lca/` (`data/lca` by default). This step can take a while on real datasets. We then load these files and turn them into a mismatch matrix (XXX link here) in a pandas dataframe. Now, having a mismatch matrix for each tax ID, we fit each of these independently. Since we added the `--bayesian` flag previously, we perform the full, Bayesian analysis in addition to the fast, approximate version. For more information, see XXX link here to information. This step can also be quite slow on real datasets, which is also why we do not do this by default.
-Finally, after the fits are done, we merge the fit results with some additional information from the mismatch matrices and save the results to disk in `{output-dir}/results/` (`data/results` by default).
+When you enter the command, `metaDMG` will first parse the config file and extract the relevant parameters for the LCA. The C++ part of the program will perform the LCA of the reads in the alignment file and output its intermediary files in `{output-dir}/lca/` (`data/lca` by default). This step can take a while on real datasets.
+
+We then load these files and turn them into a mismatch matrix (XXX link here) in a pandas dataframe. Now, having a mismatch matrix for each tax ID, we fit each of these independently. Since we added the `--bayesian` flag previously, we perform the full, Bayesian analysis in addition to the fast, approximate version. For more information, see XXX link here to information. This step can also be quite slow on real datasets, which is also why we do not do this by default.
+
+Finally, after the fits are done, we merge the fit results with some additional information from the mismatch matrices and save the results to disk in `{output-dir}/results/` (`data/results` by default). For a more concrete overview of all of the variables saved as results, see XXX.
+
+### Visualisation
+
+Now, after we have computed the results, it's time to analyse them. Instead of looking at static pdf plots, we include an interactive dashboard with `metaDMG`. This easy to start, you just simply run:
+
+```console
+$ metaDMG dashboard
+```
+or, in the case of another name for the config file:
+```console
+$ metaDMG dashboard config_simple.yaml
+```
+
+#### Overview plot
+
+The command above will open a page in web browser automatically where you will see the following image:
+
+```{figure} images/tut_simple_overview.png
+:class: bg-primary mb-1
+:width: 600px
+:align: center
+```
+
+In the middle of the page, we see the overview plot. This shows the amount of damage, $D_\text{max}$, on the y-axis and the fit quality, $z$, on the x-axis. In this case, we see three blue dots; one single dot per tax ID.
+
+In general, we want a large amount of damage along with a high fit quality to believe that the related data is significantly ancient. In this case, the two points in the upper right seem like good potential candidates.
+
+#### Hover info
+
+To extract more concrete information about the individual tax IDs (points in the plot), we can hover the mouse on top of the point:
+
+```{figure} images/tut_simple_overview_hover.png
+:class: bg-primary mb-1
+:width: 600px
+:align: center
+```
+
+Here we have hovered the mouse on the tax ID 711 which is the Lactobacillales order. Below the tax information, we can see the fit results, in particular the position-dependent damage-rate, $q$, the fit concentration $\phi$ and the correlation between $A$ and $c$, $\rho_{Ac}$, along with the fit quality and damage amount.
+
+In this small analyses, we ran the full Bayesian model. In the more general case where this would be too time consuming, we would only have the MAP results. These are show below. In this case, the fit quality is measured by the likelihood ratio $\lambda_\text{LR}$. Note the strong correspondence between the Bayesian fit results and the approximate MAP results.
+
+In the buttom of hover square, we see the count information. This shows, that this tax ID consisted of $22.5 \times 10^3$ individual reads with the same number of alignments (indicating very little amount of overlap between the references in this case). The `k sum total` is the total number of $C \rightarrow T$ transistions across all reads at all positions (and $G \rightarrow A$ for the reverse strand). `N sum total` is the total number of $C$ to anything, $C \rightarrow X$, across all reads at all positions (and $G \rightarrow X$ for the reverse strand).
+
+#### Raw data plot
+
+So now we have managed to extract the fit results of the specific tax ID. However, we might still be a bit sceptical about these estimates that a stranger on the internet claims to be important. To refute the scepticism, the raw data that the fit was based on can be shown by clicking on the point (instead of only hovering on it).
+
+```{figure} images/tut_simple_overview_raw_data_plot.png
+:class: bg-primary mb-1
+:width: 600px
+:align: center
+```
+In this plot, the position dependent frequency of the $C \rightarrow T$ transitions are shown in blue dots and the $G \rightarrow A$ transitions in red. The green curve is the fit and the dashed area shows the $1\sigma$ (68%) confidence interval of the fit.
+
+We see that damage frequency starts at around 0.085 and then drops to about 0.025. This is an elevated amount of damage of about 0.06 in the beginning of the read compared to the asymptotic value, which is exactly what $D_\text{max}$ explains. Similarly see a quite clear trend in the data; the visual appearence of the data matches the quantitative fit results.
+
+We can compare this to the data in the bottom left of the overview plot.
+
+```{figure} images/tut_simple_overview_raw_data_plot_little_damage.png
+:class: bg-primary mb-1
+:width: 600px
+:align: center
+```
+
+Here we see that there does seem to be some damage in this tax ID, although the data is a lot more noisy and scattered around. This is also why the fit quality, $z$, is a lot smaller than it is for the previous tax ID.
+
+#### Export CSV
+
+If we wanted to export the results to a CSV file for further analysis, we can press the `Export CSV` button in the top right.
+
+This is also possible through the command line without opening the dashboard:
+```console
+$ metaDMG convert --output results_as_csv.csv
+```
+or, in the case of another name for the config file:
+```console
+$ metaDMG convert config_simple --output results_as_csv.csv
+```
+
+
+#### Export PDFs
+
+If we wanted to export the plots to a PDF file, we can press the `Export PDF` button in the top right. This will generate a single PDF file which contains both the overview plot and the individual raw data plots.
+
+This is also possible through the command line without opening the dashboard:
+```console
+$ metaDMG plot --output plots.pdf
+```
+or, in the case of another name for the config file:
+```console
+$ metaDMG plot config_simple --output plots.pdf
+```
+
 
 (KapK)=
 ## Kap Copenhagen
