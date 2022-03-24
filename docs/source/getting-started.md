@@ -5,7 +5,7 @@ These sections explains very briefly the [requirements](requirements) of `metaDM
 (requirements)=
 ## Requirements
 
-`metaDMG` is a quite complex piece of software with many dependencies. This is due to it both running the LCA in some fast C++ code, the fits are optimized (with the use of `numba` and `jax`, e.g.) and finally it allows for visualisations of the results in the interactive dashboard.
+`metaDMG` is a quite complex piece of software with many dependencies. This is due to it both running the LCA in some fast C++ code, the fits are optimized (with the use of `numba` and `jax`, e.g.), and finally it allows for visualisations of the results in the interactive dashboard.
 To make the installation requirements as lean as possible, we allow for custom installation of the different parts of `metaDMG`.
 
 ```{note} If you install using the Conda package, you do not have to worry about any of the things in this section and you can skip straight to the [installation section](installation).
@@ -43,6 +43,9 @@ And the visualization related dependencies are `[viz]`:
 - `tqdm`
 
 In general, we allow for the custom installion of only the core packages `pip install metaDMG`, core + fit related packages: `pip install "metaDMG[fit]"`, core + visualization related packages: `pip install "metaDMG[viz]"` or core + fit + viz: `pip install "metaDMG[all]"`.
+
+```{warning} metaDMG is not tested on Windows.
+```
 
 (installation)=
 ## Installation
@@ -100,7 +103,7 @@ Here we sketch how a typical workflow works in `metaDMG`. In short:
 `metaDMG` works by first creating a config file using the `config` command. This file contains all of the information related to `metaDMG` such that you only have to type this once. The config file is saved in the current directory as `config.yaml` and can subsequently be edited in any text editor of your like.
 
 ```console
-$ metaDMG config ./raw_data/alignment.bam \
+$ metaDMG config raw_data/alignment.bam \
     --names raw_data/names-mdmg.dmp \
     --nodes raw_data/nodes-mdmg.dmp \
     --acc2tax raw_data/acc2taxid.map.gz

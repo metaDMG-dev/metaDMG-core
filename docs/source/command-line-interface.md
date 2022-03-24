@@ -1,9 +1,11 @@
+(command_line_interface)=
 # Command Line Interface
 
 `metaDMG` has the following commands: `config`, `compute`, `dashboard`, `convert`,`filter`,`plot`.
 
 ---
 
+(command_line_interface_config)=
 ## Config
 
 `metaDMG config` takes a single argument, `samples`, and a bunch of additional options and flags.
@@ -35,7 +37,7 @@ The `samples` refer to a single or multiple alignment-files (or a directory cont
 
 - Options:
   - `--output-dir`: Path where the generated output files and folders are stored. Default: `./data/`.
-  - `--config-path`: The name of the generated config file. Default: `config.yaml`.
+  - `--config-file`: The name of the generated config file. Default: `config.yaml`.
   - `--metaDMG-cpp`: The command needed to run the `metaDMG-cpp` program.
   - `--max-position`: Maximum position in the sequence to include. Default is (+/-) 15 (forward/reverse).
   - `--parallel-samples`: The number of samples to run in parallel. Default is running in seriel.
@@ -55,7 +57,7 @@ The `samples` refer to a single or multiple alignment-files (or a directory cont
 ### Examples
 
 ```console
-$ metaDMG config ./raw_data/alignment.bam \
+$ metaDMG config raw_data/alignment.bam \
     --names raw_data/names-mdmg.dmp \
     --nodes raw_data/nodes-mdmg.dmp \
     --acc2tax raw_data/acc2taxid.map.gz \
@@ -64,16 +66,16 @@ $ metaDMG config ./raw_data/alignment.bam \
 
 `metaDMG` is pretty versatile regarding its input argument and also accepts multiple alignment files:
 ```console
-$ metaDMG config ./raw_data/*.bam [...]
+$ metaDMG config raw_data/*.bam [...]
 ```
 or even an entire directory containing alignment files (`.bam`, `.sam`, and `.sam.gz`):
 ```console
-$ metaDMG config ./raw_data/ [...]
+$ metaDMG config raw_data/ [...]
 ```
 
 To run `metaDMG` in non-LCA mode, an example could be:
 ```
-$ metaDMG config ./raw_data/alignment.bam --damage-mode local --max-position 15 --bayesian
+$ metaDMG config raw_data/alignment.bam --damage-mode local --max-position 15 --bayesian
 ```
 
 ---

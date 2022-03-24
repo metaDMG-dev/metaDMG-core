@@ -36,7 +36,7 @@ poetry add "metaDMG[all]"
 
 Create `config.yaml` file:
 ```console
-$ metaDMG config ./raw_data/example.bam \
+$ metaDMG config raw_data/example.bam \
     --names raw_data/names-mdmg.dmp \
     --nodes raw_data/nodes-mdmg.dmp \
     --acc2tax raw_data/acc2taxid.map.gz
@@ -98,7 +98,7 @@ The options are listed below:
   - `--cores-per-sample`: Number of cores pr. sample. Do not change unless you know what you are doing.
   - `--sample-prefix`: Prefix for the sample names.
   - `--sample-suffix`: Suffix for the sample names.
-  - `--config-path`: The name of the generated config file. Default: `config.yaml`.
+  - `--config-file`: The name of the generated config file. Default: `config.yaml`.
 
 - Boolean flags (does not take any values, only the flag). Default is false.
   - `--bayesian`: Include a fully Bayesian model (probably better, but also _a lot_ slower, about a factor of 100).
@@ -107,7 +107,7 @@ The options are listed below:
 
 
 ```console
-$ metaDMG config ./raw_data/example.bam \
+$ metaDMG config raw_data/example.bam \
     --names raw_data/names-mdmg.dmp \
     --nodes raw_data/nodes-mdmg.dmp \
     --acc2tax raw_data/acc2taxid.map.gz \
@@ -117,16 +117,16 @@ $ metaDMG config ./raw_data/example.bam \
 
 metaDMG is pretty versatile regarding its input argument and also accepts multiple alignment files:
 ```console
-$ metaDMG config ./raw_data/*.bam [...]
+$ metaDMG config raw_data/*.bam [...]
 ```
 or even an entire directory containing alignment files (`.bam`, `.sam`, and `.sam.gz`):
 ```console
-$ metaDMG config ./raw_data/ [...]
+$ metaDMG config raw_data/ [...]
 ```
 
 To run metaDMG in non-LCA mode, an example could be:
 ```
-$ metaDMG config ./raw_data/example.bam --damage-mode local --max-position 15 --bayesian
+$ metaDMG config raw_data/example.bam --damage-mode local --max-position 15 --bayesian
 ```
 
 ---
