@@ -5,6 +5,10 @@ raw_data/
 !raw_data/names-mdmg.dmp
 !raw_data/nodes-mdmg.dmp
 !raw_data/acc2taxid.map.gz
+!src/metaDMG/data/alignment.bam
+!src/metaDMG/data//names-mdmg.dmp
+!src/metaDMG/data/nodes-mdmg.dmp
+!src/metaDMG/data/acc2taxid.map.gz
 .DS_Store
 dist/
 build/
