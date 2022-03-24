@@ -1,7 +1,7 @@
 (command_line_interface)=
 # Command Line Interface
 
-`metaDMG` has the following commands: `config`, `compute`, `dashboard`, `convert`,`filter`,`plot`.
+`metaDMG` has the following commands: `config`, `compute`, `dashboard`, `get-data`, `convert`,`filter`,`plot`.
 
 ---
 
@@ -129,6 +129,24 @@ $ metaDMG dashboard
 ```console
 $ metaDMG dashboard non-default-config.yaml --port 8050 --host 0.0.0.0
 ```
+
+---
+
+## Get Data
+
+Get test data and save it in the output-dir. Useful for e.g. the online tutorial.
+
+### Parameters
+
+- Options:
+  - `--output-dir`: Path to the output directory.
+
+### Examples
+
+```console
+$ metaDMG get-data --output-dir raw_data
+```
+
 
 ---
 
