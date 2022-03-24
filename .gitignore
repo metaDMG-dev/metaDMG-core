@@ -1,6 +1,10 @@
 data/
 data*/
 raw_data/
+!raw_data/alignment.bam
+!raw_data/names-mdmg.dmp
+!raw_data/nodes-mdmg.dmp
+!raw_data/acc2taxid.map.gz
 .DS_Store
 dist/
 build/

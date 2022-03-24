@@ -57,13 +57,13 @@ def create_config(
         None,
         exists=True,
         file_okay=True,
-        help="Path to the (NCBI) names.dmp.gz.",
+        help="Path to the (NCBI) names-mdmg.dmp.",
     ),
     nodes: Optional[Path] = typer.Option(
         None,
         exists=True,
         file_okay=True,
-        help="Path to the (NCBI) nodes.dmp.gz.",
+        help="Path to the (NCBI) nodes-mdmg.dmp.",
     ),
     acc2tax: Optional[Path] = typer.Option(
         None,

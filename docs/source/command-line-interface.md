@@ -18,8 +18,8 @@ The `samples` refer to a single or multiple alignment-files (or a directory cont
 #### LCA
 - Options:
 
-  - `--names`: Path to the (NCBI) `names.dmp.gz`. Mandatory for LCA.
-  - `--nodes`: Path to the (NCBI) `nodes.dmp.gz`. Mandator for LCA.
+  - `--names`: Path to the (NCBI) `names-mdmg.dmp`. Mandatory for LCA.
+  - `--nodes`: Path to the (NCBI) `nodes-mdmg.dmp`. Mandator for LCA.
   - `--acc2tax`: Path to the (NCBI) `acc2tax.gz`. Mandatory for LCA.
   - `--min-similarity-score`: Normalised edit distance (read to reference similarity) minimum. Number between 0-1. Default: 0.95.
   - `--max-similarity-score`: Normalised edit distance (read to reference similarity) maximum. Number between 0-1 Default: 1.0.
@@ -55,10 +55,10 @@ The `samples` refer to a single or multiple alignment-files (or a directory cont
 ### Examples
 
 ```console
-$ metaDMG config ./raw_data/example.bam \
-    --names raw_data/names.dmp.gz \
-    --nodes raw_data/nodes.dmp.gz \
-    --acc2tax raw_data/combined_taxid_accssionNO_20200425.gz \
+$ metaDMG config ./raw_data/alignment.bam \
+    --names raw_data/names-mdmg.dmp \
+    --nodes raw_data/nodes-mdmg.dmp \
+    --acc2tax raw_data/acc2taxid.map.gz \
     --parallel-samples 4
 ```
 
@@ -73,7 +73,7 @@ $ metaDMG config ./raw_data/ [...]
 
 To run `metaDMG` in non-LCA mode, an example could be:
 ```
-$ metaDMG config ./raw_data/example.bam --damage-mode local --max-position 15 --bayesian
+$ metaDMG config ./raw_data/alignment.bam --damage-mode local --max-position 15 --bayesian
 ```
 
 ---

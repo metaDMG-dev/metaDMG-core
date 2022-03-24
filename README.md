@@ -37,9 +37,9 @@ poetry add "metaDMG[all]"
 Create `config.yaml` file:
 ```console
 $ metaDMG config ./raw_data/example.bam \
-    --names raw_data/names.dmp.gz \
-    --nodes raw_data/nodes.dmp.gz \
-    --acc2tax raw_data/combined_taxid_accssionNO_20200425.gz
+    --names raw_data/names-mdmg.dmp \
+    --nodes raw_data/nodes-mdmg.dmp \
+    --acc2tax raw_data/acc2taxid.map.gz
 ```
 Run actual program:
 ```console
@@ -73,8 +73,8 @@ Finally the results are saved in `{output-dir}/results` directory (`data/results
 The options are listed below:
 
 - Input files:
-  - `--names`: Path to the (NCBI) `names.dmp.gz`. Mandatory for LCA.
-  - `--nodes`: Path to the (NCBI) `nodes.dmp.gz`. Mandator for LCA.
+  - `--names`: Path to the (NCBI) `names-mdmg.dmp`. Mandatory for LCA.
+  - `--nodes`: Path to the (NCBI) `nodes-mdmg.dmp`. Mandator for LCA.
   - `--acc2tax`: Path to the (NCBI) `acc2tax.gz`. Mandatory for LCA.
 
 - LCA parameters:
@@ -108,9 +108,9 @@ The options are listed below:
 
 ```console
 $ metaDMG config ./raw_data/example.bam \
-    --names raw_data/names.dmp.gz \
-    --nodes raw_data/nodes.dmp.gz \
-    --acc2tax raw_data/combined_taxid_accssionNO_20200425.gz \
+    --names raw_data/names-mdmg.dmp \
+    --nodes raw_data/nodes-mdmg.dmp \
+    --acc2tax raw_data/acc2taxid.map.gz \
     --parallel-samples 4
 ```
 
