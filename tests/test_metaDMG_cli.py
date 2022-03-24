@@ -70,9 +70,8 @@ LCA_commands = [
     "tests/testdata/acc2taxid.map.gz",
     "--metadmg-cpp",
     "./metaDMG-cpp",
-    "--fix-ncbi",  # is not a NCBI database, so do not fix
-    "0",
-    "--config-path",
+    "--custom-database",
+    "--config-file",
     str(config_lca_path),
 ]
 
