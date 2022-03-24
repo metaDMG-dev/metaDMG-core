@@ -16,7 +16,9 @@ The documentation is structured as follows:
 
 - [Results](results): Explanation of the fit results.
 
-```{margin} Look, some margin content!
+- [Dashboard](dashboard): Explanation of dashboard.
+
+<!-- ```{margin} Look, some margin content!
 On wider screens, this content will pop out to the side!
 ```
 
@@ -24,7 +26,7 @@ On wider screens, this content will pop out to the side!
 ```python
 print("here is some python")
 ```
-````
+```` -->
 
 ---
 
@@ -50,6 +52,7 @@ getting-started
 tutorial
 command-line-interface
 results
+dashboard
 ```
 
 

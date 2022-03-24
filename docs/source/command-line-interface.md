@@ -1,7 +1,14 @@
 (command_line_interface)=
 # Command Line Interface
 
-`metaDMG` has the following commands: `config`, `compute`, `dashboard`, `get-data`, `convert`,`filter`,`plot`.
+`metaDMG` has the following commands:
+- [`config`](command_line_interface_config)
+- [`compute`](command_line_interface_compute)
+- [`dashboard`](command_line_interface_dashboard)
+- [`get-data`](command_line_interface_get_data)
+- [`convert`](command_line_interface_convert)
+- [`filter`](command_line_interface_filter)
+- [`plot`](command_line_interface_plot)
 
 ---
 
@@ -80,6 +87,7 @@ $ metaDMG config raw_data/alignment.bam --damage-mode local --max-position 15 --
 
 ---
 
+(command_line_interface_compute)=
 ## Compute
 
 The `metaDMG compute` command takes an optional config-file as argument
@@ -103,6 +111,7 @@ $ metaDMG compute non-default-config.yaml --force
 
 ---
 
+(command_line_interface_dashboard)=
 ## Dashboard
 
 You can now see a preview of the [interactive dashboard](https://metadmg.herokuapp.com).
@@ -132,6 +141,7 @@ $ metaDMG dashboard non-default-config.yaml --port 8050 --host 0.0.0.0
 
 ---
 
+(command_line_interface_get_data)=
 ## Get Data
 
 Get test data and save it in the output-dir. Useful for e.g. the online tutorial.
@@ -150,6 +160,7 @@ $ metaDMG get-data --output-dir raw_data
 
 ---
 
+(command_line_interface_convert)=
 ## Convert
 
 The `metaDMG convert` command takes first an optional config-file as argument
@@ -180,6 +191,7 @@ $ metaDMG convert non-default-config.yaml --output ./directory/to/contain/result
 ```
 
 ---
+(command_line_interface_filter)=
 ## Filter
 
 The `metaDMG filter` command takes first an optional config-file as argument
@@ -214,6 +226,7 @@ $ metaDMG filter --output convert-test.csv --query "N_reads > 5_000 & sample in 
 
 ---
 
+(command_line_interface_plot)=
 ## Plot
 
 The `metaDMG plot` command takes first an optional config-file as argument
