@@ -1,13 +1,15 @@
 # Getting started
 
-These sections explains very briefly the dependencies of `metaDMG` and how to install it, and sketches how a typical workflow is organized.
+These sections explains very briefly the [requirements](requirements) of `metaDMG` and how to [install](installation) it, and sketches how a typical [workflow](workflow) is organized.
 
+(requirements)=
 ## Requirements
 
 `metaDMG` is a quite complex piece of software with many dependencies. This is due to it both running the LCA in some fast C++ code, the fits are optimized (with the use of `numba` and `jax`, e.g.) and finally it allows for visualisations of the results in the interactive dashboard.
 To make the installation requirements as lean as possible, we allow for custom installation of the different parts of `metaDMG`.
 
-If you install using the Conda package, you do not have to worry about any of the things in this section and you can skip straight to the installation section XXX LINK HERE.
+```{note} If you install using the Conda package, you do not have to worry about any of the things in this section and you can skip straight to the [installation section](installation).
+```
 
 The C++ requirements are only needed in case you have to compile it yourself - Conda takes care of this for you automatically.
 In case you want to work on the master branch directly, the dependencies are:
@@ -42,6 +44,7 @@ And the visualization related dependencies are `[viz]`:
 
 In general, we allow for the custom installion of only the core packages `pip install metaDMG`, core + fit related packages: `pip install "metaDMG[fit]"`, core + visualization related packages: `pip install "metaDMG[viz]"` or core + fit + viz: `pip install "metaDMG[all]"`.
 
+(installation)=
 ## Installation
 
 The recommended way of installing `metaDMG` is by using Conda. By default, we install everything needed to run all of `metaDMG`'s commands.
@@ -56,7 +59,10 @@ or, if you have Mamba installed (faster)
 ```
 mamba env create --file environment.yaml
 ```
-This is the recommended way of installing `metaDMG`.
+
+```{note} This is the recommended way of installing metaDMG.
+```
+
 
 ### With pip
 If you prefer to use pip, you can use:
@@ -80,6 +86,7 @@ pip install "metaDMG[all]"  --upgrade
 poetry add metaDMG["all"]
 ``` -->
 
+(workflow)=
 ## Workflow
 
 Here we sketch how a typical workflow works in `metaDMG`. In short:
