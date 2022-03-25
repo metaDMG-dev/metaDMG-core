@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.22.1 (2022-03-24)
+### Fix
+* Update tests ([`f3ab9ae`](https://github.com/metaDMG/metaDMG/commit/f3ab9ae1de9dca6ee4cedff486714ea2b512b3d3))
+
 ## v0.22.0 (2022-03-24)
 ### Feature
 * Add test data to package ([`a522623`](https://github.com/metaDMG/metaDMG/commit/a5226230fc21246eb5fa4fa7921b656f07ecd466))
