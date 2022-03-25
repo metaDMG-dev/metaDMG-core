@@ -11,6 +11,12 @@ class metadamageError(Error):
     pass
 
 
+class AlignmentFileError(Error):
+    """Raised when the alignment file is invalid"""
+
+    pass
+
+
 class FittingError(Error):
     """Raised when we get an error with the fit of a specific Tax ID"""
 
@@ -19,5 +25,11 @@ class FittingError(Error):
 
 class MismatchFileError(Error):
     """Raised when the {sample}.mismatches.txt does not contain any data"""
+
+    pass
+
+
+class BadDataError(Error):
+    """Raised when the {sample}.mismatches.txt does not contain any useful damage data"""
 
     pass

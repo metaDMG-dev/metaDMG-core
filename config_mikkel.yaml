@@ -1,0 +1,74 @@
+samples:
+  # BH73_114_5: BH73_114_5.fa.gz.merged.sort.sam.gz
+  # BH73_115_5: BH73_115_5.fa.gz.merged.sort.sam.gz
+  # BH73_117_3_R1: BH73_117_3_R1.fa.gz.merged.sort.sam.gz
+  # BH73_119_3_R1: BH73_119_3_R1.fa.gz.merged.sort.sam.gz
+  # BH73_129_2_R1: BH73_129_2_R1.fa.gz.merged.sort.sam.gz
+  # BH73_14_5: BH73_14_5.fa.gz.merged.sort.sam.gz
+  # BH73_24_5: BH73_24_5.fa.gz.merged.sort.sam.gz
+  # BH73_40_3_R1: BH73_40_3_R1.fa.gz.merged.sort.sam.gz
+  # BH73_50_3_R1: BH73_50_3_R1.fa.gz.merged.sort.sam.gz
+  # BH73_62_5: BH73_62_5.fa.gz.merged.sort.sam.gz
+  # BH73_63_5: BH73_63_5.fa.gz.merged.sort.sam.gz
+  # BH73_6_3_R1: BH73_6_3_R1.fa.gz.merged.sort.sam.gz
+  # BH73_64_5: BH73_64_5.fa.gz.merged.sort.sam.gz
+  # BH73_65_5: BH73_65_5.fa.gz.merged.sort.sam.gz
+  # BH73_66_5: BH73_66_5.fa.gz.merged.sort.sam.gz
+  BH73_67_3_R1: BH73_67_3_R1.fa.gz.merged.sort.sam.gz
+  # BH73_68_3_R1: BH73_68_3_R1.fa.gz.merged.sort.sam.gz
+  BH73_70_5: BH73_70_5.fa.gz.merged.sort.sam.gz
+  # BH73_71_5: BH73_71_5.fa.gz.merged.sort.sam.gz
+  # BH73_72_5: BH73_72_5.fa.gz.merged.sort.sam.gz
+  # #BH73_72_6_1: BH73_72_6_1.fa.gz.merged.sort.sam.gz
+  # BH73_72_6_2: BH73_72_6_2.fa.gz.merged.sort.sam.gz
+  # BH73_72_6_3_blank: BH73_72_6_3_blank.fa.gz.merged.sort.sam.gz
+  # BH73_72_all: BH73_72_all.fa.gz.merged.sort.sam.gz
+  # #BH73_73_5: BH73_73_5.fa.gz.merged.sort.sam.gz
+  # BH73_74_5: BH73_74_5.fa.gz.merged.sort.sam.gz
+  # BH73_79_2_R1: BH73_79_2_R1.fa.gz.merged.sort.sam.gz
+  # BH73_80_2_R1: BH73_80_2_R1.fa.gz.merged.sort.sam.gz
+  # #BH73_81_2_R1: BH73_81_2_R1.fa.gz.merged.sort.sam.gz
+  # BH73_83_2_R1: BH73_83_2_R1.fa.gz.merged.sort.sam.gz
+  # BH73_84_2_R1: BH73_84_2_R1.fa.gz.merged.sort.sam.gz
+  # BH73_85_3_R1: BH73_85_3_R1.fa.gz.merged.sort.sam.gz
+  # BH73_86_3_R1: BH73_86_3_R1.fa.gz.merged.sort.sam.gz
+  # BH73_94_3_R1: BH73_94_3_R1.fa.gz.merged.sort.sam.gz
+  # BH75-10-Ext-68-Lib-68-Index1-7IYMO-AAGTCCAA-TATGAGTA-191211: BH75-10-Ext-68-Lib-68-Index1-7IYMO-AAGTCCAA-TATGAGTA-191211.col.fq.gz.merged.sort.sam.gz
+  # BH75-12-Ext-69-Lib-69-Index1-7IYMO-ATCCACTG-AGGTGCGT-191211: BH75-12-Ext-69-Lib-69-Index1-7IYMO-ATCCACTG-AGGTGCGT-191211.col.fq.gz.merged.sort.sam.gz
+  # BH75-16-Ext-70-Lib-70-Index1-7IYMO-GCTTGTCA-GAACATAC-191211: BH75-16-Ext-70-Lib-70-Index1-7IYMO-GCTTGTCA-GAACATAC-191211.col.fq.gz.merged.sort.sam.gz
+  # BH75-20-Ext-71-Lib-71-Index1-7IYMO-CAAGCTAG-ACATAGCG-191211: BH75-20-Ext-71-Lib-71-Index1-7IYMO-CAAGCTAG-ACATAGCG-191211.col.fq.gz.merged.sort.sam.gz
+  # BH75-24-Ext-72-Lib-72-Index1-7IYMO-TGGATCGA-GTGCGATA-191211: BH75-24-Ext-72-Lib-72-Index1-7IYMO-TGGATCGA-GTGCGATA-191211.col.fq.gz.merged.sort.sam.gz
+  # BH75-28-Ext-73-Lib-73-Index1-7IYMO-AGTTCAGG-CCAACAGA-191211: BH75-28-Ext-73-Lib-73-Index1-7IYMO-AGTTCAGG-CCAACAGA-191211.col.fq.gz.merged.sort.sam.gz
+  # BH75-32-Ext-74-Lib-74-Index1-7IYMO-GACCTGAA-TTGGTGAG-191211: BH75-32-Ext-74-Lib-74-Index1-7IYMO-GACCTGAA-TTGGTGAG-191211.col.fq.gz.merged.sort.sam.gz
+  # BH75-36-Ext-75-Lib-75-Index1-7IYMO-TCTCTACT-CGCGGTTC-191211: BH75-36-Ext-75-Lib-75-Index1-7IYMO-TCTCTACT-CGCGGTTC-191211.col.fq.gz.merged.sort.sam.gz
+  # BH75-40-Ext-79-Lib-79-Index1-7IYMO-GGCTTAAG-TCGTGACC-191211: BH75-40-Ext-79-Lib-79-Index1-7IYMO-GGCTTAAG-TCGTGACC-191211.col.fq.gz.merged.sort.sam.gz
+  # BH75-44-Ext-80-Lib-80-Index1-7IYMO-AATCCGGA-CTACAGTT-191211: BH75-44-Ext-80-Lib-80-Index1-7IYMO-AATCCGGA-CTACAGTT-191211.col.fq.gz.merged.sort.sam.gz
+  # BH75-48-Ext-81-Lib-81-Index1-7IYMO-TAATACAG-ATATTCAC-191211: BH75-48-Ext-81-Lib-81-Index1-7IYMO-TAATACAG-ATATTCAC-191211.col.fq.gz.merged.sort.sam.gz
+  # BH75-4-Ext-65-Lib-65-Index1-7IYMO-CCGCGGTT-AGCGCTAG-191211: BH75-4-Ext-65-Lib-65-Index1-7IYMO-CCGCGGTT-AGCGCTAG-191211.col.fq.gz.merged.sort.sam.gz
+  # BH75-52-Ext-82-Lib-82-Index1-7IYMO-ATGTAAGT-ACTCTATG-191211: BH75-52-Ext-82-Lib-82-Index1-7IYMO-ATGTAAGT-ACTCTATG-191211.col.fq.merged.sort.sam.gz
+  # BH75-54-Ext-83-Lib-83-Index1-7IYMO-GCACGGAC-GTCTCGCA-191211: BH75-54-Ext-83-Lib-83-Index1-7IYMO-GCACGGAC-GTCTCGCA-191211.col.fq.merged.sort.sam.gz
+  # BH75-55-Ext-84-Lib-84-Index1-7IYMO-GGTACCTT-AAGACGTC-191211: BH75-55-Ext-84-Lib-84-Index1-7IYMO-GGTACCTT-AAGACGTC-191211.col.fq.merged.sort.sam.gz
+  # BH75-56-Ext-85-Lib-85-Index1-7IYMO-AACGTTCC-GGAGTACT-191211: BH75-56-Ext-85-Lib-85-Index1-7IYMO-AACGTTCC-GGAGTACT-191211.col.fq.merged.sort.sam.gz
+  # BH75-6-Ext-66-Lib-66-Index1-7IYMO-TTATAACC-GATATCGA-191211: BH75-6-Ext-66-Lib-66-Index1-7IYMO-TTATAACC-GATATCGA-191211.col.fq.merged.sort.sam.gz
+  # BH75-8-Ext-67-Lib-67-Index1-7IYMO-GGACTTGG-CGCAGACG-191211: BH75-8-Ext-67-Lib-67-Index1-7IYMO-GGACTTGG-CGCAGACG-191211.col.fq.merged.sort.sam.gz
+metaDMG-lca: ./metaDMG-cpp
+names: /willerslev/edna/ncbi_taxonomy3dec2020/names.dmp
+nodes: /willerslev/edna/ncbi_taxonomy3dec2020/nodes.dmp
+acc2tax: /willerslev/edna/ncbi_taxonomy3dec2020/combined_taxid_accssionNO_20201120.gz
+simscorelow: 0.98
+simscorehigh: 1.0
+editdistmin: 0
+editdistmax: 10
+minmapq: 0
+lca_rank: ''
+max_position: 30
+weighttype: 1
+fix_ncbi: 1
+forward_only: false
+forced: false
+dir: data
+cores: 1
+cores_pr_fit: 1
+bayesian: false
+config_path: config.yaml
+damage_mode: lca

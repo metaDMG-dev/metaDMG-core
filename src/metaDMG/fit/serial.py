@@ -13,7 +13,13 @@ import pandas as pd
 from logger_tt import logger
 
 from metaDMG import utils
-from metaDMG.errors import Error, MismatchFileError, metadamageError
+from metaDMG.errors import (
+    AlignmentFileError,
+    BadDataError,
+    Error,
+    MismatchFileError,
+    metadamageError,
+)
 from metaDMG.fit import fits, mismatches, results
 from metaDMG.fit.fit_utils import Config
 from metaDMG.loggers.loggers import setup_logger
@@ -267,6 +273,12 @@ def run_LCA(config: Config, force: bool = False) -> None:
     ]
 
     if do_run(targets, force=force):
+
+        if not BAM_file_is_valid(config):
+            raise AlignmentFileError(
+                f"{config['sample']}: The alignment file is invalid."
+            )
+
         logger.info(f"LCA has to be computed. This can take a while, please wait.")
 
         command_LCA = get_LCA_command(config)
@@ -300,6 +312,12 @@ def run_damage_no_lca(config: Config, force: bool = False) -> None:
     ]
 
     if do_run(targets, force=force):
+
+        if not BAM_file_is_valid(config):
+            raise AlignmentFileError(
+                f"{config['sample']}: The alignment file is invalid."
+            )
+
         logger.info(f"Computing damage. NOTE: NO LCA.")
 
         command_damage = get_damage_command(config)
@@ -468,18 +486,17 @@ def run_single_config(
 
     _setup_logger(config)
 
-    if not BAM_file_is_valid(config):
-        return None
-
     force = config["force"]
 
     try:
         run_cpp(config, force=force)
     except metadamageError:
         logger.exception(
-            f"{config['sample']} | metadamageError with run_LCA. "
-            f"See log-file for more information."
+            f"metadamageError with run_LCA. See log-file for more information."
         )
+        return None
+    except AlignmentFileError:
+        logger.exception(f"Bad alignment file. See log-file for more information.")
         return None
     except KeyboardInterrupt:
         logger.info("Got KeyboardInterrupt. Cleaning up.")
@@ -490,12 +507,21 @@ def run_single_config(
         df_mismatches = get_df_mismatches(config, force=force)
     except MismatchFileError:
         logger.exception(
-            f"{config['sample']} | MismatchFileError with get_df_mismatches. "
+            f"MismatchFileError with get_df_mismatches. "
             f"See log-file for more information."
         )
         return None
 
-    df_fit_results = get_df_fit_results(config, df_mismatches, force=force)
+    try:
+        df_fit_results = get_df_fit_results(config, df_mismatches, force=force)
+    except BadDataError as e:
+        # logger.exception(f"BadDataError when fitting. Skipping for now.")
+        logger.warning(
+            "BadDataError happened while fitting, see log file for more info. "
+            "Skipping for now."
+        )
+        return None
+
     df_results = get_df_results(config, df_mismatches, df_fit_results, force=force)
     # read_ids_mapping = get_database_read_ids(config)
 

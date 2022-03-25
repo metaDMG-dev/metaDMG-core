@@ -207,7 +207,7 @@ def compute(config):
     filename = config["path_mismatches_txt"]
 
     if csv_contains_less_than_N_lines(filename, N=2):
-        raise MismatchFileError(f"{filename} does contain only a header, no data.")
+        raise MismatchFileError(f"{filename} only contains a header, no data.")
 
     df = (
         pd.read_csv(filename, sep="\t")

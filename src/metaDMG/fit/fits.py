@@ -10,6 +10,7 @@ import numpyro
 import pandas as pd
 from logger_tt import logger
 
+from metaDMG.errors import BadDataError
 from metaDMG.fit import bayesian, fit_utils, frequentist
 
 
@@ -446,6 +447,12 @@ def compute(config, df_mismatches):
         logger.debug(f"Dropping the following Tax IDs since k_sum_total == 0:")
         logger.debug(tax_ids_to_drop)
     df_mismatches = df_mismatches.query("k_sum_total > 0")
+
+    if len(df_mismatches) == 0:
+        s = f"{config['sample']} df_mismatches.query('k_sum_total > 0') is empty."
+        logger.debug("WARNING: BadDataError")
+        logger.debug(s)
+        raise BadDataError(s)
 
     # find unique tax_ids (when compairing the mismatches matrices)
     # such that only those are fitted
