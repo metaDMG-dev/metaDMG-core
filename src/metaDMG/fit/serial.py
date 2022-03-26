@@ -515,7 +515,6 @@ def run_single_config(
     try:
         df_fit_results = get_df_fit_results(config, df_mismatches, force=force)
     except BadDataError as e:
-        # logger.exception(f"BadDataError when fitting. Skipping for now.")
         logger.warning(
             "BadDataError happened while fitting, see log file for more info. "
             "Skipping for now."
