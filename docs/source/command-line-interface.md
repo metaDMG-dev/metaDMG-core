@@ -128,6 +128,7 @@ The `metaDMG dashboard` command takes first an optional config-file as argument
 
 - Flags:
   - `--debug`: Allow for easier debugging the dashboard. For internal usage.
+  - `--server`: If running on a server
 
 
 ### Examples

@@ -185,3 +185,35 @@ To further speed the process up, we run 3 samples in parallel and allow each of 
 ```{eval-rst}
 .. mermaid:: mermaid/overview_workflow.mmd
 ```
+
+### Compute
+
+Now for the easy, but time consuming, part of the pipeline: the actual computation. This is simply by running the following command:
+```console
+$ metaDMG compute config_KapK.yaml
+```
+
+We try to only print the most important information to the screen, but more information can be found in the log file at `logs/`.
+
+### Dashboard
+
+After the computations are finished, we want to see the results. We can either copy the entire `data/results/` directory from the server to our local computer, or we can run the actual dashboard on the server and then connect to it via SSH, thus circumventing the need for any local installation of `metaDMG` at all.
+
+We start the dashboard:
+```console
+$ metaDMG dashboard config_KapK.yaml --server
+```
+The `--server` option tells the dashboard that it should open in the background. In case you run into the following error: `OSError: [Errno 98] Address already in use`, it can help by changing the port by adding `--port 8060`.
+
+We can now connect to it through an SSH connection. This depends on your server setup, but in our case we connect to our server through a jumphost:
+```{eval-rst}
+.. mermaid:: mermaid/jumphost.mmd
+```
+
+With this setup, we can connect in the following way (on our own, local machine!):
+```console
+$ ssh -N -J USER1@JUMPHOST USER2@SERVER -L 8050:127.0.0.1:8050
+```
+where you change the `USER1`, `JUMPHOST`, `USER2`, and `SERVER` according to your own setup. Note that if you changed the port on the server, you also have to change it here.
+
+We can now open a browser on our own, local computer and go to the following address: [`http://0.0.0.0:8050/`](http://0.0.0.0:8050/) where the dashboard will be running live.
