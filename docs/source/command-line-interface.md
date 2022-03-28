@@ -122,6 +122,7 @@ The `metaDMG dashboard` command takes first an optional config-file as argument
 ### Parameters
 
 - Options:
+  - `--results`: Path to the results directory.
   - `--port`: The port to be used for the dashboard. Default is `8050`.
   - `--host`: The dashboard host adress. Default is `0.0.0.0`.
 
@@ -144,7 +145,7 @@ $ metaDMG dashboard non-default-config.yaml --port 8050 --host 0.0.0.0
 (command_line_interface_get_data)=
 ## Get Data
 
-Get test data and save it in the output-dir. Useful for e.g. the online tutorial.
+The `metaDMG get-data` command gets test data and saves it in the output-dir. Useful for e.g. the online tutorial.
 
 ### Parameters
 
@@ -169,8 +170,8 @@ The `metaDMG convert` command takes first an optional config-file as argument
 ### Parameters
 
 - Options:
-  - `--output`: Mandatory output path.
   - `--results`: Direct path to the results directory.
+  - `--output`: Mandatory output path.
 
 - Flags:
   - `--add-fit-predictions`: Include fit predictions D(x) in the output.
@@ -200,10 +201,9 @@ The `metaDMG filter` command takes first an optional config-file as argument
 ### Parameters
 
 - Options:
-  - `--output`: Mandatory output path.
-  - `--query`: The query string to use for filtering. Follows the [Pandas Query()](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method) syntax.
   - `--results`: Direct path to the results directory.
-Default is `""` which applies no filtering and is thus similar to the `metaDMG convert` command.
+  - `--output`: Mandatory output path.
+  - `--query`: The query string to use for filtering. Follows the [Pandas Query()](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method) syntax. Default is `""` which applies no filtering and is thus similar to the `metaDMG convert` command.
 
 - Flags:
   - `--add-fit-predictions`: Include fit predictions D(x) in the output.
