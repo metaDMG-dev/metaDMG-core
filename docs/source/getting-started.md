@@ -5,7 +5,7 @@ These sections explains very briefly the [requirements](requirements) of `metaDM
 (requirements)=
 ## Requirements
 
-`metaDMG` is a quite complex piece of software with many dependencies. This is due to it both running the LCA in some fast C++ code, the fits are optimized (with the use of `numba` and `jax`, e.g.), and finally it allows for visualisations of the results in the interactive dashboard.
+`metaDMG` is a quite complex piece of software with many dependencies. This is due to it running the LCA in fast C++ code, the fits in optimized Python (with the use of `numba` and `jax`, e.g.), and finally the visualisations of the results in the interactive dashboard.
 To make the installation requirements as lean as possible, we allow for custom installation of the different parts of `metaDMG`.
 
 ```{note} If you install using the Conda package, you do not have to worry about any of the things in this section and you can skip straight to the [installation section](installation).
@@ -25,6 +25,8 @@ In Python, the core dependencies are:
 - `pandas`
 - `scipy`
 - `pyarrow`
+
+and for Python itself, version `Python >= 3.9` is required.
 
 The fit-related dependencies are `[fit]`:
 - `iminuit`
