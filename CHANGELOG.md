@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v0.22.4 (2022-03-28)
+### Fix
+* Test2 ([`fe6c5e6`](https://github.com/metaDMG/metaDMG/commit/fe6c5e61d72f2ddb1a58f98685dd8ae8df2f1b05))
+* Test ([`a47c832`](https://github.com/metaDMG/metaDMG/commit/a47c832f6ae982030003cde5d27c2897af603faf))
+* Test ([`965ba3f`](https://github.com/metaDMG/metaDMG/commit/965ba3ff84a70b225bfe3b100f10b77886902863))
+
 ## v0.22.3 (2022-03-28)
 ### Fix
 * Test CI-CD workflow ([`02636a9`](https://github.com/metaDMG/metaDMG/commit/02636a9738345e45d9b9a0d5f0c3f87d628f5023))
