@@ -314,6 +314,12 @@ def dashboard(
         "-d",
         help="Whether or not the debug-button should be displayed.",
     ),
+    server: bool = typer.Option(
+        False,
+        "--server",
+        "-s",
+        help="Whether or not it is running on a server.",
+    ),
     port: int = typer.Option(
         8050,
         "--port",
@@ -353,6 +359,7 @@ def dashboard(
     start_dashboard(
         results_dir=results_dir,
         debug=debug,
+        server=server,
         host=host,
         port=port,
     )

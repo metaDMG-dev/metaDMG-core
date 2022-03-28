@@ -9,6 +9,7 @@ from metaDMG.viz import app, viz_utils
 def start_dashboard(
     results_dir: Optional[Path] = None,
     debug: bool = False,
+    server: bool = False,
     host: str = "0.0.0.0",
     port: int = 8050,
 ):
@@ -18,7 +19,7 @@ def start_dashboard(
 
     plt.switch_backend("Agg")
 
-    if not debug:
+    if not (debug or server):
         viz_utils.open_browser_in_background(port)
 
     dashboard_app = app.get_app(results_dir)
