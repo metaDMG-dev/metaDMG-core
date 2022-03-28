@@ -1,0 +1,21 @@
+flowchart LR
+
+    start(metaDMG)
+
+    start --> A
+    start --> B
+    start --> C
+
+    subgraph subgraph_A [Sample A]
+    A(LCA) --> A1(Fit) & A2(Fit) --> A3(Merge)
+    end
+
+    subgraph subgraph_B [Sample B]
+    B(LCA) --> B1(Fit) & B2(Fit) --> B3(Merge)
+    end
+
+    subgraph subgraph_C [Sample C]
+    C(LCA) --> C1(Fit) & C2(Fit) --> C3(Merge)
+    end
+
+    A3 & B3 & C3 --> D(Results)

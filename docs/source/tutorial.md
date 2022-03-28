@@ -157,3 +157,31 @@ $ metaDMG plot config_simple --output plots.pdf
 
 (KapK)=
 ## Kap Copenhagen
+
+`metaDMG` is also used in more advanced cases using real data, compared to the small, simulated example above. It is e.g. used in the Kap Copenhagen analysis, Kap K in short.
+
+This analysis is based on dozens of samples from Northern Greenland, each more than 2 million years old. As such, they are expected to have a high degree of damage.
+
+The overall workflow is the same as previously; generate a config file, compute it, and visualize the results.
+
+### Config
+
+In this case we have all of the alignments file in a single folder on the server. Therefore, we take advantage of the fact that `metadDMG config` allows for not only running on single samples, but also multiple samples (or a directory of samples):
+
+```console
+$ metaDMG config raw_data/*.bam \
+    --names raw_data/names.dmp.gz \
+    --nodes raw_data/nodes.dmp.gz \
+    --acc2tax raw_data/ combined_taxid_accssionNO_20200726.gz \
+    --parallel-samples 3 \
+    --cores-per-sample 2 \
+    --config-file config_KapK.yaml
+```
+
+Here we name the output config file `config_KapK.yaml` to be able to differentiate it from the previous one. On purpose, we do not run the full Bayesian model since the each sample file contains reads mapping to too many different tax IDs for it to be computationally feasible; as such, we use the fast, approximative model.
+
+To further speed the process up, we run 3 samples in parallel and allow each of the samples to use 2 cores, i.e. using a total of up to $3 \times 2 = 6$ cores. The `--cores-per-sample` does only affect the fitting part of the pipeline, not the LCA. In some cases it is the LCA that is the time consuming part and in others it is the fits, so change `--parallel-samples` and `--cores-per-sample` to fit your needs. For a visual explanation of this, the workflow diagram below might be helpful:
+
+```{eval-rst}
+.. mermaid:: mermaid/overview_workflow.mmd
+```

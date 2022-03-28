@@ -2029,6 +2029,14 @@ python-versions = ">=3.5"
 test = ["pytest", "flake8", "mypy"]
 
 [[package]]
+name = "sphinxcontrib-mermaid"
+version = "0.7.1"
+description = "Mermaid diagrams in yours Sphinx powered docs"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "sphinxcontrib-napoleon"
 version = "0.7"
 description = "Sphinx \"napoleon\" extension."
@@ -2319,7 +2327,7 @@ viz = ["matplotlib", "plotly", "dash", "dash-bootstrap-components", "orjson", "t
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.11" # 3.11 due to numba
-content-hash = "117a7a468a195deb88764ce2ffa828989ef2307d411766fb9a0352c27c7b8180"
+content-hash = "d8029bdcbf76bb471ee4cccb419f3f10f047043b99689c3e4b6837a5df825dcd"
 
 [metadata.files]
 absl-py = [
@@ -3735,6 +3743,10 @@ sphinxcontrib-htmlhelp = [
 sphinxcontrib-jsmath = [
     {file = "sphinxcontrib-jsmath-1.0.1.tar.gz", hash = "sha256:a9925e4a4587247ed2191a22df5f6970656cb8ca2bd6284309578f2153e0c4b8"},
     {file = "sphinxcontrib_jsmath-1.0.1-py2.py3-none-any.whl", hash = "sha256:2ec2eaebfb78f3f2078e73666b1415417a116cc848b72e5172e596c871103178"},
+]
+sphinxcontrib-mermaid = [
+    {file = "sphinxcontrib-mermaid-0.7.1.tar.gz", hash = "sha256:aa8a40b50ec86ad12824b62180240ca52a9bda8424455d7eb252eae9aa5d293c"},
+    {file = "sphinxcontrib_mermaid-0.7.1-py2.py3-none-any.whl", hash = "sha256:3e20de1937c30dfa807e446bf99983d73d0dd3dc5c6524addda59800fe928762"},
 ]
 sphinxcontrib-napoleon = [
     {file = "sphinxcontrib-napoleon-0.7.tar.gz", hash = "sha256:407382beed396e9f2d7f3043fad6afda95719204a1e1a231ac865f40abcbfcf8"},
