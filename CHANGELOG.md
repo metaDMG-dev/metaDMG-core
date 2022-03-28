@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.22.2 (2022-03-26)
+### Fix
+* Make new release ([`d1c0ee1`](https://github.com/metaDMG/metaDMG/commit/d1c0ee1674e9667fa49cf42fa8b7d519718748cf))
+
 ## v0.22.1 (2022-03-24)
 ### Fix
 * Update tests ([`f3ab9ae`](https://github.com/metaDMG/metaDMG/commit/f3ab9ae1de9dca6ee4cedff486714ea2b512b3d3))
