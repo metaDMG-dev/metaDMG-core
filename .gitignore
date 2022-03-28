@@ -210,6 +210,7 @@ metadamage
 src/metaDMG/fit/fits.py
 .gitignore
 main.py
+!src/metaDMG/main.py
 config_lda.yaml
 binary_classifier.py
 config_Bayesian.yaml
