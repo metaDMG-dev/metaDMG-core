@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.22.3 (2022-03-28)
+### Fix
+* Test CI-CD workflow ([`02636a9`](https://github.com/metaDMG/metaDMG/commit/02636a9738345e45d9b9a0d5f0c3f87d628f5023))
+
+### Documentation
+* Include Python version in the requirements ([`ced545b`](https://github.com/metaDMG/metaDMG/commit/ced545bb1ca5b79309e754e750d6cf8f3999afa0))
+
 ## v0.22.2 (2022-03-26)
 ### Fix
 * Make new release ([`d1c0ee1`](https://github.com/metaDMG/metaDMG/commit/d1c0ee1674e9667fa49cf42fa8b7d519718748cf))
