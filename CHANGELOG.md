@@ -2,70 +2,26 @@
 
 <!--next-version-placeholder-->
 
-## v0.22.4 (2022-03-28)
-### Fix
-* Test2 ([`fe6c5e6`](https://github.com/metaDMG/metaDMG/commit/fe6c5e61d72f2ddb1a58f98685dd8ae8df2f1b05))
-* Test ([`a47c832`](https://github.com/metaDMG/metaDMG/commit/a47c832f6ae982030003cde5d27c2897af603faf))
-* Test ([`965ba3f`](https://github.com/metaDMG/metaDMG/commit/965ba3ff84a70b225bfe3b100f10b77886902863))
-
-## v0.22.3 (2022-03-28)
+## v0.22 (2022-03-28)
+### Feature
+* Add --overwrite as option in config ([`f73bda3`](https://github.com/metaDMG/metaDMG/commit/f73bda3239f2f6ecf4f216554f0312dd42f23593))
+* Add D_max significance and variance_scaling ([`4c5f7f7`](https://github.com/metaDMG/metaDMG/commit/4c5f7f74ef473538f33c3989ba71ea962a6ea6ee))
+* Add test data to package ([`a522623`](https://github.com/metaDMG/metaDMG/commit/a5226230fc21246eb5fa4fa7921b656f07ecd466))
 ### Fix
 * Test CI-CD workflow ([`02636a9`](https://github.com/metaDMG/metaDMG/commit/02636a9738345e45d9b9a0d5f0c3f87d628f5023))
-
-### Documentation
-* Include Python version in the requirements ([`ced545b`](https://github.com/metaDMG/metaDMG/commit/ced545bb1ca5b79309e754e750d6cf8f3999afa0))
-
-## v0.22.2 (2022-03-26)
-### Fix
-* Make new release ([`d1c0ee1`](https://github.com/metaDMG/metaDMG/commit/d1c0ee1674e9667fa49cf42fa8b7d519718748cf))
-
-## v0.22.1 (2022-03-24)
-### Fix
-* Update tests ([`f3ab9ae`](https://github.com/metaDMG/metaDMG/commit/f3ab9ae1de9dca6ee4cedff486714ea2b512b3d3))
-
-## v0.22.0 (2022-03-24)
-### Feature
-* Add test data to package ([`a522623`](https://github.com/metaDMG/metaDMG/commit/a5226230fc21246eb5fa4fa7921b656f07ecd466))
-
-## v0.21.8 (2022-03-23)
-### Fix
 * Add tqdm to viz ([`87f670b`](https://github.com/metaDMG/metaDMG/commit/87f670b44462c4c39276ede0a5b48e5059edcbb1))
-
-## v0.21.7 (2022-03-23)
-### Fix
-* Add D_max significance and variance_scaling ([`4c5f7f7`](https://github.com/metaDMG/metaDMG/commit/4c5f7f74ef473538f33c3989ba71ea962a6ea6ee))
-
-## v0.21.6 (2022-03-22)
-### Fix
+* Update tests ([`f3ab9ae`](https://github.com/metaDMG/metaDMG/commit/f3ab9ae1de9dca6ee4cedff486714ea2b512b3d3))
 * Inlcude helper functions in metaDMG.main ([`e8fc27d`](https://github.com/metaDMG/metaDMG/commit/e8fc27d828af2a629d27eaf67201682eb154274b))
-
-## v0.21.5 (2022-03-21)
-### Fix
 * Auto-update old config files, but raise warning ([`b3b8f32`](https://github.com/metaDMG/metaDMG/commit/b3b8f32ad3e6412289a36f50ba6054d921812bd3))
-
-## v0.21.4 (2022-03-18)
-### Fix
-* Add --overwrite as option in config ([`f73bda3`](https://github.com/metaDMG/metaDMG/commit/f73bda3239f2f6ecf4f216554f0312dd42f23593))
-
-## v0.21.3 (2022-03-18)
-### Fix
 * Check BAM size ([`982d2d4`](https://github.com/metaDMG/metaDMG/commit/982d2d4a62522e76a91bec8e1930b7d9e9bf1567))
-
-## v0.21.2 (2022-03-18)
-### Fix
-* Update Poetry in pendulum action ([`8dc6d8c`](https://github.com/metaDMG/metaDMG/commit/8dc6d8c1f8443d3c7a717e6af812447b17f13b96))
-
-## v0.21.1 (2022-03-17)
-### Fix
-* Update actions ([`f16e4e2`](https://github.com/metaDMG/metaDMG/commit/f16e4e223d4dbd5d45654fea212b5be4198a96f1))
-* Try new action ([`dd1cf97`](https://github.com/metaDMG/metaDMG/commit/dd1cf979b7e9ad11cea5feee4bf3a0fdaf1d0b21))
 * Use dependency groups for dev tools ([`e1c010a`](https://github.com/metaDMG/metaDMG/commit/e1c010aa4c9cb6130c93539f80deb926c774d9a1))
 * Pre-commit ([`b1fd695`](https://github.com/metaDMG/metaDMG/commit/b1fd695ed4db1cafc52d0a0930cc77cf79c93ed8))
 
 ### Documentation
-* Update docs ([`004700f`](https://github.com/metaDMG/metaDMG/commit/004700f755a869332f27e04a97ef412e86b5f2b8))
+* Include Python version in the requirements ([`ced545b`](https://github.com/metaDMG/metaDMG/commit/ced545bb1ca5b79309e754e750d6cf8f3999afa0))
 
-## v0.21.0 (2022-03-17)
+
+## v0.21 (2022-03-17)
 ### Feature
 * Merge viz (dashboard) ([`28e56bc`](https://github.com/metaDMG/metaDMG/commit/28e56bc0007a3b0c05c747adabf897b218e28f67))
 * Add slimmer base install of metaDMG (with fit, viz, and all as extras) ([`75b4ecc`](https://github.com/metaDMG/metaDMG/commit/75b4ecc3879d340260a5d4764aa088c738819107))
@@ -78,17 +34,24 @@
 * Disable auto-reloading in dashboard to allow for debugging ([`8a4e845`](https://github.com/metaDMG/metaDMG/commit/8a4e8453f93b98c9869f9144ed87268727a77305))
 * Move CLI-related code to cli folder ([`6ad0293`](https://github.com/metaDMG/metaDMG/commit/6ad0293d8f684deee20a11e6093527a6154d21b1))
 
-## v0.20.6 (2022-03-16)
+## v0.20 (2022-03-16)
+
+### Feature
+* Update dashboard to also work with non-LCA ([`0495d81`](https://github.com/metaDMG/metaDMG/commit/0495d811a179bb6842b2c9d6afafe8f0d6baa1d4))
+* Allow for non-LCA mode ([`2bd5901`](https://github.com/metaDMG/metaDMG/commit/2bd5901ced1897dd71cf9a5ee9c6dabfff00789a))
+
 ### Fix
 * Update dependencies (inlcuding dashboard= ([`003e0c8`](https://github.com/metaDMG/metaDMG/commit/003e0c8f119096aee3dca40e261e4e9036271623))
-
-## v0.20.5 (2022-03-16)
-### Fix
-* Update dependencies ([`222cfbf`](https://github.com/metaDMG/metaDMG/commit/222cfbf18d75e82d318b9f1fcb1060de480ded29))
-
-## v0.20.4 (2022-03-16)
-### Fix
 * Fix issue with dashboard and old parquet files ([`0506d5a`](https://github.com/metaDMG/metaDMG/commit/0506d5a387c4b302389abc320d42a2af435d7eed))
+* Improve Paths parsing ([`1ab3cd1`](https://github.com/metaDMG/metaDMG/commit/1ab3cd170bfb000ad64a8898b9f66c1fe5b5bf56))
+* Parse metaDMG-cpp path as str ([`0943a29`](https://github.com/metaDMG/metaDMG/commit/0943a291b7c244599168313c59b4e761f649cc57))
+* Fix error with attrs / dataclass ([`8a507b9`](https://github.com/metaDMG/metaDMG/commit/8a507b9f81ea2860558b7923e90ba050f0d7da5e))
+* Use Python v3.9 ([`b93d97c`](https://github.com/metaDMG/metaDMG/commit/b93d97cee763d2c39c2b2e2b1050822ce2d38c08))
+* Fix error with mapDamage formats ([`c8746ce`](https://github.com/metaDMG/metaDMG/commit/c8746cecb96ff42842765ac316646fb79d95a10e))
+* Fix parsing with metaDMG-lca binary ([`f69e5f0`](https://github.com/metaDMG/metaDMG/commit/f69e5f0d87ccd492dc3ad57c7180a429403b7299))
+* Fix error with Path and metaDMG-lca ([`c7a57c1`](https://github.com/metaDMG/metaDMG/commit/c7a57c128877bebe97a4bd6d1c6d451aa9d52fba))
+* Adding type hints, rewrite config files and adding confirmation prompt ([`a046687`](https://github.com/metaDMG/metaDMG/commit/a046687af4339429f5b73aebfe2d0c329ebca11a))
+* Make all tax_ids to strings ([`fc1fee4`](https://github.com/metaDMG/metaDMG/commit/fc1fee463a6d70e79de6a5dd39471c1ab5edb62b))
 
 ### Documentation
 * Fix permalink icon ([`271b912`](https://github.com/metaDMG/metaDMG/commit/271b9129737f7cb2b372ef6e4460cad5e193e00a))
@@ -102,40 +65,10 @@
 * Add autodocs for utils ([`7f31196`](https://github.com/metaDMG/metaDMG/commit/7f31196dc736132ccb3b083c56be9de9c10ff11e))
 * Update docs ([`6e0767a`](https://github.com/metaDMG/metaDMG/commit/6e0767a4a695f67509f6c8a231780d73b049e502))
 * Add first version of docs ([`72a23d9`](https://github.com/metaDMG/metaDMG/commit/72a23d949e7fc88a062d7207933d892a9627db60))
-
-## v0.20.3 (2022-03-15)
-### Fix
-* Improve Paths parsing ([`1ab3cd1`](https://github.com/metaDMG/metaDMG/commit/1ab3cd170bfb000ad64a8898b9f66c1fe5b5bf56))
-* Parse metaDMG-cpp path as str ([`0943a29`](https://github.com/metaDMG/metaDMG/commit/0943a291b7c244599168313c59b4e761f649cc57))
-
-## v0.20.2 (2022-03-15)
-### Fix
-* Fix error with attrs / dataclass ([`8a507b9`](https://github.com/metaDMG/metaDMG/commit/8a507b9f81ea2860558b7923e90ba050f0d7da5e))
-
-### Documentation
 * Try to add docs ([`f683151`](https://github.com/metaDMG/metaDMG/commit/f6831512878f63d14cf2aafa9ca7b6c0ededc814))
 * Add docstrings ([`bbc6fd3`](https://github.com/metaDMG/metaDMG/commit/bbc6fd35f213e6470d15f444bd27e98f79dea5e6))
 
-## v0.20.1 (2022-03-14)
-### Fix
-* Use Python v3.9 ([`b93d97c`](https://github.com/metaDMG/metaDMG/commit/b93d97cee763d2c39c2b2e2b1050822ce2d38c08))
-* Fix error with mapDamage formats ([`c8746ce`](https://github.com/metaDMG/metaDMG/commit/c8746cecb96ff42842765ac316646fb79d95a10e))
-* Fix parsing with metaDMG-lca binary ([`f69e5f0`](https://github.com/metaDMG/metaDMG/commit/f69e5f0d87ccd492dc3ad57c7180a429403b7299))
-* Fix error with Path and metaDMG-lca ([`c7a57c1`](https://github.com/metaDMG/metaDMG/commit/c7a57c128877bebe97a4bd6d1c6d451aa9d52fba))
-* Adding type hints, rewrite config files and adding confirmation prompt ([`a046687`](https://github.com/metaDMG/metaDMG/commit/a046687af4339429f5b73aebfe2d0c329ebca11a))
-
-### Documentation
-* Try to add docs ([`3daa450`](https://github.com/metaDMG/metaDMG/commit/3daa450f23e74100d5dee837ec52f695b3026acf))
-
-## v0.20.0 (2022-03-11)
-### Feature
-* Update dashboard to also work with non-LCA ([`0495d81`](https://github.com/metaDMG/metaDMG/commit/0495d811a179bb6842b2c9d6afafe8f0d6baa1d4))
-* Allow for non-LCA mode ([`2bd5901`](https://github.com/metaDMG/metaDMG/commit/2bd5901ced1897dd71cf9a5ee9c6dabfff00789a))
-
-### Fix
-* Make all tax_ids to strings ([`fc1fee4`](https://github.com/metaDMG/metaDMG/commit/fc1fee463a6d70e79de6a5dd39471c1ab5edb62b))
-
-## v0.19.0 (2022-03-09)
+## v0.19 (2022-03-09)
 ### Feature
 * Allow forward-only ([`c0a8cb1`](https://github.com/metaDMG/metaDMG/commit/c0a8cb148d17e37fcb369e70356fdb8d99677f0a))
 
