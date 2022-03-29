@@ -11,16 +11,24 @@ on:
       - main
 
 jobs:
+
   build-docs:
+
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout
+
+
+    - name: Set up python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Check out repository
       uses: actions/checkout@master
       with:
         fetch-depth: 0
-    - uses: actions/setup-python@v2
-      with:
-        python-version: 3.9
+
 
     # install & configure poetry
     - name: Install Poetry
@@ -31,8 +39,21 @@ jobs:
         virtualenvs-in-project: true
         installer-parallel: true
 
-    - name: install
+    # load cached venv if cache exists
+    - name: Load cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: venv-docs-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+
+    # install dependencies if cache does not exist
+    - name: Install dependencies
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: poetry install --with docs
+
+    # - name: install
+    #   run: poetry install --with docs
 
     - name: Build documentation
       run: |
