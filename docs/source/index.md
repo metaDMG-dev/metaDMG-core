@@ -36,7 +36,7 @@ print("here is some python")
 - [Utils](api-utils): General functions.
 - [CLI](api-cli): Full API for the command line interface.
 
-For the source code, see [Github](https://github.com/metaDMG/metaDMG)
+For the source code, see [Github](https://github.com/metaDMG-dev/metaDMG-core)
 
 <!-- --- -->
 
