@@ -11,14 +11,18 @@ To make the installation requirements as lean as possible, we allow for custom i
 ```{note} If you install using the Conda package, you do not have to worry about any of the things in this section and you can skip straight to the [installation section](installation).
 ```
 
-The C++ requirements are only needed in case you have to compile it yourself - Conda takes care of this for you automatically.
-In case you want to work on the master branch directly, the dependencies are:
+The C++ requirements for [`metaDMG-cpp`](https://github.com/metaDMG-dev/metaDMG-cpp) are only needed in case you have to compile it yourself - Conda takes care of this for you automatically.
+In case you want to compile it yourself, the dependencies are:
 - `HTSlib`
 - `blas`
 - `gsl`
 - `eigen`
 
-In Python, the core dependencies are:
+For more information about `metaDMG-cpp`, see the [`repo`](https://github.com/metaDMG-dev/metaDMG-cpp).
+
+The main part of `metaDMG`, [`metaDMG-core`](https://github.com/metaDMG-dev/metaDMG-core), is writting in Python (version `Python >= 3.9`).
+
+For `metaDMG-core`, the basic dependencies are:
 - `typer`
 - `click-help-colors`
 - `pyyaml`
@@ -26,9 +30,7 @@ In Python, the core dependencies are:
 - `scipy`
 - `pyarrow`
 
-and for Python itself, version `Python >= 3.9` is required.
-
-The fit-related dependencies are `[fit]`:
+The fit related (`[fit]`) dependencies are:
 - `iminuit`
 - `numba`
 - `numpyro`
@@ -36,7 +38,7 @@ The fit-related dependencies are `[fit]`:
 - `joblib`
 - `psutil`
 
-And the visualization related dependencies are `[viz]`:
+And the visualization related (`[viz]`) dependencies are:
 - `matplotlib`
 - `plotly`
 - `dash`

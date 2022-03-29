@@ -354,15 +354,17 @@ To make the installation requirements as lean as possible, we allow for custom i
 <p class="admonition-title">Note</p>
 <p>If you install using the Conda package, you do not have to worry about any of the things in this section and you can skip straight to the <a class="reference internal" href="#installation"><span class="std std-ref">installation section</span></a>.</p>
 </div>
-<p>The C++ requirements are only needed in case you have to compile it yourself - Conda takes care of this for you automatically.
-In case you want to work on the master branch directly, the dependencies are:</p>
+<p>The C++ requirements for <a class="reference external" href="https://github.com/metaDMG-dev/metaDMG-cpp"><code class="docutils literal notranslate"><span class="pre">metaDMG-cpp</span></code></a> are only needed in case you have to compile it yourself - Conda takes care of this for you automatically.
+In case you want to compile it yourself, the dependencies are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">HTSlib</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">blas</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">gsl</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">eigen</span></code></p></li>
 </ul>
-<p>In Python, the core dependencies are:</p>
+<p>For more information about <code class="docutils literal notranslate"><span class="pre">metaDMG-cpp</span></code>, see the <a class="reference external" href="https://github.com/metaDMG-dev/metaDMG-cpp"><code class="docutils literal notranslate"><span class="pre">repo</span></code></a>.</p>
+<p>The main part of <code class="docutils literal notranslate"><span class="pre">metaDMG</span></code>, <a class="reference external" href="https://github.com/metaDMG-dev/metaDMG-core"><code class="docutils literal notranslate"><span class="pre">metaDMG-core</span></code></a>, is writting in Python (version <code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">&gt;=</span> <span class="pre">3.9</span></code>).</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">metaDMG-core</span></code>, the basic dependencies are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">typer</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">click-help-colors</span></code></p></li>
@@ -371,8 +373,7 @@ In case you want to work on the master branch directly, the dependencies are:</p
 <li><p><code class="docutils literal notranslate"><span class="pre">scipy</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pyarrow</span></code></p></li>
 </ul>
-<p>and for Python itself, version <code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">&gt;=</span> <span class="pre">3.9</span></code> is required.</p>
-<p>The fit-related dependencies are <code class="docutils literal notranslate"><span class="pre">[fit]</span></code>:</p>
+<p>The fit related (<code class="docutils literal notranslate"><span class="pre">[fit]</span></code>) dependencies are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">iminuit</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">numba</span></code></p></li>
@@ -381,7 +382,7 @@ In case you want to work on the master branch directly, the dependencies are:</p
 <li><p><code class="docutils literal notranslate"><span class="pre">joblib</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">psutil</span></code></p></li>
 </ul>
-<p>And the visualization related dependencies are <code class="docutils literal notranslate"><span class="pre">[viz]</span></code>:</p>
+<p>And the visualization related (<code class="docutils literal notranslate"><span class="pre">[viz]</span></code>) dependencies are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">matplotlib</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">plotly</span></code></p></li>
