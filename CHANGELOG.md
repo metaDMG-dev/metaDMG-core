@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.23.1 (2022-03-29)
+### Fix
+* Update old configs in convert and filter CLI ([`c7fad7c`](https://github.com/metaDMG/metaDMG/commit/c7fad7c91bd5e41c3cd1650e9fc895f4179e9c27))
+
 ## v0.23.0 (2022-03-28)
 ### Feature
 * Add metaDMG.main ([`fc89050`](https://github.com/metaDMG/metaDMG/commit/fc89050db794c1c88261ca723c4461f8ebe8f3a4))
