@@ -116,42 +116,52 @@ jobs:
         installer-parallel: true
 
 
+
     # Use PSR to make release
-    - name: Python Semantic Release
-      uses: mathiasvr/command-output@v1
-      id: cmd
-      with:
-        run: |
+    - name: Python Semantic Release Setup
+      run: |
           poetry install --only release
           git config user.name github-actions
           git config user.email github-actions@github.com
-          poetry run semantic-release publish
 
-    # Publish to TestPyPI
-    - name: Publish to TestPyPI
-      if: ${{ steps.cmd.outputs.stdout }}
-      uses: pypa/gh-action-pypi-publish@release/v1
+    # Use PSR to make release
+    - name: Python Semantic Release
+      uses: mathiasvr/command-output@v1 # https://github.com/marketplace/actions/command-output
+      id: cmd
       with:
-        user: __token__
-        password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-        repository_url: https://test.pypi.org/legacy/
-        skip_existing: true
-      continue-on-error: true
+        run: poetry run semantic-release publish
 
-    # Test install from TestPyPI
-    - name: Test install from TestPyPI
+    - run: echo Command succeeded
       if: ${{ steps.cmd.outputs.stdout }}
-      run: |
-          pip install \
-          --index-url https://test.pypi.org/simple/ \
-          --extra-index-url https://pypi.org/simple \
-          metaDMG
 
-    # Publish to PyPI
-    - name: Publish to PyPI
-      if: ${{ steps.cmd.outputs.stdout }}
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_API_TOKEN }}
-        skip_existing: true
+    - run: echo Command failed
+      if: ${{ steps.cmd.outputs.stderr }}
+
+    # # Publish to TestPyPI
+    # - name: Publish to TestPyPI
+    #   if: ${{ steps.cmd.outputs.stdout }}
+    #   uses: pypa/gh-action-pypi-publish@release/v1
+    #   with:
+    #     user: __token__
+    #     password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+    #     repository_url: https://test.pypi.org/legacy/
+    #     skip_existing: true
+    #   continue-on-error: true
+
+    # # Test install from TestPyPI
+    # - name: Test install from TestPyPI
+    #   if: ${{ steps.cmd.outputs.stdout }}
+    #   run: |
+    #       pip install \
+    #       --index-url https://test.pypi.org/simple/ \
+    #       --extra-index-url https://pypi.org/simple \
+    #       metaDMG
+
+    # # Publish to PyPI
+    # - name: Publish to PyPI
+    #   if: ${{ steps.cmd.outputs.stdout }}
+    #   uses: pypa/gh-action-pypi-publish@release/v1
+    #   with:
+    #     user: __token__
+    #     password: ${{ secrets.PYPI_API_TOKEN }}
+    #     skip_existing: true
