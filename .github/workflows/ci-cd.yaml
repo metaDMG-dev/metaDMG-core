@@ -118,6 +118,8 @@ jobs:
 
     # Use PSR to make release
     - name: Python Semantic Release
+      uses: mathiasvr/command-output@v1
+      id: cmd
       run: |
           poetry install --only release
           git config user.name github-actions
@@ -126,6 +128,7 @@ jobs:
 
     # Publish to TestPyPI
     - name: Publish to TestPyPI
+      if: ${{ steps.cmd.outputs.stdout }}
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         user: __token__
@@ -136,6 +139,7 @@ jobs:
 
     # Test install from TestPyPI
     - name: Test install from TestPyPI
+      if: ${{ steps.cmd.outputs.stdout }}
       run: |
           pip install \
           --index-url https://test.pypi.org/simple/ \
@@ -144,6 +148,7 @@ jobs:
 
     # Publish to PyPI
     - name: Publish to PyPI
+      if: ${{ steps.cmd.outputs.stdout }}
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         user: __token__
