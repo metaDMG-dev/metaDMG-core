@@ -129,19 +129,12 @@ jobs:
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: poetry install --only release
 
-    # Setup PSR
-    - name: Python Semantic Release Setup
+    # Use PSR to make release
+    - name: Python Semantic Release
       run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-
-    # Use PSR to make release
-    - name: Python Semantic Release
-      # https://github.com/marketplace/actions/command-output
-      uses: mathiasvr/command-output@v1
-      id: cmd
-      with:
-        run: poetry run semantic-release publish
+          poetry run semantic-release publish
 
     - name: Break
       if: hashFiles('./dist/*') == ''

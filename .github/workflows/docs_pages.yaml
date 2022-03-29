@@ -48,8 +48,12 @@ jobs:
         key: venv-docs-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
 
     # install dependencies if cache does not exist
-    - name: Install dependencies
+    - name: Install dependencies if no cache
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      run: poetry install --only docs
+
+    # install metaDMG
+    - name: Install metaDMG
       run: poetry install --with docs
 
     - name: Build documentation
