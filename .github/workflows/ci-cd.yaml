@@ -143,32 +143,6 @@ jobs:
       with:
         run: poetry run semantic-release publish
 
-
-    - name: Test1
-      if: ${{ steps.cmd.outputs.stdout ==  ''}}
-      run: echo Test1.
-
-    - name: Test2
-      if: ${{ steps.cmd.outputs.stdout !=  ''}}
-      run: echo Test2.
-
-
-    - name: Test3
-      if: "${{ steps.cmd.outputs.stdout ==  ''}}"
-      run: echo Test3.
-
-    - name: Test4
-      if: "${{ steps.cmd.outputs.stdout !=  ''}}"
-      run: echo Test4.
-
-    - name: Test5
-      if: hashFiles('./dist/*') != ''
-      run: echo Test5.
-
-    - name: Test6
-      if: hashFiles('./dist/*') == ''
-      run: echo Test6.
-
     - name: Break
       if: hashFiles('./dist/*') == ''
       run: echo No releases will be made. Break.
