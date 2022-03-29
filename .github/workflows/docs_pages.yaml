@@ -22,8 +22,6 @@ jobs:
       with:
         python-version: 3.9
 
-    # - uses: abatilo/actions-poetry@v2.1.3
-
     # install & configure poetry
     - name: Install Poetry
       uses: snok/install-poetry@v1 # v1.2.0
@@ -34,20 +32,19 @@ jobs:
         installer-parallel: true
 
     - name: install
-      run: poetry install --with docs
+      run: poetry install --only docs
 
     - name: Build documentation
       run: |
         mkdir gh-pages
         touch gh-pages/.nojekyll
         cd docs/
-        poetry run make clean
-        poetry run make html
-      # poetry run sphinx-build -b html . _build
-      # cp -r _build/* ../gh-pages/
-    # - name: Deploy documentation
-    #   if: ${{ github.event_name == 'push' }}
-    #   uses: JamesIves/github-pages-deploy-action@v4.2.5
-    #   with:
-    #     branch: gh-pages
-    #     folder: gh-pages
+        poetry run make clean && poetry run make html
+        cp -r build/* ../gh-pages/
+
+    - name: Deploy documentation
+      if: ${{ github.event_name == 'push' }}
+      uses: JamesIves/github-pages-deploy-action@v4.2.5
+      with:
+        branch: gh-pages
+        folder: gh-pages
