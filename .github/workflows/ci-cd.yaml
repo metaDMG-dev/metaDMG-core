@@ -169,35 +169,35 @@ jobs:
       if: hashFiles('./dist/*') == ''
       run: echo Test6.
 
-    # - name: Break
-    #   if: ${!{ steps.cmd.outputs.stdout }}
-    #   run: echo No releases will be made. Break.
+    - name: Break
+      if: hashFiles('./dist/*') == ''
+      run: echo No releases will be made. Break.
 
-    # # Publish to TestPyPI
-    # - name: Publish to TestPyPI
-    #   if: ${{ steps.cmd.outputs.stdout }}
-    #   uses: pypa/gh-action-pypi-publish@release/v1
-    #   with:
-    #     user: __token__
-    #     password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-    #     repository_url: https://test.pypi.org/legacy/
-    #     skip_existing: true
-    #   continue-on-error: true
+    # Publish to TestPyPI
+    - name: Publish to TestPyPI
+      if: hashFiles('./dist/*') != ''
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+        repository_url: https://test.pypi.org/legacy/
+        skip_existing: true
+      continue-on-error: true
 
-    # # Test install from TestPyPI
-    # - name: Test install from TestPyPI
-    #   if: ${{ steps.cmd.outputs.stdout }}
-    #   run: |
-    #       pip install \
-    #       --index-url https://test.pypi.org/simple/ \
-    #       --extra-index-url https://pypi.org/simple \
-    #       metaDMG
+    # Test install from TestPyPI
+    - name: Test install from TestPyPI
+      if: hashFiles('./dist/*') != ''
+      run: |
+          pip install \
+          --index-url https://test.pypi.org/simple/ \
+          --extra-index-url https://pypi.org/simple \
+          metaDMG
 
-    # # Publish to PyPI
-    # - name: Publish to PyPI
-    #   if: ${{ steps.cmd.outputs.stdout }}
-    #   uses: pypa/gh-action-pypi-publish@release/v1
-    #   with:
-    #     user: __token__
-    #     password: ${{ secrets.PYPI_API_TOKEN }}
-    #     skip_existing: true
+    # Publish to PyPI
+    - name: Publish to PyPI
+      if: hashFiles('./dist/*') != ''
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
+        skip_existing: true
