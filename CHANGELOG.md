@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.23.3 (2022-03-29)
+### Fix
+* Force new release ([`74365d8`](https://github.com/metaDMG-dev/metaDMG-core/commit/74365d878d3760061c389d2a0c64dcb9f32de40f))
+
 ## v0.23.2 (2022-03-29)
 ### Fix
 * Force new release ([`e9e2d6a`](https://github.com/metaDMG-dev/metaDMG-core/commit/e9e2d6a2593940ccab69237d38b47470bc688498))
