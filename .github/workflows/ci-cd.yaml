@@ -40,18 +40,18 @@ jobs:
         virtualenvs-in-project: true
         installer-parallel: true
 
-    # # load cached venv if cache exists
-    # - name: Load cached venv
-    #   id: cached-poetry-dependencies
-    #   uses: actions/cache@v3
-    #   with:
-    #     path: .venv
-    #     key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+    # load cached venv if cache exists
+    - name: Load cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: venv1-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
 
-    # # install dependencies if cache does not exist
-    # - name: Install dependencies
-    #   if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-    #   run: poetry install --only default,lint,test,release --extras fit --extras viz
+    # install dependencies if cache does not exist
+    - name: Install dependencies
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      run: poetry install --only default,lint,test,release --extras fit --extras viz
 
     # install your root project
     - name: Install library
