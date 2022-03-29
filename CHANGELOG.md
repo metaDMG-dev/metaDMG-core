@@ -2,6 +2,15 @@
 
 <!--next-version-placeholder-->
 
+## v0.23.0 (2022-03-28)
+### Feature
+* Add metaDMG.main ([`fc89050`](https://github.com/metaDMG/metaDMG/commit/fc89050db794c1c88261ca723c4461f8ebe8f3a4))
+
+### Documentation
+* Add more advanced tutorial (KapK) ([`8596c43`](https://github.com/metaDMG/metaDMG/commit/8596c433aece791a6e4a060274c2311bd95680b8))
+* Update CLI doc ([`5ad0851`](https://github.com/metaDMG/metaDMG/commit/5ad0851248f52c3b0880287dccf38d6ee0d11406))
+* Add mermaid diagram to tutorial ([`93ac0c0`](https://github.com/metaDMG/metaDMG/commit/93ac0c09e1358d245103874612b310f5cf527e6a))
+
 ## v0.22 (2022-03-28)
 ### Feature
 * Add --overwrite as option in config ([`f73bda3`](https://github.com/metaDMG/metaDMG/commit/f73bda3239f2f6ecf4f216554f0312dd42f23593))
