@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v0.23.2 (2022-03-29)
+### Fix
+* Force new release ([`e9e2d6a`](https://github.com/metaDMG-dev/metaDMG-core/commit/e9e2d6a2593940ccab69237d38b47470bc688498))
+
+### Documentation
+* Update the webpage and readme ([`de947e3`](https://github.com/metaDMG-dev/metaDMG-core/commit/de947e3368dbd03a9d3a0f673e09fbec3fbfa328))
+* Add github pages action ([`d2a5b7f`](https://github.com/metaDMG-dev/metaDMG-core/commit/d2a5b7f8e23813ad73cea4d66a52e8e1a77ece27))
+
 ## v0.23.1 (2022-03-29)
 ### Fix
 * Update old configs in convert and filter CLI ([`c7fad7c`](https://github.com/metaDMG/metaDMG/commit/c7fad7c91bd5e41c3cd1650e9fc895f4179e9c27))
