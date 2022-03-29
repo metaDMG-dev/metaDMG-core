@@ -52,9 +52,6 @@ jobs:
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: poetry install --with docs
 
-    # - name: install
-    #   run: poetry install --with docs
-
     - name: Build documentation
       run: |
         mkdir gh-pages
