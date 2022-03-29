@@ -143,35 +143,61 @@ jobs:
       with:
         run: poetry run semantic-release publish
 
-    - name: Break
-      if: ${{ steps.cmd.outputs.stderr }}
-      run: echo No releases will be made. Break.
 
-    # Publish to TestPyPI
-    - name: Publish to TestPyPI
-      if: ${{ steps.cmd.outputs.stdout }}
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        user: __token__
-        password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-        repository_url: https://test.pypi.org/legacy/
-        skip_existing: true
-      continue-on-error: true
+    - name: Test1
+      if: ${{ steps.cmd.outputs.stdout ==  ''}}
+      run: echo Test1.
 
-    # Test install from TestPyPI
-    - name: Test install from TestPyPI
-      if: ${{ steps.cmd.outputs.stdout }}
-      run: |
-          pip install \
-          --index-url https://test.pypi.org/simple/ \
-          --extra-index-url https://pypi.org/simple \
-          metaDMG
+    - name: Test2
+      if: ${{ steps.cmd.outputs.stdout !=  ''}}
+      run: echo Test2.
 
-    # Publish to PyPI
-    - name: Publish to PyPI
-      if: ${{ steps.cmd.outputs.stdout }}
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_API_TOKEN }}
-        skip_existing: true
+
+    - name: Test3
+      if: "${{ steps.cmd.outputs.stdout ==  ''}}"
+      run: echo Test3.
+
+    - name: Test4
+      if: "${{ steps.cmd.outputs.stdout !=  ''}}"
+      run: echo Test4.
+
+    - name: Test5
+      if: hashFiles('./dist/*') != ''
+      run: echo Test5.
+
+    - name: Test6
+      if: hashFiles('./dist/*') == ''
+      run: echo Test6.
+
+    # - name: Break
+    #   if: ${!{ steps.cmd.outputs.stdout }}
+    #   run: echo No releases will be made. Break.
+
+    # # Publish to TestPyPI
+    # - name: Publish to TestPyPI
+    #   if: ${{ steps.cmd.outputs.stdout }}
+    #   uses: pypa/gh-action-pypi-publish@release/v1
+    #   with:
+    #     user: __token__
+    #     password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+    #     repository_url: https://test.pypi.org/legacy/
+    #     skip_existing: true
+    #   continue-on-error: true
+
+    # # Test install from TestPyPI
+    # - name: Test install from TestPyPI
+    #   if: ${{ steps.cmd.outputs.stdout }}
+    #   run: |
+    #       pip install \
+    #       --index-url https://test.pypi.org/simple/ \
+    #       --extra-index-url https://pypi.org/simple \
+    #       metaDMG
+
+    # # Publish to PyPI
+    # - name: Publish to PyPI
+    #   if: ${{ steps.cmd.outputs.stdout }}
+    #   uses: pypa/gh-action-pypi-publish@release/v1
+    #   with:
+    #     user: __token__
+    #     password: ${{ secrets.PYPI_API_TOKEN }}
+    #     skip_existing: true
