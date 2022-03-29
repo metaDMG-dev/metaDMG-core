@@ -137,7 +137,8 @@ jobs:
 
     # Use PSR to make release
     - name: Python Semantic Release
-      uses: mathiasvr/command-output@v1 # https://github.com/marketplace/actions/command-output
+      # https://github.com/marketplace/actions/command-output
+      uses: mathiasvr/command-output@v1
       id: cmd
       with:
         run: poetry run semantic-release publish
