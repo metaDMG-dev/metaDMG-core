@@ -116,11 +116,22 @@ jobs:
         installer-parallel: true
 
 
+    # load cached venv if cache exists
+    - name: Load cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: venv-CD-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
 
-    # Use PSR to make release
+    # Install dependencies if cache does not exist
+    - name: Install dependencies
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      run: poetry install --only release
+
+    # Setup PSR
     - name: Python Semantic Release Setup
       run: |
-          poetry install --only release
           git config user.name github-actions
           git config user.email github-actions@github.com
 
