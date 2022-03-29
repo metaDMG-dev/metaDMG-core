@@ -1,14 +1,21 @@
 import math
+from itertools import islice
 from pathlib import Path
+from typing import Iterable, Iterator, Optional
 from warnings import warn
 
 import numpy as np
 import pandas as pd
+import psutil
+import typer
 import yaml
 from iminuit import describe
+from logger_tt import logger
 from numba import njit
 from scipy.special import erf, erfinv
 from scipy.stats import chi2 as sp_chi2
+
+from metaDMG.utils import _update_old_config
 
 
 #%%
@@ -21,13 +28,6 @@ for ref in ACTG:
         ref_obs_bases.append(f"{ref}{obs}")
 
 #%%
-
-from itertools import islice
-from typing import Iterable, Iterator, Optional
-
-import psutil
-import typer
-from logger_tt import logger
 
 
 class Config(dict):
@@ -209,28 +209,7 @@ def update_old_config(d: dict) -> dict:
         "Using an old version of the config file. Please remake the config file."
     )
 
-    d_old2new = {
-        "metaDMG-lca": "metaDMG_cpp",
-        "minmapq": "min_mapping_quality",
-        "editdistmin": "min_edit_dist",
-        "editdistmax": "max_edit_dist",
-        "simscorelow": "min_similarity_score",
-        "simscorehigh": "max_similarity_score",
-        "weighttype": "weight_type",
-        "storage_dir": "output_dir",
-        "dir": "output_dir",
-        "fix_ncbi": "custom_database",
-        "cores": "parallel_samples",
-        "cores_per_sample": "cores_per_sample",
-        "config_path": "config_file",
-    }
-
-    d_new = {}
-    for key, value in d.items():
-        if key in d_old2new:
-            key = d_old2new[key]
-        d_new[key] = value
-    d_new.pop("forced")
+    d_new = _update_old_config(d)
     return d_new
 
 

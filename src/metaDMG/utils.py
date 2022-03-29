@@ -15,6 +15,41 @@ from scipy.stats import betabinom as sp_betabinom
 #%%
 
 
+def _update_old_config(d: dict) -> dict:
+
+    if "version" in d:
+        # new version, not changing anything
+        return d
+
+    d_old2new = {
+        "metaDMG-lca": "metaDMG_cpp",
+        "minmapq": "min_mapping_quality",
+        "editdistmin": "min_edit_dist",
+        "editdistmax": "max_edit_dist",
+        "simscorelow": "min_similarity_score",
+        "simscorehigh": "max_similarity_score",
+        "weighttype": "weight_type",
+        "storage_dir": "output_dir",
+        "dir": "output_dir",
+        "fix_ncbi": "custom_database",
+        "cores": "parallel_samples",
+        "cores_per_sample": "cores_per_sample",
+        "config_path": "config_file",
+    }
+
+    d_new = {}
+    for key, value in d.items():
+        if key in d_old2new:
+            key = d_old2new[key]
+        d_new[key] = value
+    d_new.pop("forced")
+
+    return d_new
+
+
+#%%
+
+
 def remove_file(file: Union[Path, str], missing_ok: bool = False) -> None:
     Path(file).unlink(missing_ok=missing_ok)
 
@@ -314,6 +349,8 @@ def get_results_dir(
 
     with open(config_file, "r") as file:
         d = yaml.safe_load(file)
+
+    d = _update_old_config(d)
 
     return Path(d["output_dir"]) / "results"
 
