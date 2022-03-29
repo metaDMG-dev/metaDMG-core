@@ -1,0 +1,974 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CLI &#8212; metaDMG</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=84ace793992934648b4de8eed757e5a2" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Utils" href="api-utils.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<div class="col-12 col-md-3 bd-sidebar site-navigation " id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">metaDMG</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="index.html">
+   Welcome to metaDMG
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Documentation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="introduction.html">
+   Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="getting-started.html">
+   Getting started
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="tutorial.html">
+   Tutorial
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="command-line-interface.html">
+   Command Line Interface
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="results.html">
+   Results
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="dashboard.html">
+   Dashboard
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="api-main.html">
+   Main
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="api-utils.html">
+   Utils
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   CLI
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<!-- This is an invisible pixel that we watch to see if we've scrolled. -->
+<div class="sbt-scroll-pixel-helper"></div>
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            <div class="topbar-left">
+                
+                <label class="nav-toggle-button" for="__navigation">
+                    <div class="visually-hidden">Toggle navigation</div>
+                    <i class="fas fa-bars"></i>
+                </label>
+                
+            </div>
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/api-cli.md.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/metaDMG/metaDMG"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cli-compute">
+   compute
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cli-config">
+   config
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cli-convert">
+   convert
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cli-dashboard">
+   dashboard
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cli-filter">
+   filter
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cli-get-data">
+   get-data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cli-mismatch-to-mapdamage">
+   mismatch-to-mapDamage
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cli-plot">
+   plot
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>CLI</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cli-compute">
+   compute
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cli-config">
+   config
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cli-convert">
+   convert
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cli-dashboard">
+   dashboard
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cli-filter">
+   filter
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cli-get-data">
+   get-data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cli-mismatch-to-mapdamage">
+   mismatch-to-mapDamage
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cli-plot">
+   plot
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="section" id="cli">
+<h1>CLI<a class="headerlink" href="#cli" title="Permalink to this headline">¶</a></h1>
+<p>Welcome to metaDMG.</p>
+<p>First generate a config file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ metaDMG config --help
+</pre></div>
+</div>
+<p>And then compute the ancient damage statistics:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ metaDMG compute --help
+</pre></div>
+</div>
+<p>And subsequently visualise the results using the dashboard:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ metaDMG dashboard --help
+</pre></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>CLI <span class="o">[</span>OPTIONS<span class="o">]</span> COMMAND <span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-v">
+<span id="cmdoption-cli-v"></span><span id="cmdoption-CLI-version"></span><span id="cmdoption-cli-version"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--version</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-v" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-install-completion">
+<span id="cmdoption-cli-install-completion"></span><span class="sig-name descname"><span class="pre">--install-completion</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;install_completion&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-install-completion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Install completion for the specified shell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>bash | zsh | fish | powershell | pwsh</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-show-completion">
+<span id="cmdoption-cli-show-completion"></span><span class="sig-name descname"><span class="pre">--show-completion</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;show_completion&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-show-completion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show completion for the specified shell, to copy it or customize the installation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>bash | zsh | fish | powershell | pwsh</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="section" id="cli-compute">
+<h2>compute<a class="headerlink" href="#cli-compute" title="Permalink to this headline">¶</a></h2>
+<p>Compute the LCA and Ancient Damage given the configuration file.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>CLI compute <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>CONFIG_FILE<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-compute-f">
+<span id="cmdoption-cli-compute-f"></span><span id="cmdoption-CLI-compute-force"></span><span id="cmdoption-cli-compute-force"></span><span class="sig-name descname"><span class="pre">-f</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--force</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-compute-f" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forced computation (even though the files already exists).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-compute-arg-CONFIG_FILE">
+<span id="cmdoption-cli-compute-arg-config-file"></span><span class="sig-name descname"><span class="pre">CONFIG_FILE</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-compute-arg-CONFIG_FILE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optional argument</p>
+</dd></dl>
+
+</div>
+<div class="section" id="cli-config">
+<h2>config<a class="headerlink" href="#cli-config" title="Permalink to this headline">¶</a></h2>
+<p>Generate the config file.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>CLI config <span class="o">[</span>OPTIONS<span class="o">]</span> SAMPLES...
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-names">
+<span id="cmdoption-cli-config-names"></span><span class="sig-name descname"><span class="pre">--names</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;names&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-config-names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to the (NCBI) names-mdmg.dmp.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-nodes">
+<span id="cmdoption-cli-config-nodes"></span><span class="sig-name descname"><span class="pre">--nodes</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;nodes&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-config-nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to the (NCBI) nodes-mdmg.dmp.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-acc2tax">
+<span id="cmdoption-cli-config-acc2tax"></span><span class="sig-name descname"><span class="pre">--acc2tax</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;acc2tax&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-config-acc2tax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to the (NCBI) acc2tax.gz.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-s">
+<span id="cmdoption-cli-config-s"></span><span id="cmdoption-CLI-config-min-similarity-score"></span><span id="cmdoption-cli-config-min-similarity-score"></span><span class="sig-name descname"><span class="pre">-s</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--min-similarity-score</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;min_similarity_score&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-config-s" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalised edit distance (read to reference similarity) minimum. Number between 0-1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>0.95</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-S">
+<span id="cmdoption-cli-config-s"></span><span id="cmdoption-CLI-config-max-similarity-score"></span><span id="cmdoption-cli-config-max-similarity-score"></span><span class="sig-name descname"><span class="pre">-S</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--max-similarity-score</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;max_similarity_score&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-config-S" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalised edit distance (read to reference similarity) maximum. Number between 0-1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>1.0</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-e">
+<span id="cmdoption-cli-config-e"></span><span id="cmdoption-CLI-config-min-edit-dist"></span><span id="cmdoption-cli-config-min-edit-dist"></span><span class="sig-name descname"><span class="pre">-e</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--min-edit-dist</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;min_edit_dist&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-config-e" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimum edit distance (read to reference similarity). Number between 0-10.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>0</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-E">
+<span id="cmdoption-cli-config-e"></span><span id="cmdoption-CLI-config-max-edit-dist"></span><span id="cmdoption-cli-config-max-edit-dist"></span><span class="sig-name descname"><span class="pre">-E</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--max-edit-dist</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;max_edit_dist&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-config-E" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum edit distance (read to reference similarity). Number between 0-10.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>10</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-q">
+<span id="cmdoption-cli-config-q"></span><span id="cmdoption-CLI-config-min-mapping-quality"></span><span id="cmdoption-cli-config-min-mapping-quality"></span><span class="sig-name descname"><span class="pre">-q</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--min-mapping-quality</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;min_mapping_quality&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-config-q" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimum mapping quality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>0</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-u">
+<span id="cmdoption-cli-config-u"></span><span id="cmdoption-CLI-config-custom-database"></span><span id="cmdoption-cli-config-custom-database"></span><span class="sig-name descname"><span class="pre">-u</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--custom-database</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-config-u" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fix the (ncbi) database. Disable if using a custom database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-r">
+<span id="cmdoption-cli-config-r"></span><span id="cmdoption-CLI-config-lca-rank"></span><span id="cmdoption-cli-config-lca-rank"></span><span class="sig-name descname"><span class="pre">-r</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--lca-rank</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;lca_rank&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-config-r" title="Permalink to this definition">¶</a></dt>
+<dd><p>The LCA rank used in ngsLCA.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>RANKS.none</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p>family | genus | species |</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-m">
+<span id="cmdoption-cli-config-m"></span><span id="cmdoption-CLI-config-metaDMG-cpp"></span><span id="cmdoption-cli-config-metadmg-cpp"></span><span class="sig-name descname"><span class="pre">-m</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--metaDMG-cpp</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;metaDMG_cpp&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-config-m" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command needed to run the metaDMG-cpp program.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>./metaDMG-cpp</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-P">
+<span id="cmdoption-cli-config-p"></span><span id="cmdoption-CLI-config-max-position"></span><span id="cmdoption-cli-config-max-position"></span><span class="sig-name descname"><span class="pre">-P</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--max-position</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;max_position&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-config-P" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of positions to include (<a href="#id1"><span class="problematic" id="id2">|x|</span></a> &lt; max_position).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>15</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-w">
+<span id="cmdoption-cli-config-w"></span><span id="cmdoption-CLI-config-weight-type"></span><span id="cmdoption-cli-config-weight-type"></span><span class="sig-name descname"><span class="pre">-w</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--weight-type</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;weight_type&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-config-w" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for calculating weights</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>1</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-l">
+<span id="cmdoption-cli-config-l"></span><span id="cmdoption-CLI-config-forward-only"></span><span id="cmdoption-cli-config-forward-only"></span><span class="sig-name descname"><span class="pre">-l</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--forward-only</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-config-l" title="Permalink to this definition">¶</a></dt>
+<dd><p>Only use the forward direction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-b">
+<span id="cmdoption-cli-config-b"></span><span id="cmdoption-CLI-config-bayesian"></span><span id="cmdoption-cli-config-bayesian"></span><span class="sig-name descname"><span class="pre">-b</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--bayesian</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-config-b" title="Permalink to this definition">¶</a></dt>
+<dd><p>Include a fully Bayesian model (probably better, but also _a <a href="#id3"><span class="problematic" id="id4">lot_</span></a> slower, about a factor of 100.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-o">
+<span id="cmdoption-cli-config-o"></span><span id="cmdoption-CLI-config-output-dir"></span><span id="cmdoption-cli-config-output-dir"></span><span class="sig-name descname"><span class="pre">-o</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--output-dir</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output_dir&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-config-o" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path where the generated output files and folders are stored.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-j">
+<span id="cmdoption-cli-config-j"></span><span id="cmdoption-CLI-config-parallel-samples"></span><span id="cmdoption-cli-config-parallel-samples"></span><span class="sig-name descname"><span class="pre">-j</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--parallel-samples</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;parallel_samples&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-config-j" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of samples to run in parallel. Default is running in seriel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>1</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-i">
+<span id="cmdoption-cli-config-i"></span><span id="cmdoption-CLI-config-cores-per-sample"></span><span id="cmdoption-cli-config-cores-per-sample"></span><span class="sig-name descname"><span class="pre">-i</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--cores-per-sample</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;cores_per_sample&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-config-i" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of cores to use pr. sample.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>1</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-c">
+<span id="cmdoption-cli-config-c"></span><span id="cmdoption-CLI-config-config-file"></span><span id="cmdoption-cli-config-config-file"></span><span class="sig-name descname"><span class="pre">-c</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--config-file</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;config_file&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-config-c" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the config file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>config.yaml</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-sample-prefix">
+<span id="cmdoption-cli-config-sample-prefix"></span><span class="sig-name descname"><span class="pre">--sample-prefix</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;sample_prefix&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-config-sample-prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prefix for the sample names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-sample-suffix">
+<span id="cmdoption-cli-config-sample-suffix"></span><span class="sig-name descname"><span class="pre">--sample-suffix</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;sample_suffix&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-config-sample-suffix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Suffix for the sample names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-long-name">
+<span id="cmdoption-cli-config-long-name"></span><span class="sig-name descname"><span class="pre">--long-name</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-config-long-name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use the full name of the sample file as sample name..</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-d">
+<span id="cmdoption-cli-config-d"></span><span id="cmdoption-CLI-config-damage-mode"></span><span id="cmdoption-cli-config-damage-mode"></span><span class="sig-name descname"><span class="pre">-d</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--damage-mode</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;damage_mode&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-config-d" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Damage Mode. Use ‘LCA’ unless you know what you are doing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>DAMAGE_MODE.LCA</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p>lca | local | global</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-f">
+<span id="cmdoption-cli-config-f"></span><span id="cmdoption-CLI-config-overwrite"></span><span id="cmdoption-cli-config-overwrite"></span><span class="sig-name descname"><span class="pre">-f</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--overwrite</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-config-f" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite config file without user confirmation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-config-arg-SAMPLES">
+<span id="cmdoption-cli-config-arg-samples"></span><span class="sig-name descname"><span class="pre">SAMPLES</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-config-arg-SAMPLES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument(s)</p>
+</dd></dl>
+
+</div>
+<div class="section" id="cli-convert">
+<h2>convert<a class="headerlink" href="#cli-convert" title="Permalink to this headline">¶</a></h2>
+<p>Convert the results to either a combined csv or tsv file.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>CLI convert <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>CONFIG_FILE<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-convert-r">
+<span id="cmdoption-cli-convert-r"></span><span id="cmdoption-CLI-convert-results"></span><span id="cmdoption-cli-convert-results"></span><span class="sig-name descname"><span class="pre">-r</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--results</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;results_dir&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-convert-r" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to the results directory.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-convert-o">
+<span id="cmdoption-cli-convert-o"></span><span id="cmdoption-CLI-convert-output"></span><span id="cmdoption-cli-convert-output"></span><span class="sig-name descname"><span class="pre">-o</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--output</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-convert-o" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> Where to save the converted file.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-convert-a">
+<span id="cmdoption-cli-convert-a"></span><span id="cmdoption-CLI-convert-add-fit-predictions"></span><span id="cmdoption-cli-convert-add-fit-predictions"></span><span class="sig-name descname"><span class="pre">-a</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--add-fit-predictions</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-convert-a" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add fit predictions D(x) to the output</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-convert-arg-CONFIG_FILE">
+<span id="cmdoption-cli-convert-arg-config-file"></span><span class="sig-name descname"><span class="pre">CONFIG_FILE</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-convert-arg-CONFIG_FILE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optional argument</p>
+</dd></dl>
+
+</div>
+<div class="section" id="cli-dashboard">
+<h2>dashboard<a class="headerlink" href="#cli-dashboard" title="Permalink to this headline">¶</a></h2>
+<p>Visualise the results in an interactive dashboard.</p>
+<p>run as e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ metaDMG dashboard
+</pre></div>
+</div>
+<p>or for another config than default:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ metaDMG dashboard non-default-config.yaml --port 8050 --host 0.0.0.0 --debug
+</pre></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>CLI dashboard <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>CONFIG_FILE<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-dashboard-r">
+<span id="cmdoption-cli-dashboard-r"></span><span id="cmdoption-CLI-dashboard-results"></span><span id="cmdoption-cli-dashboard-results"></span><span class="sig-name descname"><span class="pre">-r</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--results</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;results&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-dashboard-r" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to the results directory.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-dashboard-d">
+<span id="cmdoption-cli-dashboard-d"></span><span id="cmdoption-CLI-dashboard-debug"></span><span id="cmdoption-cli-dashboard-debug"></span><span class="sig-name descname"><span class="pre">-d</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--debug</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-dashboard-d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether or not the debug-button should be displayed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-dashboard-s">
+<span id="cmdoption-cli-dashboard-s"></span><span id="cmdoption-CLI-dashboard-server"></span><span id="cmdoption-cli-dashboard-server"></span><span class="sig-name descname"><span class="pre">-s</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--server</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-dashboard-s" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether or not it is running on a server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-dashboard-p">
+<span id="cmdoption-cli-dashboard-p"></span><span id="cmdoption-CLI-dashboard-port"></span><span id="cmdoption-cli-dashboard-port"></span><span class="sig-name descname"><span class="pre">-p</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--port</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;port&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-dashboard-p" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dashboard port.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>8050</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-dashboard-h">
+<span id="cmdoption-cli-dashboard-h"></span><span id="cmdoption-CLI-dashboard-host"></span><span id="cmdoption-cli-dashboard-host"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--host</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;host&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-dashboard-h" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dashboard host address</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>0.0.0.0</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-dashboard-arg-CONFIG_FILE">
+<span id="cmdoption-cli-dashboard-arg-config-file"></span><span class="sig-name descname"><span class="pre">CONFIG_FILE</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-dashboard-arg-CONFIG_FILE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optional argument</p>
+</dd></dl>
+
+</div>
+<div class="section" id="cli-filter">
+<h2>filter<a class="headerlink" href="#cli-filter" title="Permalink to this headline">¶</a></h2>
+<p>Filter and save the results to either a combined csv or tsv file.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>CLI filter <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>CONFIG_FILE<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-filter-r">
+<span id="cmdoption-cli-filter-r"></span><span id="cmdoption-CLI-filter-results"></span><span id="cmdoption-cli-filter-results"></span><span class="sig-name descname"><span class="pre">-r</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--results</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;results_dir&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-filter-r" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to the results directory.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-filter-o">
+<span id="cmdoption-cli-filter-o"></span><span id="cmdoption-CLI-filter-output"></span><span id="cmdoption-cli-filter-output"></span><span class="sig-name descname"><span class="pre">-o</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--output</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-filter-o" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> Where to save the converted file.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-filter-q">
+<span id="cmdoption-cli-filter-q"></span><span id="cmdoption-CLI-filter-query"></span><span id="cmdoption-cli-filter-query"></span><span class="sig-name descname"><span class="pre">-q</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--query</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;query&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-filter-q" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filtering query</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-filter-a">
+<span id="cmdoption-cli-filter-a"></span><span id="cmdoption-CLI-filter-add-fit-predictions"></span><span id="cmdoption-cli-filter-add-fit-predictions"></span><span class="sig-name descname"><span class="pre">-a</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--add-fit-predictions</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-filter-a" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add fit predictions D(x) to the output</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-filter-arg-CONFIG_FILE">
+<span id="cmdoption-cli-filter-arg-config-file"></span><span class="sig-name descname"><span class="pre">CONFIG_FILE</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-filter-arg-CONFIG_FILE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optional argument</p>
+</dd></dl>
+
+</div>
+<div class="section" id="cli-get-data">
+<h2>get-data<a class="headerlink" href="#cli-get-data" title="Permalink to this headline">¶</a></h2>
+<p>Get test data and save it in the output-dir. Useful for e.g. the online tutorial.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>CLI get-data <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-get-data-o">
+<span id="cmdoption-cli-get-data-o"></span><span id="cmdoption-CLI-get-data-output-dir"></span><span id="cmdoption-cli-get-data-output-dir"></span><span class="sig-name descname"><span class="pre">-o</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--output-dir</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output_dir&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-get-data-o" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> Path to the output directory.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="cli-mismatch-to-mapdamage">
+<h2>mismatch-to-mapDamage<a class="headerlink" href="#cli-mismatch-to-mapdamage" title="Permalink to this headline">¶</a></h2>
+<p>Convert the mismatch file to mapDamage misincorporation.txt format.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>CLI mismatch-to-mapDamage <span class="o">[</span>OPTIONS<span class="o">]</span> FILENAME
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-mismatch-to-mapDamage-o">
+<span id="cmdoption-cli-mismatch-to-mapdamage-o"></span><span id="cmdoption-CLI-mismatch-to-mapDamage-output"></span><span id="cmdoption-cli-mismatch-to-mapdamage-output"></span><span class="sig-name descname"><span class="pre">-o</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--output</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;csv_out&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-mismatch-to-mapDamage-o" title="Permalink to this definition">¶</a></dt>
+<dd><p>Output CSV file (misincorporation.txt).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>misincorporation.txt</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-mismatch-to-mapDamage-arg-FILENAME">
+<span id="cmdoption-cli-mismatch-to-mapdamage-arg-filename"></span><span class="sig-name descname"><span class="pre">FILENAME</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-mismatch-to-mapDamage-arg-FILENAME" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</div>
+<div class="section" id="cli-plot">
+<h2>plot<a class="headerlink" href="#cli-plot" title="Permalink to this headline">¶</a></h2>
+<p>Filter and save the results to either a combined csv or tsv file.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>CLI plot <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>CONFIG_FILE<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-plot-r">
+<span id="cmdoption-cli-plot-r"></span><span id="cmdoption-CLI-plot-results"></span><span id="cmdoption-cli-plot-results"></span><span class="sig-name descname"><span class="pre">-r</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--results</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;results_dir&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-plot-r" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to the results directory.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-plot-q">
+<span id="cmdoption-cli-plot-q"></span><span id="cmdoption-CLI-plot-query"></span><span id="cmdoption-cli-plot-query"></span><span class="sig-name descname"><span class="pre">-q</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--query</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;query&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-plot-q" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filtering query</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-plot-s">
+<span id="cmdoption-cli-plot-s"></span><span id="cmdoption-CLI-plot-samples"></span><span id="cmdoption-cli-plot-samples"></span><span class="sig-name descname"><span class="pre">-s</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--samples</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;samples&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-plot-s" title="Permalink to this definition">¶</a></dt>
+<dd><p>Only use specific Tax samples</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-plot-t">
+<span id="cmdoption-cli-plot-t"></span><span id="cmdoption-CLI-plot-tax-ids"></span><span id="cmdoption-cli-plot-tax-ids"></span><span class="sig-name descname"><span class="pre">-t</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--tax-ids</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;tax_ids&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-plot-t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Only use specific Tax IDs. Example: “”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-plot-o">
+<span id="cmdoption-cli-plot-o"></span><span id="cmdoption-CLI-plot-output"></span><span id="cmdoption-cli-plot-output"></span><span class="sig-name descname"><span class="pre">-o</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--output</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;pdf_out&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-plot-o" title="Permalink to this definition">¶</a></dt>
+<dd><p>Output PDF file (pdf_export.pdf).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>pdf_export.pdf</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-plot-arg-CONFIG_FILE">
+<span id="cmdoption-cli-plot-arg-config-file"></span><span class="sig-name descname"><span class="pre">CONFIG_FILE</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-plot-arg-CONFIG_FILE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optional argument</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="api-utils.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Utils</p>
+        </div>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Christian Michelsen<br/>
+    
+        &copy; Copyright 2022, Christian Michelsen.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

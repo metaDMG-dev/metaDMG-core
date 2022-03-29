@@ -1,0 +1,908 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Command Line Interface &#8212; metaDMG</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=84ace793992934648b4de8eed757e5a2" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Results" href="results.html" />
+    <link rel="prev" title="Tutorial" href="tutorial.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<div class="col-12 col-md-3 bd-sidebar site-navigation " id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">metaDMG</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="index.html">
+   Welcome to metaDMG
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Documentation
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="introduction.html">
+   Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="getting-started.html">
+   Getting started
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="tutorial.html">
+   Tutorial
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Command Line Interface
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="results.html">
+   Results
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="dashboard.html">
+   Dashboard
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="api-main.html">
+   Main
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="api-utils.html">
+   Utils
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="api-cli.html">
+   CLI
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<!-- This is an invisible pixel that we watch to see if we've scrolled. -->
+<div class="sbt-scroll-pixel-helper"></div>
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            <div class="topbar-left">
+                
+                <label class="nav-toggle-button" for="__navigation">
+                    <div class="visually-hidden">Toggle navigation</div>
+                    <i class="fas fa-bars"></i>
+                </label>
+                
+            </div>
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/command-line-interface.md.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/metaDMG/metaDMG"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#config">
+   Config
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#parameters">
+     Parameters
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#damage-mode">
+       Damage mode
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#lca">
+       LCA
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#general">
+       General
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#examples">
+     Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#compute">
+   Compute
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Parameters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id3">
+     Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dashboard">
+   Dashboard
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id4">
+     Parameters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id5">
+     Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#get-data">
+   Get Data
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id6">
+     Parameters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id7">
+     Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#convert">
+   Convert
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id8">
+     Parameters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id9">
+     Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#filter">
+   Filter
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id10">
+     Parameters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id11">
+     Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#plot">
+   Plot
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id12">
+     Parameters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id13">
+     Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mismatch-to-mapdamage">
+   mismatch-to-mapDamage
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id14">
+     Parameters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id15">
+     Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Command Line Interface</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#config">
+   Config
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#parameters">
+     Parameters
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#damage-mode">
+       Damage mode
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#lca">
+       LCA
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#general">
+       General
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#examples">
+     Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#compute">
+   Compute
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Parameters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id3">
+     Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dashboard">
+   Dashboard
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id4">
+     Parameters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id5">
+     Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#get-data">
+   Get Data
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id6">
+     Parameters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id7">
+     Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#convert">
+   Convert
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id8">
+     Parameters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id9">
+     Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#filter">
+   Filter
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id10">
+     Parameters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id11">
+     Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#plot">
+   Plot
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id12">
+     Parameters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id13">
+     Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mismatch-to-mapdamage">
+   mismatch-to-mapDamage
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id14">
+     Parameters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id15">
+     Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="command-line-interface">
+<span id="id1"></span><h1>Command Line Interface<a class="headerlink" href="#command-line-interface" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">metaDMG</span></code> has the following commands:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#command-line-interface-config"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">config</span></code></span></a></p></li>
+<li><p><a class="reference internal" href="#command-line-interface-compute"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">compute</span></code></span></a></p></li>
+<li><p><a class="reference internal" href="#command-line-interface-dashboard"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">dashboard</span></code></span></a></p></li>
+<li><p><a class="reference internal" href="#command-line-interface-get-data"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">get-data</span></code></span></a></p></li>
+<li><p><a class="reference internal" href="#command-line-interface-convert"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">convert</span></code></span></a></p></li>
+<li><p><a class="reference internal" href="#command-line-interface-filter"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">filter</span></code></span></a></p></li>
+<li><p><a class="reference internal" href="#command-line-interface-plot"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">plot</span></code></span></a></p></li>
+</ul>
+<hr class="docutils" />
+<div class="section" id="config">
+<span id="command-line-interface-config"></span><h2>Config<a class="headerlink" href="#config" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">metaDMG</span> <span class="pre">config</span></code> takes a single argument, <code class="docutils literal notranslate"><span class="pre">samples</span></code>, and a bunch of additional options and flags.
+The <code class="docutils literal notranslate"><span class="pre">samples</span></code> refer to a single or multiple alignment-files (or a directory containing them), all with the file extensions: <code class="docutils literal notranslate"><span class="pre">.bam</span></code>, <code class="docutils literal notranslate"><span class="pre">.sam</span></code>, and <code class="docutils literal notranslate"><span class="pre">.sam.gz</span></code>.</p>
+<div class="section" id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="damage-mode">
+<h4>Damage mode<a class="headerlink" href="#damage-mode" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--damage-mode</span></code>: <code class="docutils literal notranslate"><span class="pre">[lca|local|global]</span></code>. <code class="docutils literal notranslate"><span class="pre">lca</span></code> is the recommended and automatic setting. If using <code class="docutils literal notranslate"><span class="pre">local</span></code>, it means that damage patterns will be calculated for each chr/scaffold contig. If using <code class="docutils literal notranslate"><span class="pre">global</span></code>, it means one global estimate. Note that when using <code class="docutils literal notranslate"><span class="pre">[local|global]</span></code> the LCA parameters won’t matter.</p></li>
+</ul>
+</div>
+<div class="section" id="lca">
+<h4>LCA<a class="headerlink" href="#lca" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Options:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--names</span></code>: Path to the (NCBI) <code class="docutils literal notranslate"><span class="pre">names-mdmg.dmp</span></code>. Mandatory for LCA.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--nodes</span></code>: Path to the (NCBI) <code class="docutils literal notranslate"><span class="pre">nodes-mdmg.dmp</span></code>. Mandator for LCA.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--acc2tax</span></code>: Path to the (NCBI) <code class="docutils literal notranslate"><span class="pre">acc2tax.gz</span></code>. Mandatory for LCA.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--min-similarity-score</span></code>: Normalised edit distance (read to reference similarity) minimum. Number between 0-1. Default: 0.95.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--max-similarity-score</span></code>: Normalised edit distance (read to reference similarity) maximum. Number between 0-1 Default: 1.0.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--min-edit-dist</span></code>: Minimum edit distance (read to reference similarity). Number between 0-10. Default: 0.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--max-edit-dist</span></code>: Maximum edit distance (read to reference similarity). Number between 0-10. Default: 10.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--min-mapping-quality</span></code>: Minimum mapping quality. Default: 0.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--lca-rank</span></code>: The LCA rank used in ngsLCA. Can be either <code class="docutils literal notranslate"><span class="pre">family</span></code>, <code class="docutils literal notranslate"><span class="pre">genus</span></code>, <code class="docutils literal notranslate"><span class="pre">species</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> (everything). Default is <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Flags:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--custom-database</span></code>: Using a custom database or the NCBI. If NCBI, automatically corrects for a couple of bad taxa. Default is False.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="general">
+<h4>General<a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Options:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--output-dir</span></code>: Path where the generated output files and folders are stored. Default: <code class="docutils literal notranslate"><span class="pre">./data/</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--config-file</span></code>: The name of the generated config file. Default: <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--metaDMG-cpp</span></code>: The command needed to run the <code class="docutils literal notranslate"><span class="pre">metaDMG-cpp</span></code> program.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--max-position</span></code>: Maximum position in the sequence to include. Default is (+/-) 15 (forward/reverse).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--parallel-samples</span></code>: The number of samples to run in parallel. Default is running in seriel.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--cores-per-sample</span></code>: Number of cores to use pr. sample. Do not change unless you know what you are doing.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--sample-prefix</span></code>: Prefix for the sample names.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--sample-suffix</span></code>: Suffix for the sample names.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--weight-type</span></code>: Method for calculating weights. Default is 1. Do not change unless you know what you are doing.</p></li>
+</ul>
+</li>
+<li><p>Flags:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--forward-only</span></code>: Only fit the forward strand.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--bayesian</span></code>: Include a fully Bayesian model (probably better, but also <em>a lot</em> slower, about a factor of 100).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--long-name</span></code>: Use the full, long, name for the sample.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--overwrite</span></code>: Overwrite config file without user confirmation.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG config raw_data/alignment.bam <span class="se">\</span>
+    --names raw_data/names-mdmg.dmp <span class="se">\</span>
+    --nodes raw_data/nodes-mdmg.dmp <span class="se">\</span>
+    --acc2tax raw_data/acc2taxid.map.gz <span class="se">\</span>
+    --parallel-samples <span class="m">4</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">metaDMG</span></code> is pretty versatile regarding its input argument and also accepts multiple alignment files:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG config raw_data/*.bam <span class="o">[</span>...<span class="o">]</span>
+</pre></div>
+</div>
+<p>or even an entire directory containing alignment files (<code class="docutils literal notranslate"><span class="pre">.bam</span></code>, <code class="docutils literal notranslate"><span class="pre">.sam</span></code>, and <code class="docutils literal notranslate"><span class="pre">.sam.gz</span></code>):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG config raw_data/ <span class="o">[</span>...<span class="o">]</span>
+</pre></div>
+</div>
+<p>To run <code class="docutils literal notranslate"><span class="pre">metaDMG</span></code> in non-LCA mode, an example could be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ metaDMG config raw_data/alignment.bam --damage-mode local --max-position 15 --bayesian
+</pre></div>
+</div>
+<hr class="docutils" />
+</div>
+</div>
+<div class="section" id="compute">
+<span id="command-line-interface-compute"></span><h2>Compute<a class="headerlink" href="#compute" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">metaDMG</span> <span class="pre">compute</span></code> command takes an optional config-file as argument
+(defaults to <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> if not specified).</p>
+<div class="section" id="id2">
+<h3>Parameters<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Flags:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--force</span></code>: Forced computation (even though the files already exists).</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h3>Examples<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG compute
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG compute non-default-config.yaml --force
+</pre></div>
+</div>
+<hr class="docutils" />
+</div>
+</div>
+<div class="section" id="dashboard">
+<span id="command-line-interface-dashboard"></span><h2>Dashboard<a class="headerlink" href="#dashboard" title="Permalink to this headline">¶</a></h2>
+<p>You can now see a preview of the <a class="reference external" href="https://metadmg.herokuapp.com">interactive dashboard</a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">metaDMG</span> <span class="pre">dashboard</span></code> command takes first an optional config-file as argument
+(defaults to <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> if not specified).</p>
+<div class="section" id="id4">
+<h3>Parameters<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Options:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--results</span></code>: Path to the results directory.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--port</span></code>: The port to be used for the dashboard. Default is <code class="docutils literal notranslate"><span class="pre">8050</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--host</span></code>: The dashboard host adress. Default is <code class="docutils literal notranslate"><span class="pre">0.0.0.0</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Flags:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--debug</span></code>: Allow for easier debugging the dashboard. For internal usage.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--server</span></code>: If running on a server</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h3>Examples<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG dashboard
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG dashboard non-default-config.yaml --port <span class="m">8050</span> --host <span class="m">0</span>.0.0.0
+</pre></div>
+</div>
+<hr class="docutils" />
+</div>
+</div>
+<div class="section" id="get-data">
+<span id="command-line-interface-get-data"></span><h2>Get Data<a class="headerlink" href="#get-data" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">metaDMG</span> <span class="pre">get-data</span></code> command gets test data and saves it in the output-dir. Useful for e.g. the online tutorial.</p>
+<div class="section" id="id6">
+<h3>Parameters<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Options:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--output-dir</span></code>: Path to the output directory.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h3>Examples<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG get-data --output-dir raw_data
+</pre></div>
+</div>
+<hr class="docutils" />
+</div>
+</div>
+<div class="section" id="convert">
+<span id="command-line-interface-convert"></span><h2>Convert<a class="headerlink" href="#convert" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">metaDMG</span> <span class="pre">convert</span></code> command takes first an optional config-file as argument
+(defaults to <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> if not specified) used to infer the results directory.</p>
+<div class="section" id="id8">
+<h3>Parameters<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Options:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--results</span></code>: Direct path to the results directory.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--output</span></code>: Mandatory output path.</p></li>
+</ul>
+</li>
+<li><p>Flags:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--add-fit-predictions</span></code>: Include fit predictions D(x) in the output.</p></li>
+</ul>
+</li>
+</ul>
+<p>Note that neither the config-file nor <code class="docutils literal notranslate"><span class="pre">--results</span></code> have to be specified
+(in which just the default <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> is used), however,
+both cannot be set at the same time.</p>
+</div>
+<div class="section" id="id9">
+<h3>Examples<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG convert --output ./directory/to/contain/results.csv
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG convert non-default-config.yaml --output ./directory/to/contain/results.csv --add-fit-predictions
+</pre></div>
+</div>
+<hr class="docutils" />
+</div>
+</div>
+<div class="section" id="filter">
+<span id="command-line-interface-filter"></span><h2>Filter<a class="headerlink" href="#filter" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">metaDMG</span> <span class="pre">filter</span></code> command takes first an optional config-file as argument
+(defaults to <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> if not specified) used to infer the results directory.</p>
+<div class="section" id="id10">
+<h3>Parameters<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Options:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--results</span></code>: Direct path to the results directory.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--output</span></code>: Mandatory output path.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--query</span></code>: The query string to use for filtering. Follows the <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method">Pandas Query()</a> syntax. Default is <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> which applies no filtering and is thus similar to the <code class="docutils literal notranslate"><span class="pre">metaDMG</span> <span class="pre">convert</span></code> command.</p></li>
+</ul>
+</li>
+<li><p>Flags:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--add-fit-predictions</span></code>: Include fit predictions D(x) in the output.</p></li>
+</ul>
+</li>
+</ul>
+<p>Note that neither the config-file nor <code class="docutils literal notranslate"><span class="pre">--results</span></code> have to be specified
+(in which just the default <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> is used), however,
+both cannot be set at the same time.</p>
+</div>
+<div class="section" id="id11">
+<h3>Examples<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG filter --output convert-no-query.csv <span class="c1"># similar to metaDMG convert</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG filter --output convert-test.csv --query <span class="s2">&quot;N_reads &gt; 5_000 &amp; sample in [&#39;subs&#39;, &#39;SPL_195_9299&#39;] &amp; tax_name == &#39;root&#39;&quot;</span> --add-fit-predictions
+</pre></div>
+</div>
+<hr class="docutils" />
+</div>
+</div>
+<div class="section" id="plot">
+<span id="command-line-interface-plot"></span><h2>Plot<a class="headerlink" href="#plot" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">metaDMG</span> <span class="pre">plot</span></code> command takes first an optional config-file as argument
+(defaults to <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> if not specified).</p>
+<div class="section" id="id12">
+<h3>Parameters<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Options:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--results</span></code>: Direct path to the results directory.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--query</span></code>: The query string to use for filtering. Follows the <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method">Pandas Query()</a> syntax. Default is <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> which applies no filtering.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--samples</span></code>: A comma-space seperated string containing the samples to use in the plots. Default is <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> which applies no filtering.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--tax-ids</span></code>: A comma-space seperated string containing the tax-ids to use in the plots. Default is <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> which applies no filtering.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--output</span></code>: The path to the output pdf-file. Defaults to <code class="docutils literal notranslate"><span class="pre">pdf_export.pdf</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id13">
+<h3>Examples<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG plot
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG plot --query <span class="s2">&quot;100_000 &lt;= N_reads &amp; 8_000 &lt;= phi&quot;</span> --tax-ids <span class="s2">&quot;1, 2, 42&quot;</span> --samples <span class="s2">&quot;sampleA, another-sample&quot;</span> --pdf-out name-of-plots.pdf
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="mismatch-to-mapdamage">
+<h2>mismatch-to-mapDamage<a class="headerlink" href="#mismatch-to-mapdamage" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">metaDMG</span> <span class="pre">mismatch-to-mapDamage</span></code> command takes a mandatory mismatch-file as argument
+and converts it to the mapDamage format <code class="docutils literal notranslate"><span class="pre">misincorporation.txt</span></code>.</p>
+<div class="section" id="id14">
+<h3>Parameters<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Options:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--csv-out</span></code>: Output CSV file (<code class="docutils literal notranslate"><span class="pre">misincorporation.txt</span></code>). Default is <code class="docutils literal notranslate"><span class="pre">misincorporation.txt</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id15">
+<h3>Examples<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG mismatch-to-mapDamage data/mismatches/XXX.mismatches.parquet
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG mismatch-to-mapDamage data/mismatches/XXX.mismatches.parquet --csv-out misincorporation.txt
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="tutorial.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Tutorial</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="results.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Results</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Christian Michelsen<br/>
+    
+        &copy; Copyright 2022, Christian Michelsen.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

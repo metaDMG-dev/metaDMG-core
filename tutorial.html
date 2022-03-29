@@ -1,0 +1,650 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tutorial &#8212; metaDMG</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=84ace793992934648b4de8eed757e5a2" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Command Line Interface" href="command-line-interface.html" />
+    <link rel="prev" title="Getting started" href="getting-started.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<div class="col-12 col-md-3 bd-sidebar site-navigation " id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">metaDMG</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="index.html">
+   Welcome to metaDMG
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Documentation
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="introduction.html">
+   Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="getting-started.html">
+   Getting started
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Tutorial
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="command-line-interface.html">
+   Command Line Interface
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="results.html">
+   Results
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="dashboard.html">
+   Dashboard
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="api-main.html">
+   Main
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="api-utils.html">
+   Utils
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="api-cli.html">
+   CLI
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<!-- This is an invisible pixel that we watch to see if we've scrolled. -->
+<div class="sbt-scroll-pixel-helper"></div>
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            <div class="topbar-left">
+                
+                <label class="nav-toggle-button" for="__navigation">
+                    <div class="visually-hidden">Toggle navigation</div>
+                    <i class="fas fa-bars"></i>
+                </label>
+                
+            </div>
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/tutorial.md.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/metaDMG/metaDMG"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#simple-analysis">
+   Simple Analysis
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#input-data">
+     Input data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#config">
+     Config
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#compute">
+     Compute
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#visualisation">
+     Visualisation
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#overview-plot">
+       Overview plot
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#hover-info">
+       Hover info
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#raw-data-plot">
+       Raw data plot
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#export-csv">
+       Export CSV
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#export-pdfs">
+       Export PDFs
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#kap-copenhagen">
+   Kap Copenhagen
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Config
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Compute
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dashboard">
+     Dashboard
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Tutorial</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#simple-analysis">
+   Simple Analysis
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#input-data">
+     Input data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#config">
+     Config
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#compute">
+     Compute
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#visualisation">
+     Visualisation
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#overview-plot">
+       Overview plot
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#hover-info">
+       Hover info
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#raw-data-plot">
+       Raw data plot
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#export-csv">
+       Export CSV
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#export-pdfs">
+       Export PDFs
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#kap-copenhagen">
+   Kap Copenhagen
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Config
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Compute
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dashboard">
+     Dashboard
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="tutorial">
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial consist of two parts: a relatively <a class="reference internal" href="#simple"><span class="std std-ref">simple</span></a> analysis of a very small alignment file avaliable in repository, and a larger and more real life analysis of the <a class="reference internal" href="#kapk"><span class="std std-ref">Kap Copenhagen</span></a> dataset.</p>
+<div class="section" id="simple-analysis">
+<span id="simple"></span><h2>Simple Analysis<a class="headerlink" href="#simple-analysis" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="input-data">
+<h3>Input data<a class="headerlink" href="#input-data" title="Permalink to this headline">¶</a></h3>
+<p>To run the full suite of commands, i.e. the LCA and fits, <code class="docutils literal notranslate"><span class="pre">metaDMG</span></code> requires the following input files:</p>
+<ol class="arabic simple">
+<li><p>An aligment file (or a directory containing multiple alignment files).</p></li>
+<li><p>A <code class="docutils literal notranslate"><span class="pre">names</span></code> file, which contains the names of the different accessions in the database.</p></li>
+<li><p>A <code class="docutils literal notranslate"><span class="pre">nodes</span></code> file, which contains the relationship between the different accessions in the database (the graph structure, so to speak).</p></li>
+<li><p>A <code class="docutils literal notranslate"><span class="pre">acc2tax</span></code> file, which is the conversion between accesion number and the tax ID.</p></li>
+</ol>
+<p>To make the introduction to <code class="docutils literal notranslate"><span class="pre">metaDMG</span></code> easy, <code class="docutils literal notranslate"><span class="pre">metaDMG</span></code> is by default shipped with a small data directory containing these.</p>
+<p>These files can be loaded by running the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG get-data --output-dir raw_data
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">raw_data</span></code> is the output directory where you want to store the files.</p>
+</div>
+<div class="section" id="config">
+<h3>Config<a class="headerlink" href="#config" title="Permalink to this headline">¶</a></h3>
+<p>Now that the we have the raw data, we can start running <code class="docutils literal notranslate"><span class="pre">metaDMG</span></code>.
+For ease of use, <code class="docutils literal notranslate"><span class="pre">metaDMG</span></code> is structured such that we first need to generate a <code class="docutils literal notranslate"><span class="pre">config</span></code> file which contains all of the options that the LCA and fits require.
+To compare two different analysis, one simply need to compare the <code class="docutils literal notranslate"><span class="pre">config</span></code> files. As such, the <code class="docutils literal notranslate"><span class="pre">config</span></code> file can thus be seen as all the relevant metadata.</p>
+<p><code class="docutils literal notranslate"><span class="pre">metaDMG</span> <span class="pre">config</span></code> should have sensible defaults. The full specification of the avaliable options can be found either by running <code class="docutils literal notranslate"><span class="pre">metaDMG</span> <span class="pre">config</span> <span class="pre">--help</span></code> or for a more thorough explanation, see <a class="reference internal" href="command-line-interface.html#command-line-interface-config"><span class="std std-ref">here</span></a>.</p>
+<p>Since the data we have in this example is quite small, we want to run the full Bayesian analysis. As such, we generate the following <code class="docutils literal notranslate"><span class="pre">config</span></code> file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG config raw_data/alignment.bam <span class="se">\</span>
+    --names raw_data/names-mdmg.dmp <span class="se">\</span>
+    --nodes raw_data/nodes-mdmg.dmp <span class="se">\</span>
+    --acc2tax raw_data/acc2taxid.map.gz <span class="se">\</span>
+    --custom-database <span class="se">\</span>
+    --bayesian
+</pre></div>
+</div>
+<p>Most of the options should be quite self-explanatory. <code class="docutils literal notranslate"><span class="pre">--bayesian</span></code> indicates that we want to run the full Bayesian model, which is slower than the faster, approximate model that we use by default. The <code class="docutils literal notranslate"><span class="pre">--custom-database</span></code> flag is needed since this database is not the full NCBI one.</p>
+<p>After running this command, you should notice a new file in your directory: <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code>. This is a normal <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file which can be opened and edited with your favorite text editor. In case you wanted to call the config file something different, you can add <code class="docutils literal notranslate"><span class="pre">--config-file</span> <span class="pre">config_simple.yaml</span></code>.</p>
+</div>
+<div class="section" id="compute">
+<h3>Compute<a class="headerlink" href="#compute" title="Permalink to this headline">¶</a></h3>
+<p>Now that we have generated a config file with all of the necessary parameters, we can start the actual computation. This is done by running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG compute
+</pre></div>
+</div>
+<p>or, in the case of another name for the config file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG compute config_simple.yaml
+</pre></div>
+</div>
+<p>When you enter the command, <code class="docutils literal notranslate"><span class="pre">metaDMG</span></code> will first parse the config file and extract the relevant parameters for the LCA. The C++ part of the program will perform the LCA of the reads in the alignment file and output its intermediary files in <code class="docutils literal notranslate"><span class="pre">{output-dir}/lca/</span></code> (<code class="docutils literal notranslate"><span class="pre">data/lca</span></code> by default). This step can take a while on real datasets.</p>
+<p>We then load these files and turn them into a mismatch matrix (XXX link here) in a pandas dataframe. Now, having a mismatch matrix for each tax ID, we fit each of these independently. Since we added the <code class="docutils literal notranslate"><span class="pre">--bayesian</span></code> flag previously, we perform the full, Bayesian analysis in addition to the fast, approximate version. For more information, see XXX link here to information. This step can also be quite slow on real datasets, which is also why we do not do this by default.</p>
+<p>Finally, after the fits are done, we merge the fit results with some additional information from the mismatch matrices and save the results to disk in <code class="docutils literal notranslate"><span class="pre">{output-dir}/results/</span></code> (<code class="docutils literal notranslate"><span class="pre">data/results</span></code> by default). For a more concrete overview of all of the variables saved as results, see XXX.</p>
+</div>
+<div class="section" id="visualisation">
+<h3>Visualisation<a class="headerlink" href="#visualisation" title="Permalink to this headline">¶</a></h3>
+<p>Now, after we have computed the results, it’s time to analyse them. Instead of looking at static pdf plots, we include an interactive dashboard with <code class="docutils literal notranslate"><span class="pre">metaDMG</span></code>. This easy to start, you just simply run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG dashboard
+</pre></div>
+</div>
+<p>or, in the case of another name for the config file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG dashboard config_simple.yaml
+</pre></div>
+</div>
+<div class="section" id="overview-plot">
+<h4>Overview plot<a class="headerlink" href="#overview-plot" title="Permalink to this headline">¶</a></h4>
+<p>The command above will open a page in web browser automatically where you will see the following image:</p>
+<div class="figure align-center">
+<a class="bg-primary mb-1 reference internal image-reference" href="_images/tut_simple_overview.png"><img alt="_images/tut_simple_overview.png" class="bg-primary mb-1" src="_images/tut_simple_overview.png" style="width: 600px;" /></a>
+</div>
+<p>In the middle of the page, we see the overview plot. This shows the amount of damage, <span class="math notranslate nohighlight">\(D_\text{max}\)</span>, on the y-axis and the fit quality, <span class="math notranslate nohighlight">\(z\)</span>, on the x-axis. In this case, we see three blue dots; one single dot per tax ID.</p>
+<p>In general, we want a large amount of damage along with a high fit quality to believe that the related data is significantly ancient. In this case, the two points in the upper right seem like good potential candidates.</p>
+</div>
+<div class="section" id="hover-info">
+<h4>Hover info<a class="headerlink" href="#hover-info" title="Permalink to this headline">¶</a></h4>
+<p>To extract more concrete information about the individual tax IDs (points in the plot), we can hover the mouse on top of the point:</p>
+<div class="figure align-center">
+<a class="bg-primary mb-1 reference internal image-reference" href="_images/tut_simple_overview_hover.png"><img alt="_images/tut_simple_overview_hover.png" class="bg-primary mb-1" src="_images/tut_simple_overview_hover.png" style="width: 600px;" /></a>
+</div>
+<p>Here we have hovered the mouse on the tax ID 711 which is the Lactobacillales order. Below the tax information, we can see the fit results, in particular the position-dependent damage-rate, <span class="math notranslate nohighlight">\(q\)</span>, the fit concentration <span class="math notranslate nohighlight">\(\phi\)</span> and the correlation between <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(c\)</span>, <span class="math notranslate nohighlight">\(\rho_{Ac}\)</span>, along with the fit quality and damage amount.</p>
+<p>In this small analyses, we ran the full Bayesian model. In the more general case where this would be too time consuming, we would only have the MAP results. These are show below. In this case, the fit quality is measured by the likelihood ratio <span class="math notranslate nohighlight">\(\lambda_\text{LR}\)</span>. Note the strong correspondence between the Bayesian fit results and the approximate MAP results.</p>
+<p>In the buttom of hover square, we see the count information. This shows, that this tax ID consisted of <span class="math notranslate nohighlight">\(22.5 \times 10^3\)</span> individual reads with the same number of alignments (indicating very little amount of overlap between the references in this case). The <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">sum</span> <span class="pre">total</span></code> is the total number of <span class="math notranslate nohighlight">\(C \rightarrow T\)</span> transistions across all reads at all positions (and <span class="math notranslate nohighlight">\(G \rightarrow A\)</span> for the reverse strand). <code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">sum</span> <span class="pre">total</span></code> is the total number of <span class="math notranslate nohighlight">\(C\)</span> to anything, <span class="math notranslate nohighlight">\(C \rightarrow X\)</span>, across all reads at all positions (and <span class="math notranslate nohighlight">\(G \rightarrow X\)</span> for the reverse strand).</p>
+</div>
+<div class="section" id="raw-data-plot">
+<h4>Raw data plot<a class="headerlink" href="#raw-data-plot" title="Permalink to this headline">¶</a></h4>
+<p>So now we have managed to extract the fit results of the specific tax ID. However, we might still be a bit sceptical about these estimates that a stranger on the internet claims to be important. To refute the scepticism, the raw data that the fit was based on can be shown by clicking on the point (instead of only hovering on it).</p>
+<div class="figure align-center">
+<a class="bg-primary mb-1 reference internal image-reference" href="_images/tut_simple_overview_raw_data_plot.png"><img alt="_images/tut_simple_overview_raw_data_plot.png" class="bg-primary mb-1" src="_images/tut_simple_overview_raw_data_plot.png" style="width: 600px;" /></a>
+</div>
+<p>In this plot, the position dependent frequency of the <span class="math notranslate nohighlight">\(C \rightarrow T\)</span> transitions are shown in blue dots and the <span class="math notranslate nohighlight">\(G \rightarrow A\)</span> transitions in red. The green curve is the fit and the dashed area shows the <span class="math notranslate nohighlight">\(1\sigma\)</span> (68%) confidence interval of the fit.</p>
+<p>We see that damage frequency starts at around 0.085 and then drops to about 0.025. This is an elevated amount of damage of about 0.06 in the beginning of the read compared to the asymptotic value, which is exactly what <span class="math notranslate nohighlight">\(D_\text{max}\)</span> explains. Similarly see a quite clear trend in the data; the visual appearence of the data matches the quantitative fit results.</p>
+<p>We can compare this to the data in the bottom left of the overview plot.</p>
+<div class="figure align-center">
+<a class="bg-primary mb-1 reference internal image-reference" href="_images/tut_simple_overview_raw_data_plot_little_damage.png"><img alt="_images/tut_simple_overview_raw_data_plot_little_damage.png" class="bg-primary mb-1" src="_images/tut_simple_overview_raw_data_plot_little_damage.png" style="width: 600px;" /></a>
+</div>
+<p>Here we see that there does seem to be some damage in this tax ID, although the data is a lot more noisy and scattered around. This is also why the fit quality, <span class="math notranslate nohighlight">\(z\)</span>, is a lot smaller than it is for the previous tax ID.</p>
+</div>
+<div class="section" id="export-csv">
+<h4>Export CSV<a class="headerlink" href="#export-csv" title="Permalink to this headline">¶</a></h4>
+<p>If we wanted to export the results to a CSV file for further analysis, we can press the <code class="docutils literal notranslate"><span class="pre">Export</span> <span class="pre">CSV</span></code> button in the top right.</p>
+<p>This is also possible through the command line without opening the dashboard:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG convert --output results_as_csv.csv
+</pre></div>
+</div>
+<p>or, in the case of another name for the config file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG convert config_simple --output results_as_csv.csv
+</pre></div>
+</div>
+</div>
+<div class="section" id="export-pdfs">
+<h4>Export PDFs<a class="headerlink" href="#export-pdfs" title="Permalink to this headline">¶</a></h4>
+<p>If we wanted to export the plots to a PDF file, we can press the <code class="docutils literal notranslate"><span class="pre">Export</span> <span class="pre">PDF</span></code> button in the top right. This will generate a single PDF file which contains both the overview plot and the individual raw data plots.</p>
+<p>This is also possible through the command line without opening the dashboard:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG plot --output plots.pdf
+</pre></div>
+</div>
+<p>or, in the case of another name for the config file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG plot config_simple --output plots.pdf
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="kap-copenhagen">
+<span id="kapk"></span><h2>Kap Copenhagen<a class="headerlink" href="#kap-copenhagen" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">metaDMG</span></code> is also used in more advanced cases using real data, compared to the small, simulated example above. It is e.g. used in the Kap Copenhagen analysis, Kap K in short.</p>
+<p>This analysis is based on dozens of samples from Northern Greenland, each more than 2 million years old. As such, they are expected to have a high degree of damage.</p>
+<p>The overall workflow is the same as previously; generate a config file, compute it, and visualize the results.</p>
+<div class="section" id="id1">
+<h3>Config<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>In this case we have all of the alignments file in a single folder on the server. Therefore, we take advantage of the fact that <code class="docutils literal notranslate"><span class="pre">metadDMG</span> <span class="pre">config</span></code> allows for not only running on single samples, but also multiple samples (or a directory of samples):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG config raw_data/*.bam <span class="se">\</span>
+    --names raw_data/names.dmp.gz <span class="se">\</span>
+    --nodes raw_data/nodes.dmp.gz <span class="se">\</span>
+    --acc2tax raw_data/ combined_taxid_accssionNO_20200726.gz <span class="se">\</span>
+    --parallel-samples <span class="m">3</span> <span class="se">\</span>
+    --cores-per-sample <span class="m">2</span> <span class="se">\</span>
+    --config-file config_KapK.yaml
+</pre></div>
+</div>
+<p>Here we name the output config file <code class="docutils literal notranslate"><span class="pre">config_KapK.yaml</span></code> to be able to differentiate it from the previous one. On purpose, we do not run the full Bayesian model since the each sample file contains reads mapping to too many different tax IDs for it to be computationally feasible; as such, we use the fast, approximative model.</p>
+<p>To further speed the process up, we run 3 samples in parallel and allow each of the samples to use 2 cores, i.e. using a total of up to <span class="math notranslate nohighlight">\(3 \times 2 = 6\)</span> cores. The <code class="docutils literal notranslate"><span class="pre">--cores-per-sample</span></code> does only affect the fitting part of the pipeline, not the LCA. In some cases it is the LCA that is the time consuming part and in others it is the fits, so change <code class="docutils literal notranslate"><span class="pre">--parallel-samples</span></code> and <code class="docutils literal notranslate"><span class="pre">--cores-per-sample</span></code> to fit your needs. For a visual explanation of this, the workflow diagram below might be helpful:</p>
+<div class="mermaid">
+            flowchart LR
+
+    start(metaDMG)
+
+    start --&gt; A
+    start --&gt; B
+    start --&gt; C
+
+    subgraph subgraph_A [Sample A]
+    A(LCA) --&gt; A1(Fit) &amp; A2(Fit) --&gt; A3(Merge)
+    end
+
+    subgraph subgraph_B [Sample B]
+    B(LCA) --&gt; B1(Fit) &amp; B2(Fit) --&gt; B3(Merge)
+    end
+
+    subgraph subgraph_C [Sample C]
+    C(LCA) --&gt; C1(Fit) &amp; C2(Fit) --&gt; C3(Merge)
+    end
+
+    A3 &amp; B3 &amp; C3 --&gt; D(Results)
+
+        </div></div>
+<div class="section" id="id2">
+<h3>Compute<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Now for the easy, but time consuming, part of the pipeline: the actual computation. This is simply by running the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG compute config_KapK.yaml
+</pre></div>
+</div>
+<p>We try to only print the most important information to the screen, but more information can be found in the log file at <code class="docutils literal notranslate"><span class="pre">logs/</span></code>.</p>
+</div>
+<div class="section" id="dashboard">
+<h3>Dashboard<a class="headerlink" href="#dashboard" title="Permalink to this headline">¶</a></h3>
+<p>After the computations are finished, we want to see the results. We can either copy the entire <code class="docutils literal notranslate"><span class="pre">data/results/</span></code> directory from the server to our local computer, or we can run the actual dashboard on the server and then connect to it via SSH, thus circumventing the need for any local installation of <code class="docutils literal notranslate"><span class="pre">metaDMG</span></code> at all.</p>
+<p>We start the dashboard:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG dashboard config_KapK.yaml --server
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">--server</span></code> option tells the dashboard that it should open in the background. In case you run into the following error: <code class="docutils literal notranslate"><span class="pre">OSError:</span> <span class="pre">[Errno</span> <span class="pre">98]</span> <span class="pre">Address</span> <span class="pre">already</span> <span class="pre">in</span> <span class="pre">use</span></code>, it can help by changing the port by adding <code class="docutils literal notranslate"><span class="pre">--port</span> <span class="pre">8060</span></code>.</p>
+<p>We can now connect to it through an SSH connection. This depends on your server setup, but in our case we connect to our server through a jumphost:</p>
+<div class="mermaid">
+            flowchart LR
+
+    start(LOCAL) --&gt;|USER1| jump(JUMPHOST) --&gt;|USER2| server(SERVER)
+
+        </div><p>With this setup, we can connect in the following way (on our own, local machine!):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ssh -N -J USER1@JUMPHOST USER2@SERVER -L <span class="m">8050</span>:127.0.0.1:8050
+</pre></div>
+</div>
+<p>where you change the <code class="docutils literal notranslate"><span class="pre">USER1</span></code>, <code class="docutils literal notranslate"><span class="pre">JUMPHOST</span></code>, <code class="docutils literal notranslate"><span class="pre">USER2</span></code>, and <code class="docutils literal notranslate"><span class="pre">SERVER</span></code> according to your own setup. Note that if you changed the port on the server, you also have to change it here.</p>
+<p>We can now open a browser on our own, local computer and go to the following address: <a class="reference external" href="http://0.0.0.0:8050/"><code class="docutils literal notranslate"><span class="pre">http://0.0.0.0:8050/</span></code></a> where the dashboard will be running live.</p>
+</div>
+</div>
+</div>
+
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="getting-started.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Getting started</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="command-line-interface.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Command Line Interface</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Christian Michelsen<br/>
+    
+        &copy; Copyright 2022, Christian Michelsen.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
