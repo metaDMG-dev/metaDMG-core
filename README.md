@@ -1,5 +1,13 @@
-# `metaDMG`
-## A fast and accurate ancient DNA damage toolkit for metagenomic data
+![Logo](docs/source/images/logo.png | width=400)
+<!--
+```{image} docs/source/images/logo.png
+:alt: logo
+:class: bg-primary
+:width: 500px
+:align: center
+``` -->
+
+# A fast and accurate ancient DNA damage toolkit for metagenomic data
 
 [![Documentation](https://img.shields.io/badge/documentation-latest-blue.svg)](https://metadmg-dev.github.io/metaDMG-core/)
 [![Documentation](https://img.shields.io/badge/dashboard-live-blue.svg)](https://metadmg.herokuapp.com/)
