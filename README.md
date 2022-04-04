@@ -1,4 +1,4 @@
-![Logo](docs/source/images/logo.png | width=400)
+![Logo](docs/source/images/logo.png)
 <!--
 ```{image} docs/source/images/logo.png
 :alt: logo
