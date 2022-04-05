@@ -22,7 +22,7 @@ jobs:
     - name: Set up python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.9
+        python-version: 3.10
 
     - name: Check out repository
       uses: actions/checkout@master
@@ -45,7 +45,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: .venv
-        key: venv-docs-1-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+        key: venv-docs-2-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
 
     # install dependencies if cache does not exist
     - name: Install dependencies if no cache
