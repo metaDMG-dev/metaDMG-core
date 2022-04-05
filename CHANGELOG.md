@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.24.1 (2022-04-05)
+### Fix
+* Include static folder in docs ([`dcbcfd9`](https://github.com/metaDMG-dev/metaDMG-core/commit/dcbcfd93357b240222e205f050877bddad1930ad))
+
+### Documentation
+* Include PMD in docs ([`5e3e37d`](https://github.com/metaDMG-dev/metaDMG-core/commit/5e3e37d95c1607b20df18377adad0f6a394b30c1))
+
 ## v0.24.0 (2022-04-05)
 ### Feature
 * Add PMD command and include Configs in core ([`11eab19`](https://github.com/metaDMG-dev/metaDMG-core/commit/11eab1967f6ed957e87ea135285501c6061fa640))
