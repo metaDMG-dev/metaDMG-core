@@ -42,7 +42,7 @@ Here we have hovered the mouse on the tax ID 711 which is the Lactobacillales or
 
 In smaller analyses, the full Bayesian model can be used (which is recommended). In the more general case where this would be too time consuming, we would only have the MAP results. In this case, the fit quality is measured by the likelihood ratio $\lambda_\text{LR}$.
 
-In the buttom of the hover square, we see the count information. This shows, that this tax ID consisted of $22.5 \times 10^3$ individual reads with the same number of alignments (indicating very little amount of overlap between the references in this case). The `k sum total` is the total number of $C \rightarrow T$ transistions across all reads at all positions (and $G \rightarrow A$ for the reverse strand). `N sum total` is the total number of $C$ to anything, $C \rightarrow X$, across all reads at all positions (and $G \rightarrow X$ for the reverse strand).
+In the bottom of the hover square, we see the count information. This shows, that this tax ID consisted of $22.5 \times 10^3$ individual reads with the same number of alignments (indicating very little amount of overlap between the references in this case). The `k sum total` is the total number of $C \rightarrow T$ transitions across all reads at all positions (and $G \rightarrow A$ for the reverse strand). `N sum total` is the total number of $C$ to anything, $C \rightarrow X$, across all reads at all positions (and $G \rightarrow X$ for the reverse strand).
 
 ## Raw data plot
 
@@ -57,16 +57,16 @@ In this plot, the position dependent frequency of the $C \rightarrow T$ transiti
 
 ### Fit results
 
-If we click on the `Fit results` button, we get the same information as in the hover square along with some extra information. If one has run the full Bayesian model, this is where we can see both the Bayesian results and the MAP results. In the botton, the full taxanomic path is shown.
+If we click on the `Fit results` button, we get the same information as in the hover square along with some extra information. If one has run the full Bayesian model, this is where we can see both the Bayesian results and the MAP results. In the botton, the full taxonomic path is shown.
 
 ### Forward / Reverse
 
-The `Forward / Reverse` button shows the individual fits to the forward and reverse strand (a MAP fit). The assymmetry variable in the fit result is based on this.
+The `Forward / Reverse` button shows the individual fits to the forward and reverse strand (a MAP fit). The asymmetry variable in the fit result is based on this.
 
 
 ## Filters
 
-If we hide the `Raw Data` pane by clickin on it and instead show the  `Filters` pane by clicking on it, we see the following:
+If we hide the `Raw Data` pane by clicking on it and instead show the  `Filters` pane by clicking on it, we see the following:
 
 ```{figure} images/dashboard_filters.png
 :class: bg-primary mb-1
@@ -86,7 +86,7 @@ The `Taxa` button allow one to select which samples the dashboard includes in th
 
 The `Specific taxas` dropdown menu allow one to focus on specific taxas or tax IDs. This could e.g. be `Lactobacillales` or `711`.
 
-The `Taxanomic path contains` is a more general filter, that allows one to select e.g. all taxa that are within the bacteria superkingdom by writing `Bacteria` or within the fusobacteria class by writing `Fusobacteriia`.
+The `Taxonomic path contains` is a more general filter, that allows one to select e.g. all taxa that are within the bacteria superkingdom by writing `Bacteria` or within the fusobacteria class by writing `Fusobacteriia`.
 
 
 ### Fits
@@ -95,6 +95,19 @@ The `Fits` button allow one to apply specific selection criteria based on the fi
 
 An example could be if one only wants to inspect fits with a very large number of reads in them. The you would slide the left part of the `N_reads` slider to `1k` which would correspond to setting the minimum number of reads to 1000.
 
+
+## Styling
+
+If we hide the `Filters` pane by clicking on it and instead show the `Styling` pane by clicking on it, we see the following:
+
+```{figure} images/dashboard_styling.png
+:class: bg-primary mb-1
+:width: 600px
+:align: center
+```
+
+This allows to go deeper into the fit results and explore more advanced relationships between the variables. If one e.g. changes the x-axis to show `D_max`, it is possible to visually compare the two estimates of $D_\text{max}$; the MAP one and the Bayesian one.
+All of the points in the dashboard are sized according to the number of reads. This can be changed in the `Variable` dropdown. By default, they are sized according to the square root of this variable; this can also be changed in the `Function` dropdown. Finally, a relative scaling is also positive in the `Scale` slider.
 
 ## Export CSV
 

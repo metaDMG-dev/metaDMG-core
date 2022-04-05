@@ -276,7 +276,7 @@ def get_sidebar_left(viz_results, start_configuration):
                 width=12,
             ),
             dbc.Col(html.Br(), width=12),
-            dbc.Col(html.H6("Taxanomic path contains:"), width=12),
+            dbc.Col(html.H6("Taxonomic path contains:"), width=12),
             dbc.Col(
                 dbc.Form(
                     dbc.Input(

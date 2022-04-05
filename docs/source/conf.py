@@ -44,7 +44,7 @@ extensions = [
     "sphinx_autodoc_typehints",
     "sphinx_copybutton",
     "myst_parser",  # to read markdown files
-    "sphinxcontrib.mermaid",
+    "sphinxcontrib.mermaid",  # for diagrams
     "autodocsumm",
 ]
 
