@@ -2,6 +2,21 @@
 
 <!--next-version-placeholder-->
 
+## v0.24.0 (2022-04-05)
+### Feature
+* Add PMD command and include Configs in core ([`11eab19`](https://github.com/metaDMG-dev/metaDMG-core/commit/11eab1967f6ed957e87ea135285501c6061fa640))
+
+### Fix
+* Continue to use Union in Python 3.9 ([`2a04213`](https://github.com/metaDMG-dev/metaDMG-core/commit/2a04213176b2d93fdbb13da24ab7def6af16e7e3))
+* Update lock file ([`ecec382`](https://github.com/metaDMG-dev/metaDMG-core/commit/ecec38206036247cb15ed5cda4a150aac1ccf652))
+
+### Documentation
+* Add dashboard styling to docs ([`bf6583d`](https://github.com/metaDMG-dev/metaDMG-core/commit/bf6583df7190aa1eed97903c8a2f280ceba1d7e6))
+* Update dashboard section ([`38a7689`](https://github.com/metaDMG-dev/metaDMG-core/commit/38a76896b4843c30c73ab5e4a61a4193165df950))
+* Update SSH flowchart ([`edc420a`](https://github.com/metaDMG-dev/metaDMG-core/commit/edc420a3072754c2d04de771732e646c8aa7c3cd))
+* Add logo to readme at github ([`ec7a3b3`](https://github.com/metaDMG-dev/metaDMG-core/commit/ec7a3b320d2502a920827be1bc2e8e32dda15be8))
+* Add logo ([`2a45e57`](https://github.com/metaDMG-dev/metaDMG-core/commit/2a45e57cc6b9590646880a3e8f34cb9ba3aaa557))
+
 ## v0.23.3 (2022-03-29)
 ### Fix
 * Force new release ([`74365d8`](https://github.com/metaDMG-dev/metaDMG-core/commit/74365d878d3760061c389d2a0c64dcb9f32de40f))
