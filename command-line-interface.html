@@ -366,17 +366,29 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pmd">
+   PMD
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id14">
+     Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#mismatch-to-mapdamage">
    mismatch-to-mapDamage
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id14">
+    <a class="reference internal nav-link" href="#id15">
      Parameters
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id15">
+    <a class="reference internal nav-link" href="#id16">
      Examples
     </a>
    </li>
@@ -539,17 +551,29 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pmd">
+   PMD
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id14">
+     Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#mismatch-to-mapdamage">
    mismatch-to-mapDamage
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id14">
+    <a class="reference internal nav-link" href="#id15">
      Parameters
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id15">
+    <a class="reference internal nav-link" href="#id16">
      Examples
     </a>
    </li>
@@ -575,6 +599,7 @@
 <li><p><a class="reference internal" href="#command-line-interface-convert"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">convert</span></code></span></a></p></li>
 <li><p><a class="reference internal" href="#command-line-interface-filter"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">filter</span></code></span></a></p></li>
 <li><p><a class="reference internal" href="#command-line-interface-plot"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">plot</span></code></span></a></p></li>
+<li><p><a class="reference internal" href="#command-line-interface-pmd"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">PMD</span></code></span></a></p></li>
 </ul>
 <hr class="docutils" />
 <div class="section" id="config">
@@ -823,8 +848,8 @@ both cannot be set at the same time.</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">--results</span></code>: Direct path to the results directory.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--query</span></code>: The query string to use for filtering. Follows the <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method">Pandas Query()</a> syntax. Default is <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> which applies no filtering.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--samples</span></code>: A comma-space seperated string containing the samples to use in the plots. Default is <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> which applies no filtering.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--tax-ids</span></code>: A comma-space seperated string containing the tax-ids to use in the plots. Default is <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> which applies no filtering.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--samples</span></code>: A comma-space separated string containing the samples to use in the plots. Default is <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> which applies no filtering.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--tax-ids</span></code>: A comma-space separated string containing the tax-ids to use in the plots. Default is <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> which applies no filtering.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--output</span></code>: The path to the output pdf-file. Defaults to <code class="docutils literal notranslate"><span class="pre">pdf_export.pdf</span></code>.</p></li>
 </ul>
 </li>
@@ -838,6 +863,18 @@ both cannot be set at the same time.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG plot --query <span class="s2">&quot;100_000 &lt;= N_reads &amp; 8_000 &lt;= phi&quot;</span> --tax-ids <span class="s2">&quot;1, 2, 42&quot;</span> --samples <span class="s2">&quot;sampleA, another-sample&quot;</span> --pdf-out name-of-plots.pdf
 </pre></div>
 </div>
+<hr class="docutils" />
+</div>
+</div>
+<div class="section" id="pmd">
+<span id="command-line-interface-pmd"></span><h2>PMD<a class="headerlink" href="#pmd" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">metaDMG</span> <span class="pre">PMD</span></code> command takes config-file as argument and computes the PMD scores for each read in the samples.
+The results are located as gzipped files in <code class="docutils literal notranslate"><span class="pre">data/pmd/SAMPLE.pmd.txt.gz</span></code>.</p>
+<div class="section" id="id14">
+<h3>Examples<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG PMD config.yaml
+</pre></div>
+</div>
 </div>
 </div>
 <hr class="docutils" />
@@ -845,8 +882,8 @@ both cannot be set at the same time.</p>
 <h2>mismatch-to-mapDamage<a class="headerlink" href="#mismatch-to-mapdamage" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">metaDMG</span> <span class="pre">mismatch-to-mapDamage</span></code> command takes a mandatory mismatch-file as argument
 and converts it to the mapDamage format <code class="docutils literal notranslate"><span class="pre">misincorporation.txt</span></code>.</p>
-<div class="section" id="id14">
-<h3>Parameters<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id15">
+<h3>Parameters<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Options:</p>
 <ul>
@@ -855,8 +892,8 @@ and converts it to the mapDamage format <code class="docutils literal notranslat
 </li>
 </ul>
 </div>
-<div class="section" id="id15">
-<h3>Examples<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id16">
+<h3>Examples<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG mismatch-to-mapDamage data/mismatches/XXX.mismatches.parquet
 </pre></div>
 </div>

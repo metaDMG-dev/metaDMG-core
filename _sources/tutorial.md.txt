@@ -195,6 +195,7 @@ $ metaDMG compute config_KapK.yaml
 
 We try to only print the most important information to the screen, but more information can be found in the log file at `logs/`.
 
+(KapK_dashboard)=
 ### Dashboard
 
 After the computations are finished, we want to see the results. We can either copy the entire `data/results/` directory from the server to our local computer, or we can run the actual dashboard on the server and then connect to it via SSH, thus circumventing the need for any local installation of `metaDMG` at all.

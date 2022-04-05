@@ -246,8 +246,23 @@
 <h1>Utils<a class="headerlink" href="#utils" title="Permalink to this headline">¶</a></h1>
 <p>General functions.</p>
 <hr class="docutils" />
-<span class="target" id="module-metaDMG.utils"></span><p><strong>Functions:</strong></p>
-<table class="longtable table autosummary">
+<span class="target" id="module-metaDMG.utils"></span><p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metaDMG.utils.Config" title="metaDMG.utils.Config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config</span></code></a></p></td>
+<td><p>Config contains the parameters related to specific alignment file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metaDMG.utils.Configs" title="metaDMG.utils.Configs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Configs</span></code></a></p></td>
+<td><p>Configs contains the parameters related to config file.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Functions:</strong></p>
+<table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -265,11 +280,17 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#metaDMG.utils.get_results_dir" title="metaDMG.utils.get_results_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_results_dir</span></code></a>([config_file, results_dir])</p></td>
 <td><p>Helper function that gets the results directory from either the config file or the results directory directly.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metaDMG.utils.paths_to_strings" title="metaDMG.utils.paths_to_strings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">paths_to_strings</span></code></a>(d[, ignore_keys])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metaDMG.utils.make_configs" title="metaDMG.utils.make_configs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_configs</span></code></a>(config_file[, log_port, ...])</p></td>
+<td><p>Create an instance of Configs from a config file</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metaDMG.utils.paths_to_strings" title="metaDMG.utils.paths_to_strings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">paths_to_strings</span></code></a>(d[, ignore_keys])</p></td>
 <td><p>Convert all the paths in a dictionary to strings</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metaDMG.utils.remove_directory" title="metaDMG.utils.remove_directory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_directory</span></code></a>(path[, missing_ok])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metaDMG.utils.remove_directory" title="metaDMG.utils.remove_directory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_directory</span></code></a>(path[, missing_ok])</p></td>
 <td><p>Remove everything in a directory</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metaDMG.utils.run_PMD" title="metaDMG.utils.run_PMD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_PMD</span></code></a>(alignment_file, txt_out)</p></td>
+<td><p>Run the PMD command from metaDMG-cpp and output the result to the gzipped txt_out</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metaDMG.utils.save_config_file" title="metaDMG.utils.save_config_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_config_file</span></code></a>(config, config_file[, ...])</p></td>
 <td><p>Save the config file.</p></td>
@@ -279,6 +300,79 @@
 </tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="metaDMG.utils.Config">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metaDMG.utils.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><a class="reference internal" href="_modules/metaDMG/utils.html#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metaDMG.utils.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Config contains the parameters related to specific alignment file.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="metaDMG.utils.Configs">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metaDMG.utils.</span></span><span class="sig-name descname"><span class="pre">Configs</span></span><a class="reference internal" href="_modules/metaDMG/utils.html#Configs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metaDMG.utils.Configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configs contains the parameters related to config file.
+Inherits from dict. Implements iterations.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metaDMG.utils.Configs.check_number_of_jobs" title="metaDMG.utils.Configs.check_number_of_jobs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_number_of_jobs</span></code></a>()</p></td>
+<td><p>Compare the number of configs to the number of parallel_samples used.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metaDMG.utils.Configs.get_first" title="metaDMG.utils.Configs.get_first"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_first</span></code></a>()</p></td>
+<td><p>Get the first config</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metaDMG.utils.Configs.get_nth" title="metaDMG.utils.Configs.get_nth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_nth</span></code></a>(n)</p></td>
+<td><p>Gets the n'th config</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="metaDMG.utils.Configs.check_number_of_jobs">
+<span class="sig-name descname"><span class="pre">check_number_of_jobs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/metaDMG/utils.html#Configs.check_number_of_jobs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metaDMG.utils.Configs.check_number_of_jobs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare the number of configs to the number of parallel_samples used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metaDMG.utils.Configs.get_first">
+<span class="sig-name descname"><span class="pre">get_first</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/metaDMG/utils.html#Configs.get_first"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metaDMG.utils.Configs.get_first" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the first config</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A single configuration</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#metaDMG.utils.Config" title="metaDMG.utils.Config">Config</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metaDMG.utils.Configs.get_nth">
+<span class="sig-name descname"><span class="pre">get_nth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/metaDMG/utils.html#Configs.get_nth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metaDMG.utils.Configs.get_nth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the n’th config</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – The index</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A single configuration</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#metaDMG.utils.Config" title="metaDMG.utils.Config">Config</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="metaDMG.utils.extract_alignment_files">
 <span class="sig-prename descclassname"><span class="pre">metaDMG.utils.</span></span><span class="sig-name descname"><span class="pre">extract_alignment_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">paths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/metaDMG/utils.html#extract_alignment_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metaDMG.utils.extract_alignment_files" title="Permalink to this definition">¶</a></dt>
@@ -356,6 +450,28 @@ config file or the results directory directly.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="metaDMG.utils.make_configs">
+<span class="sig-prename descclassname"><span class="pre">metaDMG.utils.</span></span><span class="sig-name descname"><span class="pre">make_configs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/metaDMG/utils.html#make_configs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metaDMG.utils.make_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an instance of Configs from a config file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_file</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>]) – The config file to load</p></li>
+<li><p><strong>log_port</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – Optional log port, by default None</p></li>
+<li><p><strong>log_path</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Optional log path, by default None</p></li>
+<li><p><strong>force</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether or not the computations are force, by default False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>An instance of Configs</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>typer.Abort</strong> – If not a proper config file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="metaDMG.utils.paths_to_strings">
 <span class="sig-prename descclassname"><span class="pre">metaDMG.utils.</span></span><span class="sig-name descname"><span class="pre">paths_to_strings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/metaDMG/utils.html#paths_to_strings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metaDMG.utils.paths_to_strings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert all the paths in a dictionary to strings</p>
@@ -382,6 +498,20 @@ config file or the results directory directly.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="metaDMG.utils.run_PMD">
+<span class="sig-prename descclassname"><span class="pre">metaDMG.utils.</span></span><span class="sig-name descname"><span class="pre">run_PMD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alignment_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">txt_out</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/metaDMG/utils.html#run_PMD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metaDMG.utils.run_PMD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the PMD command from metaDMG-cpp and output the result to the gzipped txt_out</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alignment_file</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>) – Alignment file to compute the PMD scores on</p></li>
+<li><p><strong>txt_out</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>) – The (gzipped) output txt file</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

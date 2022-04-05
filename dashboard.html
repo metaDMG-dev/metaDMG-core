@@ -35,6 +35,8 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
     <script>mermaid.initialize({startOnLoad:true});</script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -224,6 +226,78 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview-plot">
+   Overview plot
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#hover-info">
+   Hover info
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#raw-data-plot">
+   Raw data plot
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fit-results">
+     Fit results
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#forward-reverse">
+     Forward / Reverse
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#filters">
+   Filters
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#samples">
+     Samples
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#taxa">
+     Taxa
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fits">
+     Fits
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#styling">
+   Styling
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#export-csv">
+   Export CSV
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#export-pdfs">
+   Export PDFs
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -236,6 +310,78 @@
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview-plot">
+   Overview plot
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#hover-info">
+   Hover info
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#raw-data-plot">
+   Raw data plot
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fit-results">
+     Fit results
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#forward-reverse">
+     Forward / Reverse
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#filters">
+   Filters
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#samples">
+     Samples
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#taxa">
+     Taxa
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fits">
+     Fits
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#styling">
+   Styling
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#export-csv">
+   Export CSV
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#export-pdfs">
+   Export PDFs
+  </a>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -244,6 +390,107 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="dashboard">
 <h1>Dashboard<a class="headerlink" href="#dashboard" title="Permalink to this headline">¶</a></h1>
+<p>The dashboard provides an interactive visualisation of the results from <code class="docutils literal notranslate"><span class="pre">metaDMG</span></code>. You can use it locally by running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG dashboard
+</pre></div>
+</div>
+<p>or, in the case of another name for the config file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG dashboard config_simple.yaml
+</pre></div>
+</div>
+<p>For a short introduction on how to run it on a server and use a local browser, see the tutorial on the <a class="reference internal" href="tutorial.html#kapk-dashboard"><span class="std std-ref">Kap K dashboard</span></a>.</p>
+<p>In case you just want a small preview of the dashboard, you can also use the following online <a class="reference external" href="https://metadmg.herokuapp.com">test site</a>.</p>
+<div class="section" id="overview-plot">
+<h2>Overview plot<a class="headerlink" href="#overview-plot" title="Permalink to this headline">¶</a></h2>
+<p>When you open the dashboard, you will see the following:</p>
+<div class="figure align-center">
+<a class="bg-primary mb-1 reference internal image-reference" href="_images/tut_simple_overview.png"><img alt="_images/tut_simple_overview.png" class="bg-primary mb-1" src="_images/tut_simple_overview.png" style="width: 600px;" /></a>
+</div>
+<p>In the middle of the page, we see the overview plot. This shows the amount of damage, <span class="math notranslate nohighlight">\(D_\text{max}\)</span>, on the y-axis and the fit quality, <span class="math notranslate nohighlight">\(z\)</span>, on the x-axis. In this case, we see three blue dots; one single dot per tax ID.</p>
+<p>In general, we want a large amount of damage along with a high fit quality to believe that the related data is significantly ancient. In this case, the two points in the upper right seem like good potential candidates.</p>
+</div>
+<div class="section" id="hover-info">
+<h2>Hover info<a class="headerlink" href="#hover-info" title="Permalink to this headline">¶</a></h2>
+<p>To extract more concrete information about the individual tax IDs (points in the plot), we can hover the mouse on top of the point:</p>
+<div class="figure align-center">
+<a class="bg-primary mb-1 reference internal image-reference" href="_images/tut_simple_overview_hover.png"><img alt="_images/tut_simple_overview_hover.png" class="bg-primary mb-1" src="_images/tut_simple_overview_hover.png" style="width: 600px;" /></a>
+</div>
+<p>Here we have hovered the mouse on the tax ID 711 which is the Lactobacillales order. Below the tax information, we can see the fit results, in particular the position-dependent damage-rate, <span class="math notranslate nohighlight">\(q\)</span>, the fit concentration <span class="math notranslate nohighlight">\(\phi\)</span> and the correlation between <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(c\)</span>, <span class="math notranslate nohighlight">\(\rho_{Ac}\)</span>, along with the fit quality and damage amount.</p>
+<p>In smaller analyses, the full Bayesian model can be used (which is recommended). In the more general case where this would be too time consuming, we would only have the MAP results. In this case, the fit quality is measured by the likelihood ratio <span class="math notranslate nohighlight">\(\lambda_\text{LR}\)</span>.</p>
+<p>In the bottom of the hover square, we see the count information. This shows, that this tax ID consisted of <span class="math notranslate nohighlight">\(22.5 \times 10^3\)</span> individual reads with the same number of alignments (indicating very little amount of overlap between the references in this case). The <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">sum</span> <span class="pre">total</span></code> is the total number of <span class="math notranslate nohighlight">\(C \rightarrow T\)</span> transitions across all reads at all positions (and <span class="math notranslate nohighlight">\(G \rightarrow A\)</span> for the reverse strand). <code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">sum</span> <span class="pre">total</span></code> is the total number of <span class="math notranslate nohighlight">\(C\)</span> to anything, <span class="math notranslate nohighlight">\(C \rightarrow X\)</span>, across all reads at all positions (and <span class="math notranslate nohighlight">\(G \rightarrow X\)</span> for the reverse strand).</p>
+</div>
+<div class="section" id="raw-data-plot">
+<h2>Raw data plot<a class="headerlink" href="#raw-data-plot" title="Permalink to this headline">¶</a></h2>
+<p>The hover square shows the overall information. However, we might want to see even more information. The raw data that the fit was based on can be shown by clicking on the point (instead of only hovering on it).</p>
+<div class="figure align-center">
+<a class="bg-primary mb-1 reference internal image-reference" href="_images/tut_simple_overview_raw_data_plot.png"><img alt="_images/tut_simple_overview_raw_data_plot.png" class="bg-primary mb-1" src="_images/tut_simple_overview_raw_data_plot.png" style="width: 600px;" /></a>
+</div>
+<p>In this plot, the position dependent frequency of the <span class="math notranslate nohighlight">\(C \rightarrow T\)</span> transitions are shown in blue dots and the <span class="math notranslate nohighlight">\(G \rightarrow A\)</span> transitions in red. The green curve is the fit and the dashed area shows the <span class="math notranslate nohighlight">\(1\sigma\)</span> (68%) confidence interval of the fit.</p>
+<div class="section" id="fit-results">
+<h3>Fit results<a class="headerlink" href="#fit-results" title="Permalink to this headline">¶</a></h3>
+<p>If we click on the <code class="docutils literal notranslate"><span class="pre">Fit</span> <span class="pre">results</span></code> button, we get the same information as in the hover square along with some extra information. If one has run the full Bayesian model, this is where we can see both the Bayesian results and the MAP results. In the botton, the full taxonomic path is shown.</p>
+</div>
+<div class="section" id="forward-reverse">
+<h3>Forward / Reverse<a class="headerlink" href="#forward-reverse" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Forward</span> <span class="pre">/</span> <span class="pre">Reverse</span></code> button shows the individual fits to the forward and reverse strand (a MAP fit). The asymmetry variable in the fit result is based on this.</p>
+</div>
+</div>
+<div class="section" id="filters">
+<h2>Filters<a class="headerlink" href="#filters" title="Permalink to this headline">¶</a></h2>
+<p>If we hide the <code class="docutils literal notranslate"><span class="pre">Raw</span> <span class="pre">Data</span></code> pane by clicking on it and instead show the  <code class="docutils literal notranslate"><span class="pre">Filters</span></code> pane by clicking on it, we see the following:</p>
+<div class="figure align-center">
+<a class="bg-primary mb-1 reference internal image-reference" href="_images/dashboard_filters.png"><img alt="_images/dashboard_filters.png" class="bg-primary mb-1" src="_images/dashboard_filters.png" style="width: 600px;" /></a>
+</div>
+<p>This is where we can apply different selection criteria and filters to the <code class="docutils literal notranslate"><span class="pre">metaDMG</span></code> results.</p>
+<div class="section" id="samples">
+<h3>Samples<a class="headerlink" href="#samples" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Samples</span></code> button allow one to select which samples the dashboard includes in the plots. In this way, one can choose to focus on specific samples. Notice the <code class="docutils literal notranslate"><span class="pre">Select</span> <span class="pre">All</span></code> option in the dropdown menu.</p>
+</div>
+<div class="section" id="taxa">
+<h3>Taxa<a class="headerlink" href="#taxa" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Taxa</span></code> button allow one to select which samples the dashboard includes in the plots.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Specific</span> <span class="pre">taxas</span></code> dropdown menu allow one to focus on specific taxas or tax IDs. This could e.g. be <code class="docutils literal notranslate"><span class="pre">Lactobacillales</span></code> or <code class="docutils literal notranslate"><span class="pre">711</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Taxonomic</span> <span class="pre">path</span> <span class="pre">contains</span></code> is a more general filter, that allows one to select e.g. all taxa that are within the bacteria superkingdom by writing <code class="docutils literal notranslate"><span class="pre">Bacteria</span></code> or within the fusobacteria class by writing <code class="docutils literal notranslate"><span class="pre">Fusobacteriia</span></code>.</p>
+</div>
+<div class="section" id="fits">
+<h3>Fits<a class="headerlink" href="#fits" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Fits</span></code> button allow one to apply specific selection criteria based on the fit results. The top dropdown allows one to select specific variables to cut on and a slider related to that variable is then automatically added below.</p>
+<p>An example could be if one only wants to inspect fits with a very large number of reads in them. The you would slide the left part of the <code class="docutils literal notranslate"><span class="pre">N_reads</span></code> slider to <code class="docutils literal notranslate"><span class="pre">1k</span></code> which would correspond to setting the minimum number of reads to 1000.</p>
+</div>
+</div>
+<div class="section" id="styling">
+<h2>Styling<a class="headerlink" href="#styling" title="Permalink to this headline">¶</a></h2>
+<p>If we hide the <code class="docutils literal notranslate"><span class="pre">Filters</span></code> pane by clicking on it and instead show the <code class="docutils literal notranslate"><span class="pre">Styling</span></code> pane by clicking on it, we see the following:</p>
+<div class="figure align-center">
+<a class="bg-primary mb-1 reference internal image-reference" href="_images/dashboard_styling.png"><img alt="_images/dashboard_styling.png" class="bg-primary mb-1" src="_images/dashboard_styling.png" style="width: 600px;" /></a>
+</div>
+<p>This allows to go deeper into the fit results and explore more advanced relationships between the variables. If one e.g. changes the x-axis to show <code class="docutils literal notranslate"><span class="pre">D_max</span></code>, it is possible to visually compare the two estimates of <span class="math notranslate nohighlight">\(D_\text{max}\)</span>; the MAP one and the Bayesian one.
+All of the points in the dashboard are sized according to the number of reads. This can be changed in the <code class="docutils literal notranslate"><span class="pre">Variable</span></code> dropdown. By default, they are sized according to the square root of this variable; this can also be changed in the <code class="docutils literal notranslate"><span class="pre">Function</span></code> dropdown. Finally, a relative scaling is also positive in the <code class="docutils literal notranslate"><span class="pre">Scale</span></code> slider.</p>
+</div>
+<div class="section" id="export-csv">
+<h2>Export CSV<a class="headerlink" href="#export-csv" title="Permalink to this headline">¶</a></h2>
+<p>If we wanted to export the results to a CSV file for further analysis, we can press the <code class="docutils literal notranslate"><span class="pre">Export</span> <span class="pre">CSV</span></code> button in the top right.</p>
+<p>This is also possible through the command line without opening the dashboard:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG convert --output results_as_csv.csv
+</pre></div>
+</div>
+<p>or, in the case of another name for the config file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG convert config_simple --output results_as_csv.csv
+</pre></div>
+</div>
+</div>
+<div class="section" id="export-pdfs">
+<h2>Export PDFs<a class="headerlink" href="#export-pdfs" title="Permalink to this headline">¶</a></h2>
+<p>If we wanted to export the plots to a PDF file, we can press the <code class="docutils literal notranslate"><span class="pre">Export</span> <span class="pre">PDF</span></code> button in the top right. This will generate a single PDF file which contains both the overview plot and the individual raw data plots.</p>
+<p>This is also possible through the command line without opening the dashboard:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG plot --output plots.pdf
+</pre></div>
+</div>
+<p>or, in the case of another name for the config file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG plot config_simple --output plots.pdf
+</pre></div>
+</div>
+</div>
 </div>
 
 

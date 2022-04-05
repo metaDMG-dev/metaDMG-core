@@ -9,6 +9,7 @@
 - [`convert`](command_line_interface_convert)
 - [`filter`](command_line_interface_filter)
 - [`plot`](command_line_interface_plot)
+- [`PMD`](command_line_interface_pmd)
 
 ---
 
@@ -239,8 +240,8 @@ The `metaDMG plot` command takes first an optional config-file as argument
 - Options:
   - `--results`: Direct path to the results directory.
   - `--query`: The query string to use for filtering. Follows the [Pandas Query()](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method) syntax. Default is `""` which applies no filtering.
-  - `--samples`: A comma-space seperated string containing the samples to use in the plots. Default is `""` which applies no filtering.
-  - `--tax-ids`: A comma-space seperated string containing the tax-ids to use in the plots. Default is `""` which applies no filtering.
+  - `--samples`: A comma-space separated string containing the samples to use in the plots. Default is `""` which applies no filtering.
+  - `--tax-ids`: A comma-space separated string containing the tax-ids to use in the plots. Default is `""` which applies no filtering.
   - `--output`: The path to the output pdf-file. Defaults to `pdf_export.pdf`.
 
 
@@ -252,6 +253,21 @@ $ metaDMG plot
 
 ```console
 $ metaDMG plot --query "100_000 <= N_reads & 8_000 <= phi" --tax-ids "1, 2, 42" --samples "sampleA, another-sample" --pdf-out name-of-plots.pdf
+```
+
+
+---
+
+(command_line_interface_pmd)=
+## PMD
+
+The `metaDMG PMD` command takes config-file as argument and computes the PMD scores for each read in the samples.
+The results are located as gzipped files in `data/pmd/SAMPLE.pmd.txt.gz`.
+
+### Examples
+
+```console
+$ metaDMG PMD config.yaml
 ```
 
 ---

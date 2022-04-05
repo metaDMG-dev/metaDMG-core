@@ -586,7 +586,7 @@ To compare two different analysis, one simply need to compare the <code class="d
 <p>We try to only print the most important information to the screen, but more information can be found in the log file at <code class="docutils literal notranslate"><span class="pre">logs/</span></code>.</p>
 </div>
 <div class="section" id="dashboard">
-<h3>Dashboard<a class="headerlink" href="#dashboard" title="Permalink to this headline">¶</a></h3>
+<span id="kapk-dashboard"></span><h3>Dashboard<a class="headerlink" href="#dashboard" title="Permalink to this headline">¶</a></h3>
 <p>After the computations are finished, we want to see the results. We can either copy the entire <code class="docutils literal notranslate"><span class="pre">data/results/</span></code> directory from the server to our local computer, or we can run the actual dashboard on the server and then connect to it via SSH, thus circumventing the need for any local installation of <code class="docutils literal notranslate"><span class="pre">metaDMG</span></code> at all.</p>
 <p>We start the dashboard:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG dashboard config_KapK.yaml --server
@@ -597,7 +597,7 @@ To compare two different analysis, one simply need to compare the <code class="d
 <div class="mermaid">
             flowchart LR
 
-    start(LOCAL) --&gt;|USER1| jump(JUMPHOST) --&gt;|USER2| server(SERVER)
+    start(LOCAL) --&gt; jump(&quot;USER1&#64;JUMPHOST&quot;) --&gt; server(&quot;USER2&#64;SERVER&quot;)
 
         </div><p>With this setup, we can connect in the following way (on our own, local machine!):</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ssh -N -J USER1@JUMPHOST USER2@SERVER -L <span class="m">8050</span>:127.0.0.1:8050
