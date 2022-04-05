@@ -270,18 +270,12 @@ def compute(
 
     utils.check_metaDMG_fit()
 
-    from metaDMG.fit import (
-        get_logger_port_and_path,
-        make_configs,
-        run_workflow,
-        setup_logger,
-    )
+    from metaDMG.fit import get_logger_port_and_path, run_workflow, setup_logger
 
     log_port, log_path = get_logger_port_and_path()
-
     setup_logger(log_port=log_port, log_path=log_path)
 
-    configs = make_configs(
+    configs = utils.make_configs(
         config_file=config_file,
         log_port=log_port,
         log_path=log_path,
@@ -574,6 +568,26 @@ def mismatch_to_mapDamage(
     from metaDMG.fit import mismatch_to_mapDamage
 
     mismatch_to_mapDamage.convert(filename=filename, csv_out=csv_out)
+
+
+#%%
+
+
+@cli_app.command("PMD")
+def compute_PMD(
+    config_file: Path = typer.Argument(
+        ...,
+        file_okay=True,
+        help="Path to the config-file.",
+    ),
+):
+    """Compute the PMD scores for the samples in the config file."""
+
+    from metaDMG.utils import make_configs, run_PMD
+
+    configs = make_configs(config_file)
+    for config in configs:
+        run_PMD(config["bam"], config["path_pmd"])
 
 
 #%%

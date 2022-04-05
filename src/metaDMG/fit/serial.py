@@ -21,8 +21,8 @@ from metaDMG.errors import (
     metadamageError,
 )
 from metaDMG.fit import fits, mismatches, results
-from metaDMG.fit.fit_utils import Config
 from metaDMG.loggers.loggers import setup_logger
+from metaDMG.utils import Config
 
 
 #%%

@@ -26,9 +26,9 @@ def compute_config(
 
     utils.check_metaDMG_fit()
 
-    from metaDMG.fit import make_configs, run_workflow
+    from metaDMG.fit import run_workflow
 
-    configs = make_configs(config_file=config_file, force=force)
+    configs = utils.make_configs(config_file=config_file, force=force)
 
     run_workflow(configs)
 
