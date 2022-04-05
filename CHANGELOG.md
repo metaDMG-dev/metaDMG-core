@@ -17,28 +17,18 @@
 * Add logo to readme at github ([`ec7a3b3`](https://github.com/metaDMG-dev/metaDMG-core/commit/ec7a3b320d2502a920827be1bc2e8e32dda15be8))
 * Add logo ([`2a45e57`](https://github.com/metaDMG-dev/metaDMG-core/commit/2a45e57cc6b9590646880a3e8f34cb9ba3aaa557))
 
-## v0.23.3 (2022-03-29)
-### Fix
-* Force new release ([`74365d8`](https://github.com/metaDMG-dev/metaDMG-core/commit/74365d878d3760061c389d2a0c64dcb9f32de40f))
+## v0.23 (2022-03-29)
 
-## v0.23.2 (2022-03-29)
-### Fix
-* Force new release ([`e9e2d6a`](https://github.com/metaDMG-dev/metaDMG-core/commit/e9e2d6a2593940ccab69237d38b47470bc688498))
 
-### Documentation
-* Update the webpage and readme ([`de947e3`](https://github.com/metaDMG-dev/metaDMG-core/commit/de947e3368dbd03a9d3a0f673e09fbec3fbfa328))
-* Add github pages action ([`d2a5b7f`](https://github.com/metaDMG-dev/metaDMG-core/commit/d2a5b7f8e23813ad73cea4d66a52e8e1a77ece27))
-
-## v0.23.1 (2022-03-29)
-### Fix
-* Update old configs in convert and filter CLI ([`c7fad7c`](https://github.com/metaDMG/metaDMG/commit/c7fad7c91bd5e41c3cd1650e9fc895f4179e9c27))
-
-## v0.23.0 (2022-03-28)
 ### Feature
 * Add metaDMG.main ([`fc89050`](https://github.com/metaDMG/metaDMG/commit/fc89050db794c1c88261ca723c4461f8ebe8f3a4))
 
+### Fix
+* Update old configs in convert and filter CLI ([`c7fad7c`](https://github.com/metaDMG/metaDMG/commit/c7fad7c91bd5e41c3cd1650e9fc895f4179e9c27))
+
 ### Documentation
 * Add more advanced tutorial (KapK) ([`8596c43`](https://github.com/metaDMG/metaDMG/commit/8596c433aece791a6e4a060274c2311bd95680b8))
+* Add github pages action ([`d2a5b7f`](https://github.com/metaDMG-dev/metaDMG-core/commit/d2a5b7f8e23813ad73cea4d66a52e8e1a77ece27))
 * Update CLI doc ([`5ad0851`](https://github.com/metaDMG/metaDMG/commit/5ad0851248f52c3b0880287dccf38d6ee0d11406))
 * Add mermaid diagram to tutorial ([`93ac0c0`](https://github.com/metaDMG/metaDMG/commit/93ac0c09e1358d245103874612b310f5cf527e6a))
 
