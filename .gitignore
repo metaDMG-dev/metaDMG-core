@@ -6,6 +6,7 @@ raw_data/
 !raw_data/nodes-mdmg.dmp
 !raw_data/acc2taxid.map.gz
 !src/metaDMG/data
+!docs/_static
 .DS_Store
 dist/
 build/
