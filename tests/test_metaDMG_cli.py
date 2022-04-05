@@ -18,16 +18,16 @@ def clean_test_dir() -> None:
 
     print("Cleaning")
 
-    utils.remove_directory(Path("tests") / "data", missing_ok=True)
-    utils.remove_directory(Path("tests") / "logs", missing_ok=True)
+    utils.remove_directory(Path("data"), missing_ok=True)
+    utils.remove_directory(Path("logs"), missing_ok=True)
 
-    for file in Path("tests").glob("config_*.yaml"):
+    for file in Path(".").glob("config*.yaml"):
         utils.remove_file(file)
 
-    for file in Path("tests").glob("*.csv"):
+    for file in Path(".").glob("*.csv"):
         utils.remove_file(file)
 
-    for file in Path("tests").glob("*.pdf"):
+    for file in Path(".").glob("*.pdf"):
         utils.remove_file(file)
 
 
@@ -48,27 +48,28 @@ def test_CLI_version():
 
 
 def test_CLI_config_LCA_without_names():
-    result = runner.invoke(cli_app, ["config", "./test/alignment.bam"])
+    result = runner.invoke(cli_app, ["config", "./testdata/alignment.bam"])
     assert result.exit_code != 0
     assert "are mandatory when doing" in result.stdout
 
 
-config_lca_path = Path("tests") / "config_lca.yaml"
-csv_convert_path = Path("tests") / "out-convert.csv"
-csv_convert_with_preds_path = Path("tests") / "out-convert-with-predictions.csv"
-csv_filter_path = Path("tests") / "out-filter.csv"
-pdf_plot_path = Path("tests") / "pdf_export.pdf"
+config_lca_path = Path("config_lca.yaml")
+csv_convert_path = Path("out-convert.csv")
+csv_convert_with_preds_path = Path("out-convert-with-predictions.csv")
+csv_filter_path = Path("out-filter.csv")
+pdf_plot_path = Path("pdf_export.pdf")
+pmd_path = Path("data") / "pmd" / "alignment.pmd.txt.gz"
 
 LCA_commands = [
     "config",
-    "tests/testdata/alignment.bam",
+    "testdata/alignment.bam",
     "--names",
-    "tests/testdata/names-mdmg.dmp",
+    "testdata/names-mdmg.dmp",
     "--nodes",
-    "tests/testdata/nodes-mdmg.dmp",
+    "testdata/nodes-mdmg.dmp",
     "--acc2tax",
-    "tests/testdata/acc2taxid.map.gz",
-    "--metadmg-cpp",
+    "testdata/acc2taxid.map.gz",
+    "--metaDMG-cpp",
     "./metaDMG-cpp",
     "--custom-database",
     "--config-file",
@@ -79,7 +80,7 @@ LCA_commands = [
 def test_CLI_config_LCA1():
     result = runner.invoke(cli_app, LCA_commands)
     assert "Do you want to overwrite it" not in result.stdout
-    assert "Config file was created" in result.stdout
+    assert f"{str(config_lca_path)} was created" in result.stdout
     assert result.exit_code == 0
 
 
@@ -89,7 +90,6 @@ def test_CLI_config_LCA2():
     assert "Do you want to overwrite it" in result.stdout
     assert "Exiting" in result.stdout
     assert "Aborted" in result.stdout
-    assert "Config file was created" not in result.stdout
     assert result.exit_code != 0
 
 
@@ -99,7 +99,6 @@ def test_CLI_config_LCA3():
     assert "Do you want to overwrite it" in result.stdout
     assert "Exiting" in result.stdout
     assert "Aborted" in result.stdout
-    assert "Config file was created" not in result.stdout
     assert result.exit_code != 0
 
 
@@ -107,7 +106,7 @@ def test_CLI_config_LCA4():
     """Running the same code twice should not produce a new config file, except when entering 'y'"""
     result = runner.invoke(cli_app, LCA_commands, input="y\n")  # press y
     assert "Do you want to overwrite it" in result.stdout
-    assert "Config file was created" in result.stdout
+    assert f"{str(config_lca_path)} was created" in result.stdout
     assert result.exit_code == 0
 
 
@@ -124,11 +123,6 @@ def test_CLI_compute_bad2():
 def test_CLI_compute():
     result = runner.invoke(cli_app, ["compute", str(config_lca_path)])
     assert result.exit_code == 0
-
-
-def test_CLI_dashboard_bad():
-    result = runner.invoke(cli_app, ["dashboard"])
-    assert result.exit_code != 0
 
 
 # # CANNOT TEST WORKING DASHBOARD CLI
@@ -151,6 +145,7 @@ def test_CLI_convert_bad2():
 
 def test_CLI_convert_bad3():
     result = runner.invoke(cli_app, ["convert", "--output", str(csv_convert_path)])
+    assert "Aborted" in result.stdout
     assert result.exit_code != 0
 
 
@@ -245,7 +240,7 @@ def test_CLI_plot():
             "751,6023,35550",
             "--query",
             "N_reads < 100_000",
-            "--pdf-out",
+            "--output",
             str(pdf_plot_path),
         ],
     )
@@ -258,3 +253,22 @@ def test_CLI_plot():
 
     # outfile is not empty
     assert pdf_plot_path.stat().st_size > 0
+
+
+def test_CLI_pmd():
+    result = runner.invoke(
+        cli_app,
+        [
+            "PMD",
+            str(config_lca_path),
+        ],
+    )
+
+    # no errors
+    assert result.exit_code == 0
+
+    # outfile exists
+    assert pmd_path.is_file()
+
+    # outfile is not empty
+    assert pmd_path.stat().st_size > 0

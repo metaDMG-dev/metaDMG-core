@@ -1,0 +1,23 @@
+samples:
+  alignment: testdata/alignment.bam
+metaDMG_cpp: ./metaDMG-cpp
+names: testdata/names-mdmg.dmp
+nodes: testdata/nodes-mdmg.dmp
+acc2tax: testdata/acc2taxid.map.gz
+min_similarity_score: 0.95
+max_similarity_score: 1.0
+min_edit_dist: 0
+max_edit_dist: 10
+min_mapping_quality: 0
+lca_rank: ''
+max_position: 15
+weight_type: 1
+custom_database: true
+forward_only: false
+output_dir: data
+parallel_samples: 1
+cores_per_sample: 1
+bayesian: false
+config_file: config_lca.yaml
+damage_mode: lca
+version: 0.23.3

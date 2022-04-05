@@ -4,7 +4,7 @@ import warnings
 from functools import partial
 from itertools import islice
 from pathlib import Path
-from typing import Iterable, Iterator, Optional, Union
+from typing import Iterable, Iterator, Optional
 
 import numpy as np
 import pandas as pd
@@ -229,11 +229,11 @@ def update_old_config(d: dict) -> dict:
 #%%
 
 
-def remove_file(file: Union[Path, str], missing_ok: bool = False) -> None:
+def remove_file(file: Path | str, missing_ok: bool = False) -> None:
     Path(file).unlink(missing_ok=missing_ok)
 
 
-def remove_directory(path: Union[Path, str], missing_ok: bool = False) -> None:
+def remove_directory(path: Path | str, missing_ok: bool = False) -> None:
     """Remove everything in a directory
 
     Parameters
