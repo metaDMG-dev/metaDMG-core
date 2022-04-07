@@ -102,12 +102,15 @@ class Configs(dict):
         int
             The number of configs
         """
-        return len(self["samples"].keys())
+
+        N_samples = len(self["samples"].keys())
+        N_damage_modes = len(self["damage_modes"])
+        return N_samples * N_damage_modes
 
     def check_number_of_jobs(self) -> None:
         """Compare the number of configs to the number of parallel_samples used."""
 
-        parallel_samples = min(self["parallel_samples"], len(self["samples"]))
+        parallel_samples = min(self["parallel_samples"], len(self))
         cores_per_sample = self["cores_per_sample"]
         N_jobs = parallel_samples * cores_per_sample
         max_cores = psutil.cpu_count(logical=True)
@@ -176,7 +179,6 @@ def make_configs(
     d.setdefault("forward_only", False)
     d.setdefault("cores_per_sample", 1)
     d["force"] = force
-    # d.setdefault("damage_mode", "lca")
 
     paths = ["names", "nodes", "acc2tax", "output_dir", "config_file"]
     for path in paths:
@@ -199,7 +201,7 @@ def make_configs(
 
 def update_old_config(d: dict) -> dict:
 
-    if "version" in d:
+    if "damage_modes" in d:
         # new version, not changing anything
         return d
 
@@ -207,28 +209,38 @@ def update_old_config(d: dict) -> dict:
         "Using an old version of the config file. Please remake the config file."
     )
 
-    d_old2new = {
-        "metaDMG-lca": "metaDMG_cpp",
-        "minmapq": "min_mapping_quality",
-        "editdistmin": "min_edit_dist",
-        "editdistmax": "max_edit_dist",
-        "simscorelow": "min_similarity_score",
-        "simscorehigh": "max_similarity_score",
-        "weighttype": "weight_type",
-        "storage_dir": "output_dir",
-        "dir": "output_dir",
-        "fix_ncbi": "custom_database",
-        "cores": "parallel_samples",
-        "cores_per_sample": "cores_per_sample",
-        "config_path": "config_file",
-    }
+    if "version" in d:
+        d_new = d
 
-    d_new = {}
-    for key, value in d.items():
-        if key in d_old2new:
-            key = d_old2new[key]
-        d_new[key] = value
-    d_new.pop("forced")
+    else:
+
+        d.setdefault("damage_mode", "lca")
+
+        d_old2new = {
+            "metaDMG-lca": "metaDMG_cpp",
+            "minmapq": "min_mapping_quality",
+            "editdistmin": "min_edit_dist",
+            "editdistmax": "max_edit_dist",
+            "simscorelow": "min_similarity_score",
+            "simscorehigh": "max_similarity_score",
+            "weighttype": "weight_type",
+            "storage_dir": "output_dir",
+            "dir": "output_dir",
+            "fix_ncbi": "custom_database",
+            "cores": "parallel_samples",
+            "cores_per_sample": "cores_per_sample",
+            "config_path": "config_file",
+        }
+
+        d_new = {}
+        for key, value in d.items():
+            if key in d_old2new:
+                key = d_old2new[key]
+            d_new[key] = value
+        d_new.pop("forced")
+
+    if "damage_mode" in d_new:
+        d_new["damage_modes"] = [d_new["damage_mode"]]
 
     return d_new
 

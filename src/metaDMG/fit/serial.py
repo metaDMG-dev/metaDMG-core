@@ -461,7 +461,7 @@ def _setup_logger(config: Config) -> None:
             log_port=config["log_port"],
             log_path=config["log_path"],
         )
-    current_process().name = config["sample"]
+    current_process().name = f"{config['sample']} | {config['damage_mode']}"
 
 
 def BAM_file_is_valid(config: Config) -> bool:

@@ -12,7 +12,7 @@ def run_workflow(configs: Configs):
 
     parallel_samples = min(configs["parallel_samples"], len(configs))
 
-    logger.info(f"Running metaDMG on {len(configs)} files in total.")
+    logger.info(f"Running metaDMG on {len(configs)} configs in total.")
 
     if parallel_samples == 1 or len(configs) == 1:
         logger.info(f"Running in serial (1 core)")
