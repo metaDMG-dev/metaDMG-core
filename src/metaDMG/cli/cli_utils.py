@@ -98,4 +98,12 @@ class RANKS(str, Enum):
     none = ""
 
 
+class DAMAGE_MODE(str, Enum):
+    "Damage mode allowed in the LCA"
+
+    LCA = "lca"
+    LOCAL = "local"
+    GLOBAL = "global"
+
+
 #%%

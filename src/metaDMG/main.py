@@ -40,6 +40,7 @@ def run_dashboard(
     server: bool = False,
     port: int = 8050,
     host: str = "0.0.0.0",
+    damage_mode: str = "lca",
 ) -> None:
     """Visualise the results in an interactive dashboard
 
@@ -68,6 +69,7 @@ def run_dashboard(
     results_dir = utils.get_results_dir(
         config_file=config_file,
         results_dir=results,
+        damage_mode=damage_mode,
     )
 
     start_dashboard(

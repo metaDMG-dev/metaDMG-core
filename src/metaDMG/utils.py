@@ -499,7 +499,9 @@ def check_metaDMG_fit():
         import metaDMG.fit
 
     except ModuleNotFoundError:
-        print("""The 'fit' extras has to be installed: pip install "metaDMG[fit]" """)
+        typer.echo(
+            """The 'fit' extras has to be installed: pip install "metaDMG[fit]" """
+        )
         raise typer.Abort()
 
 
@@ -508,7 +510,9 @@ def check_metaDMG_viz():
         import metaDMG.viz
 
     except ModuleNotFoundError:
-        print("""The 'viz' extras has to be installed: pip install "metaDMG[viz]" """)
+        typer.echo(
+            """The 'viz' extras has to be installed: pip install "metaDMG[viz]" """
+        )
         raise typer.Abort()
 
 
@@ -518,7 +522,9 @@ def check_metaDMG_viz():
 def get_results_dir(
     config_file: Optional[Path] = None,
     results_dir: Optional[Path] = None,
+    damage_mode: str = "lca",
 ) -> Path:
+
     """Helper function that gets the results directory from either the
     config file or the results directory directly.
 
@@ -531,7 +537,7 @@ def get_results_dir(
 
     Returns
     -------
-        Path to the results directory
+        Path to the results directory and the (possibly inferred) damage_mode.
 
     Raises
     ------
@@ -539,18 +545,22 @@ def get_results_dir(
         If both config file and results directory are set, raise error
     """
 
-    if config_file is not None and results_dir is not None:
+    if (config_file is not None) and (results_dir is not None):
         raise AssertionError("'config_file' and 'results_dir' cannot both be set")
 
-    if results_dir:
-        return results_dir
+    if results_dir is None:
 
-    if config_file is None:
-        config_file = Path("config.yaml")
+        if config_file is None:
+            config_file = Path("config.yaml")
 
-    configs = make_configs(config_file)
+        configs = make_configs(config_file)
+        results_dir = configs["output_dir"] / damage_mode.lower() / "results"
 
-    return configs["output_dir"] / "results"
+    if not results_dir.is_dir():
+        typer.echo(f"{results_dir} does not exist.")
+        raise typer.Abort()
+
+    return results_dir
 
 
 #%%

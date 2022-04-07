@@ -323,6 +323,13 @@ def dashboard(
         "-h",
         help="Dashboard host address",
     ),
+    damage_mode: cli_utils.DAMAGE_MODE = typer.Option(
+        cli_utils.DAMAGE_MODE.LCA,
+        "--damage-mode",
+        "-d",
+        case_sensitive=False,
+        help="The Damage Mode. Use 'LCA' unless you know what you are doing.",
+    ),
 ):
     """Visualise the results in an interactive dashboard.
 
@@ -345,7 +352,10 @@ def dashboard(
     results_dir = utils.get_results_dir(
         config_file=config_file,
         results_dir=results,
+        damage_mode=damage_mode,
     )
+
+    typer.echo(f"\nStarting dashboard from {results_dir} at {host}:{port} \n")
 
     start_dashboard(
         results_dir=results_dir,
@@ -384,6 +394,13 @@ def convert(
         "-a",
         help="Add fit predictions D(x) to the output",
     ),
+    damage_mode: cli_utils.DAMAGE_MODE = typer.Option(
+        cli_utils.DAMAGE_MODE.LCA,
+        "--damage-mode",
+        "-d",
+        case_sensitive=False,
+        help="The Damage Mode. Use 'LCA' unless you know what you are doing.",
+    ),
 ):
     """Convert the results to either a combined csv or tsv file."""
 
@@ -395,6 +412,7 @@ def convert(
         config_file=config_file,
         results_dir=results_dir,
         add_fit_predictions=add_fit_predictions,
+        damage_mode=damage_mode,
     )
 
 
@@ -432,6 +450,13 @@ def filter(
         "-a",
         help="Add fit predictions D(x) to the output",
     ),
+    damage_mode: cli_utils.DAMAGE_MODE = typer.Option(
+        cli_utils.DAMAGE_MODE.LCA,
+        "--damage-mode",
+        "-d",
+        case_sensitive=False,
+        help="The Damage Mode. Use 'LCA' unless you know what you are doing.",
+    ),
 ):
     """Filter and save the results to either a combined csv or tsv file."""
 
@@ -443,6 +468,7 @@ def filter(
         config_file=config_file,
         results_dir=results_dir,
         add_fit_predictions=add_fit_predictions,
+        damage_mode=damage_mode,
     )
 
 
@@ -487,6 +513,13 @@ def plot(
         file_okay=True,
         help="Output PDF file (pdf_export.pdf).",
     ),
+    damage_mode: cli_utils.DAMAGE_MODE = typer.Option(
+        cli_utils.DAMAGE_MODE.LCA,
+        "--damage-mode",
+        "-d",
+        case_sensitive=False,
+        help="The Damage Mode. Use 'LCA' unless you know what you are doing.",
+    ),
 ):
     """Filter and save the results to either a combined csv or tsv file."""
 
@@ -502,6 +535,7 @@ def plot(
     results_dir = get_results_dir(
         config_file=config_file,
         results_dir=results_dir,
+        damage_mode=damage_mode,
     )
 
     viz_results = VizResults(results_dir)
