@@ -83,7 +83,7 @@ $ metaDMG config raw_data/ [...]
 
 To run `metaDMG` with multiple damage modes, an example could be:
 ```
-$ metaDMG config raw_data/alignment.bam --damage-mode "lca, global" --max-position 15 --bayesian
+$ metaDMG config raw_data/alignment.bam --damage-mode "local, global" --max-position 15 --bayesian
 ```
 
 ---
