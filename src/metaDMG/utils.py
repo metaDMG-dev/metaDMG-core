@@ -596,7 +596,7 @@ def append_fit_predictions(df_results):
 #%%
 
 
-def run_PMD(alignment_file: Path, txt_out: Path):
+def run_PMD(config: Config):
     """Run the PMD command from metaDMG-cpp and output the result to the gzipped txt_out
 
     Parameters
@@ -611,12 +611,13 @@ def run_PMD(alignment_file: Path, txt_out: Path):
     import shlex
     import subprocess
 
+    txt_out = config["path_pmd"]
     txt_out.parent.mkdir(parents=True, exist_ok=True)
 
     with gzip.open(f"{txt_out}", "wt") as zip_out:
 
         cpp = subprocess.Popen(
-            shlex.split(f"./metaDMG-cpp pmd {alignment_file}"),
+            shlex.split(f"{config['metaDMG_cpp']} pmd {config['bam']}"),
             stdout=subprocess.PIPE,
         )
 

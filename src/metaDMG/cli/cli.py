@@ -587,7 +587,7 @@ def compute_PMD(
 
     configs = make_configs(config_file)
     for config in configs:
-        run_PMD(config["bam"], config["path_pmd"])
+        run_PMD(config)
 
 
 #%%
