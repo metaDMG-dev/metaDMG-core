@@ -2,6 +2,15 @@
 
 <!--next-version-placeholder-->
 
+## v0.24.2 (2022-04-07)
+### Fix
+* Allow for compressed files in convert. ([`aebdbff`](https://github.com/metaDMG-dev/metaDMG-core/commit/aebdbff86d657fb87d9bd2eb7700047ea19dd803))
+* Infer metaDMG-cpp from config file in PMD ([`f38e3c6`](https://github.com/metaDMG-dev/metaDMG-core/commit/f38e3c677fcd322265eeedaab2d3b9c91f668b98))
+
+### Documentation
+* Update docs action ([`15a5a3b`](https://github.com/metaDMG-dev/metaDMG-core/commit/15a5a3ba2c324f670d2a0e4d2dcfeb155fde074e))
+* Remove _static ([`1d08ccd`](https://github.com/metaDMG-dev/metaDMG-core/commit/1d08ccd898d1d1fc15b7ef60afdbdd8e15758466))
+
 ## v0.24.1 (2022-04-05)
 ### Fix
 * Include static folder in docs ([`dcbcfd9`](https://github.com/metaDMG-dev/metaDMG-core/commit/dcbcfd93357b240222e205f050877bddad1930ad))
