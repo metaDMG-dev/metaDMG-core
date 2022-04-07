@@ -10,10 +10,8 @@ from metaDMG.cli.cli import cli_app
 
 #%%
 
-runner = CliRunner()
 
-
-def clean_test_dir() -> None:
+def clean() -> None:
     """Make test directory clean for new test run"""
 
     print("Cleaning")
@@ -27,14 +25,25 @@ def clean_test_dir() -> None:
     for file in Path(".").glob("*.csv"):
         utils.remove_file(file)
 
+    for file in Path(".").glob("*.tsv"):
+        utils.remove_file(file)
+
+    for file in Path(".").glob("*.gz"):
+        utils.remove_file(file)
+
+    for file in Path(".").glob("*.pdf"):
+        utils.remove_file(file)
+
     for file in Path(".").glob("*.pdf"):
         utils.remove_file(file)
 
 
-clean_test_dir()
+# clean()
 
 
 #%%
+
+runner = CliRunner()
 
 
 def test_version():
@@ -54,11 +63,15 @@ def test_CLI_config_LCA_without_names():
 
 
 config_lca_path = Path("config_lca.yaml")
-csv_convert_path = Path("out-convert.csv")
-csv_convert_with_preds_path = Path("out-convert-with-predictions.csv")
-csv_filter_path = Path("out-filter.csv")
-pdf_plot_path = Path("pdf_export.pdf")
+
+other_path = Path("data") / "other"
+
+csv_convert_path = other_path / "out-convert.csv"
+csv_convert_with_preds_path = other_path / "out-convert-with-predictions.csv"
+csv_filter_path = other_path / "out-filter.csv"
+pdf_plot_path = other_path / "pdf_export.pdf"
 pmd_path = Path("data") / "pmd" / "alignment.pmd.txt.gz"
+
 
 LCA_commands = [
     "config",
@@ -70,11 +83,16 @@ LCA_commands = [
     "--acc2tax",
     "testdata/acc2taxid.map.gz",
     "--metaDMG-cpp",
-    "./metaDMG-cpp",
+    "../metaDMG-cpp",
     "--custom-database",
     "--config-file",
     str(config_lca_path),
 ]
+
+
+def test_clean():
+    other_path.mkdir(parents=True, exist_ok=True)
+    assert 0 == 0
 
 
 def test_CLI_config_LCA1():
@@ -199,6 +217,62 @@ def test_CLI_convert2():
 
     assert "Dx_std+1" in df.columns
     assert "Dx_std-1" in df.columns
+
+
+def test_CLI_convert3():
+    result = runner.invoke(
+        cli_app,
+        [
+            "convert",
+            str(config_lca_path),
+            "--output",
+            str(other_path / "testconvert.csv"),
+        ],
+    )
+    # no errors
+    assert result.exit_code == 0
+
+
+def test_CLI_convert4():
+    result = runner.invoke(
+        cli_app,
+        [
+            "convert",
+            str(config_lca_path),
+            "--output",
+            str(other_path / "testconvert.tsv"),
+        ],
+    )
+    # no errors
+    assert result.exit_code == 0
+
+
+def test_CLI_convert5():
+    result = runner.invoke(
+        cli_app,
+        [
+            "convert",
+            str(config_lca_path),
+            "--output",
+            str(other_path / "testconvert.csv.gz"),
+        ],
+    )
+    # no errors
+    assert result.exit_code == 0
+
+
+def test_CLI_convert6():
+    result = runner.invoke(
+        cli_app,
+        [
+            "convert",
+            str(config_lca_path),
+            "--output",
+            str(other_path / "testconvert.tsv.gz"),
+        ],
+    )
+    # no errors
+    assert result.exit_code == 0
 
 
 def test_CLI_filter():
