@@ -289,7 +289,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#metaDMG.utils.remove_directory" title="metaDMG.utils.remove_directory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_directory</span></code></a>(path[, missing_ok])</p></td>
 <td><p>Remove everything in a directory</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metaDMG.utils.run_PMD" title="metaDMG.utils.run_PMD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_PMD</span></code></a>(alignment_file, txt_out)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metaDMG.utils.run_PMD" title="metaDMG.utils.run_PMD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_PMD</span></code></a>(config)</p></td>
 <td><p>Run the PMD command from metaDMG-cpp and output the result to the gzipped txt_out</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metaDMG.utils.save_config_file" title="metaDMG.utils.save_config_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_config_file</span></code></a>(config, config_file[, ...])</p></td>
@@ -504,13 +504,13 @@ config file or the results directory directly.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="metaDMG.utils.run_PMD">
-<span class="sig-prename descclassname"><span class="pre">metaDMG.utils.</span></span><span class="sig-name descname"><span class="pre">run_PMD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alignment_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">txt_out</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/metaDMG/utils.html#run_PMD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metaDMG.utils.run_PMD" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metaDMG.utils.</span></span><span class="sig-name descname"><span class="pre">run_PMD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/metaDMG/utils.html#run_PMD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metaDMG.utils.run_PMD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the PMD command from metaDMG-cpp and output the result to the gzipped txt_out</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>alignment_file</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>) – Alignment file to compute the PMD scores on</p></li>
-<li><p><strong>txt_out</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>) – The (gzipped) output txt file</p></li>
+<li><p><strong>alignment_file</strong> – Alignment file to compute the PMD scores on</p></li>
+<li><p><strong>txt_out</strong> – The (gzipped) output txt file</p></li>
 </ul>
 </dd>
 </dl>

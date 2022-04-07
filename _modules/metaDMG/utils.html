@@ -822,7 +822,7 @@
 <span class="c1">#%%</span>
 
 
-<div class="viewcode-block" id="run_PMD"><a class="viewcode-back" href="../../api-utils.html#metaDMG.utils.run_PMD">[docs]</a><span class="k">def</span> <span class="nf">run_PMD</span><span class="p">(</span><span class="n">alignment_file</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">txt_out</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+<div class="viewcode-block" id="run_PMD"><a class="viewcode-back" href="../../api-utils.html#metaDMG.utils.run_PMD">[docs]</a><span class="k">def</span> <span class="nf">run_PMD</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Run the PMD command from metaDMG-cpp and output the result to the gzipped txt_out</span>
 
 <span class="sd">    Parameters</span>
@@ -837,12 +837,13 @@
     <span class="kn">import</span> <span class="nn">shlex</span>
     <span class="kn">import</span> <span class="nn">subprocess</span>
 
+    <span class="n">txt_out</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;path_pmd&quot;</span><span class="p">]</span>
     <span class="n">txt_out</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">txt_out</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;wt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_out</span><span class="p">:</span>
 
         <span class="n">cpp</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
-            <span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;./metaDMG-cpp pmd </span><span class="si">{</span><span class="n">alignment_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+            <span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;metaDMG_cpp&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> pmd </span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;bam&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
             <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
         <span class="p">)</span>
 

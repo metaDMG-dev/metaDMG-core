@@ -283,13 +283,17 @@
 
 <span class="k">def</span> <span class="nf">save_results</span><span class="p">(</span><span class="n">df_results</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
 
-    <span class="n">suffix</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">suffix</span>
-    <span class="k">if</span> <span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.csv&quot;</span><span class="p">:</span>
+    <span class="n">suffixes</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;.csv&quot;</span> <span class="ow">in</span> <span class="n">suffixes</span><span class="p">:</span>
         <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span>
-    <span class="k">elif</span> <span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.tsv&quot;</span><span class="p">:</span>
-        <span class="n">sep</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\t&quot;</span>
+    <span class="k">elif</span> <span class="s2">&quot;.tsv&quot;</span> <span class="ow">in</span> <span class="n">suffixes</span><span class="p">:</span>
+        <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&#39; not implemented yet, only .csv and .tsv.&quot;</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">suffixes</span><span class="si">}</span><span class="s2">&#39; not implemented yet, only .csv and .tsv &quot;</span>
+            <span class="s2">&quot;(and compressed versions)&quot;</span>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 
     <span class="n">output</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">df_results</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
