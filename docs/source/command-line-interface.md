@@ -23,7 +23,7 @@ The `samples` refer to a single or multiple alignment-files (or a directory cont
 
 #### Damage mode
 
-- `--damage-mode`: `[lca|local|global]`. `lca` is the recommended and automatic setting. If using `local`, it means that damage patterns will be calculated for each chr/scaffold contig. If using `global`, it means one global estimate. Note that when using `[local|global]` the LCA parameters won't matter.
+- `--damage-modes`: One of `[lca|local|global]` or a combination. `lca` is the recommended and automatic setting. If using `local`, it means that damage patterns will be calculated for each chr/scaffold contig. If using `global`, it means one global estimate. Note that when using `[local|global]` the LCA parameters won't matter.
 
 #### LCA
 - Options:
@@ -81,9 +81,9 @@ or even an entire directory containing alignment files (`.bam`, `.sam`, and `.sa
 $ metaDMG config raw_data/ [...]
 ```
 
-To run `metaDMG` in non-LCA mode, an example could be:
+To run `metaDMG` with multiple damage modes, an example could be:
 ```
-$ metaDMG config raw_data/alignment.bam --damage-mode local --max-position 15 --bayesian
+$ metaDMG config raw_data/alignment.bam --damage-mode "lca, global" --max-position 15 --bayesian
 ```
 
 ---
@@ -126,6 +126,7 @@ The `metaDMG dashboard` command takes first an optional config-file as argument
   - `--results`: Path to the results directory.
   - `--port`: The port to be used for the dashboard. Default is `8050`.
   - `--host`: The dashboard host adress. Default is `0.0.0.0`.
+  - `--damage-mode`: The damage mode to visualize. If `--results` are given, is inferred automatically. Defaults to `lca`.
 
 - Flags:
   - `--debug`: Allow for easier debugging the dashboard. For internal usage.
@@ -174,6 +175,7 @@ The `metaDMG convert` command takes first an optional config-file as argument
 - Options:
   - `--results`: Direct path to the results directory.
   - `--output`: Mandatory output path.
+  - `--damage-mode`: The damage mode to visualize. If `--results` are given, is inferred automatically. Defaults to `lca`.
 
 - Flags:
   - `--add-fit-predictions`: Include fit predictions D(x) in the output.
@@ -206,6 +208,7 @@ The `metaDMG filter` command takes first an optional config-file as argument
   - `--results`: Direct path to the results directory.
   - `--output`: Mandatory output path.
   - `--query`: The query string to use for filtering. Follows the [Pandas Query()](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method) syntax. Default is `""` which applies no filtering and is thus similar to the `metaDMG convert` command.
+  - `--damage-mode`: The damage mode to visualize. If `--results` are given, is inferred automatically. Defaults to `lca`.
 
 - Flags:
   - `--add-fit-predictions`: Include fit predictions D(x) in the output.
@@ -243,7 +246,7 @@ The `metaDMG plot` command takes first an optional config-file as argument
   - `--samples`: A comma-space separated string containing the samples to use in the plots. Default is `""` which applies no filtering.
   - `--tax-ids`: A comma-space separated string containing the tax-ids to use in the plots. Default is `""` which applies no filtering.
   - `--output`: The path to the output pdf-file. Defaults to `pdf_export.pdf`.
-
+  - `--damage-mode`: The damage mode to visualize. If `--results` are given, is inferred automatically. Defaults to `lca`.
 
 ### Examples
 
