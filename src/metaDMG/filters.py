@@ -57,13 +57,17 @@ def filter_results(
 
 def save_results(df_results, output):
 
-    suffix = output.suffix
-    if suffix == ".csv":
+    suffixes = "".join(output.suffixes)
+    if ".csv" in suffixes:
         sep = ","
-    elif suffix == ".tsv":
-        sep = r"\t"
+    elif ".tsv" in suffixes:
+        sep = "\t"
     else:
-        raise AssertionError(f"'{suffix}' not implemented yet, only .csv and .tsv.")
+        s = (
+            f"'{suffixes}' not implemented yet, only .csv and .tsv "
+            "(and compressed versions)"
+        )
+        raise AssertionError(s)
 
     output.parent.mkdir(parents=True, exist_ok=True)
     df_results.to_csv(output, sep=sep, index=False)

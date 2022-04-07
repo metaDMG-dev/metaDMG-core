@@ -215,3 +215,4 @@ config_lda.yaml
 binary_classifier.py
 config_Bayesian.yaml
 src/metaDMG/fit/serial.py
+fix_numba.sh
