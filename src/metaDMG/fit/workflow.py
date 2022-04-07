@@ -5,6 +5,7 @@ from concurrent.futures import ProcessPoolExecutor as Pool
 from datetime import datetime
 from multiprocessing import current_process
 
+import yaml
 from logger_tt import logger
 
 from metaDMG.fit.serial import run_single_config
@@ -12,6 +13,19 @@ from metaDMG.utils import Configs
 
 
 #%%
+
+
+def compare_yamls(configs: Configs, other_configs: list) -> bool:
+
+    with open(configs["config_file"], "r") as file:
+        d_config = yaml.safe_load(file)
+        [d_config.pop(k, None) for k in ["config_file", "damage_modes"]]
+
+    with open(other_configs[0], "r") as file:
+        d_other_config = yaml.safe_load(file)
+        [d_other_config.pop(k, None) for k in ["config_file", "damage_modes"]]
+
+    return d_config == d_other_config
 
 
 def data_dir_is_ok(configs: Configs, force: bool = False) -> bool:
@@ -28,7 +42,7 @@ def data_dir_is_ok(configs: Configs, force: bool = False) -> bool:
 
     Returns
     -------
-        _description_
+        Boolean indicating whether or not the output_dir is ok.
     """
     yamls = list(configs["output_dir"].glob("*.yaml"))
     ymls = list(configs["output_dir"].glob("*.yml"))
@@ -37,11 +51,7 @@ def data_dir_is_ok(configs: Configs, force: bool = False) -> bool:
     if len(other_configs) == 0:
         return True
 
-    is_identical = filecmp.cmp(
-        configs["config_file"],
-        other_configs[0],
-        shallow=False,
-    )
+    is_identical = compare_yamls(configs, other_configs)
 
     if is_identical:
         return True
@@ -54,7 +64,6 @@ def data_dir_is_ok(configs: Configs, force: bool = False) -> bool:
         "is already used with another config file. "
         "Use 'metaDMG compute [...] --force' if you know what you are doing."
     )
-
     logger.warning(s)
 
     return False
