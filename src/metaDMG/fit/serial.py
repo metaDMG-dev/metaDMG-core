@@ -1,4 +1,5 @@
 #%%
+import filecmp
 import shlex
 import shutil
 import subprocess
@@ -10,6 +11,7 @@ from pathlib import Path
 from typing import Optional, Tuple
 
 import pandas as pd
+import typer
 from logger_tt import logger
 
 from metaDMG import utils
@@ -280,7 +282,7 @@ def BAM_file_is_valid(config: Config) -> bool:
 
 def run_LCA(config: Config, force: bool = False) -> None:
 
-    logger.info(f"Getting LCA.")
+    logger.info(f"Getting results from metaDMG-cpp {config['damage_mode']} mode.")
 
     targets = [
         config["mismatches_txt_path"],
@@ -295,7 +297,7 @@ def run_LCA(config: Config, force: bool = False) -> None:
                 f"{config['sample']}: The alignment file is invalid."
             )
 
-        logger.info(f"LCA has to be computed. This can take a while, please wait.")
+        logger.info(f"metaDMG-cpp has to run. This can take a while, please wait.")
 
         command_LCA = get_LCA_command(config)
         command_LCA_mismatches = get_LCA_mismatches_command(config)
@@ -312,7 +314,9 @@ def run_LCA(config: Config, force: bool = False) -> None:
         delete_tmp_dir(config)
 
     else:
-        logger.info(f"LCA already been run before.")
+        logger.info(
+            f"metaDMG-cpp {config['damage_mode']} mode has already been run before."
+        )
 
 
 #%%
@@ -320,7 +324,7 @@ def run_LCA(config: Config, force: bool = False) -> None:
 
 def run_damage_no_lca(config: Config, force: bool = False) -> None:
 
-    logger.info(f"Getting damage.")
+    logger.info(f"Getting results from metaDMG-cpp {config['damage_mode']} mode.")
 
     targets = [
         config["mismatches_txt_path"],
@@ -334,7 +338,7 @@ def run_damage_no_lca(config: Config, force: bool = False) -> None:
                 f"{config['sample']}: The alignment file is invalid."
             )
 
-        logger.info(f"Computing damage. NOTE: NO LCA.")
+        logger.info(f"metaDMG-cpp has to run. This can take a while, please wait.")
 
         command_damage = get_damage_command(config)
         command_damage_ugly = get_damage_ugly_command(config)
@@ -351,7 +355,9 @@ def run_damage_no_lca(config: Config, force: bool = False) -> None:
         delete_tmp_dir(config)
 
     else:
-        logger.info(f"Damage has already been computed before. NOTE: NO LCA.")
+        logger.info(
+            f"metaDMG-cpp {config['damage_mode']} mode has already been run before."
+        )
 
 
 #%%
@@ -488,7 +494,6 @@ def run_single_config(
 ) -> Optional[Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]:
 
     _setup_logger(config)
-
     force = config["force"]
 
     try:
