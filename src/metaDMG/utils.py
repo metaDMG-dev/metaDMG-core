@@ -2,7 +2,7 @@
 import re
 import warnings
 from functools import partial
-from itertools import islice
+from itertools import islice, product
 from pathlib import Path
 from typing import Iterable, Iterator, Optional, Union
 
@@ -37,28 +37,35 @@ class Configs(dict):
         Iterator[Config]
             Allow for iteration
         """
-        dir_lca = self["output_dir"] / "lca"
-        dir_pmd = self["output_dir"] / "pmd"
         samples = self["samples"].keys()
-        for sample in samples:
+        damage_modes = self["damage_modes"]
+
+        for damage_mode, sample in product(damage_modes, samples):
+
+            base_dir = self["output_dir"] / damage_mode
+            cpp_dir = base_dir / "cpp"
+
             config = Config(self)
             config["sample"] = sample
             config["bam"] = config["samples"][sample]
 
-            config["path_mismatches_txt"] = dir_lca / f"{sample}.mismatches.txt.gz"
+            config["mismatches_txt_path"] = cpp_dir / f"{sample}.mismatches.txt.gz"
 
-            if config["damage_mode"] == "lca":
-                config["path_mismatches_stat"] = (
-                    dir_lca / f"{sample}.mismatches.stat.txt.gz"
+            if damage_mode == "lca":
+                config["mismatches_stat_path"] = (
+                    cpp_dir / f"{sample}.mismatches.stat.txt.gz"
                 )
             else:
-                config["path_mismatches_stat"] = dir_lca / f"{sample}.stat.txt"
+                config["mismatches_stat_path"] = cpp_dir / f"{sample}.stat.txt"
 
-            config["path_lca"] = dir_lca / f"{sample}.lca.txt.gz"
-            config["path_lca_log"] = dir_lca / f"{sample}.log.txt"
-            config["path_tmp"] = config["output_dir"] / "tmp" / sample
+            config["lca_path"] = cpp_dir / f"{sample}.lca.txt.gz"
+            config["lca_log_path"] = cpp_dir / f"{sample}.log.txt"
+            config["tmp_dir"] = base_dir / "tmp" / sample
 
-            config["path_pmd"] = dir_pmd / f"{sample}.pmd.txt.gz"
+            config["pmd_txt_path"] = base_dir / "pmd" / f"{sample}.pmd.txt.gz"
+
+            config["base_dir"] = base_dir
+            config["damage_mode"] = damage_mode
 
             yield config
 
@@ -168,8 +175,8 @@ def make_configs(
 
     d.setdefault("forward_only", False)
     d.setdefault("cores_per_sample", 1)
-    d.setdefault("damage_mode", "lca")
     d["force"] = force
+    # d.setdefault("damage_mode", "lca")
 
     paths = ["names", "nodes", "acc2tax", "output_dir", "config_file"]
     for path in paths:
@@ -468,6 +475,7 @@ def save_config_file(
 
     with open(config_file, "w") as file:
         yaml.dump(config, file, sort_keys=False)
+
     typer.echo(f"{str(config_file)} was created")
 
 
@@ -611,7 +619,7 @@ def run_PMD(config: Config):
     import shlex
     import subprocess
 
-    txt_out = config["path_pmd"]
+    txt_out = config["pmd_txt_path"]
     txt_out.parent.mkdir(parents=True, exist_ok=True)
 
     with gzip.open(f"{txt_out}", "wt") as zip_out:
@@ -627,3 +635,52 @@ def run_PMD(config: Config):
             stdout=zip_out,
         )
         zip.communicate()
+
+
+#%%
+
+
+def extract_damage_modes(damage_modes_in: str) -> list[str]:
+    """Extract the damage modes from a string
+
+    Parameters
+    ----------
+    damage_modes_in
+        The input damage modes
+
+    Returns
+    -------
+        A list of damage modes (strings)
+
+    Raises
+    ------
+    typer.Abort
+        If the damage modes are not valid
+    """
+
+    damage_modes_allowed = {"lca", "global", "local"}
+
+    damage_modes = []
+    for damage_mode in split_string(damage_modes_in):
+        damage_mode = damage_mode.lower()
+        if damage_mode in damage_modes_allowed:
+            damage_modes.append(damage_mode)
+        else:
+            typer.echo(
+                f"damage mode has to be in {damage_modes_allowed}, got '{damage_mode}'"
+            )
+            raise typer.Abort()
+
+    return damage_modes
+
+
+def check_damage_modes(
+    damage_modes: list[str],
+    names: Optional[Path],
+    nodes: Optional[Path],
+    acc2tax: Optional[Path],
+):
+
+    if ("lca" in damage_modes) and (None in [names, nodes, acc2tax]):
+        typer.echo("--names, --nodes, and --acc2tax are mandatory when doing LCA.")
+        raise typer.Abort()

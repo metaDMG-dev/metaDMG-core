@@ -50,7 +50,7 @@ def do_load(targets, force=False):
 
 
 def data_dir(config: Config, name, suffix="parquet"):
-    target = config["output_dir"] / name / f"{config['sample']}.{name}.{suffix}"
+    target = config["base_dir"] / name / f"{config['sample']}.{name}.{suffix}"
     return target
 
 
@@ -58,7 +58,7 @@ def data_dir(config: Config, name, suffix="parquet"):
 
 
 def get_LCA_command(config: Config) -> str:
-    outnames = config["path_tmp"] / config["sample"]
+    outnames = config["tmp_dir"] / config["sample"]
     lca_rank = f"-lca_rank {config['lca_rank']}" if config["lca_rank"] != "" else ""
 
     command = (
@@ -77,15 +77,15 @@ def get_LCA_command(config: Config) -> str:
         f"-howmany {config['max_position']} "
         f"-weighttype {config['weight_type']} "
         f"-fix_ncbi {config['custom_database']} "
-        f"-tempfolder {config['path_tmp']}/ "
+        f"-tempfolder {config['tmp_dir']}/ "
     )
     return command[:-1]
 
 
 def get_LCA_mismatches_command(config: Config) -> str:
     sample = config["sample"]
-    bdamage = config["path_tmp"] / f"{sample}.bdamage.gz"
-    lca_stat = config["path_tmp"] / f"{sample}.stat"
+    bdamage = config["tmp_dir"] / f"{sample}.bdamage.gz"
+    lca_stat = config["tmp_dir"] / f"{sample}.stat"
 
     command = (
         f"{config['metaDMG_cpp']} print_ugly "
@@ -121,7 +121,7 @@ def get_runmode(config: Config) -> int:
 def get_damage_command(config: Config) -> str:
     "'Direct' damage, no LCA"
 
-    outname = config["path_tmp"] / config["sample"]
+    outname = config["tmp_dir"] / config["sample"]
     runmode = get_runmode(config)
 
     command = (
@@ -137,7 +137,7 @@ def get_damage_command(config: Config) -> str:
 
 
 def get_damage_ugly_command(config: Config) -> str:
-    bdamage = config["path_tmp"] / f"{config['sample']}.bdamage.gz"
+    bdamage = config["tmp_dir"] / f"{config['sample']}.bdamage.gz"
     command = f"{config['metaDMG_cpp']} print_ugly {bdamage} -bam {config['bam']}"
     return command
 
@@ -148,16 +148,16 @@ def get_damage_ugly_command(config: Config) -> str:
 def move_files(config: Config) -> None:
 
     sample = config["sample"]
-    path_tmp = config["path_tmp"]
+    tmp_dir = config["tmp_dir"]
 
-    mismatch = path_tmp / f"{sample}.bdamage.gz.uglyprint.mismatch.txt.gz"
-    stat = path_tmp / f"{sample}.bdamage.gz.uglyprint.stat.txt.gz"
+    mismatch = tmp_dir / f"{sample}.bdamage.gz.uglyprint.mismatch.txt.gz"
+    stat = tmp_dir / f"{sample}.bdamage.gz.uglyprint.stat.txt.gz"
 
     d_move_source_target = {
-        mismatch: config["path_mismatches_txt"],
-        stat: config["path_mismatches_stat"],
-        path_tmp / f"{sample}.lca.gz": config["path_lca"],
-        path_tmp / f"{sample}.log": config["path_lca_log"],
+        mismatch: config["mismatches_txt_path"],
+        stat: config["mismatches_stat_path"],
+        tmp_dir / f"{sample}.lca.gz": config["lca_path"],
+        tmp_dir / f"{sample}.log": config["lca_log_path"],
     }
     for source_path, target_path in d_move_source_target.items():
         logger.debug(f"Moving {source_path} to {target_path}.")
@@ -170,14 +170,14 @@ def move_files(config: Config) -> None:
 def move_files_non_lca(config: Config) -> None:
 
     sample = config["sample"]
-    path_tmp = config["path_tmp"]
+    tmp_dir = config["tmp_dir"]
 
-    mismatch = path_tmp / f"{sample}.bdamage.gz.uglyprint.mismatch.txt.gz"
-    stat = path_tmp / f"{sample}.stat"
+    mismatch = tmp_dir / f"{sample}.bdamage.gz.uglyprint.mismatch.txt.gz"
+    stat = tmp_dir / f"{sample}.stat"
 
     d_move_source_target = {
-        mismatch: config["path_mismatches_txt"],
-        stat: config["path_mismatches_stat"],
+        mismatch: config["mismatches_txt_path"],
+        stat: config["mismatches_stat_path"],
     }
     for source_path, target_path in d_move_source_target.items():
         logger.debug(f"Moving {source_path} to {target_path}.")
@@ -191,11 +191,11 @@ def move_files_non_lca(config: Config) -> None:
 
 
 def create_tmp_dir(config: Config) -> None:
-    config["path_tmp"].mkdir(parents=True, exist_ok=True)
+    config["tmp_dir"].mkdir(parents=True, exist_ok=True)
 
 
 def delete_tmp_dir(config: Config) -> None:
-    utils.remove_directory(config["path_tmp"])
+    utils.remove_directory(config["tmp_dir"])
 
 
 #%%
@@ -267,9 +267,9 @@ def run_LCA(config: Config, force: bool = False) -> None:
     logger.info(f"Getting LCA.")
 
     targets = [
-        config["path_mismatches_txt"],
-        config["path_mismatches_stat"],
-        config["path_lca"],
+        config["mismatches_txt_path"],
+        config["mismatches_stat_path"],
+        config["lca_path"],
     ]
 
     if do_run(targets, force=force):
@@ -307,8 +307,8 @@ def run_damage_no_lca(config: Config, force: bool = False) -> None:
     logger.info(f"Getting damage.")
 
     targets = [
-        config["path_mismatches_txt"],
-        config["path_mismatches_stat"],
+        config["mismatches_txt_path"],
+        config["mismatches_stat_path"],
     ]
 
     if do_run(targets, force=force):

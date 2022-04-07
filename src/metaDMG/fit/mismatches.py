@@ -204,7 +204,7 @@ def csv_contains_less_than_N_lines(filename, N=2):
 
 def compute(config):
 
-    filename = config["path_mismatches_txt"]
+    filename = config["mismatches_txt_path"]
 
     if csv_contains_less_than_N_lines(filename, N=2):
         raise MismatchFileError(f"{filename} only contains a header, no data.")

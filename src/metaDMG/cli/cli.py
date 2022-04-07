@@ -186,12 +186,12 @@ def create_config(
         "--long-name",
         help="Use the full name of the sample file as sample name..",
     ),
-    damage_mode: cli_utils.DAMAGE_MODE = typer.Option(
-        cli_utils.DAMAGE_MODE.LCA,
-        "--damage-mode",
+    damage_modes_in: str = typer.Option(
+        "lca",
+        "--damage-modes",
         "-d",
         case_sensitive=False,
-        help="The Damage Mode. Use 'LCA' unless you know what you are doing.",
+        help="The Damage Modes. Use 'LCA' unless you know what you are doing.",
     ),
     overwrite_config: bool = typer.Option(
         False,
@@ -202,13 +202,10 @@ def create_config(
 ):
     """Generate the config file."""
 
-    if (damage_mode.lower() == "lca") and (
-        any(x is None for x in [names, nodes, acc2tax])
-    ):
-        typer.echo("--names, --nodes, and --acc2tax are mandatory when doing LCA.")
-        raise typer.Exit(code=1)
-
     from metaDMG import __version__, utils
+
+    damage_modes = utils.extract_damage_modes(damage_modes_in)
+    utils.check_damage_modes(damage_modes, names, nodes, acc2tax)
 
     config = utils.paths_to_strings(
         {
@@ -239,7 +236,7 @@ def create_config(
             "cores_per_sample": cores_per_sample,
             "bayesian": bayesian,
             "config_file": str(config_file),
-            "damage_mode": damage_mode.lower(),
+            "damage_modes": damage_modes,
             "version": __version__,
         }
     )

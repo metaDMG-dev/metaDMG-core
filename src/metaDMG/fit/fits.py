@@ -386,7 +386,7 @@ def read_stats_lca(config):
     ]
 
     # TODO: remove when Thorfinn updates his code
-    with gzip.open(config["path_mismatches_stat"], "rt") as f:
+    with gzip.open(config["mismatches_stat_path"], "rt") as f:
         data = f.read()
 
     data = data.replace("'", "")  # remove '
@@ -396,7 +396,7 @@ def read_stats_lca(config):
     string_columns = ["tax_id", "tax_name", "tax_rank", "tax_path"]
 
     df_stats = pd.read_csv(
-        StringIO(data),  # config["path_mismatches_stat"]
+        StringIO(data),  # config["mismatches_stat_path"]
         sep="\t",
         skiprows=1,
         index_col=False,
@@ -418,7 +418,7 @@ def read_stats_non_lca(config):
     columns = ["tax_id", "N_reads", "mean_L", "var_L", "mean_GC", "var_GC"]
 
     df_stats = pd.read_csv(
-        config["path_mismatches_stat"],
+        config["mismatches_stat_path"],
         sep="\t",
         names=columns,
         usecols=columns,

@@ -142,7 +142,7 @@ def merge(
 
 
 def get_database_read_ids(config):
-    file_lca = config["path_lca"]
+    file_lca = config["lca_path"]
     read_ids_mapping = read_filename_lca(file_lca)
     return read_ids_mapping
 
