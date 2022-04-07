@@ -262,6 +262,22 @@ def run_command_helper(config: Config, command: str) -> None:
 #%%
 
 
+def BAM_file_is_valid(config: Config) -> bool:
+
+    if not config["bam"].is_file():
+        logger.error(f"The sample bam file does not exist: {config['bam']}.")
+        return False
+
+    if config["bam"].stat().st_size == 0:
+        logger.error(f"The sample bam file is of size 0: {config['bam']}.")
+        return False
+
+    return True
+
+
+#%%
+
+
 def run_LCA(config: Config, force: bool = False) -> None:
 
     logger.info(f"Getting LCA.")
@@ -462,19 +478,6 @@ def _setup_logger(config: Config) -> None:
             log_path=config["log_path"],
         )
     current_process().name = f"{config['sample']} | {config['damage_mode']}"
-
-
-def BAM_file_is_valid(config: Config) -> bool:
-
-    if not config["bam"].is_file():
-        logger.error(f"The sample bam file does not exist: {config['bam']}.")
-        return False
-
-    if config["bam"].stat().st_size == 0:
-        logger.error(f"The sample bam file is of size 0: {config['bam']}.")
-        return False
-
-    return True
 
 
 #%%
