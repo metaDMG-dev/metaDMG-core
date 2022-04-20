@@ -250,7 +250,12 @@ def get_range_slider_keywords(viz_results, column="N_reads", N_steps=100):
         marks[marks_steps[0]] = {"label": no_min, "style": {"color": "#a3ada9"}}
         marks[marks_steps[-1]] = {"label": no_max, "style": {"color": "#a3ada9"}}
 
-    elif column in ["D_max", "q", "A", "c"]:
+    elif column in ["D_max", "q", "A", "c"] or column in [
+        "Bayesian_D_max",
+        "Bayesian_q",
+        "Bayesian_A",
+        "Bayesian_c",
+    ]:
         range_min = 0.0
         range_max = 1.0
         marks = {
