@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.24.3 (2022-05-04)
+### Fix
+* Improve marks in dashboard ([`f105fcf`](https://github.com/metaDMG-dev/metaDMG-core/commit/f105fcff5adbfc248e39e59de95893ccf2a26f6d))
+
 ## v0.24.2 (2022-04-07)
 ### Fix
 * Allow for compressed files in convert. ([`aebdbff`](https://github.com/metaDMG-dev/metaDMG-core/commit/aebdbff86d657fb87d9bd2eb7700047ea19dd803))
