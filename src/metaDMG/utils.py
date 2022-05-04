@@ -173,7 +173,8 @@ def make_configs(
 
     paths = ["names", "nodes", "acc2tax", "output_dir", "config_file"]
     for path in paths:
-        d[path] = Path(d[path])
+        if d[path]:
+            d[path] = Path(d[path])
     for key, val in d["samples"].items():
         d["samples"][key] = Path(val)
 
