@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.24.4 (2022-05-04)
+### Fix
+* Fix issue with forward-only in dashboard ([`7d5310f`](https://github.com/metaDMG-dev/metaDMG-core/commit/7d5310f5fac4f5acb4d3362a1ed4f84441e59bf1))
+
 ## v0.24.3 (2022-05-04)
 ### Fix
 * Improve marks in dashboard ([`f105fcf`](https://github.com/metaDMG-dev/metaDMG-core/commit/f105fcff5adbfc248e39e59de95893ccf2a26f6d))
