@@ -1,3 +1,4 @@
+#%%
 import warnings
 from pathlib import Path
 
@@ -59,14 +60,19 @@ def wide_to_long_df(group_wide):
         direction="Forward",
     )
 
-    group_long_reverse = pd_wide_to_long_forward_reverse(
-        group_wide,
-        sep="-",
-        direction="Reverse",
-    )
+    try:
+        group_long_reverse = pd_wide_to_long_forward_reverse(
+            group_wide,
+            sep="-",
+            direction="Reverse",
+        )
 
-    group_long = pd.concat([group_long_forward, group_long_reverse])
-    # group_long.loc[:, ["k", "N"]] = group_long.loc[:, ["k", "N"]].astype(int)
+        group_long = pd.concat([group_long_forward, group_long_reverse])
+        # group_long.loc[:, ["k", "N"]] = group_long.loc[:, ["k", "N"]].astype(int)
+
+    # happens when forward only
+    except ValueError:
+        group_long = group_long_forward
 
     group_long["sample"] = group_wide["sample"].iloc[0]
 
@@ -107,7 +113,11 @@ def correct_for_non_LCA(df):
 
 def compute_variance_scaling(df, phi_string):
     phi = df[phi_string]
-    N = np.mean([df["N_x=1_forward"], df["N_x=1_reverse"]])
+    if "N_x=1_reverse" in df.columns:
+        N_x = [df["N_x=1_forward"], df["N_x=1_reverse"]]
+    else:
+        N_x = [df["N_x=1_forward"]]
+    N = np.mean(N_x)
     return (phi + N) / (phi + 1)
 
 
