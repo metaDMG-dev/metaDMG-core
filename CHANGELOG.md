@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.24.5 (2022-05-20)
+### Fix
+* Fix issue when using --add-fit-predictions together with forward_only ([`6c0126c`](https://github.com/metaDMG-dev/metaDMG-core/commit/6c0126c8790c9092373d92cf4469317da130295f))
+
 ## v0.24.4 (2022-05-04)
 ### Fix
 * Fix issue with forward-only in dashboard ([`7d5310f`](https://github.com/metaDMG-dev/metaDMG-core/commit/7d5310f5fac4f5acb4d3362a1ed4f84441e59bf1))
