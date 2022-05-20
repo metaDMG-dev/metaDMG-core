@@ -546,6 +546,11 @@ def get_single_fit_prediction(df_results):
     else:
         prefix = ""
 
+    if "k-1" in df_results.columns:
+        forward_only = False
+    else:
+        forward_only = True
+
     A = df_results[f"{prefix}A"].values
     q = df_results[f"{prefix}q"].values
     c = df_results[f"{prefix}c"].values
@@ -555,9 +560,13 @@ def get_single_fit_prediction(df_results):
         int(name.split("+")[1]) for name in df_results.columns if name.startswith("k+")
     )
 
-    x = np.hstack(
-        [np.arange(max_position) + 1, np.arange(-1, -max_position - 1, -1)]
-    ).reshape((-1, 1))
+    if forward_only:
+        x = np.arange(max_position) + 1
+    else:
+        x = np.hstack(
+            [np.arange(max_position) + 1, np.arange(-1, -max_position - 1, -1)]
+        )
+    x = x.reshape((-1, 1))
 
     mask_N = [
         (name.startswith("N+") or name.startswith("N-")) for name in df_results.columns
