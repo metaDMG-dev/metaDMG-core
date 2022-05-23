@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.24.6 (2022-05-23)
+### Fix
+* Allow mismatch_to_mapDamage to work with forward-only data ([`c59240f`](https://github.com/metaDMG-dev/metaDMG-core/commit/c59240f635c840623ba7ba83ef3d7843845f3668))
+
 ## v0.24.5 (2022-05-20)
 ### Fix
 * Fix issue when using --add-fit-predictions together with forward_only ([`6c0126c`](https://github.com/metaDMG-dev/metaDMG-core/commit/6c0126c8790c9092373d92cf4469317da130295f))
