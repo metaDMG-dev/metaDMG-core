@@ -549,7 +549,7 @@ def mismatch_to_mapDamage(
     filename: Path = typer.Argument(
         ...,
         file_okay=True,
-        help="Path to the config-file.",
+        help="Path to the mismatch-file to convert.",
     ),
     csv_out: Path = typer.Option(
         "misincorporation.txt",

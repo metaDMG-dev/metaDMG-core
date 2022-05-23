@@ -1,3 +1,5 @@
+#%%
+
 import numpy as np
 import pandas as pd
 
@@ -5,7 +7,19 @@ from metaDMG import __version__ as version
 from metaDMG.fit import mismatches
 
 
+#%%
+
+
 def df_mismatch_to_mapDamage(df_mismatch):
+
+    df_mapDamage = df_mismatch.copy()
+
+    bases = ["A", "C", "G", "T"]
+    for base in bases:
+        if base not in df_mapDamage.columns:
+            mismatches.add_reference_count(df_mapDamage, ref=base)
+
+    df_mapDamage["Total"] = df_mapDamage[bases].sum(axis=1)
 
     # fmt: off
     columns = [
@@ -27,12 +41,6 @@ def df_mismatch_to_mapDamage(df_mismatch):
     idx_end = columns.index("G>T") + 1
     for sub in columns[idx_start:idx_end]:
         d_rename[sub[0] + sub[-1]] = sub
-
-    df_mapDamage = df_mismatch.copy()
-
-    mismatches.add_reference_count(df_mapDamage, ref="A")
-    mismatches.add_reference_count(df_mapDamage, ref="T")
-    df_mapDamage["Total"] = df_mapDamage[["A", "C", "G", "T"]].sum(axis=1)
 
     df_mapDamage = df_mapDamage.rename(columns=d_rename)
     df_mapDamage["End"] = np.where(df_mapDamage["Pos"] > 0, "5p", "3p")
@@ -65,3 +73,6 @@ def convert(filename, csv_out):
 
     with open(csv_out, "w", encoding="utf-8") as file:
         file.write(out)
+
+
+# %%

@@ -322,6 +322,7 @@ def make_fits(fit_result, data, mcmc_PMD, mcmc_null):
     fit_mcmc(mcmc_null, data)
     add_Bayesian_fit_result(fit_result, data, mcmc_PMD, mcmc_null)
     # mcmc_PMD.print_summary(prob=0.68)
+    # mcmc_null.print_summary(prob=0.68)
 
     # if False:
     #     use_last_state_as_warmup_state(mcmc_PMD)
