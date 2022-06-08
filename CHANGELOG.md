@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.24.7 (2022-06-08)
+### Fix
+* Update dependencies ([`206c47b`](https://github.com/metaDMG-dev/metaDMG-core/commit/206c47b6cd5e97e10acdfa61d27b151e14eb2bf8))
+
 ## v0.24.6 (2022-05-23)
 ### Fix
 * Allow mismatch_to_mapDamage to work with forward-only data ([`c59240f`](https://github.com/metaDMG-dev/metaDMG-core/commit/c59240f635c840623ba7ba83ef3d7843845f3668))
