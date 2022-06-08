@@ -380,6 +380,17 @@ class FrequentistNull:
         self.method = method
         self._setup_minuit()
 
+    def __repr__(self):
+        s = f"Frequentist(data, method={self.method}). \n\n"
+        s += self.__str__()
+        return s
+
+    def __str__(self):
+        s = f"sample = {self.sample}, tax_id = {self.tax_id} \n"
+        s += f"c = {self.c:.5f}, phi = {self.phi:.1f} \n"
+        s += f"log_likelihood = {self.log_likelihood:.3f} \n"
+        return s
+
     def __call__(self, A, q, c, phi):
         if self.method == "likelihood":
             return self.log_likelihood_null(A=A, q=q, c=c, phi=phi)
@@ -612,8 +623,8 @@ def make_forward_reverse_fits(fit_result, data, sample, tax_id):
         fit_result[f"{var}"] = getattr(fit_all, var)
 
     numerator = fit_forward.D_max - fit_reverse.D_max
-    delimiter = np.sqrt(fit_forward.D_max_std ** 2 + fit_reverse.D_max_std ** 2)
-    fit_result["asymmetry"] = np.abs(numerator) / delimiter
+    denominator = np.sqrt(fit_forward.D_max_std ** 2 + fit_reverse.D_max_std ** 2)
+    fit_result["asymmetry"] = np.abs(numerator) / denominator
 
     for var in vars_to_keep:
         fit_result[f"forward_{var}"] = getattr(fit_forward, var)
