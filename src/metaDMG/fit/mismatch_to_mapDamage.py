@@ -10,9 +10,33 @@ from metaDMG.fit import mismatches
 #%%
 
 
+def make_reverse_group(group):
+    group_reverse = pd.DataFrame(0, index=group.index, columns=group.columns)
+    group_reverse.loc[:, "tax_id"] = group.loc[:, "tax_id"]
+    group_reverse.loc[:, "direction"] = "3'"
+    group_reverse.loc[:, "position"] = -group.loc[:, "position"]
+    group_reverse.loc[:, "|x|"] = group.loc[:, "|x|"]
+    group_reverse.loc[:, "sample"] = group.loc[:, "sample"]
+    return group_reverse
+
+
+def append_reverse_groups(df_mismatch):
+    groups = []
+    for i, group in df_mismatch.groupby(["tax_id"], sort=False):
+        group_reverse = make_reverse_group(group)
+        group_combined = pd.concat([group, group_reverse])
+        groups.append(group_combined)
+    df_mismatch = pd.concat(groups)
+    return df_mismatch
+
+
 def df_mismatch_to_mapDamage(df_mismatch):
 
     df_mapDamage = df_mismatch.copy()
+
+    # if forward only, fill in zeros for reverse direction
+    if "3'" not in df_mapDamage["direction"].unique():
+        df_mapDamage = append_reverse_groups(df_mapDamage)
 
     bases = ["A", "C", "G", "T"]
     for base in bases:
@@ -73,6 +97,3 @@ def convert(filename, csv_out):
 
     with open(csv_out, "w", encoding="utf-8") as file:
         file.write(out)
-
-
-# %%
