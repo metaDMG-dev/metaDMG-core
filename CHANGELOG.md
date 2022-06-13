@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.24.8 (2022-06-13)
+### Fix
+* Fix bug with mismatch-to-mapDamage when forward-only mode ([`89670fa`](https://github.com/metaDMG-dev/metaDMG-core/commit/89670fa84efedf5460804fc55abf1c10e17d619c))
+
 ## v0.24.7 (2022-06-08)
 ### Fix
 * Update dependencies ([`206c47b`](https://github.com/metaDMG-dev/metaDMG-core/commit/206c47b6cd5e97e10acdfa61d27b151e14eb2bf8))
