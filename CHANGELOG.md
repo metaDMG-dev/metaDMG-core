@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.24.9 (2022-06-14)
+### Fix
+* Change "nreads" in non-LCA stats to N_alignments ([`85c033c`](https://github.com/metaDMG-dev/metaDMG-core/commit/85c033c9f0aeeb57c39f8a6297ffbca7570df73a))
+
 ## v0.24.8 (2022-06-13)
 ### Fix
 * Fix bug with mismatch-to-mapDamage when forward-only mode ([`89670fa`](https://github.com/metaDMG-dev/metaDMG-core/commit/89670fa84efedf5460804fc55abf1c10e17d619c))
