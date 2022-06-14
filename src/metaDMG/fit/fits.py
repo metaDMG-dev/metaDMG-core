@@ -415,7 +415,7 @@ def read_stats_lca(config):
 
 def read_stats_non_lca(config):
 
-    columns = ["tax_id", "N_reads", "mean_L", "var_L", "mean_GC", "var_GC"]
+    columns = ["tax_id", "N_alignments", "mean_L", "var_L", "mean_GC", "var_GC"]
 
     df_stats = pd.read_csv(
         config["path_mismatches_stat"],
@@ -523,7 +523,7 @@ def compute(config, df_mismatches):
 
     # if local or global damage
     if config["damage_mode"] in ("local", "global"):
-        for col in ["tax_name", "tax_rank", "N_alignments", "tax_path"]:
+        for col in ["tax_name", "tax_rank", "N_reads", "tax_path"]:
             cols_ordered.remove(col)
 
     df_fit_results = df_fit_results[cols_ordered]
