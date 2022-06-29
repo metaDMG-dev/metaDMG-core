@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.25.0 (2022-06-29)
+### Feature
+* Disallow the usage of similarity scores and edit distances at the same time ([`bf7f941`](https://github.com/metaDMG-dev/metaDMG-core/commit/bf7f941209629a9e2e285117773003b15a344039))
+
 ## v0.24.9 (2022-06-14)
 ### Fix
 * Change "nreads" in non-LCA stats to N_alignments ([`85c033c`](https://github.com/metaDMG-dev/metaDMG-core/commit/85c033c9f0aeeb57c39f8a6297ffbca7570df73a))
