@@ -1,6 +1,6 @@
 #%%
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 import typer
 
@@ -52,52 +52,56 @@ def create_config(
         ...,
         help="Single or multiple alignment-files (or a directory containing them).",
     ),
-    # LCA parameters
+    # LCA parameter
     names: Optional[Path] = typer.Option(
         None,
         exists=True,
         file_okay=True,
         help="Path to the (NCBI) names-mdmg.dmp.",
     ),
+    # LCA parameter
     nodes: Optional[Path] = typer.Option(
         None,
         exists=True,
         file_okay=True,
         help="Path to the (NCBI) nodes-mdmg.dmp.",
     ),
+    # LCA parameter
     acc2tax: Optional[Path] = typer.Option(
         None,
         exists=True,
         file_okay=True,
         help="Path to the (NCBI) acc2tax.gz.",
     ),
-    min_similarity_score: float = typer.Option(
-        0.95,
+    min_similarity_score: Optional[float] = typer.Option(
+        None,
         "--min-similarity-score",
         "-s",
         help="Normalised edit distance (read to reference similarity) minimum. Number between 0-1.",
-        callback=lambda x: cli_utils.is_in_range(x, 0, 1),
+        callback=lambda x: cli_utils.is_in_range_or_None(x, 0, 1),
     ),
-    max_similarity_score: float = typer.Option(
-        1.0,
+    max_similarity_score: Optional[float] = typer.Option(
+        None,
         "--max-similarity-score",
         "-S",
         help="Normalised edit distance (read to reference similarity) maximum. Number between 0-1.",
-        callback=lambda x: cli_utils.is_in_range(x, 0, 1),
+        callback=lambda x: cli_utils.is_in_range_or_None(x, 0, 1),
     ),
-    min_edit_dist: int = typer.Option(
-        0,
+    min_edit_dist: Optional[int] = typer.Option(
+        None,
+        # 0,
         "--min-edit-dist",
         "-e",
-        help="Minimum edit distance (read to reference similarity). Number between 0-10.",
-        callback=lambda x: cli_utils.is_in_range(x, 0, 10),
+        help="Minimum edit distance (read to reference similarity). Positive integer.",
+        callback=lambda x: cli_utils.is_positive_int_or_None(x),
     ),
-    max_edit_dist: int = typer.Option(
-        10,
+    max_edit_dist: Optional[int] = typer.Option(
+        None,
+        # 10,
         "--max-edit-dist",
         "-E",
-        help="Maximum edit distance (read to reference similarity). Number between 0-10.",
-        callback=lambda x: cli_utils.is_in_range(x, 0, 10),
+        help="Maximum edit distance (read to reference similarity). Positive integer.",
+        callback=lambda x: cli_utils.is_positive_int_or_None(x),
     ),
     min_mapping_quality: int = typer.Option(
         0,
@@ -223,10 +227,9 @@ def create_config(
             "names": names,
             "nodes": nodes,
             "acc2tax": acc2tax,
-            "min_similarity_score": min_similarity_score,
-            "max_similarity_score": max_similarity_score,
-            "min_edit_dist": min_edit_dist,
-            "max_edit_dist": max_edit_dist,
+            **cli_utils.set_min_max_similarity_score_edit_dist(
+                min_similarity_score, max_similarity_score, min_edit_dist, max_edit_dist
+            ),
             "min_mapping_quality": min_mapping_quality,
             "lca_rank": lca_rank.value,  # important to get string
             "max_position": max_position,

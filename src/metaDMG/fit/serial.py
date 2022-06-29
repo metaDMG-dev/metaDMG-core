@@ -57,9 +57,17 @@ def data_dir(config: Config, name, suffix="parquet"):
 #%%
 
 
+def _exists_in_config(s: str, key: str, config: Config) -> str:
+    return f"-{s} {config[key]}" if key in config else ""
+
+
 def get_LCA_command(config: Config) -> str:
     outnames = config["path_tmp"] / config["sample"]
     lca_rank = f"-lca_rank {config['lca_rank']}" if config["lca_rank"] != "" else ""
+    simscorelow = _exists_in_config("simscorelow", "min_similarity_score", config)
+    simscorehigh = _exists_in_config("simscorehigh", "max_similarity_score", config)
+    editdistmin = _exists_in_config("editdistmin", "min_edit_dist", config)
+    editdistmax = _exists_in_config("editdistmax", "max_edit_dist", config)
 
     command = (
         f"{config['metaDMG_cpp']} lca "
@@ -68,10 +76,10 @@ def get_LCA_command(config: Config) -> str:
         f"-names {config['names']} "
         f"-nodes {config['nodes']} "
         f"-acc2tax {config['acc2tax']} "
-        f"-simscorelow {config['min_similarity_score']} "
-        f"-simscorehigh {config['max_similarity_score']} "
-        f"-editdistmin {config['min_edit_dist']} "
-        f"-editdistmax {config['max_edit_dist']} "
+        f"{simscorelow} "
+        f"{simscorehigh} "
+        f"{editdistmin} "
+        f"{editdistmax} "
         f"{lca_rank} "
         f"-minmapq {config['min_mapping_quality']} "
         f"-howmany {config['max_position']} "
