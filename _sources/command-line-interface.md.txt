@@ -33,8 +33,8 @@ The `samples` refer to a single or multiple alignment-files (or a directory cont
   - `--acc2tax`: Path to the (NCBI) `acc2tax.gz`. Mandatory for LCA.
   - `--min-similarity-score`: Normalised edit distance (read to reference similarity) minimum. Number between 0-1. Default: 0.95.
   - `--max-similarity-score`: Normalised edit distance (read to reference similarity) maximum. Number between 0-1 Default: 1.0.
-  - `--min-edit-dist`: Minimum edit distance (read to reference similarity). Number between 0-10. Default: 0.
-  - `--max-edit-dist`: Maximum edit distance (read to reference similarity). Number between 0-10. Default: 10.
+  - `--min-edit-dist`: Minimum edit distance (read to reference similarity). Positive integer. Note that edit distances scores cannot be set at the same time as similarity scores; choose one or the other.
+  - `--max-edit-dist`: Maximum edit distance (read to reference similarity). Positive integer. Note that edit distances scores cannot be set at the same time as similarity scores; choose one or the other.
   - `--min-mapping-quality`: Minimum mapping quality. Default: 0.
   - `--lca-rank`: The LCA rank used in ngsLCA. Can be either `family`, `genus`, `species` or `""` (everything). Default is `""`.
 
