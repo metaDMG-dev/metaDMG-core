@@ -170,7 +170,11 @@ def move_files(config: Config) -> None:
     for source_path, target_path in d_move_source_target.items():
         logger.debug(f"Moving {source_path} to {target_path}.")
         if not source_path.is_file():
-            raise metadamageError(f"{source_path} does not exist.")
+            raise metadamageError(
+                f"{source_path} does not exist. If you use a custom database, "
+                "remember to use the bool flag --custom-database when creating "
+                "the config file."
+            )
         target_path.parent.mkdir(parents=True, exist_ok=True)
         shutil.move(source_path, target_path)
 
