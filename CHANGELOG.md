@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.25.1 (2022-07-04)
+### Fix
+* Re-raise errors ([`9b08e76`](https://github.com/metaDMG-dev/metaDMG-core/commit/9b08e76d2fb27bf49fd8e11406cabeffc9798f51))
+* Add better error message in the of unspecified custom database ([`a711a01`](https://github.com/metaDMG-dev/metaDMG-core/commit/a711a010e3a60f107970392636307f1284eacb6a))
+
 ## v0.25.0 (2022-06-29)
 ### Feature
 * Disallow the usage of similarity scores and edit distances at the same time ([`bf7f941`](https://github.com/metaDMG-dev/metaDMG-core/commit/bf7f941209629a9e2e285117773003b15a344039))
