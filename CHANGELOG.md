@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.26.0 (2022-07-04)
+### Feature
+* Add minimum reads as an optional threshold ([`23f9c16`](https://github.com/metaDMG-dev/metaDMG-core/commit/23f9c16bd0291e41ff8fb59e22cf004ab8605e13))
+
 ## v0.25.1 (2022-07-04)
 ### Fix
 * Re-raise errors ([`9b08e76`](https://github.com/metaDMG-dev/metaDMG-core/commit/9b08e76d2fb27bf49fd8e11406cabeffc9798f51))
