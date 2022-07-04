@@ -6,68 +6,36 @@
 ### Feature
 * Add minimum reads as an optional threshold ([`23f9c16`](https://github.com/metaDMG-dev/metaDMG-core/commit/23f9c16bd0291e41ff8fb59e22cf004ab8605e13))
 
-## v0.25.1 (2022-07-04)
+## v0.25.0 (2022-07-04)
+### Feature
+* Disallow the usage of similarity scores and edit distances at the same time ([`bf7f941`](https://github.com/metaDMG-dev/metaDMG-core/commit/bf7f941209629a9e2e285117773003b15a344039))
+
 ### Fix
 * Re-raise errors ([`9b08e76`](https://github.com/metaDMG-dev/metaDMG-core/commit/9b08e76d2fb27bf49fd8e11406cabeffc9798f51))
 * Add better error message in the of unspecified custom database ([`a711a01`](https://github.com/metaDMG-dev/metaDMG-core/commit/a711a010e3a60f107970392636307f1284eacb6a))
 
-## v0.25.0 (2022-06-29)
-### Feature
-* Disallow the usage of similarity scores and edit distances at the same time ([`bf7f941`](https://github.com/metaDMG-dev/metaDMG-core/commit/bf7f941209629a9e2e285117773003b15a344039))
-
-## v0.24.9 (2022-06-14)
-### Fix
-* Change "nreads" in non-LCA stats to N_alignments ([`85c033c`](https://github.com/metaDMG-dev/metaDMG-core/commit/85c033c9f0aeeb57c39f8a6297ffbca7570df73a))
-
-## v0.24.8 (2022-06-13)
-### Fix
-* Fix bug with mismatch-to-mapDamage when forward-only mode ([`89670fa`](https://github.com/metaDMG-dev/metaDMG-core/commit/89670fa84efedf5460804fc55abf1c10e17d619c))
-
-## v0.24.7 (2022-06-08)
-### Fix
-* Update dependencies ([`206c47b`](https://github.com/metaDMG-dev/metaDMG-core/commit/206c47b6cd5e97e10acdfa61d27b151e14eb2bf8))
-
-## v0.24.6 (2022-05-23)
-### Fix
-* Allow mismatch_to_mapDamage to work with forward-only data ([`c59240f`](https://github.com/metaDMG-dev/metaDMG-core/commit/c59240f635c840623ba7ba83ef3d7843845f3668))
-
-## v0.24.5 (2022-05-20)
-### Fix
-* Fix issue when using --add-fit-predictions together with forward_only ([`6c0126c`](https://github.com/metaDMG-dev/metaDMG-core/commit/6c0126c8790c9092373d92cf4469317da130295f))
-
-## v0.24.4 (2022-05-04)
-### Fix
-* Fix issue with forward-only in dashboard ([`7d5310f`](https://github.com/metaDMG-dev/metaDMG-core/commit/7d5310f5fac4f5acb4d3362a1ed4f84441e59bf1))
-
-## v0.24.3 (2022-05-04)
-### Fix
-* Improve marks in dashboard ([`f105fcf`](https://github.com/metaDMG-dev/metaDMG-core/commit/f105fcff5adbfc248e39e59de95893ccf2a26f6d))
-
-## v0.24.2 (2022-04-07)
-### Fix
-* Allow for compressed files in convert. ([`aebdbff`](https://github.com/metaDMG-dev/metaDMG-core/commit/aebdbff86d657fb87d9bd2eb7700047ea19dd803))
-* Infer metaDMG-cpp from config file in PMD ([`f38e3c6`](https://github.com/metaDMG-dev/metaDMG-core/commit/f38e3c677fcd322265eeedaab2d3b9c91f668b98))
-
-### Documentation
-* Update docs action ([`15a5a3b`](https://github.com/metaDMG-dev/metaDMG-core/commit/15a5a3ba2c324f670d2a0e4d2dcfeb155fde074e))
-* Remove _static ([`1d08ccd`](https://github.com/metaDMG-dev/metaDMG-core/commit/1d08ccd898d1d1fc15b7ef60afdbdd8e15758466))
-
-## v0.24.1 (2022-04-05)
-### Fix
-* Include static folder in docs ([`dcbcfd9`](https://github.com/metaDMG-dev/metaDMG-core/commit/dcbcfd93357b240222e205f050877bddad1930ad))
-
-### Documentation
-* Include PMD in docs ([`5e3e37d`](https://github.com/metaDMG-dev/metaDMG-core/commit/5e3e37d95c1607b20df18377adad0f6a394b30c1))
-
-## v0.24.0 (2022-04-05)
+## v0.24 (2022-06-14)
 ### Feature
 * Add PMD command and include Configs in core ([`11eab19`](https://github.com/metaDMG-dev/metaDMG-core/commit/11eab1967f6ed957e87ea135285501c6061fa640))
 
 ### Fix
+* Change "nreads" in non-LCA stats to N_alignments ([`85c033c`](https://github.com/metaDMG-dev/metaDMG-core/commit/85c033c9f0aeeb57c39f8a6297ffbca7570df73a))
+* Fix bug with mismatch-to-mapDamage when forward-only mode ([`89670fa`](https://github.com/metaDMG-dev/metaDMG-core/commit/89670fa84efedf5460804fc55abf1c10e17d619c))
+* Update dependencies ([`206c47b`](https://github.com/metaDMG-dev/metaDMG-core/commit/206c47b6cd5e97e10acdfa61d27b151e14eb2bf8))
+* Allow mismatch_to_mapDamage to work with forward-only data ([`c59240f`](https://github.com/metaDMG-dev/metaDMG-core/commit/c59240f635c840623ba7ba83ef3d7843845f3668))
+* Fix issue when using --add-fit-predictions together with forward_only ([`6c0126c`](https://github.com/metaDMG-dev/metaDMG-core/commit/6c0126c8790c9092373d92cf4469317da130295f))
+* Fix issue with forward-only in dashboard ([`7d5310f`](https://github.com/metaDMG-dev/metaDMG-core/commit/7d5310f5fac4f5acb4d3362a1ed4f84441e59bf1))
+* Improve marks in dashboard ([`f105fcf`](https://github.com/metaDMG-dev/metaDMG-core/commit/f105fcff5adbfc248e39e59de95893ccf2a26f6d))
+* Allow for compressed files in convert. ([`aebdbff`](https://github.com/metaDMG-dev/metaDMG-core/commit/aebdbff86d657fb87d9bd2eb7700047ea19dd803))
+* Infer metaDMG-cpp from config file in PMD ([`f38e3c6`](https://github.com/metaDMG-dev/metaDMG-core/commit/f38e3c677fcd322265eeedaab2d3b9c91f668b98))
+* Include static folder in docs ([`dcbcfd9`](https://github.com/metaDMG-dev/metaDMG-core/commit/dcbcfd93357b240222e205f050877bddad1930ad))
 * Continue to use Union in Python 3.9 ([`2a04213`](https://github.com/metaDMG-dev/metaDMG-core/commit/2a04213176b2d93fdbb13da24ab7def6af16e7e3))
 * Update lock file ([`ecec382`](https://github.com/metaDMG-dev/metaDMG-core/commit/ecec38206036247cb15ed5cda4a150aac1ccf652))
 
 ### Documentation
+* Update docs action ([`15a5a3b`](https://github.com/metaDMG-dev/metaDMG-core/commit/15a5a3ba2c324f670d2a0e4d2dcfeb155fde074e))
+* Remove _static ([`1d08ccd`](https://github.com/metaDMG-dev/metaDMG-core/commit/1d08ccd898d1d1fc15b7ef60afdbdd8e15758466))
+* Include PMD in docs ([`5e3e37d`](https://github.com/metaDMG-dev/metaDMG-core/commit/5e3e37d95c1607b20df18377adad0f6a394b30c1))
 * Add dashboard styling to docs ([`bf6583d`](https://github.com/metaDMG-dev/metaDMG-core/commit/bf6583df7190aa1eed97903c8a2f280ceba1d7e6))
 * Update dashboard section ([`38a7689`](https://github.com/metaDMG-dev/metaDMG-core/commit/38a76896b4843c30c73ab5e4a61a4193165df950))
 * Update SSH flowchart ([`edc420a`](https://github.com/metaDMG-dev/metaDMG-core/commit/edc420a3072754c2d04de771732e646c8aa7c3cd))

@@ -139,7 +139,7 @@ def create_config(
         0,
         "--min-reads",
         "-n",
-        help="Minimum number of reads to include (min_reads <= N_reads).",
+        help="Minimum number of reads to include in the fits (min_reads <= N_reads).",
     ),
     weight_type: int = typer.Option(
         1,
