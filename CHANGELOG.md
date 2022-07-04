@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.26.1 (2022-07-04)
+### Fix
+* Change alignment file in test dir ([`2beed66`](https://github.com/metaDMG-dev/metaDMG-core/commit/2beed66e16c6bf15517867d1b968af56bbbf2fcf))
+
+### Documentation
+* Add min-reads to onoine docs ([`0f74800`](https://github.com/metaDMG-dev/metaDMG-core/commit/0f74800a681a1fbe3dce85c4c02a364fae8802c6))
+
 ## v0.26.0 (2022-07-04)
 ### Feature
 * Add minimum reads as an optional threshold ([`23f9c16`](https://github.com/metaDMG-dev/metaDMG-core/commit/23f9c16bd0291e41ff8fb59e22cf004ab8605e13))
