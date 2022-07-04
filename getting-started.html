@@ -451,7 +451,7 @@ poetry add metaDMG["all"]
 <div class="section" id="create-the-config-file">
 <h3>Create the config file<a class="headerlink" href="#create-the-config-file" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">metaDMG</span></code> works by first creating a config file using the <code class="docutils literal notranslate"><span class="pre">config</span></code> command. This file contains all of the information related to <code class="docutils literal notranslate"><span class="pre">metaDMG</span></code> such that you only have to type this once. The config file is saved in the current directory as <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> and can subsequently be edited in any text editor of your like.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG config raw_data/alignment.bam <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG config raw_data/alignment.sorted.bam <span class="se">\</span>
     --names raw_data/names-mdmg.dmp <span class="se">\</span>
     --nodes raw_data/nodes-mdmg.dmp <span class="se">\</span>
     --acc2tax raw_data/acc2taxid.map.gz

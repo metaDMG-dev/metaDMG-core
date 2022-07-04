@@ -666,7 +666,7 @@ The <code class="docutils literal notranslate"><span class="pre">samples</span><
 </div>
 <div class="section" id="examples">
 <h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG config raw_data/alignment.bam <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG config raw_data/alignment.sorted.bam <span class="se">\</span>
     --names raw_data/names-mdmg.dmp <span class="se">\</span>
     --nodes raw_data/nodes-mdmg.dmp <span class="se">\</span>
     --acc2tax raw_data/acc2taxid.map.gz <span class="se">\</span>
@@ -682,7 +682,7 @@ The <code class="docutils literal notranslate"><span class="pre">samples</span><
 </pre></div>
 </div>
 <p>To run <code class="docutils literal notranslate"><span class="pre">metaDMG</span></code> in non-LCA mode, an example could be:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ metaDMG config raw_data/alignment.bam --damage-mode local --max-position 15 --bayesian
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ metaDMG config raw_data/alignment.sorted.bam --damage-mode local --max-position 15 --bayesian
 </pre></div>
 </div>
 <hr class="docutils" />

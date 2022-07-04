@@ -440,7 +440,7 @@ For ease of use, <code class="docutils literal notranslate"><span class="pre">me
 To compare two different analysis, one simply need to compare the <code class="docutils literal notranslate"><span class="pre">config</span></code> files. As such, the <code class="docutils literal notranslate"><span class="pre">config</span></code> file can thus be seen as all the relevant metadata.</p>
 <p><code class="docutils literal notranslate"><span class="pre">metaDMG</span> <span class="pre">config</span></code> should have sensible defaults. The full specification of the avaliable options can be found either by running <code class="docutils literal notranslate"><span class="pre">metaDMG</span> <span class="pre">config</span> <span class="pre">--help</span></code> or for a more thorough explanation, see <a class="reference internal" href="command-line-interface.html#command-line-interface-config"><span class="std std-ref">here</span></a>.</p>
 <p>Since the data we have in this example is quite small, we want to run the full Bayesian analysis. As such, we generate the following <code class="docutils literal notranslate"><span class="pre">config</span></code> file:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG config raw_data/alignment.bam <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG config raw_data/alignment.sorted.bam <span class="se">\</span>
     --names raw_data/names-mdmg.dmp <span class="se">\</span>
     --nodes raw_data/nodes-mdmg.dmp <span class="se">\</span>
     --acc2tax raw_data/acc2taxid.map.gz <span class="se">\</span>
