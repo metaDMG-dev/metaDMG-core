@@ -48,6 +48,7 @@ The `samples` refer to a single or multiple alignment-files (or a directory cont
   - `--config-file`: The name of the generated config file. Default: `config.yaml`.
   - `--metaDMG-cpp`: The command needed to run the `metaDMG-cpp` program.
   - `--max-position`: Maximum position in the sequence to include. Default is (+/-) 15 (forward/reverse).
+  - `--min-reads`: Minimum number of reads to include in the fits (min_reads <= N_reads)..
   - `--parallel-samples`: The number of samples to run in parallel. Default is running in seriel.
   - `--cores-per-sample`: Number of cores to use pr. sample. Do not change unless you know what you are doing.
   - `--sample-prefix`: Prefix for the sample names.
