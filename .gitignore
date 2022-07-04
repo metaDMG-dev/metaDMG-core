@@ -223,3 +223,5 @@ fix_numba.sh
 /logo/*
 !/logo/logo.png
 c55d4e2df1-config.lca.weight-1.yaml
+alignment.mismatches.txt
+misincorporation.txt

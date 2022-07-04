@@ -502,14 +502,14 @@ def run_single_config(
 
     try:
         run_cpp(config, force=force)
-    except metadamageError:
+    except metadamageError as e:
         logger.exception(
             f"metadamageError with run_LCA. See log-file for more information."
         )
-        return None
-    except AlignmentFileError:
+        raise e
+    except AlignmentFileError as e:
         logger.exception(f"Bad alignment file. See log-file for more information.")
-        return None
+        raise e
     except KeyboardInterrupt:
         logger.info("Got KeyboardInterrupt. Cleaning up.")
         delete_tmp_dir(config)
@@ -517,12 +517,12 @@ def run_single_config(
 
     try:
         df_mismatches = get_df_mismatches(config, force=force)
-    except MismatchFileError:
+    except MismatchFileError as e:
         logger.exception(
             f"MismatchFileError with get_df_mismatches. "
             f"See log-file for more information."
         )
-        return None
+        raise e
 
     try:
         df_fit_results = get_df_fit_results(config, df_mismatches, force=force)
@@ -531,7 +531,7 @@ def run_single_config(
             "BadDataError happened while fitting, see log file for more info. "
             "Skipping for now."
         )
-        return None
+        raise e
 
     df_results = get_df_results(config, df_mismatches, df_fit_results, force=force)
     # read_ids_mapping = get_database_read_ids(config)
