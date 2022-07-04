@@ -169,6 +169,7 @@ def make_configs(
     d.setdefault("forward_only", False)
     d.setdefault("cores_per_sample", 1)
     d.setdefault("damage_mode", "lca")
+    d.setdefault("min_reads", 0)
     d["force"] = force
 
     paths = ["names", "nodes", "acc2tax", "output_dir", "config_file"]

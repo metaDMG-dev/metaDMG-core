@@ -1,10 +1,11 @@
+#%%
+
 import numpy as np
 import pandas as pd
 
 from metaDMG.errors import MismatchFileError
-
-#
 from metaDMG.fit import fit_utils
+from metaDMG.utils import Config
 
 
 columns = [
@@ -163,13 +164,6 @@ def add_min_N_in_group(df, config):
     return df
 
 
-# def filter_cut_based_on_cfg(df, cfg):
-#     # query = f"(N_alignments >= {cfg.min_alignments}) "
-#     query = f"(k_sum_total >= {cfg.min_k_sum})"
-#     query += f"& (min_N_in_group >= {cfg.min_N_at_each_pos})"
-#     return df.query(query)
-
-
 def add_k_N_x_names(df, config):
     # mask_forward = df["direction"] == "5'"
     if config["forward_only"]:
@@ -202,7 +196,7 @@ def csv_contains_less_than_N_lines(filename, N=2):
     return True
 
 
-def compute(config):
+def compute(config: Config) -> pd.DataFrame:
 
     filename = config["path_mismatches_txt"]
 
@@ -221,7 +215,6 @@ def compute(config):
         .pipe(add_k_sum_counts)
         .pipe(add_min_N_in_group, config)
         .pipe(make_tax_id_str)
-        # .pipe(filter_cut_based_on_cfg, cfg)
         .reset_index(drop=True)
         .fillna(0)
     )

@@ -57,7 +57,7 @@ def test_CLI_version():
 
 
 def test_CLI_config_LCA_without_names():
-    result = runner.invoke(cli_app, ["config", "./testdata/alignment.bam"])
+    result = runner.invoke(cli_app, ["config", "./testdata/alignment.sorted.bam"])
     assert result.exit_code != 0
     assert "are mandatory when doing" in result.stdout
 
@@ -75,7 +75,7 @@ pmd_path = Path("data") / "pmd" / "alignment.pmd.txt.gz"
 
 LCA_commands = [
     "config",
-    "testdata/alignment.bam",
+    "testdata/alignment.sorted.bam",
     "--names",
     "testdata/names-mdmg.dmp",
     "--nodes",

@@ -107,7 +107,7 @@ Here we sketch how a typical workflow works in `metaDMG`. In short:
 `metaDMG` works by first creating a config file using the `config` command. This file contains all of the information related to `metaDMG` such that you only have to type this once. The config file is saved in the current directory as `config.yaml` and can subsequently be edited in any text editor of your like.
 
 ```console
-$ metaDMG config raw_data/alignment.bam \
+$ metaDMG config raw_data/alignment.sorted.bam \
     --names raw_data/names-mdmg.dmp \
     --nodes raw_data/nodes-mdmg.dmp \
     --acc2tax raw_data/acc2taxid.map.gz

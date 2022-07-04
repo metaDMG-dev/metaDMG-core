@@ -12,7 +12,12 @@ def get_data(output_dir: Path = Path("raw_data")) -> None:
         _description_
     """
 
-    files = ["alignment.bam", "names-mdmg.dmp", "nodes-mdmg.dmp", "acc2taxid.map.gz"]
+    files = [
+        "alignment.sorted.bam",
+        "names-mdmg.dmp",
+        "nodes-mdmg.dmp",
+        "acc2taxid.map.gz",
+    ]
 
     for file in files:
         with resources.path("metaDMG.data", file) as p:

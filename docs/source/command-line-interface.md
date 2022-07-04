@@ -65,7 +65,7 @@ The `samples` refer to a single or multiple alignment-files (or a directory cont
 ### Examples
 
 ```console
-$ metaDMG config raw_data/alignment.bam \
+$ metaDMG config raw_data/alignment.sorted.bam \
     --names raw_data/names-mdmg.dmp \
     --nodes raw_data/nodes-mdmg.dmp \
     --acc2tax raw_data/acc2taxid.map.gz \
@@ -83,7 +83,7 @@ $ metaDMG config raw_data/ [...]
 
 To run `metaDMG` in non-LCA mode, an example could be:
 ```
-$ metaDMG config raw_data/alignment.bam --damage-mode local --max-position 15 --bayesian
+$ metaDMG config raw_data/alignment.sorted.bam --damage-mode local --max-position 15 --bayesian
 ```
 
 ---

@@ -135,6 +135,12 @@ def create_config(
         "-P",
         help="Number of positions to include (|x| < max_position).",
     ),
+    min_reads: int = typer.Option(
+        0,
+        "--min-reads",
+        "-n",
+        help="Minimum number of reads to include (min_reads <= N_reads).",
+    ),
     weight_type: int = typer.Option(
         1,
         "--weight-type",
@@ -233,6 +239,7 @@ def create_config(
             "min_mapping_quality": min_mapping_quality,
             "lca_rank": lca_rank.value,  # important to get string
             "max_position": max_position,
+            "min_reads": min_reads,
             "weight_type": weight_type,
             "custom_database": custom_database,
             "forward_only": forward_only,

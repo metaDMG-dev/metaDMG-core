@@ -130,7 +130,7 @@ def merge(
 
     # if local or global damage
     if config["damage_mode"] in ("local", "global"):
-        for col in ["tax_name", "tax_rank", "N_reads"]:
+        for col in ["tax_name", "tax_rank", "N_alignments"]:
             columns_order.remove(col)
 
     columns_order += [col for col in df_fit_results.columns if not col in columns_order]

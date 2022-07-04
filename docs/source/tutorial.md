@@ -33,7 +33,7 @@ To compare two different analysis, one simply need to compare the `config` files
 Since the data we have in this example is quite small, we want to run the full Bayesian analysis. As such, we generate the following `config` file:
 
 ```console
-$ metaDMG config raw_data/alignment.bam \
+$ metaDMG config raw_data/alignment.sorted.bam \
     --names raw_data/names-mdmg.dmp \
     --nodes raw_data/nodes-mdmg.dmp \
     --acc2tax raw_data/acc2taxid.map.gz \

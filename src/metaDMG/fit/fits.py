@@ -9,9 +9,11 @@ import numpy as np
 import numpyro
 import pandas as pd
 from logger_tt import logger
+from tqdm import tqdm
 
 from metaDMG.errors import BadDataError
 from metaDMG.fit import bayesian, fit_utils, frequentist
+from metaDMG.utils import Config
 
 
 numpyro.enable_x64()
@@ -156,9 +158,6 @@ def fit_single_group(
         bayesian.make_fits(fit_result, data, mcmc_PMD, mcmc_null)
 
     return fit_result
-
-
-from tqdm import tqdm
 
 
 def compute_fits_seriel(config, df_mismatches, with_progressbar=False):
@@ -367,7 +366,7 @@ def split(strng, sep, pos):
 #%%
 
 
-def read_stats_lca(config):
+def read_stats_lca(config: Config):
 
     import gzip
     from io import StringIO
@@ -413,9 +412,9 @@ def read_stats_lca(config):
     return df_stats
 
 
-def read_stats_non_lca(config):
+def read_stats_non_lca(config: Config):
 
-    columns = ["tax_id", "N_alignments", "mean_L", "var_L", "mean_GC", "var_GC"]
+    columns = ["tax_id", "N_reads", "mean_L", "var_L", "mean_GC", "var_GC"]
 
     df_stats = pd.read_csv(
         config["path_mismatches_stat"],
@@ -429,11 +428,47 @@ def read_stats_non_lca(config):
     return df_stats
 
 
-def read_stats(config):
+def read_stats(config: Config):
     if config["damage_mode"] == "lca":
         return read_stats_lca(config)
     else:
         return read_stats_non_lca(config)
+
+
+def cut_minimum_reads(
+    config: Config,
+    df_stats: pd.DataFrame,
+) -> pd.DataFrame:
+    return df_stats.query(f"(N_reads >= {config['min_reads']})")
+
+
+def filter_tax_ids(
+    config: Config,
+    df_stats: pd.DataFrame,
+    df_stat_cut: pd.DataFrame,
+    df_mismatches: pd.DataFrame,
+) -> pd.DataFrame:
+    all_tax_ids = set(df_stats["tax_id"].unique())
+    good_tax_ids = set(df_stat_cut["tax_id"].unique())
+    bad_tax_ids = all_tax_ids.difference(good_tax_ids)
+    if len(bad_tax_ids) > 0:
+        logger.debug(f"Dropping the following Tax IDs due to too few reads:")
+        logger.debug(bad_tax_ids)
+        logger.debug(f"with a minimum reads threshold of {config['min_reads']}.")
+    return df_mismatches.query("tax_id in @good_tax_ids")
+
+
+def filter_k_sum(
+    config: Config,
+    df_mismatches: pd.DataFrame,
+) -> pd.DataFrame:
+
+    # filter out tax_id's with 0 k_sum_total
+    tax_ids_to_drop = set(df_mismatches.query("k_sum_total == 0")["tax_id"].unique())
+    if len(tax_ids_to_drop) > 0:
+        logger.debug(f"Dropping the following Tax IDs since k_sum_total == 0:")
+        logger.debug(tax_ids_to_drop)
+    return df_mismatches.query("k_sum_total > 0")
 
 
 #%%
@@ -441,12 +476,14 @@ def read_stats(config):
 
 def compute(config, df_mismatches):
 
+    df_stats = read_stats(config)
+    df_stat_cut = cut_minimum_reads(config, df_stats)
+
+    # filter out tax_id's with too few reads
+    df_mismatches = filter_tax_ids(config, df_stats, df_stat_cut, df_mismatches)
+
     # filter out tax_id's with 0 k_sum_total
-    tax_ids_to_drop = set(df_mismatches.query("k_sum_total == 0")["tax_id"].unique())
-    if len(tax_ids_to_drop) > 0:
-        logger.debug(f"Dropping the following Tax IDs since k_sum_total == 0:")
-        logger.debug(tax_ids_to_drop)
-    df_mismatches = df_mismatches.query("k_sum_total > 0")
+    df_mismatches = filter_k_sum(config, df_mismatches)
 
     if len(df_mismatches) == 0:
         s = f"{config['sample']} df_mismatches.query('k_sum_total > 0') is empty."
@@ -501,9 +538,7 @@ def compute(config, df_mismatches):
         df_mismatches,
     )
 
-    df_stats = read_stats(config)
-
-    df_fit_results = pd.merge(df_fit_results, df_stats, on="tax_id")
+    df_fit_results = pd.merge(df_fit_results, df_stat_cut, on="tax_id")
 
     cols_ordered = [
         "tax_id",
@@ -523,7 +558,7 @@ def compute(config, df_mismatches):
 
     # if local or global damage
     if config["damage_mode"] in ("local", "global"):
-        for col in ["tax_name", "tax_rank", "N_reads", "tax_path"]:
+        for col in ["tax_name", "tax_rank", "N_alignments", "tax_path"]:
             cols_ordered.remove(col)
 
     df_fit_results = df_fit_results[cols_ordered]
