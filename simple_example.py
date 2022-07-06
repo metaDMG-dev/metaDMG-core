@@ -13,6 +13,13 @@ customtkinter.set_default_color_theme("blue")
 from enum import Enum
 
 
+output_dir_default = Path("./data/")
+
+
+def format_directory(path: Path):
+    return path.name + "/"
+
+
 class DAMAGE_MODE(str, Enum):
     "Damage mode allowed in the LCA"
 
@@ -30,106 +37,148 @@ class DAMAGE_MODE(str, Enum):
 
 
 class App(customtkinter.CTk):
-
-    WIDTH = 400
-    HEIGHT = 580
-
-    MAX_POSITION_MIN = 1
-    MAX_POSITION_DEFAULT = 10
-    MAX_POSITION_MAX = 30
-
-    CUSTOM_DATABASE_TRUE = "Custom Database: ON"
-    CUSTOM_DATABASE_FALSE = "Custom Database: OFF"
-
     def __init__(self):
         super().__init__()
 
         self.title("CustomTkinter simple_example.py")
-        self.geometry(f"{App.WIDTH}x{App.HEIGHT}")
+
+        WIDTH = 400
+        HEIGHT = 580
+
+        self.geometry(f"{WIDTH}x{HEIGHT}")
         self.grid_columnconfigure((0, 1), weight=1)
         # call .on_closing() when app gets closed
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-        self.bam_init()
-        self.max_position_init()
-        self.custom_database_init()
-        self.damage_mode_init()
-        self.print_config_init()
+        inits = [
+            self.init_bam,
+            self.init_damage_mode,
+            self.init_output_dir,
+            self.init_max_position,
+            self.init_custom_database,
+            self.init_sample_prefix,
+            self.init_print_config,
+        ]
 
-        self.sample_prefix_label = customtkinter.CTkLabel(
-            master=self,
-            text="Sample Prefix",
-            justify=tkinter.LEFT,
-        )
-        self.sample_prefix_label.grid(row=4, column=0, pady=12, padx=10)
-
-        self.sample_prefix_entry = customtkinter.CTkEntry(
-            master=self,
-            placeholder_text="",
-        )
-        self.sample_prefix_entry.grid(row=4, column=1, pady=12, padx=10)
+        for row, init in enumerate(inits):
+            init(row)
 
     # ============ BAM FILE (FILE) ============
 
-    def bam_init(self):
+    def init_bam(self, row):
 
         self.bam_file_string = customtkinter.StringVar()
 
         self.bam_label = customtkinter.CTkLabel(
             master=self,
             justify=tkinter.LEFT,
-            text="Please select a BAM file",
+            text="Input BAM file",
         )
-        self.bam_label.grid(row=0, column=0, pady=12, padx=10)
+        self.bam_label.grid(row=row, column=0, pady=12, padx=10)
 
         self.bam_button = customtkinter.CTkButton(
             master=self,
-            text="Input BAM file",
+            text="Please select a BAM file",
             command=self.bam_callback,
         )
-        self.bam_button.grid(row=0, column=1, pady=12, padx=10)
+        self.bam_button.grid(row=row, column=1, pady=12, padx=10)
 
     def bam_callback(self):
-        # get a directory path by user
         filepath = filedialog.askopenfilename()
-        text = f"BAM file: {Path(filepath).name}"
-        self.bam_label.configure(text=text)
         self.bam_file_string.set(filepath)
+
+        text = Path(filepath).name
+        self.bam_button.configure(text=text)
+
+    # ============ DAMAGE MODE (ENUM) ============
+
+    def init_damage_mode(self, row):
+
+        self.damage_mode_label = customtkinter.CTkLabel(
+            master=self,
+            text="Damage Mode",
+            justify=tkinter.LEFT,
+        )
+        self.damage_mode_label.grid(row=row, column=0, pady=12, padx=10)
+
+        self.damage_mode_string = customtkinter.StringVar(
+            value=DAMAGE_MODE.LCA,
+        )
+
+        self.damage_mode_switch = customtkinter.CTkOptionMenu(
+            master=self,
+            values=DAMAGE_MODE.list(),
+            variable=self.damage_mode_string,
+        )
+
+        self.damage_mode_switch.grid(row=row, column=1, pady=12, padx=10)
+
+    # ============ OUTPUT DIR (DIRECTORY) ============
+
+    def init_output_dir(self, row):
+
+        self.output_dir_string = customtkinter.StringVar()
+
+        self.output_dir_label = customtkinter.CTkLabel(
+            master=self,
+            justify=tkinter.LEFT,
+            text="Output Directory",
+        )
+        self.output_dir_label.grid(row=row, column=0, pady=12, padx=10)
+
+        self.output_dir_button = customtkinter.CTkButton(
+            master=self,
+            text=format_directory(output_dir_default),
+            command=self.output_dir_callback,
+        )
+        self.output_dir_button.grid(row=row, column=1, pady=12, padx=10)
+
+    def output_dir_callback(self):
+        # get a directory path by user
+        filepath = filedialog.askdirectory()
+        self.output_dir_string.set(filepath)
+
+        text = format_directory(Path(filepath))
+        self.output_dir_button.configure(text=text)
 
     # ============ MAX POSITION (INTEGER) ============
 
-    def max_position_init(self):
+    def init_max_position(self, row):
+
+        MAX_POSITION_MIN = 1
+        MAX_POSITION_DEFAULT = 10
+        MAX_POSITION_MAX = 30
 
         self.max_position_label = customtkinter.CTkLabel(
             master=self,
             justify=tkinter.LEFT,
         )
-        self.max_position_slider_callback(App.MAX_POSITION_DEFAULT)
-        self.max_position_label.grid(row=1, column=0, pady=12, padx=10)
+        self.max_position_slider_callback(MAX_POSITION_DEFAULT)
+        self.max_position_label.grid(row=row, column=0, pady=12, padx=10)
 
         self.max_position_slider = customtkinter.CTkSlider(
             master=self,
             command=self.max_position_slider_callback,
-            from_=App.MAX_POSITION_MIN,
-            to=App.MAX_POSITION_MAX,
-            number_of_steps=App.MAX_POSITION_MAX - App.MAX_POSITION_MIN,
+            from_=MAX_POSITION_MIN,
+            to=MAX_POSITION_MAX,
+            number_of_steps=MAX_POSITION_MAX - MAX_POSITION_MIN,
         )
-        self.max_position_slider.set(App.MAX_POSITION_DEFAULT)
-        self.max_position_slider.grid(row=1, column=1, pady=12, padx=10)
+        self.max_position_slider.set(MAX_POSITION_DEFAULT)
+        self.max_position_slider.grid(row=row, column=1, pady=12, padx=10)
 
     def max_position_slider_callback(self, value):
         self.max_position_label.configure(text=f"Max Position: {int(value)}")
 
     # ============ CUSTOM DATABASE (BOOL) ============
 
-    def custom_database_init(self):
+    def init_custom_database(self, row):
 
         self.custom_database_label = customtkinter.CTkLabel(
             master=self,
             justify=tkinter.LEFT,
             text="Custom Database",
         )
-        self.custom_database_label.grid(row=2, column=0, pady=12, padx=10)
+        self.custom_database_label.grid(row=row, column=0, pady=12, padx=10)
 
         self.custom_database_bool = customtkinter.BooleanVar()
 
@@ -144,52 +193,47 @@ class App(customtkinter.CTk):
             offvalue=False,
         )
         self.custom_database_switch.deselect()
-        self.custom_database_switch.grid(row=2, column=1, pady=12, padx=10)
+        self.custom_database_switch.grid(row=row, column=1, pady=12, padx=10)
 
     def custom_database_callback(self):
         state = self.custom_database_switch.get()
         self.custom_database_button_title.set(str(state))
         self.custom_database_bool.set(state)
 
-    # ============ DAMAGE MODE (ENUM) ============
+    # ============ SAMPLE PREFIX (ENTRY) ============
 
-    def damage_mode_init(self):
+    def init_sample_prefix(self, row):
 
-        self.damage_mode_label = customtkinter.CTkLabel(
+        self.sample_prefix_label = customtkinter.CTkLabel(
             master=self,
-            text="Damage Mode",
+            text="Sample Prefix",
             justify=tkinter.LEFT,
         )
-        self.damage_mode_label.grid(row=3, column=0, pady=12, padx=10)
+        self.sample_prefix_label.grid(row=row, column=0, pady=12, padx=10)
 
-        self.damage_mode_string = customtkinter.StringVar(
-            value=DAMAGE_MODE.LCA,
-        )
-
-        self.damage_mode_switch = customtkinter.CTkOptionMenu(
+        self.sample_prefix_entry = customtkinter.CTkEntry(
             master=self,
-            values=DAMAGE_MODE.list(),
-            variable=self.damage_mode_string,
+            placeholder_text="",
         )
+        self.sample_prefix_entry.grid(row=row, column=1, pady=12, padx=10)
 
-        self.damage_mode_switch.grid(row=3, column=1, pady=12, padx=10)
+    # ============ PRINT ============
 
-    # ============ OTHER ============
-
-    def print_config_init(self):
+    def init_print_config(self, row):
 
         self.print_config_button = customtkinter.CTkButton(
             master=self,
             text="Print",
             command=self.print_config_callback,
         )
-        self.print_config_button.grid(row=10, column=1, pady=12, padx=10)
+        self.print_config_button.grid(row=row, column=1, pady=12, padx=10)
 
     def print_config_callback(self):
         print("")
         print("Config:")
         print(f"BAM file: {self.bam_file_string.get()}")
         print(f"Max Position: {int(self.max_position_slider.get())}")
+        print(f"Output directory: {self.output_dir_string.get()}")
         print(f"Custom Database: {self.custom_database_bool.get()}")
         print(f"Damage Mode: {self.damage_mode_string.get()}")
         print(f"Sample Prefix: {self.sample_prefix_entry.get()}")
