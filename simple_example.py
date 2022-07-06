@@ -10,6 +10,24 @@ customtkinter.set_appearance_mode("System")
 # Themes: "blue" (standard), "green", "dark-blue"
 customtkinter.set_default_color_theme("blue")
 
+from enum import Enum
+
+
+class DAMAGE_MODE(str, Enum):
+    "Damage mode allowed in the LCA"
+
+    LCA = "lca"
+    LOCAL = "local"
+    GLOBAL = "global"
+
+    @classmethod
+    def list(cls):
+        return list(map(lambda c: c.value, cls))
+
+    @classmethod
+    def upper_list(cls):
+        return [c.upper() for c in cls.list()]
+
 
 class App(customtkinter.CTk):
 
@@ -35,10 +53,28 @@ class App(customtkinter.CTk):
         self.bam_init()
         self.max_position_init()
         self.custom_database_init()
+        self.damage_mode_init()
+
+        self.print_config_button = customtkinter.CTkButton(
+            master=self,
+            text="Print",
+            command=self.print_config,
+        )
+        self.print_config_button.grid(row=10, column=1, pady=12, padx=10)
+
+    def print_config(self):
+        print("")
+        print("Config:")
+        print(f"BAM file: {self.bam_file_string.get()}")
+        print(f"Max Position: {int(self.max_position_slider.get())}")
+        print(f"Custom Database: {self.custom_database_bool.get()}")
+        print(f"Damage Mode: {self.damage_mode_string.get()}")
 
     # ============ BAM FILE (FILE) ============
 
     def bam_init(self):
+
+        self.bam_file_string = customtkinter.StringVar()
 
         self.bam_label = customtkinter.CTkLabel(
             master=self,
@@ -59,6 +95,7 @@ class App(customtkinter.CTk):
         filepath = filedialog.askopenfilename()
         text = f"BAM file: {Path(filepath).name}"
         self.bam_label.configure(text=text)
+        self.bam_file_string.set(filepath)
 
     # ============ MAX POSITION (INTEGER) ============
 
@@ -91,27 +128,52 @@ class App(customtkinter.CTk):
         self.custom_database_label = customtkinter.CTkLabel(
             master=self,
             justify=tkinter.LEFT,
-            text=App.CUSTOM_DATABASE_TRUE,
+            text="Custom Database",
         )
         self.custom_database_label.grid(row=2, column=0, pady=12, padx=10)
 
+        self.custom_database_bool = customtkinter.BooleanVar()
+
+        self.custom_database_button_title = customtkinter.StringVar(
+            value="False",
+        )
         self.custom_database_switch = customtkinter.CTkSwitch(
             master=self,
-            text="",
-            command=self.custom_database_switch_callback,
+            textvariable=self.custom_database_button_title,
+            command=self.switch_event,
             onvalue=True,
             offvalue=False,
         )
-
+        self.custom_database_switch.deselect()
         self.custom_database_switch.grid(row=2, column=1, pady=12, padx=10)
 
-    def custom_database_switch_callback(self):
-        slider_is_on = self.custom_database_switch.get()
-        if slider_is_on:
-            text = App.CUSTOM_DATABASE_TRUE
-        else:
-            text = App.CUSTOM_DATABASE_FALSE
-        self.custom_database_label.configure(text=text)
+    def switch_event(self):
+        state = self.custom_database_switch.get()
+        self.custom_database_button_title.set(str(state))
+        self.custom_database_bool.set(state)
+
+    # ============ DAMAGE MODE (ENUM) ============
+
+    def damage_mode_init(self):
+
+        self.damage_mode_label = customtkinter.CTkLabel(
+            master=self,
+            text="Damage Mode",
+            justify=tkinter.LEFT,
+        )
+        self.damage_mode_label.grid(row=3, column=0, pady=12, padx=10)
+
+        self.damage_mode_string = customtkinter.StringVar(
+            value=DAMAGE_MODE.LCA,
+        )
+
+        self.damage_mode_switch = customtkinter.CTkOptionMenu(
+            master=self,
+            values=DAMAGE_MODE.list(),
+            variable=self.damage_mode_string,
+        )
+
+        self.damage_mode_switch.grid(row=3, column=1, pady=12, padx=10)
 
     # ============ OTHER ============
 
