@@ -36,14 +36,31 @@ class DAMAGE_MODE(str, Enum):
         return [c.upper() for c in cls.list()]
 
 
+class RANKS(str, Enum):
+    "Ranks allowed in the LCA"
+
+    family = "family"
+    genus = "genus"
+    species = "species"
+    none = ""
+
+    @classmethod
+    def list(cls):
+        return list(map(lambda c: c.value, cls))
+
+    @classmethod
+    def str_list(cls):
+        return [c if c != "" else "None" for c in cls.list()]
+
+
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
         self.title("CustomTkinter simple_example.py")
 
-        WIDTH = 400
-        HEIGHT = 580
+        WIDTH = 600
+        HEIGHT = 900
 
         self.geometry(f"{WIDTH}x{HEIGHT}")
         self.grid_columnconfigure((0, 1), weight=1)
@@ -54,7 +71,11 @@ class App(customtkinter.CTk):
             self.init_bam,
             self.init_damage_mode,
             self.init_names,
+            self.init_nodes,
+            self.init_acc2tax,
+            self.init_min_mapping_quality,
             self.init_custom_database,
+            self.init_lca_rank,
             self.init_output_dir,
             self.init_max_position,
             self.init_sample_prefix,
@@ -73,7 +94,7 @@ class App(customtkinter.CTk):
         self.bam_label = customtkinter.CTkLabel(
             master=self,
             justify=tkinter.LEFT,
-            text="Input BAM file",
+            text="BAM file",
         )
         self.bam_label.grid(row=row, column=0, pady=12, padx=10)
 
@@ -86,10 +107,11 @@ class App(customtkinter.CTk):
 
     def bam_callback(self):
         filepath = filedialog.askopenfilename()
-        self.bam_file_string.set(filepath)
-
-        text = Path(filepath).name
-        self.bam_button.configure(text=text)
+        if filepath != "":
+            print(filepath)
+            self.bam_file_string.set(filepath)
+            text = Path(filepath).name
+            self.bam_button.configure(text=text)
 
     # ============ DAMAGE MODE (ENUM) ============
 
@@ -116,7 +138,6 @@ class App(customtkinter.CTk):
         self.damage_mode_switch.grid(row=row, column=1, pady=12, padx=10)
 
     def damage_mode_collback(self, choice):
-        print("optionmenu dropdown clicked:", choice)
 
         if choice == DAMAGE_MODE.LCA:
             lca_state = "normal"
@@ -127,8 +148,16 @@ class App(customtkinter.CTk):
 
         self.names_label.configure(text_color=text_color)
         self.names_button.configure(state=lca_state)
+        self.nodes_label.configure(text_color=text_color)
+        self.nodes_button.configure(state=lca_state)
+        self.acc2tax_label.configure(text_color=text_color)
+        self.acc2tax_button.configure(state=lca_state)
+        self.min_mapping_quality_label.configure(text_color=text_color)
+        self.min_mapping_quality_slider.configure(state=lca_state)
         self.custom_database_label.configure(text_color=text_color)
         self.custom_database_switch.configure(state=lca_state)
+        self.lca_rank_label.configure(text_color=text_color)
+        self.lca_rank_switch.configure(state=lca_state)
 
     # ============ NAMES FILE (FILE) ============
 
@@ -139,7 +168,7 @@ class App(customtkinter.CTk):
         self.names_label = customtkinter.CTkLabel(
             master=self,
             justify=tkinter.LEFT,
-            text="Input names file",
+            text="Names file",
         )
         self.names_label.grid(row=row, column=0, pady=12, padx=10)
 
@@ -152,10 +181,94 @@ class App(customtkinter.CTk):
 
     def names_callback(self):
         filepath = filedialog.askopenfilename()
-        self.names_file_string.set(filepath)
+        if filepath != "":
+            self.names_file_string.set(filepath)
+            text = Path(filepath).name
+            self.names_button.configure(text=text)
 
-        text = Path(filepath).name
-        self.names_button.configure(text=text)
+    # ============ NODES FILE (FILE) ============
+
+    def init_nodes(self, row):
+
+        self.nodes_file_string = customtkinter.StringVar()
+
+        self.nodes_label = customtkinter.CTkLabel(
+            master=self,
+            justify=tkinter.LEFT,
+            text="Nodes file",
+        )
+        self.nodes_label.grid(row=row, column=0, pady=12, padx=10)
+
+        self.nodes_button = customtkinter.CTkButton(
+            master=self,
+            text="Please select a nodes file",
+            command=self.nodes_callback,
+        )
+        self.nodes_button.grid(row=row, column=1, pady=12, padx=10)
+
+    def nodes_callback(self):
+        filepath = filedialog.askopenfilename()
+        if filepath != "":
+            self.nodes_file_string.set(filepath)
+            text = Path(filepath).name
+            self.nodes_button.configure(text=text)
+
+    # ============ ACC2TAX FILE (FILE) ============
+
+    def init_acc2tax(self, row):
+
+        self.acc2tax_file_string = customtkinter.StringVar()
+
+        self.acc2tax_label = customtkinter.CTkLabel(
+            master=self,
+            justify=tkinter.LEFT,
+            text="Acc2tax file",
+        )
+        self.acc2tax_label.grid(row=row, column=0, pady=12, padx=10)
+
+        self.acc2tax_button = customtkinter.CTkButton(
+            master=self,
+            text="Please select a acc2tax file",
+            command=self.acc2tax_callback,
+        )
+        self.acc2tax_button.grid(row=row, column=1, pady=12, padx=10)
+
+    def acc2tax_callback(self):
+        filepath = filedialog.askopenfilename()
+        if filepath != "":
+            self.acc2tax_file_string.set(filepath)
+            text = Path(filepath).name
+            self.acc2tax_button.configure(text=text)
+
+    # ============ MAPPING QUALITY (INTEGER) ============
+
+    def init_min_mapping_quality(self, row):
+
+        MIN_MAPPING_QUALITY_MIN = 0
+        MIN_MAPPING_QUALITY_DEFAULT = 0
+        MIN_MAPPING_QUALITY_MAX = 50
+
+        self.min_mapping_quality_label = customtkinter.CTkLabel(
+            master=self,
+            justify=tkinter.LEFT,
+        )
+        self.min_mapping_quality_slider_callback(MIN_MAPPING_QUALITY_DEFAULT)
+        self.min_mapping_quality_label.grid(row=row, column=0, pady=12, padx=10)
+
+        self.min_mapping_quality_slider = customtkinter.CTkSlider(
+            master=self,
+            command=self.min_mapping_quality_slider_callback,
+            from_=MIN_MAPPING_QUALITY_MIN,
+            to=MIN_MAPPING_QUALITY_MAX,
+            number_of_steps=MIN_MAPPING_QUALITY_MAX - MIN_MAPPING_QUALITY_MIN,
+        )
+        self.min_mapping_quality_slider.set(MIN_MAPPING_QUALITY_DEFAULT)
+        self.min_mapping_quality_slider.grid(row=row, column=1, pady=12, padx=10)
+
+    def min_mapping_quality_slider_callback(self, value):
+        self.min_mapping_quality_label.configure(
+            text=f"Minimum Mapping Quality: {int(value)}"
+        )
 
     # ============ CUSTOM DATABASE (BOOL) ============
 
@@ -187,6 +300,34 @@ class App(customtkinter.CTk):
         state = self.custom_database_switch.get()
         self.custom_database_button_title.set(str(state))
         self.custom_database_bool.set(state)
+
+    # ============ LCA RANK (ENUM) ============
+
+    def init_lca_rank(self, row):
+
+        self.lca_rank_label = customtkinter.CTkLabel(
+            master=self,
+            text="LCA Rank",
+            justify=tkinter.LEFT,
+        )
+        self.lca_rank_label.grid(row=row, column=0, pady=12, padx=10)
+
+        self.lca_rank_string = customtkinter.StringVar(
+            value=RANKS.none,
+        )
+
+        self.lca_rank_switch = customtkinter.CTkOptionMenu(
+            master=self,
+            values=RANKS.str_list(),
+            # variable=self.lca_rank_string,
+            command=self.lca_rank_callback,
+        )
+        self.lca_rank_switch.set("None")  # set initial value
+
+        self.lca_rank_switch.grid(row=row, column=1, pady=12, padx=10)
+
+    def lca_rank_callback(self, choice):
+        self.lca_rank_string.set(choice if choice != "None" else RANKS.none)
 
     # ============ OUTPUT DIR (DIRECTORY) ============
 
@@ -276,10 +417,11 @@ class App(customtkinter.CTk):
         print("")
         print("Config:")
         print(f"BAM file: {self.bam_file_string.get()}")
-        print(f"Max Position: {int(self.max_position_slider.get())}")
-        print(f"Output directory: {self.output_dir_string.get()}")
-        print(f"Custom Database: {self.custom_database_bool.get()}")
         print(f"Damage Mode: {self.damage_mode_string.get()}")
+        print(f"Custom Database: {self.custom_database_bool.get()}")
+        print(f"LCA Rank: {self.lca_rank_string.get()}")
+        print(f"Output directory: {self.output_dir_string.get()}")
+        print(f"Max Position: {int(self.max_position_slider.get())}")
         print(f"Sample Prefix: {self.sample_prefix_entry.get()}")
 
     # ============ OTHER ============
