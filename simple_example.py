@@ -54,21 +54,7 @@ class App(customtkinter.CTk):
         self.max_position_init()
         self.custom_database_init()
         self.damage_mode_init()
-
-        self.print_config_button = customtkinter.CTkButton(
-            master=self,
-            text="Print",
-            command=self.print_config,
-        )
-        self.print_config_button.grid(row=10, column=1, pady=12, padx=10)
-
-    def print_config(self):
-        print("")
-        print("Config:")
-        print(f"BAM file: {self.bam_file_string.get()}")
-        print(f"Max Position: {int(self.max_position_slider.get())}")
-        print(f"Custom Database: {self.custom_database_bool.get()}")
-        print(f"Damage Mode: {self.damage_mode_string.get()}")
+        self.print_config_init()
 
     # ============ BAM FILE (FILE) ============
 
@@ -140,14 +126,14 @@ class App(customtkinter.CTk):
         self.custom_database_switch = customtkinter.CTkSwitch(
             master=self,
             textvariable=self.custom_database_button_title,
-            command=self.switch_event,
+            command=self.custom_database_callback,
             onvalue=True,
             offvalue=False,
         )
         self.custom_database_switch.deselect()
         self.custom_database_switch.grid(row=2, column=1, pady=12, padx=10)
 
-    def switch_event(self):
+    def custom_database_callback(self):
         state = self.custom_database_switch.get()
         self.custom_database_button_title.set(str(state))
         self.custom_database_bool.set(state)
@@ -174,6 +160,25 @@ class App(customtkinter.CTk):
         )
 
         self.damage_mode_switch.grid(row=3, column=1, pady=12, padx=10)
+
+    # ============ OTHER ============
+
+    def print_config_init(self):
+
+        self.print_config_button = customtkinter.CTkButton(
+            master=self,
+            text="Print",
+            command=self.print_config_callback,
+        )
+        self.print_config_button.grid(row=10, column=1, pady=12, padx=10)
+
+    def print_config_callback(self):
+        print("")
+        print("Config:")
+        print(f"BAM file: {self.bam_file_string.get()}")
+        print(f"Max Position: {int(self.max_position_slider.get())}")
+        print(f"Custom Database: {self.custom_database_bool.get()}")
+        print(f"Damage Mode: {self.damage_mode_string.get()}")
 
     # ============ OTHER ============
 
