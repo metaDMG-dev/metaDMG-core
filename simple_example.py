@@ -53,9 +53,10 @@ class App(customtkinter.CTk):
         inits = [
             self.init_bam,
             self.init_damage_mode,
+            self.init_names,
+            self.init_custom_database,
             self.init_output_dir,
             self.init_max_position,
-            self.init_custom_database,
             self.init_sample_prefix,
             self.init_print_config,
         ]
@@ -109,9 +110,83 @@ class App(customtkinter.CTk):
             master=self,
             values=DAMAGE_MODE.list(),
             variable=self.damage_mode_string,
+            command=self.damage_mode_collback,
         )
 
         self.damage_mode_switch.grid(row=row, column=1, pady=12, padx=10)
+
+    def damage_mode_collback(self, choice):
+        print("optionmenu dropdown clicked:", choice)
+
+        if choice == DAMAGE_MODE.LCA:
+            lca_state = "normal"
+            text_color = "gray90"
+        else:
+            lca_state = "disabled"
+            text_color = "gray40"
+
+        self.names_label.configure(text_color=text_color)
+        self.names_button.configure(state=lca_state)
+        self.custom_database_label.configure(text_color=text_color)
+        self.custom_database_switch.configure(state=lca_state)
+
+    # ============ NAMES FILE (FILE) ============
+
+    def init_names(self, row):
+
+        self.names_file_string = customtkinter.StringVar()
+
+        self.names_label = customtkinter.CTkLabel(
+            master=self,
+            justify=tkinter.LEFT,
+            text="Input names file",
+        )
+        self.names_label.grid(row=row, column=0, pady=12, padx=10)
+
+        self.names_button = customtkinter.CTkButton(
+            master=self,
+            text="Please select a names file",
+            command=self.names_callback,
+        )
+        self.names_button.grid(row=row, column=1, pady=12, padx=10)
+
+    def names_callback(self):
+        filepath = filedialog.askopenfilename()
+        self.names_file_string.set(filepath)
+
+        text = Path(filepath).name
+        self.names_button.configure(text=text)
+
+    # ============ CUSTOM DATABASE (BOOL) ============
+
+    def init_custom_database(self, row):
+
+        self.custom_database_label = customtkinter.CTkLabel(
+            master=self,
+            justify=tkinter.LEFT,
+            text="Custom Database",
+        )
+        self.custom_database_label.grid(row=row, column=0, pady=12, padx=10)
+
+        self.custom_database_bool = customtkinter.BooleanVar()
+
+        self.custom_database_button_title = customtkinter.StringVar(
+            value="False",
+        )
+        self.custom_database_switch = customtkinter.CTkSwitch(
+            master=self,
+            textvariable=self.custom_database_button_title,
+            command=self.custom_database_callback,
+            onvalue=True,
+            offvalue=False,
+        )
+        self.custom_database_switch.deselect()
+        self.custom_database_switch.grid(row=row, column=1, pady=12, padx=10)
+
+    def custom_database_callback(self):
+        state = self.custom_database_switch.get()
+        self.custom_database_button_title.set(str(state))
+        self.custom_database_bool.set(state)
 
     # ============ OUTPUT DIR (DIRECTORY) ============
 
@@ -168,37 +243,6 @@ class App(customtkinter.CTk):
 
     def max_position_slider_callback(self, value):
         self.max_position_label.configure(text=f"Max Position: {int(value)}")
-
-    # ============ CUSTOM DATABASE (BOOL) ============
-
-    def init_custom_database(self, row):
-
-        self.custom_database_label = customtkinter.CTkLabel(
-            master=self,
-            justify=tkinter.LEFT,
-            text="Custom Database",
-        )
-        self.custom_database_label.grid(row=row, column=0, pady=12, padx=10)
-
-        self.custom_database_bool = customtkinter.BooleanVar()
-
-        self.custom_database_button_title = customtkinter.StringVar(
-            value="False",
-        )
-        self.custom_database_switch = customtkinter.CTkSwitch(
-            master=self,
-            textvariable=self.custom_database_button_title,
-            command=self.custom_database_callback,
-            onvalue=True,
-            offvalue=False,
-        )
-        self.custom_database_switch.deselect()
-        self.custom_database_switch.grid(row=row, column=1, pady=12, padx=10)
-
-    def custom_database_callback(self):
-        state = self.custom_database_switch.get()
-        self.custom_database_button_title.set(str(state))
-        self.custom_database_bool.set(state)
 
     # ============ SAMPLE PREFIX (ENTRY) ============
 
