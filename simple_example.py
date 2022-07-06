@@ -56,6 +56,19 @@ class App(customtkinter.CTk):
         self.damage_mode_init()
         self.print_config_init()
 
+        self.sample_prefix_label = customtkinter.CTkLabel(
+            master=self,
+            text="Sample Prefix",
+            justify=tkinter.LEFT,
+        )
+        self.sample_prefix_label.grid(row=4, column=0, pady=12, padx=10)
+
+        self.sample_prefix_entry = customtkinter.CTkEntry(
+            master=self,
+            placeholder_text="",
+        )
+        self.sample_prefix_entry.grid(row=4, column=1, pady=12, padx=10)
+
     # ============ BAM FILE (FILE) ============
 
     def bam_init(self):
@@ -179,6 +192,7 @@ class App(customtkinter.CTk):
         print(f"Max Position: {int(self.max_position_slider.get())}")
         print(f"Custom Database: {self.custom_database_bool.get()}")
         print(f"Damage Mode: {self.damage_mode_string.get()}")
+        print(f"Sample Prefix: {self.sample_prefix_entry.get()}")
 
     # ============ OTHER ============
 
