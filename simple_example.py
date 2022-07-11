@@ -186,7 +186,7 @@ class App(customtkinter.CTk):
             pady=20,
         )
 
-        self.frame_center.columnconfigure((0, 1, 2, 3, 4), weight=1)
+        self.frame_center.columnconfigure((0, 1, 2, 3, 4, 5), weight=1)
         self.frame_center.rowconfigure((0, 1, 2, 3, 4), weight=1)
 
         self.init_names()
@@ -206,8 +206,10 @@ class App(customtkinter.CTk):
             pady=20,
         )
 
-        # self.frame_bottom.columnconfigure((0, 1, 2, 3, 4, 5), weight=1)
-        # self.frame_bottom.rowconfigure((0, 1, 2, 3, 4, 5, 6, 7), weight=1)
+        self.frame_bottom.columnconfigure((0, 1, 2, 3, 4, 5), weight=1)
+        self.frame_bottom.rowconfigure((0, 1, 2, 3, 4, 5, 6, 7), weight=1)
+
+        self.init_max_position()
 
         self.print_config_button = customtkinter.CTkButton(
             master=self,
@@ -684,31 +686,40 @@ class App(customtkinter.CTk):
 
     # ============ MAX POSITION (INTEGER) ============
 
-    def init_max_position(self, row):
+    def init_max_position(self):
 
         MAX_POSITION_MIN = 1
-        MAX_POSITION_DEFAULT = 10
+        MAX_POSITION_DEFAULT = 15
         MAX_POSITION_MAX = 30
 
         self.max_position_label = customtkinter.CTkLabel(
-            master=self,
-            justify=tkinter.RIGHT,
+            master=self.frame_bottom,
+            # justify=tkinter.RIGHT,
         )
         self.max_position_slider_callback(MAX_POSITION_DEFAULT)
-        self.max_position_label.grid(row=row, column=0, pady=12, padx=10)
+        self.max_position_label.grid(
+            row=0,
+            column=0,
+            columnspan=2,
+            sticky="nsw",
+        )
 
         self.max_position_slider = customtkinter.CTkSlider(
-            master=self,
+            master=self.frame_bottom,
             command=self.max_position_slider_callback,
             from_=MAX_POSITION_MIN,
             to=MAX_POSITION_MAX,
             number_of_steps=MAX_POSITION_MAX - MAX_POSITION_MIN,
         )
         self.max_position_slider.set(MAX_POSITION_DEFAULT)
-        self.max_position_slider.grid(row=row, column=1, pady=12, padx=10)
+        self.max_position_slider.grid(
+            row=0,
+            column=2,
+            columnspan=4,
+        )
 
     def max_position_slider_callback(self, value):
-        self.max_position_label.configure(text=f"Max Position: {int(value)}")
+        self.max_position_label.configure(text=f"Max Position: {int(value):>2d}")
 
     # ============ SAMPLE PREFIX (ENTRY) ============
 
