@@ -213,6 +213,9 @@ class App(customtkinter.CTk):
         self.init_min_reads()
         self.init_bayesian_forward()
         self.init_parallel()
+        self.init_prefix_suffix()
+        self.init_config_name()
+        self.init_output_dir()
 
         self.print_config_button = customtkinter.CTkButton(
             master=self,
@@ -223,7 +226,7 @@ class App(customtkinter.CTk):
 
         inits = [
             self.init_output_dir,
-            self.init_sample_prefix,
+            self.init_prefix_suffix,
             self.init_print_config,
         ]
 
@@ -266,7 +269,9 @@ class App(customtkinter.CTk):
         )
 
     def bam_callback(self):
+        # filepaths = filedialog.askopenfilenames()
         filepath = filedialog.askopenfilename()
+        # print(filepaths)
         if filepath != "":
             print(filepath)
             self.bam_file_string.set(filepath)
@@ -660,35 +665,6 @@ class App(customtkinter.CTk):
     def lca_rank_callback(self, choice):
         self.lca_rank_string.set(choice if choice != "None" else RANKS.none)
 
-    # ============ OUTPUT DIR (DIRECTORY) ============
-
-    def init_output_dir(self, row):
-
-        self.output_dir_string = customtkinter.StringVar()
-
-        self.output_dir_label = customtkinter.CTkLabel(
-            master=self,
-            justify=tkinter.RIGHT,
-            text="Output Directory",
-        )
-        self.output_dir_label.grid(row=row, column=0, pady=12, padx=10)
-
-        self.output_dir_button = customtkinter.CTkButton(
-            master=self,
-            text=format_directory(output_dir_default),
-            command=self.output_dir_callback,
-            **KW_BUTTON,
-        )
-        self.output_dir_button.grid(row=row, column=1, pady=12, padx=10)
-
-    def output_dir_callback(self):
-        # get a directory path by user
-        filepath = filedialog.askdirectory()
-        self.output_dir_string.set(filepath)
-
-        text = format_directory(Path(filepath))
-        self.output_dir_button.configure(text=text)
-
     # ============ MAX POSITION (INTEGER) ============
 
     def init_max_position(self):
@@ -887,22 +863,172 @@ class App(customtkinter.CTk):
             # sticky="w",
         )
 
-    # ============ SAMPLE PREFIX (ENTRY) ============
+    # ============ PREFIX SUFFIX (ENTRY) ============
 
-    def init_sample_prefix(self, row):
+    def init_prefix_suffix(self):
 
-        self.sample_prefix_label = customtkinter.CTkLabel(
-            master=self,
-            text="Sample Prefix",
-            justify=tkinter.RIGHT,
+        self.prefix_label = customtkinter.CTkLabel(
+            master=self.frame_bottom,
+            text="Prefix:",
+            # justify=tkinter.RIGHT,
         )
-        self.sample_prefix_label.grid(row=row, column=0, pady=12, padx=10)
+        self.prefix_label.grid(
+            row=4,
+            column=0,
+        )
 
-        self.sample_prefix_entry = customtkinter.CTkEntry(
-            master=self,
+        self.prefix_entry = customtkinter.CTkEntry(
+            master=self.frame_bottom,
             placeholder_text="",
+            **KW_ENTRY,
         )
-        self.sample_prefix_entry.grid(row=row, column=1, pady=12, padx=10)
+        self.prefix_entry.grid(
+            row=4,
+            column=1,
+        )
+
+        self.suffix_label = customtkinter.CTkLabel(
+            master=self.frame_bottom,
+            text="Suffix:",
+            # justify=tkinter.RIGHT,
+        )
+        self.suffix_label.grid(
+            row=4,
+            column=2,
+        )
+
+        self.suffix_entry = customtkinter.CTkEntry(
+            master=self.frame_bottom,
+            placeholder_text="",
+            **KW_ENTRY,
+        )
+        self.suffix_entry.grid(
+            row=4,
+            column=3,
+        )
+
+        self.long_name_label = customtkinter.CTkLabel(
+            master=self.frame_bottom,
+            text="Long name:",
+            # justify=tkinter.RIGHT,
+        )
+        self.long_name_label.grid(
+            row=4,
+            column=4,
+        )
+
+        self.long_name_bool = customtkinter.BooleanVar()
+        self.long_name_button_title = customtkinter.StringVar(
+            value="False",
+        )
+        self.long_name_switch = customtkinter.CTkSwitch(
+            master=self.frame_bottom,
+            textvariable=self.long_name_button_title,
+            command=self.long_name_callback,
+            onvalue=True,
+            offvalue=False,
+        )
+        self.long_name_switch.deselect()
+        self.long_name_switch.grid(
+            row=4,
+            column=5,
+        )
+
+    def long_name_callback(self):
+        state = self.long_name_switch.get()
+        self.long_name_button_title.set(str(state))
+        self.long_name_bool.set(state)
+
+    # ============ CONFIG NAME (ENTRY) ============
+
+    def init_config_name(self):
+
+        self.config_name_label = customtkinter.CTkLabel(
+            master=self.frame_bottom,
+            text="Config Name:",
+            # justify=tkinter.RIGHT,
+        )
+        self.config_name_label.grid(
+            row=5,
+            column=0,
+        )
+
+        self.config_name_entry = customtkinter.CTkEntry(
+            master=self.frame_bottom,
+            placeholder_text="config.yaml",
+            **KW_ENTRY,
+        )
+        self.config_name_entry.grid(
+            row=5,
+            column=1,
+        )
+
+        self.config_overwrite_label = customtkinter.CTkLabel(
+            master=self.frame_bottom,
+            text="Overwrite?",
+            # justify=tkinter.RIGHT,
+        )
+        self.config_overwrite_label.grid(
+            row=5,
+            column=2,
+        )
+
+        self.config_overwrite_bool = customtkinter.BooleanVar()
+        self.config_overwrite_button_title = customtkinter.StringVar(
+            value="False",
+        )
+        self.config_overwrite_switch = customtkinter.CTkSwitch(
+            master=self.frame_bottom,
+            textvariable=self.config_overwrite_button_title,
+            command=self.config_overwrite_callback,
+            onvalue=True,
+            offvalue=False,
+        )
+        self.config_overwrite_switch.deselect()
+        self.config_overwrite_switch.grid(
+            row=5,
+            column=3,
+        )
+
+    def config_overwrite_callback(self):
+        state = self.config_overwrite_switch.get()
+        self.config_overwrite_button_title.set(str(state))
+        self.config_overwrite_bool.set(state)
+
+    # ============ OUTPUT DIR (DIRECTORY) ============
+
+    def init_output_dir(self):
+
+        self.output_dir_string = customtkinter.StringVar()
+
+        self.output_dir_label = customtkinter.CTkLabel(
+            master=self.frame_bottom,
+            justify=tkinter.RIGHT,
+            text="Output Directory",
+        )
+        self.output_dir_label.grid(
+            row=6,
+            column=0,
+        )
+
+        self.output_dir_button = customtkinter.CTkButton(
+            master=self.frame_bottom,
+            text=format_directory(output_dir_default),
+            command=self.output_dir_callback,
+            **KW_BUTTON,
+        )
+        self.output_dir_button.grid(
+            row=6,
+            column=1,
+        )
+
+    def output_dir_callback(self):
+        # get a directory path by user
+        filepath = filedialog.askdirectory()
+        self.output_dir_string.set(filepath)
+
+        text = format_directory(Path(filepath))
+        self.output_dir_button.configure(text=text)
 
     # ============ PRINT ============
 
@@ -926,7 +1052,7 @@ class App(customtkinter.CTk):
         print(f"LCA Rank: {self.lca_rank_string.get()}")
         print(f"Output directory: {self.output_dir_string.get()}")
         print(f"Max Position: {int(self.max_position_slider.get())}")
-        print(f"Sample Prefix: {self.sample_prefix_entry.get()}")
+        print(f"Sample Prefix: {self.prefix_entry.get()}")
 
     # ============ OTHER ============
 
