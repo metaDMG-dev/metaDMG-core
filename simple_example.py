@@ -212,6 +212,7 @@ class App(customtkinter.CTk):
         self.init_max_position()
         self.init_min_reads()
         self.init_bayesian_forward()
+        self.init_parallel()
 
         self.print_config_button = customtkinter.CTkButton(
             master=self,
@@ -768,7 +769,7 @@ class App(customtkinter.CTk):
             row=2,
             column=0,
             columnspan=1,
-            sticky="e",
+            # sticky="w",
         )
 
         self.bayesian_bool = customtkinter.BooleanVar()
@@ -786,7 +787,7 @@ class App(customtkinter.CTk):
         self.bayesian_switch.grid(
             row=2,
             column=1,
-            sticky="w",
+            # sticky="w",
         )
 
         self.forward_label = customtkinter.CTkLabel(
@@ -797,7 +798,7 @@ class App(customtkinter.CTk):
             row=2,
             column=3,
             columnspan=1,
-            sticky="e",
+            # sticky="e",
         )
 
         self.forward_bool = customtkinter.BooleanVar()
@@ -815,7 +816,7 @@ class App(customtkinter.CTk):
         self.forward_switch.grid(
             row=2,
             column=4,
-            sticky="w",
+            # sticky="w",
         )
 
     def bayesian_callback(self):
@@ -827,6 +828,64 @@ class App(customtkinter.CTk):
         state = self.forward_switch.get()
         self.forward_button_title.set(str(state))
         self.forward_bool.set(state)
+
+    # ============ PARALLEL CORES (ENTRY BOXES) ============
+
+    def init_parallel(self):
+
+        self.parallel_label = customtkinter.CTkLabel(
+            master=self.frame_bottom,
+            text="Samples in parallel:",
+        )
+        self.parallel_label.grid(
+            row=3,
+            column=0,
+            columnspan=1,
+            # sticky="w",
+        )
+
+        self.parallel_samples_value = customtkinter.StringVar(
+            value="1",
+        )
+
+        self.parallel_samples = customtkinter.CTkEntry(
+            master=self.frame_bottom,
+            textvariable=self.parallel_samples_value,
+            # placeholder_text="minimum",
+            **KW_ENTRY,
+        )
+        self.parallel_samples.grid(
+            row=3,
+            column=1,
+            # columnspan=2,
+            # sticky="w",
+        )
+
+        self.parallel_cores_per_sample_label = customtkinter.CTkLabel(
+            master=self.frame_bottom,
+            text="Cores pr. sample:",
+        )
+        self.parallel_cores_per_sample_label.grid(
+            row=3,
+            column=3,
+            # sticky="e",
+        )
+
+        self.parallel_cores_per_sample_value = customtkinter.StringVar(
+            value="1",
+        )
+
+        self.parallel_cores_per_sample = customtkinter.CTkEntry(
+            master=self.frame_bottom,
+            textvariable=self.parallel_cores_per_sample_value,
+            **KW_ENTRY,
+        )
+        self.parallel_cores_per_sample.grid(
+            row=3,
+            column=4,
+            # columnspan=2,
+            # sticky="w",
+        )
 
     # ============ SAMPLE PREFIX (ENTRY) ============
 
