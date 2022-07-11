@@ -187,7 +187,7 @@ class App(customtkinter.CTk):
         )
 
         self.frame_center.columnconfigure((0, 1, 2, 3, 4, 5), weight=1)
-        self.frame_center.rowconfigure((0, 1, 2, 3, 4), weight=1)
+        self.frame_center.rowconfigure((0, 1, 2, 3), weight=1)
 
         self.init_names()
         self.init_nodes()
@@ -210,6 +210,8 @@ class App(customtkinter.CTk):
         self.frame_bottom.rowconfigure((0, 1, 2, 3, 4, 5, 6, 7), weight=1)
 
         self.init_max_position()
+        self.init_min_reads()
+        self.init_bayesian_forward()
 
         self.print_config_button = customtkinter.CTkButton(
             master=self,
@@ -220,7 +222,6 @@ class App(customtkinter.CTk):
 
         inits = [
             self.init_output_dir,
-            self.init_max_position,
             self.init_sample_prefix,
             self.init_print_config,
         ]
@@ -506,8 +507,9 @@ class App(customtkinter.CTk):
         )
         self.similarity_score_min.grid(
             row=1,
-            column=1,
-            columnspan=2,
+            column=2,
+            # columnspan=2,
+            sticky="e",
         )
 
         self.similarity_score_to = customtkinter.CTkLabel(
@@ -533,7 +535,8 @@ class App(customtkinter.CTk):
         self.similarity_score_max.grid(
             row=1,
             column=4,
-            columnspan=2,
+            # columnspan=2,
+            sticky="w",
         )
 
     # ============ MAPPING QUALITY (INTEGER) ============
@@ -587,12 +590,11 @@ class App(customtkinter.CTk):
         self.custom_database_label.grid(
             row=3,
             column=0,
-            columnspan=2,
-            sticky="nsw",
+            # columnspan=2,
+            # sticky="nsw",
         )
 
         self.custom_database_bool = customtkinter.BooleanVar()
-
         self.custom_database_button_title = customtkinter.StringVar(
             value="False",
         )
@@ -606,8 +608,9 @@ class App(customtkinter.CTk):
         self.custom_database_switch.deselect()
         self.custom_database_switch.grid(
             row=3,
-            column=2,
-            columnspan=4,
+            column=1,
+            # columnspan=4,
+            sticky="w",
         )
 
     def custom_database_callback(self):
@@ -622,13 +625,13 @@ class App(customtkinter.CTk):
         self.lca_rank_label = customtkinter.CTkLabel(
             master=self.frame_center,
             text="LCA Rank:",
-            justify=tkinter.RIGHT,
+            # justify=tkinter.RIGHT,
         )
         self.lca_rank_label.grid(
-            row=4,
-            column=0,
-            pady=12,
-            padx=10,
+            row=3,
+            column=3,
+            # pady=12,
+            # padx=10,
         )
 
         self.lca_rank_string = customtkinter.StringVar(
@@ -646,10 +649,11 @@ class App(customtkinter.CTk):
         self.lca_rank_menu.set("None")  # set initial value
 
         self.lca_rank_menu.grid(
-            row=4,
-            column=1,
-            pady=12,
-            padx=10,
+            row=3,
+            column=4,
+            sticky="w",
+            # pady=12,
+            # padx=10,
         )
 
     def lca_rank_callback(self, choice):
@@ -720,6 +724,109 @@ class App(customtkinter.CTk):
 
     def max_position_slider_callback(self, value):
         self.max_position_label.configure(text=f"Max Position: {int(value):>2d}")
+
+    # ============ MIN READS (ENTRY BOX) ============
+
+    def init_min_reads(self):
+
+        self.min_reads_label = customtkinter.CTkLabel(
+            master=self.frame_bottom,
+            text="Minimum number of reads:",
+            # justify=tkinter.RIGHT,
+        )
+        self.min_reads_label.grid(
+            row=1,
+            column=0,
+            columnspan=2,
+            sticky="nsw",
+        )
+
+        self.min_reads_value = customtkinter.StringVar(
+            value="0",
+        )
+
+        self.min_reads = customtkinter.CTkEntry(
+            master=self.frame_bottom,
+            textvariable=self.min_reads_value,
+            **KW_ENTRY,
+        )
+        self.min_reads.grid(
+            row=1,
+            column=2,
+            columnspan=4,
+        )
+
+    # ============ BAYESIAN // FORWARD (BOOLS) ============
+
+    def init_bayesian_forward(self):
+
+        self.bayesian_label = customtkinter.CTkLabel(
+            master=self.frame_bottom,
+            text="Bayesian:",
+        )
+        self.bayesian_label.grid(
+            row=2,
+            column=0,
+            columnspan=1,
+            sticky="e",
+        )
+
+        self.bayesian_bool = customtkinter.BooleanVar()
+        self.bayesian_button_title = customtkinter.StringVar(
+            value="False",
+        )
+        self.bayesian_switch = customtkinter.CTkSwitch(
+            master=self.frame_bottom,
+            textvariable=self.bayesian_button_title,
+            command=self.bayesian_callback,
+            onvalue=True,
+            offvalue=False,
+        )
+        self.bayesian_switch.deselect()
+        self.bayesian_switch.grid(
+            row=2,
+            column=1,
+            sticky="w",
+        )
+
+        self.forward_label = customtkinter.CTkLabel(
+            master=self.frame_bottom,
+            text="Forward only:",
+        )
+        self.forward_label.grid(
+            row=2,
+            column=3,
+            columnspan=1,
+            sticky="e",
+        )
+
+        self.forward_bool = customtkinter.BooleanVar()
+        self.forward_button_title = customtkinter.StringVar(
+            value="False",
+        )
+        self.forward_switch = customtkinter.CTkSwitch(
+            master=self.frame_bottom,
+            textvariable=self.forward_button_title,
+            command=self.forward_callback,
+            onvalue=True,
+            offvalue=False,
+        )
+        self.forward_switch.deselect()
+        self.forward_switch.grid(
+            row=2,
+            column=4,
+            sticky="w",
+        )
+
+    def bayesian_callback(self):
+        state = self.bayesian_switch.get()
+        self.bayesian_button_title.set(str(state))
+        self.bayesian_bool.set(state)
+
+    def forward_callback(self):
+        state = self.forward_switch.get()
+        self.forward_button_title.set(str(state))
+        self.forward_bool.set(state)
 
     # ============ SAMPLE PREFIX (ENTRY) ============
 
