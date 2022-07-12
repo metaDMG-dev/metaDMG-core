@@ -139,8 +139,8 @@ class App(customtkinter.CTk):
 
         self.title("Configuirator")
 
-        WIDTH = 1100
-        HEIGHT = 720
+        WIDTH = 840
+        HEIGHT = 665
 
         self.geometry(f"{WIDTH}x{HEIGHT}")
         # call .on_closing() when app gets closed
@@ -149,11 +149,11 @@ class App(customtkinter.CTk):
         # ============ create two frames ============
 
         # configure grid layout (2x3) (row x column)
-        self.grid_columnconfigure(0, weight=0)
-        self.grid_columnconfigure(1, weight=1)
-        self.grid_columnconfigure(2, weight=1)
-        self.grid_rowconfigure(0, weight=0)
-        self.grid_rowconfigure(1, weight=1)
+        # self.grid_rowconfigure(0, weight=0)
+        # self.grid_rowconfigure(1, weight=1)
+        # self.grid_columnconfigure(0, weight=0)
+        # self.grid_columnconfigure(1, weight=1)
+        # self.grid_columnconfigure(2, weight=1)
 
         self.headline = customtkinter.CTkLabel(
             master=self,
@@ -164,15 +164,13 @@ class App(customtkinter.CTk):
         self.headline.grid(
             row=0,
             column=0,
-            columnspan=3,
+            columnspan=2,
         )
 
-        self.frame_left = customtkinter.CTkFrame(
+        self.frame_bam = customtkinter.CTkFrame(
             master=self,
-            # width=180,
-            # corner_radius=0,
         )
-        self.frame_left.grid(
+        self.frame_bam.grid(
             row=1,
             column=0,
             sticky="nswe",
@@ -180,74 +178,87 @@ class App(customtkinter.CTk):
             pady=20,
         )
 
-        self.frame_center = customtkinter.CTkFrame(master=self)
-        self.frame_center.grid(
+        self.frame_lca = customtkinter.CTkFrame(
+            master=self,
+        )
+        self.frame_lca.grid(
+            row=2,
+            column=0,
+            sticky="nswe",
+            padx=20,
+            pady=20,
+        )
+
+        self.frame_general = customtkinter.CTkFrame(
+            master=self,
+        )
+        self.frame_general.grid(
             row=1,
             column=1,
-            sticky="nswe",
+            # sticky="e",
+            # sticky="nswe",
+            rowspan=3,
             padx=20,
             pady=20,
         )
 
-        self.frame_right = customtkinter.CTkFrame(master=self)
-        self.frame_right.grid(
-            row=1,
-            column=2,
-            sticky="nswe",
-            padx=20,
-            pady=20,
-        )
-
-        # ============ frame_left ============
+        # ============ frame_bam ============
 
         # configure grid layout (5x1) (row x column)
 
-        # empty row with minsize as spacing
-        self.frame_left.grid_rowconfigure(0, minsize=10)
-        # empty row with minsize as spacing
-        self.frame_left.grid_rowconfigure(3, minsize=100)
+        # # empty row with minsize as spacing
+        # self.frame_bam.grid_rowconfigure(0, minsize=50)
+        # # empty row with minsize as spacing
+        self.frame_bam.grid_columnconfigure(1, minsize=80)
 
         # self.init_bam()
+
+        BAM_LABEL_WIDTH = 50
+        BAM_LABEL_KW = dict(master=self.frame_bam, width=BAM_LABEL_WIDTH)
+
+        BAM_LABEL_PAD_X = 20
+        BAM_LABEL_GRID_KW = dict(
+            pady=12,
+            padx=BAM_LABEL_PAD_X,
+            sticky="nsw",
+        )
 
         self.bam_file_string = customtkinter.StringVar()
 
         self.bam_label = customtkinter.CTkLabel(
-            master=self.frame_left,
             text="BAM file:",
-            text_font=("Roboto Medium", -16),
+            **BAM_LABEL_KW,
         )
         self.bam_label.grid(
-            row=1,
+            row=0,
             column=0,
-            pady=12,
-            padx=10,
+            **BAM_LABEL_GRID_KW,
         )
 
         self.bam_button = customtkinter.CTkButton(
-            master=self.frame_left,
+            master=self.frame_bam,
             text="Select file",
             command=self.bam_callback,
             **KW_BUTTON,
         )
         self.bam_button.grid(
-            row=2,
-            column=0,
+            row=0,
+            column=2,
             pady=12,
-            padx=10,
+            # padx=100,
+            sticky="e",
         )
 
         # self.init_damage_mode()
 
         self.damage_mode_label = customtkinter.CTkLabel(
-            master=self.frame_left,
             text="Damage Mode:",
-            text_font=("Roboto Medium", -16),
+            **BAM_LABEL_KW,
         )
         self.damage_mode_label.grid(
-            row=4,
+            row=1,
             column=0,
-            pady=12,
-            padx=10,
+            **BAM_LABEL_GRID_KW,
         )
 
         self.damage_mode_string = customtkinter.StringVar(
@@ -255,7 +266,7 @@ class App(customtkinter.CTk):
         )
 
         self.damage_mode_menu = customtkinter.CTkOptionMenu(
-            master=self.frame_left,
+            master=self.frame_bam,
             values=DAMAGE_MODE.list(),
             variable=self.damage_mode_string,
             command=self.damage_mode_collback,
@@ -264,22 +275,22 @@ class App(customtkinter.CTk):
         )
 
         self.damage_mode_menu.grid(
-            row=5,
-            column=0,
+            row=1,
+            column=2,
             pady=12,
-            padx=10,
-            # sticky="w",
+            # padx=100,
+            sticky="e",
         )
 
-        # ============ frame_center ============
+        # ============ frame_lca ============
 
         # configure grid layout (3 x 2) (row x column)
-        self.frame_center.grid_rowconfigure(0, minsize=10)
+        self.frame_lca.grid_rowconfigure(0, minsize=10)
 
         # self.init_names()
 
         CENTER_LABEL_WIDTH = 50
-        CENTER_LABEL_KW = dict(master=self.frame_center, width=CENTER_LABEL_WIDTH)
+        CENTER_LABEL_KW = dict(master=self.frame_lca, width=CENTER_LABEL_WIDTH)
 
         CENTER_LABEL_PAD_X = 20
         CENTER_LABEL_GRID_KW = dict(
@@ -301,7 +312,7 @@ class App(customtkinter.CTk):
         )
 
         self.names_button = customtkinter.CTkButton(
-            master=self.frame_center,
+            master=self.frame_lca,
             text="Select file",
             command=self.names_callback,
             **KW_BUTTON,
@@ -328,7 +339,7 @@ class App(customtkinter.CTk):
         )
 
         self.nodes_button = customtkinter.CTkButton(
-            master=self.frame_center,
+            master=self.frame_lca,
             text="Select file",
             command=self.nodes_callback,
             **KW_BUTTON,
@@ -355,7 +366,7 @@ class App(customtkinter.CTk):
         )
 
         self.acc2tax_button = customtkinter.CTkButton(
-            master=self.frame_center,
+            master=self.frame_lca,
             text="Select file",
             command=self.acc2tax_callback,
             **KW_BUTTON,
@@ -380,7 +391,7 @@ class App(customtkinter.CTk):
         )
 
         self.frame_similarity = customtkinter.CTkFrame(
-            master=self.frame_center,
+            master=self.frame_lca,
             fg_color="#2A2D2E",
         )
         self.frame_similarity.grid(
@@ -456,7 +467,7 @@ class App(customtkinter.CTk):
         )
 
         self.frame_min_mapping_quality = customtkinter.CTkFrame(
-            master=self.frame_center,
+            master=self.frame_lca,
             fg_color="#2A2D2E",
         )
         self.frame_min_mapping_quality.grid(
@@ -510,7 +521,7 @@ class App(customtkinter.CTk):
             value="False",
         )
         self.custom_database_switch = customtkinter.CTkSwitch(
-            master=self.frame_center,
+            master=self.frame_lca,
             textvariable=self.custom_database_button_title,
             command=self.custom_database_callback,
             onvalue=True,
@@ -540,7 +551,7 @@ class App(customtkinter.CTk):
         )
 
         self.lca_rank_menu = customtkinter.CTkOptionMenu(
-            master=self.frame_center,
+            master=self.frame_lca,
             values=RANKS.str_list(),
             command=self.lca_rank_callback,
             text_color_disabled="gray40",
@@ -553,14 +564,14 @@ class App(customtkinter.CTk):
             column=1,
         )
 
-        # ============ frame_right ============
+        # ============ frame_general ============
 
         # configure grid layout (3 x 2) (row x column)
 
-        self.frame_right.grid_rowconfigure(0, minsize=10)
+        self.frame_general.grid_rowconfigure(0, minsize=10)
 
         RIGHT_LABEL_WIDTH = 50
-        RIGHT_LABEL_KW = dict(master=self.frame_right, width=RIGHT_LABEL_WIDTH)
+        RIGHT_LABEL_KW = dict(master=self.frame_general, width=RIGHT_LABEL_WIDTH)
 
         RIGHT_LABEL_PAD_X = 20
         RIGHT_LABEL_GRID_KW = dict(
@@ -586,7 +597,7 @@ class App(customtkinter.CTk):
         )
 
         self.frame_max_position = customtkinter.CTkFrame(
-            master=self.frame_right,
+            master=self.frame_general,
             fg_color="#2A2D2E",
         )
         self.frame_max_position.grid(
@@ -641,7 +652,7 @@ class App(customtkinter.CTk):
         )
 
         self.min_reads = customtkinter.CTkEntry(
-            master=self.frame_right,
+            master=self.frame_general,
             textvariable=self.min_reads_value,
             **KW_ENTRY,
         )
@@ -667,7 +678,7 @@ class App(customtkinter.CTk):
             value="False",
         )
         self.bayesian_switch = customtkinter.CTkSwitch(
-            master=self.frame_right,
+            master=self.frame_general,
             textvariable=self.bayesian_button_title,
             command=self.bayesian_callback,
             onvalue=True,
@@ -695,7 +706,7 @@ class App(customtkinter.CTk):
             value="False",
         )
         self.forward_switch = customtkinter.CTkSwitch(
-            master=self.frame_right,
+            master=self.frame_general,
             textvariable=self.forward_button_title,
             command=self.forward_callback,
             onvalue=True,
@@ -721,7 +732,7 @@ class App(customtkinter.CTk):
         )
 
         self.frame_parallel_samples = customtkinter.CTkFrame(
-            master=self.frame_right,
+            master=self.frame_general,
             fg_color="#2A2D2E",
         )
         self.frame_parallel_samples.grid(
@@ -774,7 +785,7 @@ class App(customtkinter.CTk):
         )
 
         self.frame_parallel_cores_per_sample = customtkinter.CTkFrame(
-            master=self.frame_right,
+            master=self.frame_general,
             fg_color="#2A2D2E",
         )
         self.frame_parallel_cores_per_sample.grid(
@@ -832,7 +843,7 @@ class App(customtkinter.CTk):
         )
 
         self.prefix_entry = customtkinter.CTkEntry(
-            master=self.frame_right,
+            master=self.frame_general,
             placeholder_text="",
             **KW_ENTRY,
         )
@@ -852,7 +863,7 @@ class App(customtkinter.CTk):
         )
 
         self.suffix_entry = customtkinter.CTkEntry(
-            master=self.frame_right,
+            master=self.frame_general,
             placeholder_text="",
             **KW_ENTRY,
         )
@@ -876,7 +887,7 @@ class App(customtkinter.CTk):
             value="False",
         )
         self.long_name_switch = customtkinter.CTkSwitch(
-            master=self.frame_right,
+            master=self.frame_general,
             textvariable=self.long_name_button_title,
             command=self.long_name_callback,
             onvalue=True,
@@ -902,7 +913,7 @@ class App(customtkinter.CTk):
         )
 
         self.config_name_entry = customtkinter.CTkEntry(
-            master=self.frame_right,
+            master=self.frame_general,
             placeholder_text="config.yaml",
             **KW_ENTRY,
         )
@@ -926,7 +937,7 @@ class App(customtkinter.CTk):
         #     value="False",
         # )
         # self.config_overwrite_switch = customtkinter.CTkSwitch(
-        #     master=self.frame_right,
+        #     master=self.frame_general,
         #     textvariable=self.config_overwrite_button_title,
         #     command=self.config_overwrite_callback,
         #     onvalue=True,
@@ -954,7 +965,7 @@ class App(customtkinter.CTk):
         )
 
         self.output_dir_button = customtkinter.CTkButton(
-            master=self.frame_right,
+            master=self.frame_general,
             text=format_directory(output_dir_default),
             command=self.output_dir_callback,
             **KW_BUTTON,
@@ -966,18 +977,20 @@ class App(customtkinter.CTk):
 
         # self.init_generate_config()
 
-        self.frame_bottom = customtkinter.CTkFrame(
+        self.frame_generate = customtkinter.CTkFrame(
             master=self,
             fg_color="#212325",
         )
-        self.frame_bottom.grid(
-            row=2,
-            column=2,
-            sticky="ne",
+        self.frame_generate.grid(
+            row=3,
+            column=0,
+            sticky="n",
+            # padx=10,
+            pady=0,
         )
 
         self.print_config_button = customtkinter.CTkButton(
-            master=self.frame_bottom,
+            master=self.frame_generate,
             text="Generate Config",
             command=self.print_config_callback,
         )
@@ -990,7 +1003,7 @@ class App(customtkinter.CTk):
         )
 
         self.compute_button = customtkinter.CTkButton(
-            master=self.frame_bottom,
+            master=self.frame_generate,
             text="Generate config and compute",
             command=self.compute_callback,
         )
