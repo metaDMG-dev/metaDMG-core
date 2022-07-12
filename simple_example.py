@@ -139,8 +139,8 @@ class App(customtkinter.CTk):
 
         self.title("Configuirator")
 
-        WIDTH = 1400
-        HEIGHT = 800
+        WIDTH = 1100
+        HEIGHT = 720
 
         self.geometry(f"{WIDTH}x{HEIGHT}")
         # call .on_closing() when app gets closed
@@ -206,13 +206,6 @@ class App(customtkinter.CTk):
         self.frame_left.grid_rowconfigure(0, minsize=10)
         # empty row with minsize as spacing
         self.frame_left.grid_rowconfigure(3, minsize=100)
-        # empty row as spacing
-        # empty row as spacing
-        # self.frame_left.grid_rowconfigure(6, weight=1)
-        # # empty row with minsize as spacing
-        # self.frame_left.grid_rowconfigure(8, minsize=20)
-        # # empty row with minsize as spacing
-        # self.frame_left.grid_rowconfigure(11, minsize=10)
 
         # self.init_bam()
 
@@ -281,12 +274,7 @@ class App(customtkinter.CTk):
         # ============ frame_center ============
 
         # configure grid layout (3 x 2) (row x column)
-
         self.frame_center.grid_rowconfigure(0, minsize=10)
-        # self.frame_center.grid_rowconfigure((1, 2, 3, 4, 5, 6), weight=1)
-        # self.frame_center.grid_rowconfigure(7, minsize=100)
-        # self.frame_center.grid_columnconfigure(0, minsize=10)
-        # self.frame_center.grid_columnconfigure((0, 1), weight=1)
 
         # self.init_names()
 
@@ -467,32 +455,42 @@ class App(customtkinter.CTk):
             **CENTER_LABEL_GRID_KW,
         )
 
-        self.min_mapping_quality_slider = customtkinter.CTkSlider(
+        self.frame_min_mapping_quality = customtkinter.CTkFrame(
             master=self.frame_center,
+            fg_color="#2A2D2E",
+        )
+        self.frame_min_mapping_quality.grid(
+            row=5,
+            column=1,
+            sticky="e",
+        )
+
+        self.min_mapping_quality_slider = customtkinter.CTkSlider(
+            master=self.frame_min_mapping_quality,
             command=self.min_mapping_quality_slider_callback,
             from_=MIN_MAPPING_QUALITY_MIN,
             to=MIN_MAPPING_QUALITY_MAX,
             number_of_steps=MIN_MAPPING_QUALITY_MAX - MIN_MAPPING_QUALITY_MIN,
-            width=150,
+            width=100,
             **KW_SLIDER,
         )
         self.min_mapping_quality_slider.set(MIN_MAPPING_QUALITY_DEFAULT)
         self.min_mapping_quality_slider.grid(
-            row=5,
-            column=1,
+            row=0,
+            column=0,
+            sticky="e",
         )
 
         self.min_mapping_quality_value = customtkinter.CTkLabel(
-            master=self.frame_center,
+            master=self.frame_min_mapping_quality,
             width=20,
         )
         self.min_mapping_quality_slider_callback(MIN_MAPPING_QUALITY_DEFAULT)
         self.min_mapping_quality_value.grid(
-            row=5,
-            column=2,
+            row=0,
+            column=1,
             pady=12,
             padx=0,
-            sticky="w",
         )
 
         # self.init_custom_database()
@@ -553,37 +551,456 @@ class App(customtkinter.CTk):
         self.lca_rank_menu.grid(
             row=7,
             column=1,
-            sticky="w",
-            # pady=12,
-            # padx=10,
         )
 
-        # self.frame_bottom = customtkinter.CTkFrame(master=self.frame_main)
-        # self.frame_bottom.grid(
-        #     row=2,
-        #     column=0,
-        #     sticky="nsew",
-        #     padx=20,
-        #     pady=20,
-        # )
+        # ============ frame_right ============
 
-        # self.frame_bottom.columnconfigure((0, 1, 2, 3, 4, 5), weight=1)
-        # self.frame_bottom.rowconfigure((0, 1, 2, 3, 4, 5, 6, 7), weight=1)
+        # configure grid layout (3 x 2) (row x column)
+
+        self.frame_right.grid_rowconfigure(0, minsize=10)
+
+        RIGHT_LABEL_WIDTH = 50
+        RIGHT_LABEL_KW = dict(master=self.frame_right, width=RIGHT_LABEL_WIDTH)
+
+        RIGHT_LABEL_PAD_X = 20
+        RIGHT_LABEL_GRID_KW = dict(
+            pady=12,
+            padx=RIGHT_LABEL_PAD_X,
+            sticky="nsw",
+        )
 
         # self.init_max_position()
+
+        MAX_POSITION_MIN = 1
+        MAX_POSITION_DEFAULT = 15
+        MAX_POSITION_MAX = 30
+
+        self.max_position_label = customtkinter.CTkLabel(
+            text="Maximum Position:",
+            **RIGHT_LABEL_KW,
+        )
+        self.max_position_label.grid(
+            row=1,
+            column=0,
+            **RIGHT_LABEL_GRID_KW,
+        )
+
+        self.frame_max_position = customtkinter.CTkFrame(
+            master=self.frame_right,
+            fg_color="#2A2D2E",
+        )
+        self.frame_max_position.grid(
+            row=1,
+            column=1,
+            sticky="e",
+        )
+
+        self.max_position_slider = customtkinter.CTkSlider(
+            master=self.frame_max_position,
+            command=self.max_position_slider_callback,
+            from_=MAX_POSITION_MIN,
+            to=MAX_POSITION_MAX,
+            number_of_steps=MAX_POSITION_MAX - MAX_POSITION_MIN,
+            width=100,
+            **KW_SLIDER,
+        )
+        self.max_position_slider.set(MAX_POSITION_DEFAULT)
+        self.max_position_slider.grid(
+            row=0,
+            column=0,
+            sticky="e",
+        )
+
+        self.max_position_value = customtkinter.CTkLabel(
+            master=self.frame_max_position,
+            width=20,
+        )
+        self.max_position_value.grid(
+            row=0,
+            column=1,
+            pady=12,
+            padx=0,
+        )
+
+        self.max_position_slider_callback(MAX_POSITION_DEFAULT)
+
         # self.init_min_reads()
+
+        self.min_reads_label = customtkinter.CTkLabel(
+            text="Minimum number of reads:",
+            **RIGHT_LABEL_KW,
+        )
+        self.min_reads_label.grid(
+            row=2,
+            column=0,
+            **RIGHT_LABEL_GRID_KW,
+        )
+
+        self.min_reads_value = customtkinter.StringVar(
+            value="0",
+        )
+
+        self.min_reads = customtkinter.CTkEntry(
+            master=self.frame_right,
+            textvariable=self.min_reads_value,
+            **KW_ENTRY,
+        )
+        self.min_reads.grid(
+            row=2,
+            column=1,
+        )
+
         # self.init_bayesian_forward()
+
+        self.bayesian_label = customtkinter.CTkLabel(
+            text="Bayesian:",
+            **RIGHT_LABEL_KW,
+        )
+        self.bayesian_label.grid(
+            row=3,
+            column=0,
+            **RIGHT_LABEL_GRID_KW,
+        )
+
+        self.bayesian_bool = customtkinter.BooleanVar()
+        self.bayesian_button_title = customtkinter.StringVar(
+            value="False",
+        )
+        self.bayesian_switch = customtkinter.CTkSwitch(
+            master=self.frame_right,
+            textvariable=self.bayesian_button_title,
+            command=self.bayesian_callback,
+            onvalue=True,
+            offvalue=False,
+            **KW_SWITCH,
+        )
+        self.bayesian_switch.deselect()
+        self.bayesian_switch.grid(
+            row=3,
+            column=1,
+        )
+
+        self.forward_label = customtkinter.CTkLabel(
+            text="Forward only:",
+            **RIGHT_LABEL_KW,
+        )
+        self.forward_label.grid(
+            row=4,
+            column=0,
+            **RIGHT_LABEL_GRID_KW,
+        )
+
+        self.forward_bool = customtkinter.BooleanVar()
+        self.forward_button_title = customtkinter.StringVar(
+            value="False",
+        )
+        self.forward_switch = customtkinter.CTkSwitch(
+            master=self.frame_right,
+            textvariable=self.forward_button_title,
+            command=self.forward_callback,
+            onvalue=True,
+            offvalue=False,
+            **KW_SWITCH,
+        )
+        self.forward_switch.deselect()
+        self.forward_switch.grid(
+            row=4,
+            column=1,
+        )
+
         # self.init_parallel()
+
+        self.parallel_label = customtkinter.CTkLabel(
+            text="Samples in parallel:",
+            **RIGHT_LABEL_KW,
+        )
+        self.parallel_label.grid(
+            row=5,
+            column=0,
+            **RIGHT_LABEL_GRID_KW,
+        )
+
+        self.frame_parallel_samples = customtkinter.CTkFrame(
+            master=self.frame_right,
+            fg_color="#2A2D2E",
+        )
+        self.frame_parallel_samples.grid(
+            row=5,
+            column=1,
+            sticky="e",
+        )
+
+        PARALLEL_SAMPLES_MIN = 1
+        PARALLEL_SAMPLES_DEFAULT = 1
+        PARALLEL_SAMPLES_MAX = 20
+
+        self.parallel_samples_slider = customtkinter.CTkSlider(
+            master=self.frame_parallel_samples,
+            command=self.parallel_samples_slider_callback,
+            from_=PARALLEL_SAMPLES_MIN,
+            to=PARALLEL_SAMPLES_MAX,
+            number_of_steps=PARALLEL_SAMPLES_MAX - PARALLEL_SAMPLES_MIN,
+            width=100,
+            **KW_SLIDER,
+        )
+        self.parallel_samples_slider.set(PARALLEL_SAMPLES_DEFAULT)
+        self.parallel_samples_slider.grid(
+            row=0,
+            column=0,
+            sticky="e",
+        )
+
+        self.parallel_samples_value = customtkinter.CTkLabel(
+            master=self.frame_parallel_samples,
+            width=20,
+        )
+        self.parallel_samples_value.grid(
+            row=0,
+            column=1,
+            pady=12,
+            padx=0,
+        )
+
+        self.parallel_samples_slider_callback(PARALLEL_SAMPLES_DEFAULT)
+
+        self.parallel_cores_per_sample_label = customtkinter.CTkLabel(
+            text="Cores pr. sample:",
+            **RIGHT_LABEL_KW,
+        )
+        self.parallel_cores_per_sample_label.grid(
+            row=6,
+            column=0,
+            **RIGHT_LABEL_GRID_KW,
+        )
+
+        self.frame_parallel_cores_per_sample = customtkinter.CTkFrame(
+            master=self.frame_right,
+            fg_color="#2A2D2E",
+        )
+        self.frame_parallel_cores_per_sample.grid(
+            row=6,
+            column=1,
+            sticky="e",
+        )
+
+        PARALLEL_CORES_PER_SAMPLE_MIN = 1
+        PARALLEL_CORES_PER_SAMPLE_DEFAULT = 1
+        PARALLEL_CORES_PER_SAMPLE_MAX = 20
+
+        self.parallel_cores_per_sample_slider = customtkinter.CTkSlider(
+            master=self.frame_parallel_cores_per_sample,
+            command=self.parallel_cores_per_sample_slider_callback,
+            from_=PARALLEL_CORES_PER_SAMPLE_MIN,
+            to=PARALLEL_CORES_PER_SAMPLE_MAX,
+            number_of_steps=PARALLEL_CORES_PER_SAMPLE_MAX
+            - PARALLEL_CORES_PER_SAMPLE_MIN,
+            width=100,
+            **KW_SLIDER,
+        )
+        self.parallel_cores_per_sample_slider.set(PARALLEL_CORES_PER_SAMPLE_DEFAULT)
+        self.parallel_cores_per_sample_slider.grid(
+            row=0,
+            column=0,
+            sticky="e",
+        )
+
+        self.parallel_cores_per_sample_value = customtkinter.CTkLabel(
+            master=self.frame_parallel_cores_per_sample,
+            width=20,
+        )
+        self.parallel_cores_per_sample_value.grid(
+            row=0,
+            column=1,
+            pady=12,
+            padx=0,
+        )
+
+        self.parallel_cores_per_sample_slider_callback(
+            PARALLEL_CORES_PER_SAMPLE_DEFAULT
+        )
+
         # self.init_prefix_suffix()
+
+        self.prefix_label = customtkinter.CTkLabel(
+            text="Prefix:",
+            **RIGHT_LABEL_KW,
+        )
+        self.prefix_label.grid(
+            row=7,
+            column=0,
+            **RIGHT_LABEL_GRID_KW,
+        )
+
+        self.prefix_entry = customtkinter.CTkEntry(
+            master=self.frame_right,
+            placeholder_text="",
+            **KW_ENTRY,
+        )
+        self.prefix_entry.grid(
+            row=7,
+            column=1,
+        )
+
+        self.suffix_label = customtkinter.CTkLabel(
+            text="Suffix:",
+            **RIGHT_LABEL_KW,
+        )
+        self.suffix_label.grid(
+            row=8,
+            column=0,
+            **RIGHT_LABEL_GRID_KW,
+        )
+
+        self.suffix_entry = customtkinter.CTkEntry(
+            master=self.frame_right,
+            placeholder_text="",
+            **KW_ENTRY,
+        )
+        self.suffix_entry.grid(
+            row=8,
+            column=1,
+        )
+
+        self.long_name_label = customtkinter.CTkLabel(
+            text="Long name:",
+            **RIGHT_LABEL_KW,
+        )
+        self.long_name_label.grid(
+            row=9,
+            column=0,
+            **RIGHT_LABEL_GRID_KW,
+        )
+
+        self.long_name_bool = customtkinter.BooleanVar()
+        self.long_name_button_title = customtkinter.StringVar(
+            value="False",
+        )
+        self.long_name_switch = customtkinter.CTkSwitch(
+            master=self.frame_right,
+            textvariable=self.long_name_button_title,
+            command=self.long_name_callback,
+            onvalue=True,
+            offvalue=False,
+            **KW_SWITCH,
+        )
+        self.long_name_switch.deselect()
+        self.long_name_switch.grid(
+            row=9,
+            column=1,
+        )
+
         # self.init_config_name()
+
+        self.config_name_label = customtkinter.CTkLabel(
+            text="Config Name:",
+            **RIGHT_LABEL_KW,
+        )
+        self.config_name_label.grid(
+            row=10,
+            column=0,
+            **RIGHT_LABEL_GRID_KW,
+        )
+
+        self.config_name_entry = customtkinter.CTkEntry(
+            master=self.frame_right,
+            placeholder_text="config.yaml",
+            **KW_ENTRY,
+        )
+        self.config_name_entry.grid(
+            row=10,
+            column=1,
+        )
+
+        # self.config_overwrite_label = customtkinter.CTkLabel(
+        #     text="Overwrite:",
+        #     **RIGHT_LABEL_KW,
+        # )
+        # self.config_overwrite_label.grid(
+        #     row=11,
+        #     column=0,
+        #     **RIGHT_LABEL_GRID_KW,
+        # )
+
+        # self.config_overwrite_bool = customtkinter.BooleanVar()
+        # self.config_overwrite_button_title = customtkinter.StringVar(
+        #     value="False",
+        # )
+        # self.config_overwrite_switch = customtkinter.CTkSwitch(
+        #     master=self.frame_right,
+        #     textvariable=self.config_overwrite_button_title,
+        #     command=self.config_overwrite_callback,
+        #     onvalue=True,
+        #     offvalue=False,
+        #     **KW_SWITCH,
+        # )
+        # self.config_overwrite_switch.deselect()
+        # self.config_overwrite_switch.grid(
+        #     row=11,
+        #     column=1,
+        # )
+
         # self.init_output_dir()
 
-        # self.print_config_button = customtkinter.CTkButton(
-        #     master=self,
-        #     text="Generate Config",
-        #     command=self.print_config_callback,
-        # )
-        # self.print_config_button.grid(row=2, column=0, pady=12, padx=10)
+        self.output_dir_string = customtkinter.StringVar()
+
+        self.output_dir_label = customtkinter.CTkLabel(
+            text="Output Directory",
+            **RIGHT_LABEL_KW,
+        )
+        self.output_dir_label.grid(
+            row=12,
+            column=0,
+            **RIGHT_LABEL_GRID_KW,
+        )
+
+        self.output_dir_button = customtkinter.CTkButton(
+            master=self.frame_right,
+            text=format_directory(output_dir_default),
+            command=self.output_dir_callback,
+            **KW_BUTTON,
+        )
+        self.output_dir_button.grid(
+            row=12,
+            column=1,
+        )
+
+        # self.init_generate_config()
+
+        self.frame_bottom = customtkinter.CTkFrame(
+            master=self,
+            fg_color="#212325",
+        )
+        self.frame_bottom.grid(
+            row=2,
+            column=2,
+            sticky="ne",
+        )
+
+        self.print_config_button = customtkinter.CTkButton(
+            master=self.frame_bottom,
+            text="Generate Config",
+            command=self.print_config_callback,
+        )
+        self.print_config_button.grid(
+            row=0,
+            column=0,
+            pady=12,
+            padx=10,
+            # sticky="n",
+        )
+
+        self.compute_button = customtkinter.CTkButton(
+            master=self.frame_bottom,
+            text="Generate config and compute",
+            command=self.compute_callback,
+        )
+        self.compute_button.grid(
+            row=0,
+            column=1,
+            pady=12,
+            padx=10,
+            # sticky="ns",
+        )
 
         # ============ BAM FILE (FILE) ============
 
@@ -718,136 +1135,12 @@ class App(customtkinter.CTk):
 
     # ============ MAX POSITION (INTEGER) ============
 
-    def init_max_position(self):
-
-        MAX_POSITION_MIN = 1
-        MAX_POSITION_DEFAULT = 15
-        MAX_POSITION_MAX = 30
-
-        self.max_position_label = customtkinter.CTkLabel(
-            master=self.frame_bottom,
-            # justify=tkinter.RIGHT,
-        )
-        self.max_position_slider_callback(MAX_POSITION_DEFAULT)
-        self.max_position_label.grid(
-            row=0,
-            column=0,
-            columnspan=2,
-            sticky="nsw",
-        )
-
-        self.max_position_slider = customtkinter.CTkSlider(
-            master=self.frame_bottom,
-            command=self.max_position_slider_callback,
-            from_=MAX_POSITION_MIN,
-            to=MAX_POSITION_MAX,
-            number_of_steps=MAX_POSITION_MAX - MAX_POSITION_MIN,
-            **KW_SLIDER,
-        )
-        self.max_position_slider.set(MAX_POSITION_DEFAULT)
-        self.max_position_slider.grid(
-            row=0,
-            column=2,
-            columnspan=4,
-        )
-
     def max_position_slider_callback(self, value):
-        self.max_position_label.configure(text=f"Max Position: {int(value):>2d}")
+        self.max_position_value.configure(text=f"= {int(value):>2d}")
 
     # ============ MIN READS (ENTRY BOX) ============
 
-    def init_min_reads(self):
-
-        self.min_reads_label = customtkinter.CTkLabel(
-            master=self.frame_bottom,
-            text="Minimum number of reads:",
-            # justify=tkinter.RIGHT,
-        )
-        self.min_reads_label.grid(
-            row=1,
-            column=0,
-            columnspan=2,
-            sticky="nsw",
-        )
-
-        self.min_reads_value = customtkinter.StringVar(
-            value="0",
-        )
-
-        self.min_reads = customtkinter.CTkEntry(
-            master=self.frame_bottom,
-            textvariable=self.min_reads_value,
-            **KW_ENTRY,
-        )
-        self.min_reads.grid(
-            row=1,
-            column=2,
-            columnspan=4,
-        )
-
     # ============ BAYESIAN // FORWARD (BOOLS) ============
-
-    def init_bayesian_forward(self):
-
-        self.bayesian_label = customtkinter.CTkLabel(
-            master=self.frame_bottom,
-            text="Bayesian:",
-        )
-        self.bayesian_label.grid(
-            row=2,
-            column=0,
-            columnspan=1,
-            # sticky="w",
-        )
-
-        self.bayesian_bool = customtkinter.BooleanVar()
-        self.bayesian_button_title = customtkinter.StringVar(
-            value="False",
-        )
-        self.bayesian_switch = customtkinter.CTkSwitch(
-            master=self.frame_bottom,
-            textvariable=self.bayesian_button_title,
-            command=self.bayesian_callback,
-            onvalue=True,
-            offvalue=False,
-            **KW_SWITCH,
-        )
-        self.bayesian_switch.deselect()
-        self.bayesian_switch.grid(
-            row=2,
-            column=1,
-            # sticky="w",
-        )
-
-        self.forward_label = customtkinter.CTkLabel(
-            master=self.frame_bottom,
-            text="Forward only:",
-        )
-        self.forward_label.grid(
-            row=2,
-            column=3,
-            columnspan=1,
-            # sticky="e",
-        )
-
-        self.forward_bool = customtkinter.BooleanVar()
-        self.forward_button_title = customtkinter.StringVar(
-            value="False",
-        )
-        self.forward_switch = customtkinter.CTkSwitch(
-            master=self.frame_bottom,
-            textvariable=self.forward_button_title,
-            command=self.forward_callback,
-            onvalue=True,
-            offvalue=False,
-            **KW_SWITCH,
-        )
-        self.forward_switch.deselect()
-        self.forward_switch.grid(
-            row=2,
-            column=4,
-            # sticky="w",
-        )
 
     def bayesian_callback(self):
         state = self.bayesian_switch.get()
@@ -859,135 +1152,17 @@ class App(customtkinter.CTk):
         self.forward_button_title.set(str(state))
         self.forward_bool.set(state)
 
-    # ============ PARALLEL CORES (ENTRY BOXES) ============
+    # ============ PARALLEL CORES (SLIDER) ============
 
-    def init_parallel(self):
+    def parallel_samples_slider_callback(self, value):
+        self.parallel_samples_value.configure(text=f"= {int(value):>2d}")
 
-        self.parallel_label = customtkinter.CTkLabel(
-            master=self.frame_bottom,
-            text="Samples in parallel:",
-        )
-        self.parallel_label.grid(
-            row=3,
-            column=0,
-            columnspan=1,
-            # sticky="w",
-        )
+    # ============ CORES PER SAMPLE (SLIDER) ============
 
-        self.parallel_samples_value = customtkinter.StringVar(
-            value="1",
-        )
-
-        self.parallel_samples = customtkinter.CTkEntry(
-            master=self.frame_bottom,
-            textvariable=self.parallel_samples_value,
-            # placeholder_text="minimum",
-            **KW_ENTRY,
-        )
-        self.parallel_samples.grid(
-            row=3,
-            column=1,
-            # columnspan=2,
-            # sticky="w",
-        )
-
-        self.parallel_cores_per_sample_label = customtkinter.CTkLabel(
-            master=self.frame_bottom,
-            text="Cores pr. sample:",
-        )
-        self.parallel_cores_per_sample_label.grid(
-            row=3,
-            column=3,
-            # sticky="e",
-        )
-
-        self.parallel_cores_per_sample_value = customtkinter.StringVar(
-            value="1",
-        )
-
-        self.parallel_cores_per_sample = customtkinter.CTkEntry(
-            master=self.frame_bottom,
-            textvariable=self.parallel_cores_per_sample_value,
-            **KW_ENTRY,
-        )
-        self.parallel_cores_per_sample.grid(
-            row=3,
-            column=4,
-            # columnspan=2,
-            # sticky="w",
-        )
+    def parallel_cores_per_sample_slider_callback(self, value):
+        self.parallel_cores_per_sample_value.configure(text=f"= {int(value):>2d}")
 
     # ============ PREFIX SUFFIX (ENTRY) ============
-
-    def init_prefix_suffix(self):
-
-        self.prefix_label = customtkinter.CTkLabel(
-            master=self.frame_bottom,
-            text="Prefix:",
-            # justify=tkinter.RIGHT,
-        )
-        self.prefix_label.grid(
-            row=4,
-            column=0,
-        )
-
-        self.prefix_entry = customtkinter.CTkEntry(
-            master=self.frame_bottom,
-            placeholder_text="",
-            **KW_ENTRY,
-        )
-        self.prefix_entry.grid(
-            row=4,
-            column=1,
-        )
-
-        self.suffix_label = customtkinter.CTkLabel(
-            master=self.frame_bottom,
-            text="Suffix:",
-            # justify=tkinter.RIGHT,
-        )
-        self.suffix_label.grid(
-            row=4,
-            column=2,
-        )
-
-        self.suffix_entry = customtkinter.CTkEntry(
-            master=self.frame_bottom,
-            placeholder_text="",
-            **KW_ENTRY,
-        )
-        self.suffix_entry.grid(
-            row=4,
-            column=3,
-        )
-
-        self.long_name_label = customtkinter.CTkLabel(
-            master=self.frame_bottom,
-            text="Long name:",
-            # justify=tkinter.RIGHT,
-        )
-        self.long_name_label.grid(
-            row=4,
-            column=4,
-        )
-
-        self.long_name_bool = customtkinter.BooleanVar()
-        self.long_name_button_title = customtkinter.StringVar(
-            value="False",
-        )
-        self.long_name_switch = customtkinter.CTkSwitch(
-            master=self.frame_bottom,
-            textvariable=self.long_name_button_title,
-            command=self.long_name_callback,
-            onvalue=True,
-            offvalue=False,
-            **KW_SWITCH,
-        )
-        self.long_name_switch.deselect()
-        self.long_name_switch.grid(
-            row=4,
-            column=5,
-        )
 
     def long_name_callback(self):
         state = self.long_name_switch.get()
@@ -996,87 +1171,12 @@ class App(customtkinter.CTk):
 
     # ============ CONFIG NAME (ENTRY) ============
 
-    def init_config_name(self):
-
-        self.config_name_label = customtkinter.CTkLabel(
-            master=self.frame_bottom,
-            text="Config Name:",
-            # justify=tkinter.RIGHT,
-        )
-        self.config_name_label.grid(
-            row=5,
-            column=0,
-        )
-
-        self.config_name_entry = customtkinter.CTkEntry(
-            master=self.frame_bottom,
-            placeholder_text="config.yaml",
-            **KW_ENTRY,
-        )
-        self.config_name_entry.grid(
-            row=5,
-            column=1,
-        )
-
-        self.config_overwrite_label = customtkinter.CTkLabel(
-            master=self.frame_bottom,
-            text="Overwrite?",
-            # justify=tkinter.RIGHT,
-        )
-        self.config_overwrite_label.grid(
-            row=5,
-            column=2,
-        )
-
-        self.config_overwrite_bool = customtkinter.BooleanVar()
-        self.config_overwrite_button_title = customtkinter.StringVar(
-            value="False",
-        )
-        self.config_overwrite_switch = customtkinter.CTkSwitch(
-            master=self.frame_bottom,
-            textvariable=self.config_overwrite_button_title,
-            command=self.config_overwrite_callback,
-            onvalue=True,
-            offvalue=False,
-            **KW_SWITCH,
-        )
-        self.config_overwrite_switch.deselect()
-        self.config_overwrite_switch.grid(
-            row=5,
-            column=3,
-        )
-
-    def config_overwrite_callback(self):
-        state = self.config_overwrite_switch.get()
-        self.config_overwrite_button_title.set(str(state))
-        self.config_overwrite_bool.set(state)
+    # def config_overwrite_callback(self):
+    #     state = self.config_overwrite_switch.get()
+    #     self.config_overwrite_button_title.set(str(state))
+    #     self.config_overwrite_bool.set(state)
 
     # ============ OUTPUT DIR (DIRECTORY) ============
-
-    def init_output_dir(self):
-
-        self.output_dir_string = customtkinter.StringVar()
-
-        self.output_dir_label = customtkinter.CTkLabel(
-            master=self.frame_bottom,
-            justify=tkinter.RIGHT,
-            text="Output Directory",
-        )
-        self.output_dir_label.grid(
-            row=6,
-            column=0,
-        )
-
-        self.output_dir_button = customtkinter.CTkButton(
-            master=self.frame_bottom,
-            text=format_directory(output_dir_default),
-            command=self.output_dir_callback,
-            **KW_BUTTON,
-        )
-        self.output_dir_button.grid(
-            row=6,
-            column=1,
-        )
 
     def output_dir_callback(self):
         # get a directory path by user
@@ -1087,15 +1187,6 @@ class App(customtkinter.CTk):
         self.output_dir_button.configure(text=text)
 
     # ============ PRINT ============
-
-    def init_print_config(self, row):
-
-        self.print_config_button = customtkinter.CTkButton(
-            master=self,
-            text="Print",
-            command=self.print_config_callback,
-        )
-        self.print_config_button.grid(row=row, column=1, pady=12, padx=10)
 
     def print_config_callback(self):
         print("")
@@ -1109,6 +1200,52 @@ class App(customtkinter.CTk):
         print(f"Output directory: {self.output_dir_string.get()}")
         print(f"Max Position: {int(self.max_position_slider.get())}")
         print(f"Sample Prefix: {self.prefix_entry.get()}")
+
+    # ============ COMPUTE ============
+
+    def compute_callback(self):
+
+        window = customtkinter.CTkToplevel(self)
+        window.geometry("400x200")
+
+        # create label on CTkToplevel window
+        label = customtkinter.CTkLabel(
+            window,
+            text="Are you sure you want to start the computation?",
+        )
+
+        label.grid(row=0, column=0, columnspan=2, padx=12, pady=10)
+
+        def close_window():
+            window.destroy()
+
+        def close_and_compute_window():
+            print("Running computation!!!")
+            window.destroy()
+
+        button_yes = customtkinter.CTkButton(
+            master=window,
+            text="Yes",
+            command=close_and_compute_window,
+        )
+        button_yes.grid(
+            row=1,
+            column=0,
+            pady=12,
+            padx=10,
+        )
+
+        button_no = customtkinter.CTkButton(
+            master=window,
+            text="No",
+            command=close_window,
+        )
+        button_no.grid(
+            row=1,
+            column=1,
+            pady=12,
+            padx=10,
+        )
 
     # ============ OTHER ============
 
