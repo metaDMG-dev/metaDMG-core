@@ -54,7 +54,7 @@ class RANKS(str, Enum):
 
     @classmethod
     def str_list(cls):
-        return [c if c != "" else "None" for c in cls.list()]
+        return [c if c != "" else "none" for c in cls.list()]
 
 
 KW_OPTIONS_MENU = dict(
@@ -128,8 +128,8 @@ KW_SLIDER = dict(
     progress_color="#AAB0B5",
 )
 KW_SLIDER_DISABLED = dict(
-    slider_button_color="gray40",
-    slider_progress_color="gray40",
+    button_color="gray40",
+    progress_color="gray40",
 )
 
 
@@ -137,21 +137,23 @@ class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("CustomTkinter simple_example.py")
+        self.title("Configuirator")
 
-        WIDTH = 800
-        HEIGHT = 1000
+        WIDTH = 1400
+        HEIGHT = 800
 
         self.geometry(f"{WIDTH}x{HEIGHT}")
         # call .on_closing() when app gets closed
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-        # self.grid_columnconfigure((0, 1), weight=1)
+        # ============ create two frames ============
 
-        # configure grid layout (1x2)
-        self.columnconfigure(0, weight=1)
-        self.rowconfigure(0, weight=1)
-        self.rowconfigure(1, weight=10)
+        # configure grid layout (2x3) (row x column)
+        self.grid_columnconfigure(0, weight=0)
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_columnconfigure(2, weight=1)
+        self.grid_rowconfigure(0, weight=0)
+        self.grid_rowconfigure(1, weight=1)
 
         self.headline = customtkinter.CTkLabel(
             master=self,
@@ -159,127 +161,433 @@ class App(customtkinter.CTk):
             text="Configuirator",
             text_font=(FONT, "-30"),
         )
-        self.headline.grid(row=0, column=0, pady=12, padx=10)
-
-        self.frame_main = customtkinter.CTkFrame(master=self)
-        self.frame_main.grid(
-            row=1,
-            column=0,
-            sticky="nsew",
-            padx=20,
-            pady=20,
-        )
-
-        self.frame_main.columnconfigure(0, weight=1)
-        self.frame_main.rowconfigure(0, weight=1)
-        self.frame_main.rowconfigure(1, weight=4)
-        self.frame_main.rowconfigure(2, weight=6)
-
-        self.frame_top = customtkinter.CTkFrame(master=self.frame_main)
-        self.frame_top.grid(
+        self.headline.grid(
             row=0,
             column=0,
-            sticky="nsew",
-            padx=20,
-            pady=20,
+            columnspan=3,
         )
 
-        self.frame_top.columnconfigure((0, 1, 2, 3), weight=1)
-        self.frame_top.rowconfigure(0, weight=1)
-
-        self.init_bam()
-        self.init_damage_mode()
-
-        self.frame_center = customtkinter.CTkFrame(master=self.frame_main)
-        self.frame_center.grid(
+        self.frame_left = customtkinter.CTkFrame(
+            master=self,
+            # width=180,
+            # corner_radius=0,
+        )
+        self.frame_left.grid(
             row=1,
             column=0,
-            sticky="nsew",
+            sticky="nswe",
             padx=20,
             pady=20,
         )
 
-        self.frame_center.columnconfigure((0, 1, 2, 3, 4, 5), weight=1)
-        self.frame_center.rowconfigure((0, 1, 2, 3), weight=1)
-
-        self.init_names()
-        self.init_nodes()
-        self.init_acc2tax()
-        self.init_similarity_score()
-        self.init_min_mapping_quality()
-        self.init_custom_database()
-        self.init_lca_rank()
-
-        self.frame_bottom = customtkinter.CTkFrame(master=self.frame_main)
-        self.frame_bottom.grid(
-            row=2,
-            column=0,
-            sticky="nsew",
+        self.frame_center = customtkinter.CTkFrame(master=self)
+        self.frame_center.grid(
+            row=1,
+            column=1,
+            sticky="nswe",
             padx=20,
             pady=20,
         )
 
-        self.frame_bottom.columnconfigure((0, 1, 2, 3, 4, 5), weight=1)
-        self.frame_bottom.rowconfigure((0, 1, 2, 3, 4, 5, 6, 7), weight=1)
-
-        self.init_max_position()
-        self.init_min_reads()
-        self.init_bayesian_forward()
-        self.init_parallel()
-        self.init_prefix_suffix()
-        self.init_config_name()
-        self.init_output_dir()
-
-        self.print_config_button = customtkinter.CTkButton(
-            master=self,
-            text="Generate Config",
-            command=self.print_config_callback,
+        self.frame_right = customtkinter.CTkFrame(master=self)
+        self.frame_right.grid(
+            row=1,
+            column=2,
+            sticky="nswe",
+            padx=20,
+            pady=20,
         )
-        self.print_config_button.grid(row=2, column=0, pady=12, padx=10)
 
-        inits = [
-            self.init_output_dir,
-            self.init_prefix_suffix,
-            self.init_print_config,
-        ]
+        # ============ frame_left ============
 
-        # for row, init in enumerate(inits):
-        #     init(row)
+        # configure grid layout (5x1) (row x column)
 
-        # ============ BAM FILE (FILE) ============
+        # empty row with minsize as spacing
+        self.frame_left.grid_rowconfigure(0, minsize=10)
+        # empty row with minsize as spacing
+        self.frame_left.grid_rowconfigure(3, minsize=100)
+        # empty row as spacing
+        # empty row as spacing
+        # self.frame_left.grid_rowconfigure(6, weight=1)
+        # # empty row with minsize as spacing
+        # self.frame_left.grid_rowconfigure(8, minsize=20)
+        # # empty row with minsize as spacing
+        # self.frame_left.grid_rowconfigure(11, minsize=10)
 
-    def init_bam(self):
+        # self.init_bam()
 
         self.bam_file_string = customtkinter.StringVar()
 
         self.bam_label = customtkinter.CTkLabel(
-            master=self.frame_top,
+            master=self.frame_left,
             text="BAM file:",
-            justify=tkinter.RIGHT,
-            width=10,
+            text_font=("Roboto Medium", -16),
         )
         self.bam_label.grid(
-            row=0,
+            row=1,
             column=0,
             pady=12,
             padx=10,
-            sticky="nse",
         )
 
         self.bam_button = customtkinter.CTkButton(
-            master=self.frame_top,
+            master=self.frame_left,
             text="Select file",
             command=self.bam_callback,
-            width=10,
             **KW_BUTTON,
         )
         self.bam_button.grid(
-            row=0,
+            row=2,
+            column=0,
+            pady=12,
+            padx=10,
+        )
+
+        # self.init_damage_mode()
+
+        self.damage_mode_label = customtkinter.CTkLabel(
+            master=self.frame_left,
+            text="Damage Mode:",
+            text_font=("Roboto Medium", -16),
+        )
+        self.damage_mode_label.grid(
+            row=4,
+            column=0,
+            pady=12,
+            padx=10,
+        )
+
+        self.damage_mode_string = customtkinter.StringVar(
+            value=DAMAGE_MODE.LCA,
+        )
+
+        self.damage_mode_menu = customtkinter.CTkOptionMenu(
+            master=self.frame_left,
+            values=DAMAGE_MODE.list(),
+            variable=self.damage_mode_string,
+            command=self.damage_mode_collback,
+            # width=100,
+            **KW_OPTIONS_MENU,
+        )
+
+        self.damage_mode_menu.grid(
+            row=5,
+            column=0,
+            pady=12,
+            padx=10,
+            # sticky="w",
+        )
+
+        # ============ frame_center ============
+
+        # configure grid layout (3 x 2) (row x column)
+
+        self.frame_center.grid_rowconfigure(0, minsize=10)
+        # self.frame_center.grid_rowconfigure((1, 2, 3, 4, 5, 6), weight=1)
+        # self.frame_center.grid_rowconfigure(7, minsize=100)
+        # self.frame_center.grid_columnconfigure(0, minsize=10)
+        # self.frame_center.grid_columnconfigure((0, 1), weight=1)
+
+        # self.init_names()
+
+        CENTER_LABEL_WIDTH = 50
+        CENTER_LABEL_KW = dict(master=self.frame_center, width=CENTER_LABEL_WIDTH)
+
+        CENTER_LABEL_PAD_X = 20
+        CENTER_LABEL_GRID_KW = dict(
+            pady=12,
+            padx=CENTER_LABEL_PAD_X,
+            sticky="nsw",
+        )
+
+        self.names_file_string = customtkinter.StringVar()
+
+        self.names_label = customtkinter.CTkLabel(
+            text="Names:",
+            **CENTER_LABEL_KW,
+        )
+        self.names_label.grid(
+            row=1,
+            column=0,
+            **CENTER_LABEL_GRID_KW,
+        )
+
+        self.names_button = customtkinter.CTkButton(
+            master=self.frame_center,
+            text="Select file",
+            command=self.names_callback,
+            **KW_BUTTON,
+        )
+        self.names_button.grid(
+            row=1,
             column=1,
             pady=12,
             padx=10,
+        )
+
+        # self.init_nodes()
+
+        self.nodes_file_string = customtkinter.StringVar()
+
+        self.nodes_label = customtkinter.CTkLabel(
+            text="Nodes:",
+            **CENTER_LABEL_KW,
+        )
+        self.nodes_label.grid(
+            row=2,
+            column=0,
+            **CENTER_LABEL_GRID_KW,
+        )
+
+        self.nodes_button = customtkinter.CTkButton(
+            master=self.frame_center,
+            text="Select file",
+            command=self.nodes_callback,
+            **KW_BUTTON,
+        )
+        self.nodes_button.grid(
+            row=2,
+            column=1,
+            pady=12,
+            padx=10,
+        )
+
+        # self.init_acc2tax()
+
+        self.acc2tax_file_string = customtkinter.StringVar()
+
+        self.acc2tax_label = customtkinter.CTkLabel(
+            text="Acc2tax:",
+            **CENTER_LABEL_KW,
+        )
+        self.acc2tax_label.grid(
+            row=3,
+            column=0,
+            **CENTER_LABEL_GRID_KW,
+        )
+
+        self.acc2tax_button = customtkinter.CTkButton(
+            master=self.frame_center,
+            text="Select file",
+            command=self.acc2tax_callback,
+            **KW_BUTTON,
+        )
+        self.acc2tax_button.grid(
+            row=3,
+            column=1,
+            pady=12,
+            padx=10,
+        )
+
+        # self.init_similarity_score()
+
+        self.similarity_score_label = customtkinter.CTkLabel(
+            text="Similarity Score:",
+            **CENTER_LABEL_KW,
+        )
+        self.similarity_score_label.grid(
+            row=4,
+            column=0,
+            **CENTER_LABEL_GRID_KW,
+        )
+
+        self.frame_similarity = customtkinter.CTkFrame(
+            master=self.frame_center,
+            fg_color="#2A2D2E",
+        )
+        self.frame_similarity.grid(
+            row=4,
+            column=1,
+            columnspan=3,
+            rowspan=1,
+            # pady=20,
+            padx=30,
             sticky="w",
         )
+
+        # self.frame_similarity.rowconfigure(0, weight=1)
+        # self.frame_similarity.columnconfigure((0, 1, 2), weight=1)
+
+        self.similarity_score_min_value = customtkinter.StringVar(
+            value="0.95",
+        )
+
+        self.similarity_score_min = customtkinter.CTkEntry(
+            master=self.frame_similarity,
+            textvariable=self.similarity_score_min_value,
+            width=40,
+            **KW_ENTRY,
+        )
+        self.similarity_score_min.grid(
+            row=0,
+            column=0,
+            # sticky="nse",
+        )
+
+        self.similarity_score_to = customtkinter.CTkLabel(
+            master=self.frame_similarity,
+            text="to",
+            width=20,
+        )
+        self.similarity_score_to.grid(
+            row=0,
+            column=1,
+            # sticky="ns",
+        )
+
+        self.similarity_score_max_value = customtkinter.StringVar(
+            value="1.0",
+        )
+
+        self.similarity_score_max = customtkinter.CTkEntry(
+            master=self.frame_similarity,
+            textvariable=self.similarity_score_max_value,
+            width=40,
+            **KW_ENTRY,
+        )
+        self.similarity_score_max.grid(
+            row=0,
+            column=2,
+            # sticky="nsw",
+        )
+
+        # self.init_min_mapping_quality()
+
+        MIN_MAPPING_QUALITY_MIN = 0
+        MIN_MAPPING_QUALITY_DEFAULT = 0
+        MIN_MAPPING_QUALITY_MAX = 50
+
+        self.min_mapping_quality_label = customtkinter.CTkLabel(
+            text="Minimum Mapping Quality:",
+            **CENTER_LABEL_KW,
+        )
+        self.min_mapping_quality_label.grid(
+            row=5,
+            column=0,
+            **CENTER_LABEL_GRID_KW,
+        )
+
+        self.min_mapping_quality_slider = customtkinter.CTkSlider(
+            master=self.frame_center,
+            command=self.min_mapping_quality_slider_callback,
+            from_=MIN_MAPPING_QUALITY_MIN,
+            to=MIN_MAPPING_QUALITY_MAX,
+            number_of_steps=MIN_MAPPING_QUALITY_MAX - MIN_MAPPING_QUALITY_MIN,
+            width=150,
+            **KW_SLIDER,
+        )
+        self.min_mapping_quality_slider.set(MIN_MAPPING_QUALITY_DEFAULT)
+        self.min_mapping_quality_slider.grid(
+            row=5,
+            column=1,
+        )
+
+        self.min_mapping_quality_value = customtkinter.CTkLabel(
+            master=self.frame_center,
+            width=20,
+        )
+        self.min_mapping_quality_slider_callback(MIN_MAPPING_QUALITY_DEFAULT)
+        self.min_mapping_quality_value.grid(
+            row=5,
+            column=2,
+            pady=12,
+            padx=0,
+            sticky="w",
+        )
+
+        # self.init_custom_database()
+
+        self.custom_database_label = customtkinter.CTkLabel(
+            text="Custom Database:",
+            **CENTER_LABEL_KW,
+        )
+        self.custom_database_label.grid(
+            row=6,
+            column=0,
+            **CENTER_LABEL_GRID_KW,
+        )
+
+        self.custom_database_bool = customtkinter.BooleanVar()
+        self.custom_database_button_title = customtkinter.StringVar(
+            value="False",
+        )
+        self.custom_database_switch = customtkinter.CTkSwitch(
+            master=self.frame_center,
+            textvariable=self.custom_database_button_title,
+            command=self.custom_database_callback,
+            onvalue=True,
+            offvalue=False,
+            **KW_SWITCH,
+        )
+        self.custom_database_switch.deselect()
+        self.custom_database_switch.grid(
+            row=6,
+            column=1,
+        )
+
+        # self.init_lca_rank()
+
+        self.lca_rank_label = customtkinter.CTkLabel(
+            text="LCA Rank:",
+            **CENTER_LABEL_KW,
+        )
+        self.lca_rank_label.grid(
+            row=7,
+            column=0,
+            **CENTER_LABEL_GRID_KW,
+        )
+
+        self.lca_rank_string = customtkinter.StringVar(
+            value=RANKS.none,
+        )
+
+        self.lca_rank_menu = customtkinter.CTkOptionMenu(
+            master=self.frame_center,
+            values=RANKS.str_list(),
+            command=self.lca_rank_callback,
+            text_color_disabled="gray40",
+            **KW_OPTIONS_MENU,
+        )
+        self.lca_rank_menu.set("none")  # set initial value
+
+        self.lca_rank_menu.grid(
+            row=7,
+            column=1,
+            sticky="w",
+            # pady=12,
+            # padx=10,
+        )
+
+        # self.frame_bottom = customtkinter.CTkFrame(master=self.frame_main)
+        # self.frame_bottom.grid(
+        #     row=2,
+        #     column=0,
+        #     sticky="nsew",
+        #     padx=20,
+        #     pady=20,
+        # )
+
+        # self.frame_bottom.columnconfigure((0, 1, 2, 3, 4, 5), weight=1)
+        # self.frame_bottom.rowconfigure((0, 1, 2, 3, 4, 5, 6, 7), weight=1)
+
+        # self.init_max_position()
+        # self.init_min_reads()
+        # self.init_bayesian_forward()
+        # self.init_parallel()
+        # self.init_prefix_suffix()
+        # self.init_config_name()
+        # self.init_output_dir()
+
+        # self.print_config_button = customtkinter.CTkButton(
+        #     master=self,
+        #     text="Generate Config",
+        #     command=self.print_config_callback,
+        # )
+        # self.print_config_button.grid(row=2, column=0, pady=12, padx=10)
+
+        # ============ BAM FILE (FILE) ============
+
+    # def init_bam(self):
 
     def bam_callback(self):
         filepaths = filedialog.askopenfilenames()
@@ -300,43 +608,6 @@ class App(customtkinter.CTk):
             self.bam_button.configure(text="File paths set")
 
     # ============ DAMAGE MODE (ENUM) ============
-
-    def init_damage_mode(self):
-
-        self.damage_mode_label = customtkinter.CTkLabel(
-            master=self.frame_top,
-            text="Damage Mode:",
-            justify=tkinter.RIGHT,
-            width=50,
-        )
-        self.damage_mode_label.grid(
-            row=0,
-            column=2,
-            pady=12,
-            padx=10,
-            sticky="nse",
-        )
-
-        self.damage_mode_string = customtkinter.StringVar(
-            value=DAMAGE_MODE.LCA,
-        )
-
-        self.damage_mode_menu = customtkinter.CTkOptionMenu(
-            master=self.frame_top,
-            values=DAMAGE_MODE.list(),
-            variable=self.damage_mode_string,
-            command=self.damage_mode_collback,
-            width=100,
-            **KW_OPTIONS_MENU,
-        )
-
-        self.damage_mode_menu.grid(
-            row=0,
-            column=3,
-            pady=12,
-            padx=10,
-            sticky="w",
-        )
 
     def damage_mode_collback(self, choice):
 
@@ -363,6 +634,7 @@ class App(customtkinter.CTk):
             self.similarity_score_label,
             self.similarity_score_to,
             self.min_mapping_quality_label,
+            self.min_mapping_quality_value,
             self.custom_database_label,
             self.lca_rank_label,
         ]
@@ -392,35 +664,6 @@ class App(customtkinter.CTk):
 
     # ============ NAMES FILE (FILE) ============
 
-    def init_names(self):
-
-        self.names_file_string = customtkinter.StringVar()
-
-        self.names_label = customtkinter.CTkLabel(
-            master=self.frame_center,
-            justify=tkinter.LEFT,
-            text="Names:",
-            # width=10,
-        )
-        self.names_label.grid(
-            row=0,
-            column=0,
-            **KW_NAMES_NODES_ACC_LABEL_GRID,
-        )
-
-        self.names_button = customtkinter.CTkButton(
-            master=self.frame_center,
-            text="Select file",
-            command=self.names_callback,
-            # width=10,
-            **KW_BUTTON,
-        )
-        self.names_button.grid(
-            row=0,
-            column=1,
-            **KW_NAMES_NODES_ACC_BUTTON_GRID,
-        )
-
     def names_callback(self):
         filepath = filedialog.askopenfilename()
         if filepath != "":
@@ -429,35 +672,6 @@ class App(customtkinter.CTk):
             self.names_button.configure(text=text)
 
     # ============ NODES FILE (FILE) ============
-
-    def init_nodes(self):
-
-        self.nodes_file_string = customtkinter.StringVar()
-
-        self.nodes_label = customtkinter.CTkLabel(
-            master=self.frame_center,
-            justify=tkinter.RIGHT,
-            text="Nodes:",
-            width=10,
-        )
-        self.nodes_label.grid(
-            row=0,
-            column=2,
-            **KW_NAMES_NODES_ACC_LABEL_GRID,
-        )
-
-        self.nodes_button = customtkinter.CTkButton(
-            master=self.frame_center,
-            text="Select file",
-            command=self.nodes_callback,
-            width=10,
-            **KW_BUTTON,
-        )
-        self.nodes_button.grid(
-            row=0,
-            column=3,
-            **KW_NAMES_NODES_ACC_BUTTON_GRID,
-        )
 
     def nodes_callback(self):
         filepath = filedialog.askopenfilename()
@@ -468,35 +682,6 @@ class App(customtkinter.CTk):
 
     # ============ ACC2TAX FILE (FILE) ============
 
-    def init_acc2tax(self):
-
-        self.acc2tax_file_string = customtkinter.StringVar()
-
-        self.acc2tax_label = customtkinter.CTkLabel(
-            master=self.frame_center,
-            justify=tkinter.RIGHT,
-            text="Acc2tax:",
-            width=10,
-        )
-        self.acc2tax_label.grid(
-            row=0,
-            column=4,
-            **KW_NAMES_NODES_ACC_LABEL_GRID,
-        )
-
-        self.acc2tax_button = customtkinter.CTkButton(
-            master=self.frame_center,
-            text="Select file",
-            command=self.acc2tax_callback,
-            width=10,
-            **KW_BUTTON,
-        )
-        self.acc2tax_button.grid(
-            row=0,
-            column=5,
-            **KW_NAMES_NODES_ACC_BUTTON_GRID,
-        )
-
     def acc2tax_callback(self):
         filepath = filedialog.askopenfilename()
         if filepath != "":
@@ -506,138 +691,18 @@ class App(customtkinter.CTk):
 
     # ============ SIMILARITY SCORE (ENTRY BOXES) ============
 
-    def init_similarity_score(self):
-
-        self.similarity_score_label = customtkinter.CTkLabel(
-            master=self.frame_center,
-            text="Similarity Score:",
-        )
-        self.similarity_score_label.grid(
-            row=1,
-            column=0,
-            columnspan=1,
-            # sticky="nsw",
-        )
-
-        self.similarity_score_min_value = customtkinter.StringVar(
-            value="0.95",
-        )
-
-        self.similarity_score_min = customtkinter.CTkEntry(
-            master=self.frame_center,
-            textvariable=self.similarity_score_min_value,
-            # placeholder_text="minimum",
-            **KW_ENTRY,
-        )
-        self.similarity_score_min.grid(
-            row=1,
-            column=2,
-            # columnspan=2,
-            sticky="e",
-        )
-
-        self.similarity_score_to = customtkinter.CTkLabel(
-            master=self.frame_center,
-            text="to",
-        )
-        self.similarity_score_to.grid(
-            row=1,
-            column=3,
-            columnspan=1,
-            # sticky="nsw",
-        )
-
-        self.similarity_score_max_value = customtkinter.StringVar(
-            value="1.0",
-        )
-
-        self.similarity_score_max = customtkinter.CTkEntry(
-            master=self.frame_center,
-            textvariable=self.similarity_score_max_value,
-            **KW_ENTRY,
-        )
-        self.similarity_score_max.grid(
-            row=1,
-            column=4,
-            # columnspan=2,
-            sticky="w",
-        )
+    # def init_similarity_score(self):
 
     # ============ MAPPING QUALITY (INTEGER) ============
 
-    def init_min_mapping_quality(self):
-
-        MIN_MAPPING_QUALITY_MIN = 0
-        MIN_MAPPING_QUALITY_DEFAULT = 0
-        MIN_MAPPING_QUALITY_MAX = 50
-
-        self.min_mapping_quality_label = customtkinter.CTkLabel(
-            master=self.frame_center,
-            # justify=tkinter.LEFT,
-        )
-        self.min_mapping_quality_slider_callback(MIN_MAPPING_QUALITY_DEFAULT)
-        self.min_mapping_quality_label.grid(
-            row=2,
-            column=0,
-            columnspan=2,
-            sticky="nsw",
-        )
-
-        self.min_mapping_quality_slider = customtkinter.CTkSlider(
-            master=self.frame_center,
-            command=self.min_mapping_quality_slider_callback,
-            from_=MIN_MAPPING_QUALITY_MIN,
-            to=MIN_MAPPING_QUALITY_MAX,
-            number_of_steps=MIN_MAPPING_QUALITY_MAX - MIN_MAPPING_QUALITY_MIN,
-            **KW_SLIDER,
-        )
-        self.min_mapping_quality_slider.set(MIN_MAPPING_QUALITY_DEFAULT)
-        self.min_mapping_quality_slider.grid(
-            row=2,
-            column=2,
-            columnspan=4,
-        )
+    # def init_min_mapping_quality(self):
 
     def min_mapping_quality_slider_callback(self, value):
-        self.min_mapping_quality_label.configure(
-            text=f"Minimum Mapping Quality: {int(value):>2d}"
-        )
+        self.min_mapping_quality_value.configure(text=f"= {int(value):>2d}")
 
     # ============ CUSTOM DATABASE (BOOL) ============
 
-    def init_custom_database(self):
-
-        self.custom_database_label = customtkinter.CTkLabel(
-            master=self.frame_center,
-            # justify=tkinter.LEFT,
-            text="Custom Database:",
-        )
-        self.custom_database_label.grid(
-            row=3,
-            column=0,
-            # columnspan=2,
-            # sticky="nsw",
-        )
-
-        self.custom_database_bool = customtkinter.BooleanVar()
-        self.custom_database_button_title = customtkinter.StringVar(
-            value="False",
-        )
-        self.custom_database_switch = customtkinter.CTkSwitch(
-            master=self.frame_center,
-            textvariable=self.custom_database_button_title,
-            command=self.custom_database_callback,
-            onvalue=True,
-            offvalue=False,
-            **KW_SWITCH,
-        )
-        self.custom_database_switch.deselect()
-        self.custom_database_switch.grid(
-            row=3,
-            column=1,
-            # columnspan=4,
-            sticky="w",
-        )
+    # def init_custom_database(self):
 
     def custom_database_callback(self):
         state = self.custom_database_switch.get()
@@ -646,44 +711,10 @@ class App(customtkinter.CTk):
 
     # ============ LCA RANK (ENUM) ============
 
-    def init_lca_rank(self):
-
-        self.lca_rank_label = customtkinter.CTkLabel(
-            master=self.frame_center,
-            text="LCA Rank:",
-            # justify=tkinter.RIGHT,
-        )
-        self.lca_rank_label.grid(
-            row=3,
-            column=3,
-            # pady=12,
-            # padx=10,
-        )
-
-        self.lca_rank_string = customtkinter.StringVar(
-            value=RANKS.none,
-        )
-
-        self.lca_rank_menu = customtkinter.CTkOptionMenu(
-            master=self.frame_center,
-            values=RANKS.str_list(),
-            # variable=self.lca_rank_string,
-            command=self.lca_rank_callback,
-            text_color_disabled="gray40",
-            **KW_OPTIONS_MENU,
-        )
-        self.lca_rank_menu.set("None")  # set initial value
-
-        self.lca_rank_menu.grid(
-            row=3,
-            column=4,
-            sticky="w",
-            # pady=12,
-            # padx=10,
-        )
+    # def init_lca_rank(self):
 
     def lca_rank_callback(self, choice):
-        self.lca_rank_string.set(choice if choice != "None" else RANKS.none)
+        self.lca_rank_string.set(choice if choice != "none" else RANKS.none)
 
     # ============ MAX POSITION (INTEGER) ============
 
