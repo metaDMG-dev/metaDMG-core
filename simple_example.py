@@ -137,10 +137,10 @@ class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("Configuirator")
+        self.title("MetaDMG Confi-gui-rator")
 
-        WIDTH = 840
-        HEIGHT = 665
+        WIDTH = 820
+        HEIGHT = 655
 
         self.geometry(f"{WIDTH}x{HEIGHT}")
         # call .on_closing() when app gets closed
@@ -158,7 +158,7 @@ class App(customtkinter.CTk):
         self.headline = customtkinter.CTkLabel(
             master=self,
             justify=tkinter.CENTER,
-            text="Configuirator",
+            text="Confi-gui-rator",
             text_font=(FONT, "-30"),
         )
         self.headline.grid(
@@ -186,7 +186,7 @@ class App(customtkinter.CTk):
             column=0,
             sticky="nswe",
             padx=20,
-            pady=20,
+            # pady=20,
         )
 
         self.frame_general = customtkinter.CTkFrame(
@@ -198,7 +198,7 @@ class App(customtkinter.CTk):
             # sticky="e",
             # sticky="nswe",
             rowspan=3,
-            padx=20,
+            # padx=20,
             pady=20,
         )
 
@@ -984,9 +984,9 @@ class App(customtkinter.CTk):
         self.frame_generate.grid(
             row=3,
             column=0,
-            sticky="n",
+            # sticky="n",
             # padx=10,
-            pady=0,
+            # pady=0,
         )
 
         self.print_config_button = customtkinter.CTkButton(
