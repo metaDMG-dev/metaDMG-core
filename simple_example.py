@@ -133,6 +133,13 @@ KW_SLIDER_DISABLED = dict(
 )
 
 
+def path_to_text(filepath: str, cut: int = 10) -> str:
+    text = Path(filepath).name
+    if len(text) > cut:
+        text = text[:cut] + " ..."
+    return text
+
+
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
@@ -146,14 +153,7 @@ class App(customtkinter.CTk):
         # call .on_closing() when app gets closed
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-        # ============ create two frames ============
-
-        # configure grid layout (2x3) (row x column)
-        # self.grid_rowconfigure(0, weight=0)
-        # self.grid_rowconfigure(1, weight=1)
-        # self.grid_columnconfigure(0, weight=0)
-        # self.grid_columnconfigure(1, weight=1)
-        # self.grid_columnconfigure(2, weight=1)
+        # ============ create frames ============
 
         self.headline = customtkinter.CTkLabel(
             master=self,
@@ -492,12 +492,12 @@ class App(customtkinter.CTk):
             sticky="e",
         )
 
-        self.min_mapping_quality_value = customtkinter.CTkLabel(
+        self.min_mapping_quality_label = customtkinter.CTkLabel(
             master=self.frame_min_mapping_quality,
             width=20,
         )
         self.min_mapping_quality_slider_callback(MIN_MAPPING_QUALITY_DEFAULT)
-        self.min_mapping_quality_value.grid(
+        self.min_mapping_quality_label.grid(
             row=0,
             column=1,
             pady=12,
@@ -1029,7 +1029,7 @@ class App(customtkinter.CTk):
         elif len(filepaths) == 1:
             filepath = filepaths[0]
             self.bam_file_string.set(filepath)
-            text = Path(filepath).name
+            text = path_to_text(filepath)
             self.bam_button.configure(text=text)
 
         else:
@@ -1064,7 +1064,7 @@ class App(customtkinter.CTk):
             self.similarity_score_label,
             self.similarity_score_to,
             self.min_mapping_quality_label,
-            self.min_mapping_quality_value,
+            self.min_mapping_quality_label,
             self.custom_database_label,
             self.lca_rank_label,
         ]
@@ -1098,7 +1098,7 @@ class App(customtkinter.CTk):
         filepath = filedialog.askopenfilename()
         if filepath != "":
             self.names_file_string.set(filepath)
-            text = Path(filepath).name
+            text = path_to_text(filepath)
             self.names_button.configure(text=text)
 
     # ============ NODES FILE (FILE) ============
@@ -1107,7 +1107,7 @@ class App(customtkinter.CTk):
         filepath = filedialog.askopenfilename()
         if filepath != "":
             self.nodes_file_string.set(filepath)
-            text = Path(filepath).name
+            text = path_to_text(filepath)
             self.nodes_button.configure(text=text)
 
     # ============ ACC2TAX FILE (FILE) ============
@@ -1116,7 +1116,7 @@ class App(customtkinter.CTk):
         filepath = filedialog.askopenfilename()
         if filepath != "":
             self.acc2tax_file_string.set(filepath)
-            text = Path(filepath).name
+            text = path_to_text(filepath)
             self.acc2tax_button.configure(text=text)
 
     # ============ SIMILARITY SCORE (ENTRY BOXES) ============
@@ -1128,7 +1128,7 @@ class App(customtkinter.CTk):
     # def init_min_mapping_quality(self):
 
     def min_mapping_quality_slider_callback(self, value):
-        self.min_mapping_quality_value.configure(text=f"= {int(value):>2d}")
+        self.min_mapping_quality_label.configure(text=f"= {int(value):>2d}")
 
     # ============ CUSTOM DATABASE (BOOL) ============
 
@@ -1204,15 +1204,33 @@ class App(customtkinter.CTk):
     def print_config_callback(self):
         print("")
         print("Config:")
-        print(f"BAM file: {self.bam_file_string.get()}")
-        print(f"Damage Mode: {self.damage_mode_string.get()}")
-        print(f"similarity_score_min: {self.similarity_score_min.get()}")
-        print(f"similarity_score_max: {self.similarity_score_max.get()}")
-        print(f"Custom Database: {self.custom_database_bool.get()}")
-        print(f"LCA Rank: {self.lca_rank_string.get()}")
-        print(f"Output directory: {self.output_dir_string.get()}")
-        print(f"Max Position: {int(self.max_position_slider.get())}")
-        print(f"Sample Prefix: {self.prefix_entry.get()}")
+
+        to_print = [
+            ("BAM file", self.bam_file_string),
+            ("Damage Mode", self.damage_mode_string),
+            ("Names", self.names_file_string),
+            ("Nodes", self.nodes_file_string),
+            ("Acc 2 Tax", self.acc2tax_file_string),
+            ("Similarity Score Min", self.similarity_score_min),
+            ("Similarity Score Max", self.similarity_score_max),
+            ("Minimum Mapping Quality", self.min_mapping_quality_slider),
+            ("LCA Rank", self.lca_rank_string),
+            ("Custom Database", self.custom_database_bool),
+            ("Max Position", self.max_position_slider),
+            ("Minimum Number of Reads", self.min_reads_value),
+            ("Bayesian", self.bayesian_bool),
+            ("Forward Only", self.forward_bool),
+            ("Samples in Parallel", self.parallel_samples_slider),
+            ("Cores pr. Sample", self.parallel_cores_per_sample_slider),
+            ("Prefix", self.prefix_entry),
+            ("Suffix", self.suffix_entry),
+            ("Long Name", self.long_name_bool),
+            ("Config Name", self.config_name_entry),
+            ("Output Directory", self.output_dir_string),
+        ]
+
+        for s, f in to_print:
+            print(f"{s}: {repr(f.get())}")
 
     # ============ COMPUTE ============
 
