@@ -96,13 +96,13 @@ KW_LABEL_GRID = dict(
 )
 
 
-NAMES_NODES_ACC_LABEL_GRID = dict(
+KW_NAMES_NODES_ACC_LABEL_GRID = dict(
     pady=12,
     padx=10,
     sticky="nse",
 )
 
-NAMES_NODES_ACC_BUTTON_GRID = dict(
+KW_NAMES_NODES_ACC_BUTTON_GRID = dict(
     pady=12,
     padx=10,
     sticky="w",
@@ -117,6 +117,19 @@ KW_ENTRY_DISABLED = dict(
     border_color="gray30",
     text_color="gray40",
     placeholder_text_color="gray40",
+)
+
+KW_SWITCH = dict(button_color="gray80")
+KW_SWITCH_DISABLED = dict(button_color="gray40")
+
+
+KW_SLIDER = dict(
+    button_color="#1F6AA5",
+    progress_color="#AAB0B5",
+)
+KW_SLIDER_DISABLED = dict(
+    slider_button_color="gray40",
+    slider_progress_color="gray40",
 )
 
 
@@ -255,7 +268,7 @@ class App(customtkinter.CTk):
 
         self.bam_button = customtkinter.CTkButton(
             master=self.frame_top,
-            text="Please select",
+            text="Select file",
             command=self.bam_callback,
             width=10,
             **KW_BUTTON,
@@ -269,14 +282,22 @@ class App(customtkinter.CTk):
         )
 
     def bam_callback(self):
-        # filepaths = filedialog.askopenfilenames()
-        filepath = filedialog.askopenfilename()
-        # print(filepaths)
-        if filepath != "":
-            print(filepath)
+        filepaths = filedialog.askopenfilenames()
+        # filepath = filedialog.askopenfilename()
+
+        if filepaths == "":
+            pass
+
+        elif len(filepaths) == 1:
+            filepath = filepaths[0]
             self.bam_file_string.set(filepath)
             text = Path(filepath).name
             self.bam_button.configure(text=text)
+
+        else:
+            print(filepaths)
+            self.bam_file_string.set(str(filepaths))
+            self.bam_button.configure(text="File paths set")
 
     # ============ DAMAGE MODE (ENUM) ============
 
@@ -322,18 +343,18 @@ class App(customtkinter.CTk):
         if choice == DAMAGE_MODE.LCA:
             lca_state = "normal"
             text_color = "gray90"
-            slider_button_color = ThemeManager.theme["color"]["slider_button"]
-            slider_progress_color = ThemeManager.theme["color"]["slider_progress"]
+            slider = KW_SLIDER
             lca_rank_menu_kw = KW_OPTIONS_MENU
             similarity_score_kw = KW_ENTRY
+            switch = KW_SWITCH
 
         else:
             lca_state = "disabled"
             text_color = "gray40"
-            slider_button_color = "gray40"
-            slider_progress_color = "gray40"
+            slider = KW_SLIDER_DISABLED
             lca_rank_menu_kw = KW_OPTIONS_MENU_DISABLED
             similarity_score_kw = KW_ENTRY_DISABLED
+            switch = KW_SWITCH_DISABLED
 
         texts = [
             self.names_label,
@@ -363,14 +384,11 @@ class App(customtkinter.CTk):
         for state in states:
             state.configure(state=lca_state)
 
-        self.min_mapping_quality_slider.configure(
-            button_color=slider_button_color,
-            progress_color=slider_progress_color,
-        )
-
+        self.min_mapping_quality_slider.configure(**slider)
         self.lca_rank_menu.configure(**lca_rank_menu_kw)
         self.similarity_score_min.configure(**similarity_score_kw)
         self.similarity_score_max.configure(**similarity_score_kw)
+        self.custom_database_switch.configure(**switch)
 
     # ============ NAMES FILE (FILE) ============
 
@@ -387,12 +405,12 @@ class App(customtkinter.CTk):
         self.names_label.grid(
             row=0,
             column=0,
-            **NAMES_NODES_ACC_LABEL_GRID,
+            **KW_NAMES_NODES_ACC_LABEL_GRID,
         )
 
         self.names_button = customtkinter.CTkButton(
             master=self.frame_center,
-            text="Please select",
+            text="Select file",
             command=self.names_callback,
             # width=10,
             **KW_BUTTON,
@@ -400,7 +418,7 @@ class App(customtkinter.CTk):
         self.names_button.grid(
             row=0,
             column=1,
-            **NAMES_NODES_ACC_BUTTON_GRID,
+            **KW_NAMES_NODES_ACC_BUTTON_GRID,
         )
 
     def names_callback(self):
@@ -425,12 +443,12 @@ class App(customtkinter.CTk):
         self.nodes_label.grid(
             row=0,
             column=2,
-            **NAMES_NODES_ACC_LABEL_GRID,
+            **KW_NAMES_NODES_ACC_LABEL_GRID,
         )
 
         self.nodes_button = customtkinter.CTkButton(
             master=self.frame_center,
-            text="Please select",
+            text="Select file",
             command=self.nodes_callback,
             width=10,
             **KW_BUTTON,
@@ -438,7 +456,7 @@ class App(customtkinter.CTk):
         self.nodes_button.grid(
             row=0,
             column=3,
-            **NAMES_NODES_ACC_BUTTON_GRID,
+            **KW_NAMES_NODES_ACC_BUTTON_GRID,
         )
 
     def nodes_callback(self):
@@ -463,12 +481,12 @@ class App(customtkinter.CTk):
         self.acc2tax_label.grid(
             row=0,
             column=4,
-            **NAMES_NODES_ACC_LABEL_GRID,
+            **KW_NAMES_NODES_ACC_LABEL_GRID,
         )
 
         self.acc2tax_button = customtkinter.CTkButton(
             master=self.frame_center,
-            text="Please select",
+            text="Select file",
             command=self.acc2tax_callback,
             width=10,
             **KW_BUTTON,
@@ -476,7 +494,7 @@ class App(customtkinter.CTk):
         self.acc2tax_button.grid(
             row=0,
             column=5,
-            **NAMES_NODES_ACC_BUTTON_GRID,
+            **KW_NAMES_NODES_ACC_BUTTON_GRID,
         )
 
     def acc2tax_callback(self):
@@ -571,6 +589,7 @@ class App(customtkinter.CTk):
             from_=MIN_MAPPING_QUALITY_MIN,
             to=MIN_MAPPING_QUALITY_MAX,
             number_of_steps=MIN_MAPPING_QUALITY_MAX - MIN_MAPPING_QUALITY_MIN,
+            **KW_SLIDER,
         )
         self.min_mapping_quality_slider.set(MIN_MAPPING_QUALITY_DEFAULT)
         self.min_mapping_quality_slider.grid(
@@ -610,6 +629,7 @@ class App(customtkinter.CTk):
             command=self.custom_database_callback,
             onvalue=True,
             offvalue=False,
+            **KW_SWITCH,
         )
         self.custom_database_switch.deselect()
         self.custom_database_switch.grid(
@@ -691,6 +711,7 @@ class App(customtkinter.CTk):
             from_=MAX_POSITION_MIN,
             to=MAX_POSITION_MAX,
             number_of_steps=MAX_POSITION_MAX - MAX_POSITION_MIN,
+            **KW_SLIDER,
         )
         self.max_position_slider.set(MAX_POSITION_DEFAULT)
         self.max_position_slider.grid(
@@ -758,6 +779,7 @@ class App(customtkinter.CTk):
             command=self.bayesian_callback,
             onvalue=True,
             offvalue=False,
+            **KW_SWITCH,
         )
         self.bayesian_switch.deselect()
         self.bayesian_switch.grid(
@@ -787,6 +809,7 @@ class App(customtkinter.CTk):
             command=self.forward_callback,
             onvalue=True,
             offvalue=False,
+            **KW_SWITCH,
         )
         self.forward_switch.deselect()
         self.forward_switch.grid(
@@ -927,6 +950,7 @@ class App(customtkinter.CTk):
             command=self.long_name_callback,
             onvalue=True,
             offvalue=False,
+            **KW_SWITCH,
         )
         self.long_name_switch.deselect()
         self.long_name_switch.grid(
@@ -983,6 +1007,7 @@ class App(customtkinter.CTk):
             command=self.config_overwrite_callback,
             onvalue=True,
             offvalue=False,
+            **KW_SWITCH,
         )
         self.config_overwrite_switch.deselect()
         self.config_overwrite_switch.grid(
