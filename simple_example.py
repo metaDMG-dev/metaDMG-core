@@ -1,5 +1,7 @@
 import tkinter
 from pathlib import Path
+from threading import Thread
+from time import sleep
 from tkinter import W, filedialog
 
 import customtkinter
@@ -120,16 +122,26 @@ KW_NAMES_NODES_ACC_BUTTON_GRID = dict(
     sticky="w",
 )
 
-KW_ENTRY = dict(
+KW_ENTRY_GOOD_COLORS = dict(
     border_color="gray30",
     text_color="gray90",
     placeholder_text_color="gray90",
+    fg_color="#2A2D2E",
 )
 KW_ENTRY_DISABLED = dict(
     border_color="gray30",
     text_color="gray40",
     placeholder_text_color="gray40",
+    fg_color="#2A2D2E",
 )
+
+KW_ENTRY_BAD_COLORS = dict(
+    border_color="#78413d",
+    text_color="gray90",
+    placeholder_text_color="gray90",
+    fg_color="#603431",
+)
+
 
 KW_SWITCH = dict(button_color="gray80")
 KW_SWITCH_DISABLED = dict(button_color="gray40")
@@ -447,7 +459,7 @@ class App(customtkinter.CTk):
             master=self.frame_similarity,
             textvariable=self.similarity_score_min_value,
             width=40,
-            **KW_ENTRY,
+            **KW_ENTRY_GOOD_COLORS,
         )
         self.similarity_score_min.grid(
             row=0,
@@ -474,7 +486,7 @@ class App(customtkinter.CTk):
             master=self.frame_similarity,
             textvariable=self.similarity_score_max_value,
             width=40,
-            **KW_ENTRY,
+            **KW_ENTRY_GOOD_COLORS,
         )
         self.similarity_score_max.grid(
             row=0,
@@ -683,12 +695,12 @@ class App(customtkinter.CTk):
             value="0",
         )
 
-        self.min_reads = customtkinter.CTkEntry(
+        self.min_reads_entry = customtkinter.CTkEntry(
             master=self.frame_general,
             textvariable=self.min_reads_value,
-            **KW_ENTRY,
+            **KW_ENTRY_GOOD_COLORS,
         )
-        self.min_reads.grid(
+        self.min_reads_entry.grid(
             row=2,
             column=1,
         )
@@ -877,7 +889,7 @@ class App(customtkinter.CTk):
         self.prefix_entry = customtkinter.CTkEntry(
             master=self.frame_general,
             placeholder_text="",
-            **KW_ENTRY,
+            **KW_ENTRY_GOOD_COLORS,
         )
         self.prefix_entry.grid(
             row=7,
@@ -897,7 +909,7 @@ class App(customtkinter.CTk):
         self.suffix_entry = customtkinter.CTkEntry(
             master=self.frame_general,
             placeholder_text="",
-            **KW_ENTRY,
+            **KW_ENTRY_GOOD_COLORS,
         )
         self.suffix_entry.grid(
             row=8,
@@ -947,7 +959,7 @@ class App(customtkinter.CTk):
         self.config_name_entry = customtkinter.CTkEntry(
             master=self.frame_general,
             placeholder_text="config.yaml",
-            **KW_ENTRY,
+            **KW_ENTRY_GOOD_COLORS,
         )
         self.config_name_entry.grid(
             row=10,
@@ -1048,6 +1060,9 @@ class App(customtkinter.CTk):
             # sticky="ns",
         )
 
+        self.start_similarity_scores_background_thread()
+        self.start_minimum_reads_background_thread()
+
         # ============ BAM FILE (FILE) ============
 
     # def init_bam(self):
@@ -1082,7 +1097,6 @@ class App(customtkinter.CTk):
             text_color = "gray90"
             slider = KW_SLIDER
             lca_rank_menu_kw = KW_OPTIONS_MENU
-            similarity_score_kw = KW_ENTRY
             switch = KW_SWITCH
             self.is_lca = True
 
@@ -1091,7 +1105,6 @@ class App(customtkinter.CTk):
             text_color = "gray40"
             slider = KW_SLIDER_DISABLED
             lca_rank_menu_kw = KW_OPTIONS_MENU_DISABLED
-            similarity_score_kw = KW_ENTRY_DISABLED
             switch = KW_SWITCH_DISABLED
             self.is_lca = False
 
@@ -1099,8 +1112,6 @@ class App(customtkinter.CTk):
             self.names_label,
             self.nodes_label,
             self.acc2tax_label,
-            self.similarity_score_label,
-            self.similarity_score_to,
             self.min_mapping_quality_label,
             self.min_mapping_quality_value,
             self.custom_database_label,
@@ -1114,8 +1125,6 @@ class App(customtkinter.CTk):
             self.names_button,
             self.nodes_button,
             self.acc2tax_button,
-            self.similarity_score_min,
-            self.similarity_score_max,
             self.min_mapping_quality_slider,
             self.custom_database_switch,
             self.lca_rank_menu,
@@ -1126,15 +1135,7 @@ class App(customtkinter.CTk):
 
         self.min_mapping_quality_slider.configure(**slider)
         self.lca_rank_menu.configure(**lca_rank_menu_kw)
-        self.similarity_score_min.configure(**similarity_score_kw)
-        self.similarity_score_max.configure(**similarity_score_kw)
         self.custom_database_switch.configure(**switch)
-
-        color_buttons = [
-            self.names_button,
-            self.nodes_button,
-            self.acc2tax_button,
-        ]
 
         if choice == DAMAGE_MODE.LCA:
             self.names_button.configure(**self.names_button_colors)
@@ -1144,6 +1145,8 @@ class App(customtkinter.CTk):
             self.names_button.configure(**KW_BUTTON_GOOD_COLORS)
             self.nodes_button.configure(**KW_BUTTON_GOOD_COLORS)
             self.acc2tax_button.configure(**KW_BUTTON_GOOD_COLORS)
+
+        self.check_similarity_scores()
 
     # ============ NAMES FILE (FILE) ============
 
@@ -1251,6 +1254,91 @@ class App(customtkinter.CTk):
     #     self.config_overwrite_button_title.set(str(state))
     #     self.config_overwrite_bool.set(state)
 
+    def check_similarity_scores(self):
+
+        if self.is_lca:
+            text_color = "gray90"
+            self.similarity_score_label.configure(text_color=text_color)
+            self.similarity_score_to.configure(text_color=text_color)
+            self.similarity_score_min.configure(state="normal")
+            self.similarity_score_max.configure(state="normal")
+
+            try:
+                min_score = float(self.similarity_score_min.get())
+                max_score = float(self.similarity_score_max.get())
+                is_float = True
+            except ValueError:
+                is_float = False
+
+            if is_float and (0 <= min_score <= max_score <= 1):
+                self.similarity_score_min.configure(**KW_ENTRY_GOOD_COLORS)
+                self.similarity_score_max.configure(**KW_ENTRY_GOOD_COLORS)
+                self.similarity_is_ok = True
+
+            else:
+                self.similarity_score_min.configure(**KW_ENTRY_BAD_COLORS)
+                self.similarity_score_max.configure(**KW_ENTRY_BAD_COLORS)
+                self.similarity_is_ok = False
+        else:
+            text_color = "gray40"
+            self.similarity_score_label.configure(text_color=text_color)
+            self.similarity_score_to.configure(text_color=text_color)
+            self.similarity_score_min.configure(state="disabled", **KW_ENTRY_DISABLED)
+            self.similarity_score_max.configure(state="disabled", **KW_ENTRY_DISABLED)
+
+    def check_similarity_scores_background(self, interval_sec):
+        # run forever
+        while True:
+            # block for the interval
+            sleep(interval_sec)
+            # perform the task
+            self.check_similarity_scores()
+
+    def start_similarity_scores_background_thread(self):
+        # create and start the daemon thread
+        daemon = Thread(
+            target=self.check_similarity_scores_background,
+            args=(0.05,),
+            daemon=True,
+            name="Similarity-score-checking",
+        )
+        daemon.start()
+
+    ###################
+
+    def check_minimum_reads(self):
+
+        try:
+            min_reads = int(self.min_reads_value.get())
+            is_int = True
+        except ValueError:
+            is_int = False
+
+        if is_int and (0 <= min_reads):
+            self.min_reads_is_ok = True
+            self.min_reads_entry.configure(**KW_ENTRY_GOOD_COLORS)
+        else:
+            self.min_reads_entry.configure(**KW_ENTRY_BAD_COLORS)
+            self.min_reads_is_ok = False
+
+    def check_minimum_reads_background(self, interval_sec):
+        # run forever
+        while True:
+            # block for the interval
+            sleep(interval_sec)
+            # perform the task
+            self.check_minimum_reads()
+
+    def start_minimum_reads_background_thread(self):
+        # create and start the daemon thread
+        daemon = Thread(
+            target=self.check_minimum_reads_background,
+            args=(0.05,),
+            daemon=True,
+            name="minimum-reads-checking",
+        )
+        daemon.start()
+
     # ============ OUTPUT DIR (DIRECTORY) ============
 
     def output_dir_callback(self):
@@ -1264,6 +1352,9 @@ class App(customtkinter.CTk):
     # ============ PRINT ============
 
     def print_config_callback(self):
+
+        self.check_similarity_scores()
+        self.check_minimum_reads()
 
         if not self.bam_is_okay:
             print("Fix BAM file")
@@ -1279,6 +1370,14 @@ class App(customtkinter.CTk):
 
         if self.is_lca and (not self.acc2tax_is_okay):
             print("Fix acc2tax file")
+            return
+
+        if self.is_lca and (not self.similarity_is_ok):
+            print("Fix similarity score")
+            return
+
+        if not self.min_reads_is_ok:
+            print("Fix minimum number of reads")
             return
 
         print("")
