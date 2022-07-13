@@ -68,13 +68,25 @@ KW_OPTIONS_MENU_DISABLED = dict(
     button_color="gray30",
 )
 
-KW_BUTTON = dict(
+
+KW_BUTTON_BASE = dict(
+    hover=True,
     border_width=2,
+    text_color_disabled="gray40",
+)
+
+KW_BUTTON_GOOD_COLORS = dict(
     fg_color=None,
     hover_color="gray30",
     border_color="gray30",
-    text_color_disabled="gray40",
 )
+
+KW_BUTTON_BAD_COLORS = dict(
+    hover_color="#78413d",
+    border_color="#78413d",
+    fg_color="#603431",
+)
+
 
 KW_BUTTON_GRID = dict(
     pady=12,
@@ -149,9 +161,13 @@ class App(customtkinter.CTk):
         WIDTH = 820
         HEIGHT = 655
 
-        self.geometry(f"{WIDTH}x{HEIGHT}")
+        X, Y = self.get_center_coordinates(WIDTH, HEIGHT)
+
+        self.geometry(f"{WIDTH}x{HEIGHT}+{X}+{Y}")
         # call .on_closing() when app gets closed
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+        self.resizable(False, False)
 
         # ============ create frames ============
 
@@ -239,7 +255,8 @@ class App(customtkinter.CTk):
             master=self.frame_bam,
             text="Select file",
             command=self.bam_callback,
-            **KW_BUTTON,
+            **KW_BUTTON_BASE,
+            **KW_BUTTON_BAD_COLORS,
         )
         self.bam_button.grid(
             row=0,
@@ -248,6 +265,7 @@ class App(customtkinter.CTk):
             # padx=100,
             sticky="e",
         )
+        self.bam_is_okay = False
 
         # self.init_damage_mode()
 
@@ -282,6 +300,8 @@ class App(customtkinter.CTk):
             sticky="e",
         )
 
+        self.is_lca = True
+
         # ============ frame_lca ============
 
         # configure grid layout (3 x 2) (row x column)
@@ -315,7 +335,8 @@ class App(customtkinter.CTk):
             master=self.frame_lca,
             text="Select file",
             command=self.names_callback,
-            **KW_BUTTON,
+            **KW_BUTTON_BASE,
+            **KW_BUTTON_BAD_COLORS,
         )
         self.names_button.grid(
             row=1,
@@ -323,6 +344,8 @@ class App(customtkinter.CTk):
             pady=12,
             padx=10,
         )
+        self.names_is_okay = False
+        self.names_button_colors = KW_BUTTON_BAD_COLORS
 
         # self.init_nodes()
 
@@ -342,7 +365,8 @@ class App(customtkinter.CTk):
             master=self.frame_lca,
             text="Select file",
             command=self.nodes_callback,
-            **KW_BUTTON,
+            **KW_BUTTON_BASE,
+            **KW_BUTTON_BAD_COLORS,
         )
         self.nodes_button.grid(
             row=2,
@@ -350,6 +374,9 @@ class App(customtkinter.CTk):
             pady=12,
             padx=10,
         )
+
+        self.nodes_is_okay = False
+        self.nodes_button_colors = KW_BUTTON_BAD_COLORS
 
         # self.init_acc2tax()
 
@@ -369,14 +396,19 @@ class App(customtkinter.CTk):
             master=self.frame_lca,
             text="Select file",
             command=self.acc2tax_callback,
-            **KW_BUTTON,
+            **KW_BUTTON_BASE,
+            **KW_BUTTON_BAD_COLORS,
         )
+
         self.acc2tax_button.grid(
             row=3,
             column=1,
             pady=12,
             padx=10,
         )
+
+        self.acc2tax_is_okay = False
+        self.acc2tax_button_colors = KW_BUTTON_BAD_COLORS
 
         # self.init_similarity_score()
 
@@ -492,12 +524,12 @@ class App(customtkinter.CTk):
             sticky="e",
         )
 
-        self.min_mapping_quality_label = customtkinter.CTkLabel(
+        self.min_mapping_quality_value = customtkinter.CTkLabel(
             master=self.frame_min_mapping_quality,
             width=20,
         )
         self.min_mapping_quality_slider_callback(MIN_MAPPING_QUALITY_DEFAULT)
-        self.min_mapping_quality_label.grid(
+        self.min_mapping_quality_value.grid(
             row=0,
             column=1,
             pady=12,
@@ -968,7 +1000,8 @@ class App(customtkinter.CTk):
             master=self.frame_general,
             text=format_directory(output_dir_default),
             command=self.output_dir_callback,
-            **KW_BUTTON,
+            **KW_BUTTON_BASE,
+            **KW_BUTTON_GOOD_COLORS,
         )
         self.output_dir_button.grid(
             row=12,
@@ -1024,7 +1057,7 @@ class App(customtkinter.CTk):
         # filepath = filedialog.askopenfilename()
 
         if filepaths == "":
-            pass
+            return
 
         elif len(filepaths) == 1:
             filepath = filepaths[0]
@@ -1037,6 +1070,9 @@ class App(customtkinter.CTk):
             self.bam_file_string.set(str(filepaths))
             self.bam_button.configure(text="File paths set")
 
+        self.bam_is_okay = True
+        self.bam_button.configure(**KW_BUTTON_GOOD_COLORS)
+
     # ============ DAMAGE MODE (ENUM) ============
 
     def damage_mode_collback(self, choice):
@@ -1048,6 +1084,7 @@ class App(customtkinter.CTk):
             lca_rank_menu_kw = KW_OPTIONS_MENU
             similarity_score_kw = KW_ENTRY
             switch = KW_SWITCH
+            self.is_lca = True
 
         else:
             lca_state = "disabled"
@@ -1056,6 +1093,7 @@ class App(customtkinter.CTk):
             lca_rank_menu_kw = KW_OPTIONS_MENU_DISABLED
             similarity_score_kw = KW_ENTRY_DISABLED
             switch = KW_SWITCH_DISABLED
+            self.is_lca = False
 
         texts = [
             self.names_label,
@@ -1064,7 +1102,7 @@ class App(customtkinter.CTk):
             self.similarity_score_label,
             self.similarity_score_to,
             self.min_mapping_quality_label,
-            self.min_mapping_quality_label,
+            self.min_mapping_quality_value,
             self.custom_database_label,
             self.lca_rank_label,
         ]
@@ -1092,6 +1130,21 @@ class App(customtkinter.CTk):
         self.similarity_score_max.configure(**similarity_score_kw)
         self.custom_database_switch.configure(**switch)
 
+        color_buttons = [
+            self.names_button,
+            self.nodes_button,
+            self.acc2tax_button,
+        ]
+
+        if choice == DAMAGE_MODE.LCA:
+            self.names_button.configure(**self.names_button_colors)
+            self.nodes_button.configure(**self.nodes_button_colors)
+            self.acc2tax_button.configure(**self.acc2tax_button_colors)
+        else:
+            self.names_button.configure(**KW_BUTTON_GOOD_COLORS)
+            self.nodes_button.configure(**KW_BUTTON_GOOD_COLORS)
+            self.acc2tax_button.configure(**KW_BUTTON_GOOD_COLORS)
+
     # ============ NAMES FILE (FILE) ============
 
     def names_callback(self):
@@ -1100,6 +1153,9 @@ class App(customtkinter.CTk):
             self.names_file_string.set(filepath)
             text = path_to_text(filepath)
             self.names_button.configure(text=text)
+            self.names_button.configure(**KW_BUTTON_GOOD_COLORS)
+            self.names_is_okay = True
+            self.names_button_colors = KW_BUTTON_GOOD_COLORS
 
     # ============ NODES FILE (FILE) ============
 
@@ -1109,6 +1165,9 @@ class App(customtkinter.CTk):
             self.nodes_file_string.set(filepath)
             text = path_to_text(filepath)
             self.nodes_button.configure(text=text)
+            self.nodes_button.configure(**KW_BUTTON_GOOD_COLORS)
+            self.nodes_is_okay = True
+            self.nodes_button_colors = KW_BUTTON_GOOD_COLORS
 
     # ============ ACC2TAX FILE (FILE) ============
 
@@ -1118,6 +1177,9 @@ class App(customtkinter.CTk):
             self.acc2tax_file_string.set(filepath)
             text = path_to_text(filepath)
             self.acc2tax_button.configure(text=text)
+            self.acc2tax_button.configure(**KW_BUTTON_GOOD_COLORS)
+            self.acc2tax_is_okay = True
+            self.acc2tax_button_colors = KW_BUTTON_GOOD_COLORS
 
     # ============ SIMILARITY SCORE (ENTRY BOXES) ============
 
@@ -1128,7 +1190,7 @@ class App(customtkinter.CTk):
     # def init_min_mapping_quality(self):
 
     def min_mapping_quality_slider_callback(self, value):
-        self.min_mapping_quality_label.configure(text=f"= {int(value):>2d}")
+        self.min_mapping_quality_value.configure(text=f"= {int(value):>2d}")
 
     # ============ CUSTOM DATABASE (BOOL) ============
 
@@ -1202,6 +1264,23 @@ class App(customtkinter.CTk):
     # ============ PRINT ============
 
     def print_config_callback(self):
+
+        if not self.bam_is_okay:
+            print("Fix BAM file")
+            return
+
+        if self.is_lca and (not self.names_is_okay):
+            print("Fix names file")
+            return
+
+        if self.is_lca and (not self.nodes_is_okay):
+            print("Fix nodes file")
+            return
+
+        if self.is_lca and (not self.acc2tax_is_okay):
+            print("Fix acc2tax file")
+            return
+
         print("")
         print("Config:")
 
@@ -1232,12 +1311,21 @@ class App(customtkinter.CTk):
         for s, f in to_print:
             print(f"{s}: {repr(f.get())}")
 
+        # if self.bam_file_string.get() == "":
+        #     self.bam_button.configure(fg_color="#2e0502")
+
     # ============ COMPUTE ============
 
     def compute_callback(self):
 
         window = customtkinter.CTkToplevel(self)
-        window.geometry("400x200")
+        window.title("metaDMG - Computing")
+
+        width = 330
+        height = 100
+        x, y = self.get_center_coordinates(width, height)
+
+        window.geometry(f"{width}x{height}+{x}+{y}")
 
         # create label on CTkToplevel window
         label = customtkinter.CTkLabel(
@@ -1282,6 +1370,17 @@ class App(customtkinter.CTk):
 
     def on_closing(self, event=0):
         self.destroy()
+
+    def get_center_coordinates(self, width, height):
+        # get screen width and height
+        ws = self.winfo_screenwidth()  # width of the screen
+        hs = self.winfo_screenheight()  # height of the screen
+
+        # calculate x and y coordinates for the Tk root window
+        x = (ws / 2) - (width / 2)
+        y = (hs / 2) - (height / 2)
+
+        return int(x), int(y)
 
 
 if __name__ == "__main__":
