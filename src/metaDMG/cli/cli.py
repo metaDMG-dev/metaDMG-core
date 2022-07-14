@@ -276,6 +276,19 @@ def create_config(
 #%%
 
 
+@cli_app.command("config-gui")
+def create_config_gui():
+    """Generate the config file via a simple GUI."""
+
+    from metaDMG.cli import cli_gui
+
+    gui = cli_gui.Gui(verbose=True)
+    gui.mainloop()
+
+
+#%%
+
+
 @cli_app.command("compute")
 def compute(
     config_file: Optional[Path] = typer.Argument(

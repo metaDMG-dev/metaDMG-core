@@ -130,12 +130,14 @@ RIGHT_LABEL_GRID_KW = dict(
 
 
 class Gui(customtkinter.CTk):
-    def __init__(self):
+    def __init__(self, verbose: bool = True):
         super().__init__()
+
+        self.verbose = verbose
 
         self.title("MetaDMG Configuirator")
 
-        WIDTH = 820
+        WIDTH = 785
         HEIGHT = 655
         X, Y = self.get_center_coordinates(WIDTH, HEIGHT)
         self.geometry(f"{WIDTH}x{HEIGHT}+{X}+{Y}")
@@ -1190,20 +1192,12 @@ class Gui(customtkinter.CTk):
             self.config_is_okay = True
             self.config_button_colors = KW_BUTTON_GOOD_COLORS
 
-    # ============ SIMILARITY SCORE (ENTRY BOXES) ============
-
-    # def init_similarity_score(self):
-
     # ============ MAPPING QUALITY (INTEGER) ============
-
-    # def init_min_mapping_quality(self):
 
     def min_mapping_quality_slider_callback(self, value):
         self.min_mapping_quality_value.configure(text=f"= {int(value):>2d}")
 
     # ============ CUSTOM DATABASE (BOOL) ============
-
-    # def init_custom_database(self):
 
     def custom_database_callback(self):
         state = self.custom_database_switch.get()
@@ -1211,8 +1205,6 @@ class Gui(customtkinter.CTk):
         self.custom_database_bool.set(state)
 
     # ============ LCA RANK (ENUM) ============
-
-    # def init_lca_rank(self):
 
     def lca_rank_callback(self, choice):
         self.lca_rank_string.set(choice if choice != "none" else cli_utils.RANKS.none)
@@ -1222,14 +1214,14 @@ class Gui(customtkinter.CTk):
     def max_position_slider_callback(self, value):
         self.max_position_value.configure(text=f"= {int(value):>2d}")
 
-    # ============ MIN READS (ENTRY BOX) ============
-
-    # ============ BAYESIAN // FORWARD (BOOLS) ============
+    # ============ BAYESIAN (BOOL) ============
 
     def bayesian_callback(self):
         state = self.bayesian_switch.get()
         self.bayesian_button_title.set(str(state))
         self.bayesian_bool.set(state)
+
+    # ============ FORWARD (BOOL) ============
 
     def forward_callback(self):
         state = self.forward_switch.get()
@@ -1246,19 +1238,14 @@ class Gui(customtkinter.CTk):
     def cores_per_sample_slider_callback(self, value):
         self.cores_per_sample_value.configure(text=f"= {int(value):>2d}")
 
-    # ============ PREFIX SUFFIX (ENTRY) ============
+    # ============ LONG NAME (ENTRY) ============
 
     def long_name_callback(self):
         state = self.long_name_switch.get()
         self.long_name_button_title.set(str(state))
         self.long_name_bool.set(state)
 
-    # ============ CONFIG NAME (ENTRY) ============
-
-    # def config_overwrite_callback(self):
-    #     state = self.config_overwrite_switch.get()
-    #     self.config_overwrite_button_title.set(str(state))
-    #     self.config_overwrite_bool.set(state)
+    # ============ CHECK SIMILARITY SCORE ============
 
     def check_similarity_scores(self):
 
@@ -1310,7 +1297,7 @@ class Gui(customtkinter.CTk):
         )
         daemon.start()
 
-    ###################
+    # ============ CHECK MIN READS  ============
 
     def check_minimum_reads(self):
 
@@ -1355,6 +1342,44 @@ class Gui(customtkinter.CTk):
         text = format_directory(Path(filepath))
         self.output_dir_button.configure(text=text)
 
+    def create_popup_window(self, text):
+
+        window_popup = customtkinter.CTkToplevel(self)
+        window_popup.title("metaDMG - Error")
+
+        width = 365
+        height = 110
+        x, y = self.get_center_coordinates(width, height)
+
+        window_popup.geometry(f"{width}x{height}+{x}+{y}")
+
+        label = customtkinter.CTkLabel(
+            window_popup,
+            text=f"Error occurred in config creation. \nPlease {text}.",
+        )
+
+        label.grid(
+            row=0,
+            column=0,
+            padx=80,
+            pady=12,
+        )
+
+        def close_popup_callback():
+            window_popup.destroy()
+
+        button = customtkinter.CTkButton(
+            master=window_popup,
+            text="Close",
+            command=close_popup_callback,
+        )
+        button.grid(
+            row=1,
+            column=0,
+            padx=80,
+            pady=12,
+        )
+
     # ============ PRINT ============
 
     def config_is_good(self):
@@ -1363,31 +1388,31 @@ class Gui(customtkinter.CTk):
         self.check_minimum_reads()
 
         if not self.bam_is_okay:
-            print("Fix BAM file")
+            self.create_popup_window("fix BAM file")
             return False
 
         if self.is_lca and (not self.names_is_okay):
-            print("Fix names file")
+            self.create_popup_window("fix names file")
             return False
 
         if self.is_lca and (not self.nodes_is_okay):
-            print("Fix nodes file")
+            self.create_popup_window("fix nodes file")
             return False
 
         if self.is_lca and (not self.acc2tax_is_okay):
-            print("Fix acc2tax file")
+            self.create_popup_window("fix acc2tax file")
             return False
 
         if self.is_lca and (not self.similarity_is_ok):
-            print("Fix similarity score")
+            self.create_popup_window("fix similarity score")
             return False
 
         if not self.min_reads_is_ok:
-            print("Fix minimum number of reads")
+            self.create_popup_window("fix minimum number of reads")
             return False
 
         if not self.config_is_okay:
-            print("Fix config file")
+            self.create_popup_window("fix config file name")
             return False
 
         return True
@@ -1433,10 +1458,16 @@ class Gui(customtkinter.CTk):
         return config
 
     def save_config_file(self, config, overwrite_config=False):
-        print("")
-        print("Config file to save:")
-        print(config)
-        cli_utils.save_config_file(config, self.config_file_path, overwrite_config)
+        if self.verbose:
+            print("")
+            print("Config file to save:")
+            print(config)
+        cli_utils.save_config_file(
+            config=config,
+            config_file=self.config_file_path,
+            overwrite_config=overwrite_config,
+            verbose=self.verbose,
+        )
 
     def make_overwrite_window(self, config):
 
@@ -1522,5 +1553,5 @@ class Gui(customtkinter.CTk):
 
 
 if __name__ == "__main__":
-    gui = Gui()
+    gui = Gui(verbose=True)
     gui.mainloop()

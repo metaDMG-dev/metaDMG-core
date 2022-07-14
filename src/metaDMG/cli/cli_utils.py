@@ -356,6 +356,7 @@ def save_config_file(
     config: dict,
     config_file: Path,
     overwrite_config: bool = False,
+    verbose: bool = True,
 ) -> None:
     """Save the config file.
     Does not overwrite if file already exists, unless explicitly specified.
@@ -383,7 +384,8 @@ def save_config_file(
 
     with open(config_file, "w") as file:
         yaml.dump(config, file, sort_keys=False)
-    print(f"{str(config_file)} was created")
+    if verbose:
+        print(f"{str(config_file)} was created")
 
 
 #%%
