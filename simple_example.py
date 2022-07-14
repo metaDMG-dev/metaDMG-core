@@ -1,12 +1,10 @@
-import tkinter
 from pathlib import Path
 from threading import Thread
 from time import sleep
-from tkinter import W, filedialog
+from tkinter import filedialog
 
 import customtkinter
-from customtkinter import ThemeManager
-from rich.pretty import pprint
+from rich import print
 
 from metaDMG.cli import cli_utils
 
@@ -16,7 +14,7 @@ customtkinter.set_appearance_mode("dark")
 # Themes: "blue" (standard), "green", "dark-blue"
 customtkinter.set_default_color_theme("blue")
 
-FONT = ThemeManager.theme["text"]["font"]
+FONT = customtkinter.ThemeManager.theme["text"]["font"]
 
 
 def format_directory(path: Path):
@@ -128,7 +126,7 @@ KW_SLIDER_DISABLED = dict(
 )
 
 
-class App(customtkinter.CTk):
+class Gui(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
@@ -149,7 +147,7 @@ class App(customtkinter.CTk):
 
         self.headline = customtkinter.CTkLabel(
             master=self,
-            justify=tkinter.CENTER,
+            justify="center",
             text="Confi-gui-rator",
             text_font=(FONT, "-30"),
         )
@@ -951,38 +949,6 @@ class App(customtkinter.CTk):
         self.config_is_okay = False
         self.config_file_path = None
 
-        # self.config_overwrite_label = customtkinter.CTkLabel(
-        #     text="Overwrite:",
-        #     **RIGHT_LABEL_KW,
-        # )
-        # self.config_overwrite_label.grid(
-        #     row=11,
-        #     column=0,
-        #     **RIGHT_LABEL_GRID_KW,
-        # )
-
-        # self.config_overwrite_bool = customtkinter.BooleanVar()
-        # self.config_overwrite_button_title = customtkinter.StringVar(
-        #     value="False",
-        # )
-        # self.config_overwrite_switch = customtkinter.CTkSwitch(
-        #     master=self.frame_general,
-        #     textvariable=self.config_overwrite_button_title,
-        #     command=self.config_overwrite_callback,
-        #     onvalue=True,
-        #     offvalue=False,
-        #     **KW_SWITCH,
-        # )
-        # self.config_overwrite_switch.deselect()
-        # self.config_overwrite_switch.grid(
-        #     row=11,
-        #     column=1,
-        # )
-
-        # self.init_output_dir()
-
-        # self.output_dir_string = customtkinter.StringVar()
-
         self.output_dir_label = customtkinter.CTkLabel(
             text="Output Directory",
             **RIGHT_LABEL_KW,
@@ -1034,18 +1000,18 @@ class App(customtkinter.CTk):
             # sticky="n",
         )
 
-        self.compute_button = customtkinter.CTkButton(
-            master=self.frame_generate,
-            text="Save and Compute Config",
-            command=self.compute_callback,
-        )
-        self.compute_button.grid(
-            row=0,
-            column=1,
-            pady=12,
-            padx=10,
-            # sticky="ns",
-        )
+        # self.compute_button = customtkinter.CTkButton(
+        #     master=self.frame_generate,
+        #     text="Save and Compute Config",
+        #     command=self.compute_callback,
+        # )
+        # self.compute_button.grid(
+        #     row=0,
+        #     column=1,
+        #     pady=12,
+        #     padx=10,
+        #     # sticky="ns",
+        # )
 
         self.start_similarity_scores_background_thread()
         self.start_minimum_reads_background_thread()
@@ -1404,193 +1370,112 @@ class App(customtkinter.CTk):
         if not self.config_is_good():
             return None
 
-        samples = self.bam_file_path
-        damage_mode = self.damage_mode_value
-
-        names = self.names_file_path
-        nodes = self.nodes_file_path
-        acc2tax = self.acc2tax_file_path
-        metaDMG_cpp = "./metaDMG-cpp"
-        min_similarity_score = float(self.similarity_score_min.get())
-        max_similarity_score = float(self.similarity_score_max.get())
-        min_edit_dist = None
-        max_edit_dist = None
-        min_mapping_quality = int(self.min_mapping_quality_slider.get())
-        lca_rank = self.lca_rank_string.get()
-        custom_database = self.custom_database_bool.get()
-
-        max_position = int(self.max_position_slider.get())
-        min_reads = int(self.min_reads_value.get())
-        forward_only = self.forward_bool.get()
-        bayesian = self.bayesian_bool.get()
-        weight_type = 1
-        output_dir = self.output_dir_path
-        parallel_samples = int(self.parallel_samples_slider.get())
-        cores_per_sample = int(self.parallel_cores_per_sample_slider.get())
-        config_file = self.config_file_path
-        sample_prefix = self.prefix_entry.get()
-        sample_suffix = self.suffix_entry.get()
-        long_name = self.long_name_bool.get()
-
         from metaDMG import __version__
 
         config = cli_utils.get_config_dict(
-            samples=samples,
-            names=names,
-            nodes=nodes,
-            acc2tax=acc2tax,
-            min_similarity_score=min_similarity_score,
-            max_similarity_score=max_similarity_score,
-            min_edit_dist=min_edit_dist,
-            max_edit_dist=max_edit_dist,
-            min_mapping_quality=min_mapping_quality,
-            custom_database=custom_database,
-            lca_rank=lca_rank,
-            metaDMG_cpp=metaDMG_cpp,
-            max_position=max_position,
-            min_reads=min_reads,
-            weight_type=weight_type,
-            forward_only=forward_only,
-            bayesian=bayesian,
-            output_dir=output_dir,
-            parallel_samples=parallel_samples,
-            cores_per_sample=cores_per_sample,
-            config_file=config_file,
-            sample_prefix=sample_prefix,
-            sample_suffix=sample_suffix,
-            long_name=long_name,
-            damage_mode=damage_mode,
+            samples=self.bam_file_path,
+            damage_mode=self.damage_mode_value,
+            #
+            names=self.names_file_path,
+            nodes=self.nodes_file_path,
+            acc2tax=self.acc2tax_file_path,
+            min_similarity_score=float(self.similarity_score_min.get()),
+            max_similarity_score=float(self.similarity_score_max.get()),
+            min_edit_dist=None,
+            max_edit_dist=None,
+            min_mapping_quality=int(self.min_mapping_quality_slider.get()),
+            custom_database=self.custom_database_bool.get(),
+            lca_rank=self.lca_rank_string.get(),
+            #
+            metaDMG_cpp="./metaDMG-cpp",
+            max_position=int(self.max_position_slider.get()),
+            min_reads=int(self.min_reads_value.get()),
+            weight_type=1,
+            forward_only=self.forward_bool.get(),
+            bayesian=self.bayesian_bool.get(),
+            output_dir=self.output_dir_path,
+            parallel_samples=int(self.parallel_samples_slider.get()),
+            cores_per_sample=int(self.parallel_cores_per_sample_slider.get()),
+            config_file=self.config_file_path,
+            sample_prefix=self.prefix_entry.get(),
+            sample_suffix=self.suffix_entry.get(),
+            long_name=self.long_name_bool.get(),
             __version__=__version__,
         )
 
         return config
 
-    def save_config_file(self, overwrite_config=False):
+    def save_config_file(self, config, overwrite_config=False):
+        print("")
         print("Config file to save:")
-        pprint(self.config)
-        cli_utils.save_config_file(self.config, self.config_file_path, overwrite_config)
+        print(config)
+        cli_utils.save_config_file(config, self.config_file_path, overwrite_config)
 
-    def close_overwrite_window(self):
-        self.window_overwrite.destroy()
+    def make_overwrite_window(self, config):
 
-    def close_overwrite_window_save_config(self):
-        self.save_config_file(overwrite_config=True)
-        self.window_overwrite.destroy()
+        window_overwrite = customtkinter.CTkToplevel(self)
+        window_overwrite.title("metaDMG - Computing")
+
+        width = 365
+        height = 110
+        x, y = self.get_center_coordinates(width, height)
+
+        window_overwrite.geometry(f"{width}x{height}+{x}+{y}")
+
+        label = customtkinter.CTkLabel(
+            window_overwrite,
+            text="Config file already exists. Do you want to overwrite it?",
+        )
+
+        label.grid(
+            row=0,
+            column=0,
+            columnspan=2,
+            padx=20,
+            pady=12,
+        )
+
+        def no_overwrite_callback():
+            window_overwrite.destroy()
+
+        def overwrite_callback():
+            self.save_config_file(config=config, overwrite_config=True)
+            window_overwrite.destroy()
+
+        button_yes = customtkinter.CTkButton(
+            master=window_overwrite,
+            text="Yes",
+            command=overwrite_callback,
+        )
+        button_yes.grid(
+            row=1,
+            column=0,
+            padx=20,
+            pady=12,
+        )
+
+        button_no = customtkinter.CTkButton(
+            master=window_overwrite,
+            text="No",
+            command=no_overwrite_callback,
+        )
+        button_no.grid(
+            row=1,
+            column=1,
+            padx=20,
+            pady=12,
+        )
 
     def save_config_callback(self):
 
         config = self.get_config()
         if config is None:
-            return False
-
-        self.config = config
+            return
 
         if self.config_file_path.exists():
-
-            self.window_overwrite = customtkinter.CTkToplevel(self)
-            self.window_overwrite.title("metaDMG - Computing")
-
-            width = 350
-            height = 300
-            x, y = self.get_center_coordinates(width, height)
-
-            self.window_overwrite.geometry(f"{width}x{height}+{x}+{y}")
-
-            # create label on CTkToplevel self.window_overwrite
-            label = customtkinter.CTkLabel(
-                self.window_overwrite,
-                text="Config file already exists. \nDo you want to overwrite it?",
-            )
-
-            label.grid(row=0, column=0, padx=12, pady=10)
-
-            button_no = customtkinter.CTkButton(
-                master=self.window_overwrite,
-                text="No",
-                command=self.close_overwrite_window,
-            )
-            button_no.grid(
-                row=1,
-                column=0,
-                pady=12,
-                padx=10,
-            )
-
-            button_ok = customtkinter.CTkButton(
-                master=self.window_overwrite,
-                text="Yes",
-                command=self.close_overwrite_window_save_config,
-            )
-            button_ok.grid(
-                row=2,
-                column=0,
-                pady=12,
-                padx=10,
-            )
-
-            return False
-
+            self.make_overwrite_window(config)
         else:
-            self.save_config_file()
-            return True
-
-    # ============ COMPUTE ============
-
-    def compute_callback(self):
-
-        # XXX HOW TO CALL THIS WHEN IT DEPENDS ON THE OTHER POPUP
-
-        saved_succesfully = self.save_config_callback()
-        if not saved_succesfully:
-            return False
-
-        window = customtkinter.CTkToplevel(self)
-        window.title("metaDMG - Computing")
-
-        width = 330
-        height = 100
-        x, y = self.get_center_coordinates(width, height)
-
-        window.geometry(f"{width}x{height}+{x}+{y}")
-
-        # create label on CTkToplevel window
-        label = customtkinter.CTkLabel(
-            window,
-            text="Are you sure you want to start the computation?",
-        )
-
-        label.grid(row=0, column=0, columnspan=2, padx=12, pady=10)
-
-        def close_window():
-            window.destroy()
-
-        def close_and_compute_window():
-            print("RUN COMPUTATION NOW")
-            window.destroy()
-
-        button_yes = customtkinter.CTkButton(
-            master=window,
-            text="Yes",
-            command=close_and_compute_window,
-        )
-        button_yes.grid(
-            row=1,
-            column=0,
-            pady=12,
-            padx=10,
-        )
-
-        button_no = customtkinter.CTkButton(
-            master=window,
-            text="No",
-            command=close_window,
-        )
-        button_no.grid(
-            row=1,
-            column=1,
-            pady=12,
-            padx=10,
-        )
+            self.save_config_file(config)
 
     # ============ OTHER ============
 
@@ -1610,5 +1495,5 @@ class App(customtkinter.CTk):
 
 
 if __name__ == "__main__":
-    app = App()
-    app.mainloop()
+    gui = Gui()
+    gui.mainloop()

@@ -11,8 +11,8 @@ packages = [{ include = "metaDMG", from = "src" }]
 
 
 # INSTALL ALL IN POETRY
-# poetry install --extras all --with dev,lint,docs
 # poetry env use /opt/homebrew/Caskroom/mambaforge/base/envs/metaDMG-tk/bin/python
+# poetry install --extras all --with dev,lint,docs
 # activate
 
 [tool.poetry.dependencies]
