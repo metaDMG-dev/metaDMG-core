@@ -6,18 +6,15 @@ from tkinter import W, filedialog
 
 import customtkinter
 from customtkinter import ThemeManager
+from rich.pretty import pprint
+
+from metaDMG.cli import cli_utils
 
 
 # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_appearance_mode("dark")
 # Themes: "blue" (standard), "green", "dark-blue"
 customtkinter.set_default_color_theme("blue")
-
-from enum import Enum
-
-
-output_dir_default = Path("./data/")
-
 
 FONT = ThemeManager.theme["text"]["font"]
 
@@ -26,37 +23,11 @@ def format_directory(path: Path):
     return path.name + "/"
 
 
-class DAMAGE_MODE(str, Enum):
-    "Damage mode allowed in the LCA"
-
-    LCA = "lca"
-    LOCAL = "local"
-    GLOBAL = "global"
-
-    @classmethod
-    def list(cls):
-        return list(map(lambda c: c.value, cls))
-
-    @classmethod
-    def upper_list(cls):
-        return [c.upper() for c in cls.list()]
-
-
-class RANKS(str, Enum):
-    "Ranks allowed in the LCA"
-
-    family = "family"
-    genus = "genus"
-    species = "species"
-    none = ""
-
-    @classmethod
-    def list(cls):
-        return list(map(lambda c: c.value, cls))
-
-    @classmethod
-    def str_list(cls):
-        return [c if c != "" else "none" for c in cls.list()]
+def path_to_text(filepath: str, cut: int = 10) -> str:
+    text = Path(filepath).name
+    if len(text) > cut:
+        text = text[:cut] + " ..."
+    return text
 
 
 KW_OPTIONS_MENU = dict(
@@ -157,18 +128,11 @@ KW_SLIDER_DISABLED = dict(
 )
 
 
-def path_to_text(filepath: str, cut: int = 10) -> str:
-    text = Path(filepath).name
-    if len(text) > cut:
-        text = text[:cut] + " ..."
-    return text
-
-
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("MetaDMG Confi-gui-rator")
+        self.title("MetaDMG Configuirator")
 
         WIDTH = 820
         HEIGHT = 655
@@ -251,8 +215,6 @@ class App(customtkinter.CTk):
             sticky="nsw",
         )
 
-        self.bam_file_string = customtkinter.StringVar()
-
         self.bam_label = customtkinter.CTkLabel(
             text="BAM file:",
             **BAM_LABEL_KW,
@@ -262,6 +224,8 @@ class App(customtkinter.CTk):
             column=0,
             **BAM_LABEL_GRID_KW,
         )
+
+        self.bam_file_path = None
 
         self.bam_button = customtkinter.CTkButton(
             master=self.frame_bam,
@@ -274,7 +238,6 @@ class App(customtkinter.CTk):
             row=0,
             column=2,
             pady=12,
-            # padx=100,
             sticky="e",
         )
         self.bam_is_okay = False
@@ -291,14 +254,16 @@ class App(customtkinter.CTk):
             **BAM_LABEL_GRID_KW,
         )
 
-        self.damage_mode_string = customtkinter.StringVar(
-            value=DAMAGE_MODE.LCA,
-        )
+        # self.damage_mode_string = customtkinter.StringVar(
+        #     value=cli_utils.DAMAGE_MODE.LCA,
+        # )
+
+        self.damage_mode_value = cli_utils.DAMAGE_MODE.LCA
 
         self.damage_mode_menu = customtkinter.CTkOptionMenu(
             master=self.frame_bam,
-            values=DAMAGE_MODE.list(),
-            variable=self.damage_mode_string,
+            values=cli_utils.DAMAGE_MODE.list(),
+            # variable=self.damage_mode_string,
             command=self.damage_mode_collback,
             # width=100,
             **KW_OPTIONS_MENU,
@@ -331,7 +296,8 @@ class App(customtkinter.CTk):
             sticky="nsw",
         )
 
-        self.names_file_string = customtkinter.StringVar()
+        # self.names_file_string = customtkinter.StringVar()
+        self.names_file_path = None
 
         self.names_label = customtkinter.CTkLabel(
             text="Names:",
@@ -361,7 +327,8 @@ class App(customtkinter.CTk):
 
         # self.init_nodes()
 
-        self.nodes_file_string = customtkinter.StringVar()
+        # self.nodes_file_string = customtkinter.StringVar()
+        self.nodes_file_path = None
 
         self.nodes_label = customtkinter.CTkLabel(
             text="Nodes:",
@@ -392,7 +359,8 @@ class App(customtkinter.CTk):
 
         # self.init_acc2tax()
 
-        self.acc2tax_file_string = customtkinter.StringVar()
+        # self.acc2tax_file_string = customtkinter.StringVar()
+        self.acc2tax_file_path = None
 
         self.acc2tax_label = customtkinter.CTkLabel(
             text="Acc2tax:",
@@ -591,12 +559,12 @@ class App(customtkinter.CTk):
         )
 
         self.lca_rank_string = customtkinter.StringVar(
-            value=RANKS.none,
+            value=cli_utils.RANKS.none,
         )
 
         self.lca_rank_menu = customtkinter.CTkOptionMenu(
             master=self.frame_lca,
-            values=RANKS.str_list(),
+            values=cli_utils.RANKS.str_list(),
             command=self.lca_rank_callback,
             text_color_disabled="gray40",
             **KW_OPTIONS_MENU,
@@ -956,15 +924,32 @@ class App(customtkinter.CTk):
             **RIGHT_LABEL_GRID_KW,
         )
 
-        self.config_name_entry = customtkinter.CTkEntry(
+        # self.config_name_entry = customtkinter.CTkEntry(
+        #     master=self.frame_general,
+        #     **KW_ENTRY_GOOD_COLORS,
+        # )
+        # self.config_name_entry.insert(0, "config.yaml")
+        # self.config_name_entry.grid(
+        #     row=10,
+        #     column=1,
+        # )
+
+        self.config_button = customtkinter.CTkButton(
             master=self.frame_general,
-            placeholder_text="config.yaml",
-            **KW_ENTRY_GOOD_COLORS,
+            text="Select file",
+            command=self.config_callback,
+            **KW_BUTTON_BASE,
+            **KW_BUTTON_BAD_COLORS,
         )
-        self.config_name_entry.grid(
+        self.config_button.grid(
             row=10,
             column=1,
+            pady=12,
+            padx=10,
         )
+
+        self.config_is_okay = False
+        self.config_file_path = None
 
         # self.config_overwrite_label = customtkinter.CTkLabel(
         #     text="Overwrite:",
@@ -996,7 +981,7 @@ class App(customtkinter.CTk):
 
         # self.init_output_dir()
 
-        self.output_dir_string = customtkinter.StringVar()
+        # self.output_dir_string = customtkinter.StringVar()
 
         self.output_dir_label = customtkinter.CTkLabel(
             text="Output Directory",
@@ -1010,7 +995,7 @@ class App(customtkinter.CTk):
 
         self.output_dir_button = customtkinter.CTkButton(
             master=self.frame_general,
-            text=format_directory(output_dir_default),
+            text=format_directory(cli_utils.output_dir_default),
             command=self.output_dir_callback,
             **KW_BUTTON_BASE,
             **KW_BUTTON_GOOD_COLORS,
@@ -1019,6 +1004,8 @@ class App(customtkinter.CTk):
             row=12,
             column=1,
         )
+
+        self.output_dir_path = cli_utils.output_dir_default
 
         # self.init_generate_config()
 
@@ -1034,12 +1021,12 @@ class App(customtkinter.CTk):
             # pady=0,
         )
 
-        self.print_config_button = customtkinter.CTkButton(
+        self.save_config_button = customtkinter.CTkButton(
             master=self.frame_generate,
-            text="Generate Config",
-            command=self.print_config_callback,
+            text="Save Config",
+            command=self.save_config_callback,
         )
-        self.print_config_button.grid(
+        self.save_config_button.grid(
             row=0,
             column=0,
             pady=12,
@@ -1049,7 +1036,7 @@ class App(customtkinter.CTk):
 
         self.compute_button = customtkinter.CTkButton(
             master=self.frame_generate,
-            text="Generate config and compute",
+            text="Save and Compute Config",
             command=self.compute_callback,
         )
         self.compute_button.grid(
@@ -1076,14 +1063,14 @@ class App(customtkinter.CTk):
 
         elif len(filepaths) == 1:
             filepath = filepaths[0]
-            self.bam_file_string.set(filepath)
             text = path_to_text(filepath)
             self.bam_button.configure(text=text)
+            self.bam_file_path = [Path(filepath)]
 
         else:
-            print(filepaths)
-            self.bam_file_string.set(str(filepaths))
+            # self.bam_file_string.set(str(filepaths))
             self.bam_button.configure(text="File paths set")
+            self.bam_file_path = [Path(path) for path in filepaths]
 
         self.bam_is_okay = True
         self.bam_button.configure(**KW_BUTTON_GOOD_COLORS)
@@ -1092,7 +1079,14 @@ class App(customtkinter.CTk):
 
     def damage_mode_collback(self, choice):
 
-        if choice == DAMAGE_MODE.LCA:
+        if choice == cli_utils.DAMAGE_MODE.LCA:
+            self.damage_mode_value = cli_utils.DAMAGE_MODE.LCA
+        elif choice == cli_utils.DAMAGE_MODE.LOCAL:
+            self.damage_mode_value = cli_utils.DAMAGE_MODE.LOCAL
+        elif choice == cli_utils.DAMAGE_MODE.GLOBAL:
+            self.damage_mode_value = cli_utils.DAMAGE_MODE.GLOBAL
+
+        if choice == cli_utils.DAMAGE_MODE.LCA:
             lca_state = "normal"
             text_color = "gray90"
             slider = KW_SLIDER
@@ -1137,7 +1131,7 @@ class App(customtkinter.CTk):
         self.lca_rank_menu.configure(**lca_rank_menu_kw)
         self.custom_database_switch.configure(**switch)
 
-        if choice == DAMAGE_MODE.LCA:
+        if choice == cli_utils.DAMAGE_MODE.LCA:
             self.names_button.configure(**self.names_button_colors)
             self.nodes_button.configure(**self.nodes_button_colors)
             self.acc2tax_button.configure(**self.acc2tax_button_colors)
@@ -1153,7 +1147,8 @@ class App(customtkinter.CTk):
     def names_callback(self):
         filepath = filedialog.askopenfilename()
         if filepath != "":
-            self.names_file_string.set(filepath)
+            # self.names_file_string.set(filepath)
+            self.names_file_path = Path(filepath)
             text = path_to_text(filepath)
             self.names_button.configure(text=text)
             self.names_button.configure(**KW_BUTTON_GOOD_COLORS)
@@ -1165,7 +1160,8 @@ class App(customtkinter.CTk):
     def nodes_callback(self):
         filepath = filedialog.askopenfilename()
         if filepath != "":
-            self.nodes_file_string.set(filepath)
+            # self.nodes_file_string.set(filepath)
+            self.nodes_file_path = Path(filepath)
             text = path_to_text(filepath)
             self.nodes_button.configure(text=text)
             self.nodes_button.configure(**KW_BUTTON_GOOD_COLORS)
@@ -1177,12 +1173,29 @@ class App(customtkinter.CTk):
     def acc2tax_callback(self):
         filepath = filedialog.askopenfilename()
         if filepath != "":
-            self.acc2tax_file_string.set(filepath)
+            # self.acc2tax_file_string.set(filepath)
+            self.acc2tax_file_path = Path(filepath)
             text = path_to_text(filepath)
             self.acc2tax_button.configure(text=text)
             self.acc2tax_button.configure(**KW_BUTTON_GOOD_COLORS)
             self.acc2tax_is_okay = True
             self.acc2tax_button_colors = KW_BUTTON_GOOD_COLORS
+
+    #############
+
+    def config_callback(self):
+        filepath = filedialog.asksaveasfilename()
+        if filepath != "":
+
+            if not ("yaml" in filepath or "yml" in filepath):
+                filepath += ".yaml"
+
+            self.config_file_path = Path(filepath)
+            text = path_to_text(filepath)
+            self.config_button.configure(text=text)
+            self.config_button.configure(**KW_BUTTON_GOOD_COLORS)
+            self.config_is_okay = True
+            self.config_button_colors = KW_BUTTON_GOOD_COLORS
 
     # ============ SIMILARITY SCORE (ENTRY BOXES) ============
 
@@ -1209,7 +1222,7 @@ class App(customtkinter.CTk):
     # def init_lca_rank(self):
 
     def lca_rank_callback(self, choice):
-        self.lca_rank_string.set(choice if choice != "none" else RANKS.none)
+        self.lca_rank_string.set(choice if choice != "none" else cli_utils.RANKS.none)
 
     # ============ MAX POSITION (INTEGER) ============
 
@@ -1344,78 +1357,192 @@ class App(customtkinter.CTk):
     def output_dir_callback(self):
         # get a directory path by user
         filepath = filedialog.askdirectory()
-        self.output_dir_string.set(filepath)
+        self.output_dir_path = Path(filepath)
 
         text = format_directory(Path(filepath))
         self.output_dir_button.configure(text=text)
 
     # ============ PRINT ============
 
-    def print_config_callback(self):
+    def config_is_good(self):
 
         self.check_similarity_scores()
         self.check_minimum_reads()
 
         if not self.bam_is_okay:
             print("Fix BAM file")
-            return
+            return False
 
         if self.is_lca and (not self.names_is_okay):
             print("Fix names file")
-            return
+            return False
 
         if self.is_lca and (not self.nodes_is_okay):
             print("Fix nodes file")
-            return
+            return False
 
         if self.is_lca and (not self.acc2tax_is_okay):
             print("Fix acc2tax file")
-            return
+            return False
 
         if self.is_lca and (not self.similarity_is_ok):
             print("Fix similarity score")
-            return
+            return False
 
         if not self.min_reads_is_ok:
             print("Fix minimum number of reads")
-            return
+            return False
 
-        print("")
-        print("Config:")
+        if not self.config_is_okay:
+            print("Fix config file")
+            return False
 
-        to_print = [
-            ("BAM file", self.bam_file_string),
-            ("Damage Mode", self.damage_mode_string),
-            ("Names", self.names_file_string),
-            ("Nodes", self.nodes_file_string),
-            ("Acc 2 Tax", self.acc2tax_file_string),
-            ("Similarity Score Min", self.similarity_score_min),
-            ("Similarity Score Max", self.similarity_score_max),
-            ("Minimum Mapping Quality", self.min_mapping_quality_slider),
-            ("LCA Rank", self.lca_rank_string),
-            ("Custom Database", self.custom_database_bool),
-            ("Max Position", self.max_position_slider),
-            ("Minimum Number of Reads", self.min_reads_value),
-            ("Bayesian", self.bayesian_bool),
-            ("Forward Only", self.forward_bool),
-            ("Samples in Parallel", self.parallel_samples_slider),
-            ("Cores pr. Sample", self.parallel_cores_per_sample_slider),
-            ("Prefix", self.prefix_entry),
-            ("Suffix", self.suffix_entry),
-            ("Long Name", self.long_name_bool),
-            ("Config Name", self.config_name_entry),
-            ("Output Directory", self.output_dir_string),
-        ]
+        return True
 
-        for s, f in to_print:
-            print(f"{s}: {repr(f.get())}")
+    def get_config(self):
 
-        # if self.bam_file_string.get() == "":
-        #     self.bam_button.configure(fg_color="#2e0502")
+        if not self.config_is_good():
+            return None
+
+        samples = self.bam_file_path
+        damage_mode = self.damage_mode_value
+
+        names = self.names_file_path
+        nodes = self.nodes_file_path
+        acc2tax = self.acc2tax_file_path
+        metaDMG_cpp = "./metaDMG-cpp"
+        min_similarity_score = float(self.similarity_score_min.get())
+        max_similarity_score = float(self.similarity_score_max.get())
+        min_edit_dist = None
+        max_edit_dist = None
+        min_mapping_quality = int(self.min_mapping_quality_slider.get())
+        lca_rank = self.lca_rank_string.get()
+        custom_database = self.custom_database_bool.get()
+
+        max_position = int(self.max_position_slider.get())
+        min_reads = int(self.min_reads_value.get())
+        forward_only = self.forward_bool.get()
+        bayesian = self.bayesian_bool.get()
+        weight_type = 1
+        output_dir = self.output_dir_path
+        parallel_samples = int(self.parallel_samples_slider.get())
+        cores_per_sample = int(self.parallel_cores_per_sample_slider.get())
+        config_file = self.config_file_path
+        sample_prefix = self.prefix_entry.get()
+        sample_suffix = self.suffix_entry.get()
+        long_name = self.long_name_bool.get()
+
+        from metaDMG import __version__
+
+        config = cli_utils.get_config_dict(
+            samples=samples,
+            names=names,
+            nodes=nodes,
+            acc2tax=acc2tax,
+            min_similarity_score=min_similarity_score,
+            max_similarity_score=max_similarity_score,
+            min_edit_dist=min_edit_dist,
+            max_edit_dist=max_edit_dist,
+            min_mapping_quality=min_mapping_quality,
+            custom_database=custom_database,
+            lca_rank=lca_rank,
+            metaDMG_cpp=metaDMG_cpp,
+            max_position=max_position,
+            min_reads=min_reads,
+            weight_type=weight_type,
+            forward_only=forward_only,
+            bayesian=bayesian,
+            output_dir=output_dir,
+            parallel_samples=parallel_samples,
+            cores_per_sample=cores_per_sample,
+            config_file=config_file,
+            sample_prefix=sample_prefix,
+            sample_suffix=sample_suffix,
+            long_name=long_name,
+            damage_mode=damage_mode,
+            __version__=__version__,
+        )
+
+        return config
+
+    def save_config_file(self, overwrite_config=False):
+        print("Config file to save:")
+        pprint(self.config)
+        cli_utils.save_config_file(self.config, self.config_file_path, overwrite_config)
+
+    def close_overwrite_window(self):
+        self.window_overwrite.destroy()
+
+    def close_overwrite_window_save_config(self):
+        self.save_config_file(overwrite_config=True)
+        self.window_overwrite.destroy()
+
+    def save_config_callback(self):
+
+        config = self.get_config()
+        if config is None:
+            return False
+
+        self.config = config
+
+        if self.config_file_path.exists():
+
+            self.window_overwrite = customtkinter.CTkToplevel(self)
+            self.window_overwrite.title("metaDMG - Computing")
+
+            width = 350
+            height = 300
+            x, y = self.get_center_coordinates(width, height)
+
+            self.window_overwrite.geometry(f"{width}x{height}+{x}+{y}")
+
+            # create label on CTkToplevel self.window_overwrite
+            label = customtkinter.CTkLabel(
+                self.window_overwrite,
+                text="Config file already exists. \nDo you want to overwrite it?",
+            )
+
+            label.grid(row=0, column=0, padx=12, pady=10)
+
+            button_no = customtkinter.CTkButton(
+                master=self.window_overwrite,
+                text="No",
+                command=self.close_overwrite_window,
+            )
+            button_no.grid(
+                row=1,
+                column=0,
+                pady=12,
+                padx=10,
+            )
+
+            button_ok = customtkinter.CTkButton(
+                master=self.window_overwrite,
+                text="Yes",
+                command=self.close_overwrite_window_save_config,
+            )
+            button_ok.grid(
+                row=2,
+                column=0,
+                pady=12,
+                padx=10,
+            )
+
+            return False
+
+        else:
+            self.save_config_file()
+            return True
 
     # ============ COMPUTE ============
 
     def compute_callback(self):
+
+        # XXX HOW TO CALL THIS WHEN IT DEPENDS ON THE OTHER POPUP
+
+        saved_succesfully = self.save_config_callback()
+        if not saved_succesfully:
+            return False
 
         window = customtkinter.CTkToplevel(self)
         window.title("metaDMG - Computing")
@@ -1438,7 +1565,7 @@ class App(customtkinter.CTk):
             window.destroy()
 
         def close_and_compute_window():
-            print("Running computation!!!")
+            print("RUN COMPUTATION NOW")
             window.destroy()
 
         button_yes = customtkinter.CTkButton(

@@ -9,9 +9,6 @@ from metaDMG.cli import cli_utils
 
 cli_app = cli_utils.get_cli_app()
 
-output_dir_default = Path("./data/")
-results_dir_default = output_dir_default / "results"
-config_file_default = Path("config.yaml")
 
 #%%
 
@@ -52,21 +49,19 @@ def create_config(
         ...,
         help="Single or multiple alignment-files (or a directory containing them).",
     ),
-    # LCA parameter
+    # LCA parameters
     names: Optional[Path] = typer.Option(
         None,
         exists=True,
         file_okay=True,
         help="Path to the (NCBI) names-mdmg.dmp.",
     ),
-    # LCA parameter
     nodes: Optional[Path] = typer.Option(
         None,
         exists=True,
         file_okay=True,
         help="Path to the (NCBI) nodes-mdmg.dmp.",
     ),
-    # LCA parameter
     acc2tax: Optional[Path] = typer.Option(
         None,
         exists=True,
@@ -160,7 +155,7 @@ def create_config(
         help="Include a fully Bayesian model (probably better, but also _a lot_ slower, about a factor of 100.",
     ),
     output_dir: Path = typer.Option(
-        output_dir_default,
+        cli_utils.output_dir_default,
         "--output-dir",
         "-o",
         help="Path where the generated output files and folders are stored.",
@@ -178,7 +173,7 @@ def create_config(
         help="Number of cores to use pr. sample. ",
     ),
     config_file: Path = typer.Option(
-        config_file_default,
+        cli_utils.config_file_default,
         "--config-file",
         "-c",
         help="The name of the config file. ",
@@ -218,43 +213,38 @@ def create_config(
         typer.echo("--names, --nodes, and --acc2tax are mandatory when doing LCA.")
         raise typer.Exit(code=1)
 
-    from metaDMG import __version__, utils
+    from metaDMG import __version__
 
-    config = utils.paths_to_strings(
-        {
-            "samples": utils.extract_samples(
-                samples,
-                prefix=sample_prefix,
-                suffix=sample_suffix,
-                long_name=long_name,
-            ),
-            #
-            "metaDMG_cpp": metaDMG_cpp,
-            "names": names,
-            "nodes": nodes,
-            "acc2tax": acc2tax,
-            **cli_utils.set_min_max_similarity_score_edit_dist(
-                min_similarity_score, max_similarity_score, min_edit_dist, max_edit_dist
-            ),
-            "min_mapping_quality": min_mapping_quality,
-            "lca_rank": lca_rank.value,  # important to get string
-            "max_position": max_position,
-            "min_reads": min_reads,
-            "weight_type": weight_type,
-            "custom_database": custom_database,
-            "forward_only": forward_only,
-            #
-            "output_dir": output_dir,
-            "parallel_samples": parallel_samples,
-            "cores_per_sample": cores_per_sample,
-            "bayesian": bayesian,
-            "config_file": str(config_file),
-            "damage_mode": damage_mode.lower(),
-            "version": __version__,
-        }
+    config = cli_utils.get_config_dict(
+        samples=samples,
+        names=names,
+        nodes=nodes,
+        acc2tax=acc2tax,
+        min_similarity_score=min_similarity_score,
+        max_similarity_score=max_similarity_score,
+        min_edit_dist=min_edit_dist,
+        max_edit_dist=max_edit_dist,
+        min_mapping_quality=min_mapping_quality,
+        custom_database=custom_database,
+        lca_rank=lca_rank,
+        metaDMG_cpp=metaDMG_cpp,
+        max_position=max_position,
+        min_reads=min_reads,
+        weight_type=weight_type,
+        forward_only=forward_only,
+        bayesian=bayesian,
+        output_dir=output_dir,
+        parallel_samples=parallel_samples,
+        cores_per_sample=cores_per_sample,
+        config_file=config_file,
+        sample_prefix=sample_prefix,
+        sample_suffix=sample_suffix,
+        long_name=long_name,
+        damage_mode=damage_mode,
+        __version__=__version__,
     )
 
-    utils.save_config_file(config, config_file, overwrite_config)
+    cli_utils.save_config_file(config, config_file, overwrite_config)
 
 
 #%%

@@ -244,6 +244,20 @@ python-versions = ">=3.7"
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
+name = "click-help-colors"
+version = "0.9.1"
+description = "Colorization of help messages in Click"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+click = ">=7.0,<9"
+
+[package.extras]
+dev = ["pytest"]
+
+[[package]]
 name = "click-log"
 version = "0.4.0"
 description = "Logging integration for Click"
@@ -267,7 +281,7 @@ name = "commonmark"
 version = "0.9.1"
 description = "Python parser for the CommonMark Markdown spec"
 category = "main"
-optional = false
+optional = true
 python-versions = "*"
 
 [package.extras]
@@ -1898,7 +1912,7 @@ name = "rich"
 version = "12.5.1"
 description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.6.3,<4.0.0"
 
 [package.dependencies]
@@ -1982,14 +1996,6 @@ typing-extensions = "*"
 [package.extras]
 test = ["pytest (>=6.2)", "virtualenv (>20)"]
 toml = ["setuptools (>=42)"]
-
-[[package]]
-name = "shellingham"
-version = "1.4.0"
-description = "Tool to Detect Surrounding Shell"
-category = "main"
-optional = false
-python-versions = "!=3.0,!=3.1,!=3.2,!=3.3,>=2.6"
 
 [[package]]
 name = "six"
@@ -2358,9 +2364,6 @@ python-versions = ">=3.6"
 
 [package.dependencies]
 click = ">=7.1.1,<9.0.0"
-colorama = {version = ">=0.4.3,<0.5.0", optional = true, markers = "extra == \"all\""}
-rich = {version = ">=10.11.0,<13.0.0", optional = true, markers = "extra == \"all\""}
-shellingham = {version = ">=1.3.0,<2.0.0", optional = true, markers = "extra == \"all\""}
 
 [package.extras]
 all = ["colorama (>=0.4.3,<0.5.0)", "shellingham (>=1.3.0,<2.0.0)", "rich (>=10.11.0,<13.0.0)"]
@@ -2477,15 +2480,15 @@ docs = ["sphinx", "jaraco.packaging (>=9)", "rst.linker (>=1.9)", "jaraco.tideli
 testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.3)", "jaraco-itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)"]
 
 [extras]
-all = ["logger-tt", "iminuit", "numpyro", "joblib", "psutil", "numba", "matplotlib", "plotly", "dash", "dash-bootstrap-components", "orjson", "tqdm", "customtkinter"]
+all = ["logger-tt", "iminuit", "numpyro", "joblib", "psutil", "numba", "matplotlib", "plotly", "dash", "dash-bootstrap-components", "orjson", "tqdm", "customtkinter", "rich"]
 fit = ["logger-tt", "iminuit", "numpyro", "joblib", "psutil", "numba"]
-gui = ["customtkinter"]
+gui = ["customtkinter", "rich"]
 viz = ["matplotlib", "plotly", "dash", "dash-bootstrap-components", "orjson", "tqdm"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.11" # 3.11 due to numba
-content-hash = "c9a5dd564313764b206e2c6d2b6283c62170af5165a383d9f8e41bfb20f6d909"
+content-hash = "b33cda00b8e1df09c07189348f56b2eada4da0c2776b54d43b77c9c640a5d55b"
 
 [metadata.files]
 absl-py = [
@@ -2727,6 +2730,10 @@ charset-normalizer = [
 click = [
     {file = "click-8.1.3-py3-none-any.whl", hash = "sha256:bb4d8133cb15a609f44e8213d9b391b0809795062913b383c62be0ee95b1db48"},
     {file = "click-8.1.3.tar.gz", hash = "sha256:7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e"},
+]
+click-help-colors = [
+    {file = "click-help-colors-0.9.1.tar.gz", hash = "sha256:78cbcf30cfa81c5fc2a52f49220121e1a8190cd19197d9245997605d3405824d"},
+    {file = "click_help_colors-0.9.1-py3-none-any.whl", hash = "sha256:25a6bd22d8abbc72c18a416a1cf21ab65b6120bee48e9637829666cbad22d51d"},
 ]
 click-log = [
     {file = "click-log-0.4.0.tar.gz", hash = "sha256:3970f8570ac54491237bcdb3d8ab5e3eef6c057df29f8c3d1151a51a9c23b975"},
@@ -3790,10 +3797,6 @@ send2trash = [
 ]
 setuptools = []
 setuptools-scm = []
-shellingham = [
-    {file = "shellingham-1.4.0-py2.py3-none-any.whl", hash = "sha256:536b67a0697f2e4af32ab176c00a50ac2899c5a05e0d8e2dadac8e58888283f9"},
-    {file = "shellingham-1.4.0.tar.gz", hash = "sha256:4855c2458d6904829bd34c299f11fdeed7cfefbf8a2c522e4caea6cd76b3171e"},
-]
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},

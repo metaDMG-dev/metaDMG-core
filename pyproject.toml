@@ -9,18 +9,17 @@ readme = "README.md"
 repository = "https://github.com/metaDMG/metaDMG/"
 packages = [{ include = "metaDMG", from = "src" }]
 
-# poetry install
-# poetry install --without dev
 
 # INSTALL ALL IN POETRY
 # poetry install --extras all --with dev,lint,docs
+# poetry env use /opt/homebrew/Caskroom/mambaforge/base/envs/metaDMG-tk/bin/python
+# activate
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.11" # 3.11 due to numba
-typer = "^0.4.1"
-click-help-colors = "^0.9.1"
+typer = {version = "^0.6.1", extras = ["all"]}
 PyYAML = "^6.0"
-pandas = "^1.4.2"
+pandas = "^1.4.3"
 scipy = "^1.8.1"
 pyarrow = "^8.0.0"
 logger-tt = "^1.7.0"
