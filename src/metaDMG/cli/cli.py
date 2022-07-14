@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Optional, Union
 
 import typer
+from rich import print
 
 from metaDMG.cli import cli_utils
 
@@ -55,18 +56,21 @@ def create_config(
         exists=True,
         file_okay=True,
         help="Path to the (NCBI) names-mdmg.dmp.",
+        rich_help_panel="LCA parameters",
     ),
     nodes: Optional[Path] = typer.Option(
         None,
         exists=True,
         file_okay=True,
         help="Path to the (NCBI) nodes-mdmg.dmp.",
+        rich_help_panel="LCA parameters",
     ),
     acc2tax: Optional[Path] = typer.Option(
         None,
         exists=True,
         file_okay=True,
         help="Path to the (NCBI) acc2tax.gz.",
+        rich_help_panel="LCA parameters",
     ),
     min_similarity_score: Optional[float] = typer.Option(
         None,
@@ -74,6 +78,7 @@ def create_config(
         "-s",
         help="Normalised edit distance (read to reference similarity) minimum. Number between 0-1.",
         callback=lambda x: cli_utils.is_in_range_or_None(x, 0, 1),
+        rich_help_panel="LCA parameters",
     ),
     max_similarity_score: Optional[float] = typer.Option(
         None,
@@ -81,6 +86,7 @@ def create_config(
         "-S",
         help="Normalised edit distance (read to reference similarity) maximum. Number between 0-1.",
         callback=lambda x: cli_utils.is_in_range_or_None(x, 0, 1),
+        rich_help_panel="LCA parameters",
     ),
     min_edit_dist: Optional[int] = typer.Option(
         None,
@@ -89,6 +95,7 @@ def create_config(
         "-e",
         help="Minimum edit distance (read to reference similarity). Positive integer.",
         callback=lambda x: cli_utils.is_positive_int_or_None(x),
+        rich_help_panel="LCA parameters",
     ),
     max_edit_dist: Optional[int] = typer.Option(
         None,
@@ -97,18 +104,21 @@ def create_config(
         "-E",
         help="Maximum edit distance (read to reference similarity). Positive integer.",
         callback=lambda x: cli_utils.is_positive_int_or_None(x),
+        rich_help_panel="LCA parameters",
     ),
     min_mapping_quality: int = typer.Option(
         0,
         "--min-mapping-quality",
         "-q",
         help="Minimum mapping quality.",
+        rich_help_panel="LCA parameters",
     ),
     custom_database: bool = typer.Option(
         False,
         "--custom-database",
         "-u",
         help="Fix the (ncbi) database. Disable if using a custom database.",
+        rich_help_panel="LCA parameters",
     ),
     lca_rank: cli_utils.RANKS = typer.Option(
         cli_utils.RANKS.none,
@@ -116,6 +126,7 @@ def create_config(
         "-r",
         case_sensitive=False,
         help="The LCA rank used in ngsLCA.",
+        rich_help_panel="LCA parameters",
     ),
     # GENERAL PARAMETERS
     metaDMG_cpp: str = typer.Option(
@@ -123,73 +134,86 @@ def create_config(
         "--metaDMG-cpp",
         "-m",
         help="The command needed to run the metaDMG-cpp program.",
+        rich_help_panel="General parameters",
     ),
     max_position: int = typer.Option(
         15,
         "--max-position",
         "-P",
         help="Number of positions to include (|x| < max_position).",
+        rich_help_panel="General parameters",
     ),
     min_reads: int = typer.Option(
         0,
         "--min-reads",
         "-n",
         help="Minimum number of reads to include in the fits (min_reads <= N_reads).",
+        rich_help_panel="General parameters",
     ),
     weight_type: int = typer.Option(
         1,
         "--weight-type",
         "-w",
         help="Method for calculating weights",
+        rich_help_panel="General parameters",
     ),
     forward_only: bool = typer.Option(
         False,
         "--forward-only",
         "-l",
         help="Only use the forward direction.",
+        rich_help_panel="General parameters",
     ),
     bayesian: bool = typer.Option(
         False,
         "--bayesian",
         "-b",
         help="Include a fully Bayesian model (probably better, but also _a lot_ slower, about a factor of 100.",
+        rich_help_panel="General parameters",
     ),
     output_dir: Path = typer.Option(
         cli_utils.output_dir_default,
         "--output-dir",
         "-o",
         help="Path where the generated output files and folders are stored.",
+        rich_help_panel="General parameters",
     ),
     parallel_samples: int = typer.Option(
         1,
         "--parallel-samples",
         "-j",
         help="The number of samples to run in parallel. Default is running in seriel.",
+        rich_help_panel="General parameters",
     ),
     cores_per_sample: int = typer.Option(
         1,
         "--cores-per-sample",
         "-i",
         help="Number of cores to use pr. sample. ",
+        rich_help_panel="General parameters",
     ),
     config_file: Path = typer.Option(
         cli_utils.config_file_default,
         "--config-file",
         "-c",
         help="The name of the config file. ",
+        rich_help_panel="General parameters",
     ),
     sample_prefix: str = typer.Option(
         "",
         help="Prefix for the sample names.",
+        rich_help_panel="General parameters",
     ),
     sample_suffix: str = typer.Option(
         "",
         help="Suffix for the sample names.",
+        rich_help_panel="General parameters",
     ),
     long_name: bool = typer.Option(
         False,
         "--long-name",
         help="Use the full name of the sample file as sample name..",
+        rich_help_panel="General parameters",
     ),
     damage_mode: cli_utils.DAMAGE_MODE = typer.Option(
         cli_utils.DAMAGE_MODE.LCA,
@@ -197,12 +221,14 @@ def create_config(
         "-d",
         case_sensitive=False,
         help="The Damage Mode. Use 'LCA' unless you know what you are doing.",
+        rich_help_panel="General parameters",
     ),
     overwrite_config: bool = typer.Option(
         False,
         "--overwrite",
         "-f",
         help="Overwrite config file without user confirmation.",
+        rich_help_panel="General parameters",
     ),
 ):
     """Generate the config file."""
@@ -210,7 +236,7 @@ def create_config(
     if (damage_mode.lower() == "lca") and (
         any(x is None for x in [names, nodes, acc2tax])
     ):
-        typer.echo("--names, --nodes, and --acc2tax are mandatory when doing LCA.")
+        print("--names, --nodes, and --acc2tax are mandatory when doing LCA.")
         raise typer.Exit(code=1)
 
     from metaDMG import __version__
@@ -362,7 +388,7 @@ def dashboard(
 #%%
 
 
-@cli_app.command("convert")
+@cli_app.command("convert", rich_help_panel="Utils")
 def convert(
     config_file: Optional[Path] = typer.Argument(
         None,
@@ -404,7 +430,7 @@ def convert(
 #%%
 
 
-@cli_app.command("filter")
+@cli_app.command("filter", rich_help_panel="Utils")
 def filter(
     config_file: Optional[Path] = typer.Argument(
         None,
@@ -452,7 +478,7 @@ def filter(
 #%%
 
 
-@cli_app.command("plot")
+@cli_app.command("plot", rich_help_panel="Utils")
 def plot(
     config_file: Optional[Path] = typer.Argument(
         None,
@@ -525,7 +551,7 @@ def plot(
 #%%
 
 
-@cli_app.command("get-data")
+@cli_app.command("get-data", rich_help_panel="Utils")
 def get_data(
     output_dir: Path = typer.Option(
         ...,
@@ -544,7 +570,7 @@ def get_data(
 #%%
 
 
-@cli_app.command("mismatch-to-mapDamage")
+@cli_app.command("mismatch-to-mapDamage", rich_help_panel="Utils")
 def mismatch_to_mapDamage(
     filename: Path = typer.Argument(
         ...,
@@ -573,7 +599,7 @@ def mismatch_to_mapDamage(
 #%%
 
 
-@cli_app.command("PMD")
+@cli_app.command("PMD", rich_help_panel="Utils")
 def compute_PMD(
     config_file: Path = typer.Argument(
         ...,

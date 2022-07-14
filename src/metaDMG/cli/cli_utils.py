@@ -6,6 +6,7 @@ from typing import Iterable, Optional
 import click
 import typer
 import yaml
+from rich import print
 
 
 #%%
@@ -26,7 +27,7 @@ class OrderedCommands(typer.core.TyperGroup):
 
 
 def get_cli_app():
-    cli_app = typer.Typer(cls=OrderedCommands)
+    cli_app = typer.Typer(cls=OrderedCommands, rich_markup_mode="rich")
     return cli_app
 
 
@@ -34,7 +35,7 @@ def version_callback(value: bool):
     from metaDMG.__version__ import __version__
 
     if value:
-        typer.echo(f"metaDMG CLI, version: {__version__}")
+        print(f"metaDMG CLI, version: {__version__}")
         raise typer.Exit()
 
 
@@ -377,12 +378,12 @@ def save_config_file(
             s = "Config file already exists. Do you want to overwrite it?"
             confirmed = typer.confirm(s)
             if not confirmed:
-                typer.echo("Exiting")
+                print("Exiting")
                 raise typer.Abort()
 
     with open(config_file, "w") as file:
         yaml.dump(config, file, sort_keys=False)
-    typer.echo(f"{str(config_file)} was created")
+    print(f"{str(config_file)} was created")
 
 
 #%%
