@@ -2,6 +2,18 @@
 
 <!--next-version-placeholder-->
 
+## v0.27.0 (2022-07-15)
+### Feature
+* Add config-gui to CLI ([`672fea7`](https://github.com/metaDMG-dev/metaDMG-core/commit/672fea743f64a4aa54ee3a90679afb72ab2bca1f))
+* Use Rich with Typer for pretty CLI ([`3a960a5`](https://github.com/metaDMG-dev/metaDMG-core/commit/3a960a5bd584e16ab08e34ddea146d882ef2d0c5))
+
+### Fix
+* Add groups to CLI ([`8762292`](https://github.com/metaDMG-dev/metaDMG-core/commit/876229267d4805bb8a86e622945bf48aacf83098))
+* Update dependencies ([`2f91c56`](https://github.com/metaDMG-dev/metaDMG-core/commit/2f91c567b0e6b1b019e1e9573ef85bf6cd0168f5))
+
+### Documentation
+* Include config-gui in docs ([`480f813`](https://github.com/metaDMG-dev/metaDMG-core/commit/480f813ad2d4bb229b9dda34e0306d4df0dacce2))
+
 ## v0.26.1 (2022-07-04)
 ### Fix
 * Change alignment file in test dir ([`2beed66`](https://github.com/metaDMG-dev/metaDMG-core/commit/2beed66e16c6bf15517867d1b968af56bbbf2fcf))
