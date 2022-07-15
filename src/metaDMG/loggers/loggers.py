@@ -24,10 +24,10 @@ def setup_logger(
         log_path = get_logger_path()
 
     with resources.path("metaDMG.loggers", "log_config.yaml") as p:
-        config_path = p
+        log_config_path = p
 
     setup_logging(
-        config_path=str(config_path),
+        config_path=str(log_config_path),
         log_path=log_path,
         port=log_port,
         # full_context=2,

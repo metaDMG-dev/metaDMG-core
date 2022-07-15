@@ -171,7 +171,7 @@ def move_files(config: Config) -> None:
         logger.debug(f"Moving {source_path} to {target_path}.")
         if not source_path.is_file():
             raise metadamageError(
-                f"{source_path} does not exist. If you use a custom database, "
+                f"'{source_path}' does not exist. \nIf you use a custom database, "
                 "remember to use the bool flag --custom-database when creating "
                 "the config file."
             )

@@ -236,7 +236,12 @@ def create_config(
     if (damage_mode.lower() == "lca") and (
         any(x is None for x in [names, nodes, acc2tax])
     ):
-        print("--names, --nodes, and --acc2tax are mandatory when doing LCA.")
+        print(
+            "[red]--names[/red], [red]--nodes[/red], and [red]--acc2tax[/red] "
+            "are mandatory when doing LCA. \n"
+            "If you do not want to perform LCA, set [green]--damage-mode[/green] "
+            "to [green]LOCAL[/green] or [green]GLOBAL[/green]."
+        )
         raise typer.Exit(code=1)
 
     from metaDMG import __version__
@@ -305,23 +310,55 @@ def compute(
 ):
     """Compute the LCA and Ancient Damage given the configuration file."""
 
-    from metaDMG import utils
+    # print("Hello" + 3)
 
-    utils.check_metaDMG_fit()
+    # setup_logger()
+    from logger_tt import setup_logging
 
+    from metaDMG.errors import metadamageError
     from metaDMG.fit import get_logger_port_and_path, run_workflow, setup_logger
 
-    log_port, log_path = get_logger_port_and_path()
-    setup_logger(log_port=log_port, log_path=log_path)
+    # setup_logging(full_context=1)
 
-    configs = utils.make_configs(
-        config_file=config_file,
-        log_port=log_port,
-        log_path=log_path,
-        force=force,
+    setup_logging(
+        config_path="",
+        log_path="",
+        # capture_print=False,
+        capture_print=True,
+        strict=False,
+        guess_level=False,
+        full_context=False,
+        # suppress_level_below=logging.WARNING,
+        use_multiprocessing=False,
+        limit_line_length=1000,
+        analyze_raise_statement=False,
+        host="",
+        port=0,
     )
 
-    run_workflow(configs)
+    from logger_tt import logger
+
+    print("Hello" + 3)
+
+    # # raise metadamageError("Text here")
+
+    # from metaDMG import utils
+
+    # utils.check_metaDMG_fit()
+
+    # from metaDMG.fit import get_logger_port_and_path, run_workflow, setup_logger
+
+    # log_port, log_path = get_logger_port_and_path()
+    # setup_logger(log_port=log_port, log_path=log_path)
+
+    # configs = utils.make_configs(
+    #     config_file=config_file,
+    #     log_port=log_port,
+    #     log_path=log_path,
+    #     force=force,
+    # )
+
+    # run_workflow(configs)
 
 
 #%%
