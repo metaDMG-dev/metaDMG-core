@@ -11,7 +11,8 @@ dist/
 build/
 logs/
 config.yaml
-config*
+config*.yaml
+config*.yml
 .coverage
 
 metaDMG-lca
