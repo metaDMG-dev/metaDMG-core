@@ -3,6 +3,7 @@
 
 `metaDMG` has the following commands:
 - [`config`](command_line_interface_config)
+- [`config-gui`](command_line_interface_config_gui)
 - [`compute`](command_line_interface_compute)
 - [`dashboard`](command_line_interface_dashboard)
 - [`get-data`](command_line_interface_get_data)
@@ -88,6 +89,35 @@ $ metaDMG config raw_data/alignment.sorted.bam --damage-mode local --max-positio
 ```
 
 ---
+
+
+(command_line_interface_config_gui)=
+## Config GUI
+
+`metaDMG config-gui` is a simple graphical user interface (GUI) to help with the config creation.
+The command itself does not take any parameters, everything is done by clicking and dragging.
+For more information about what the different buttons and sliders mean, see the normal [`config`](command_line_interface_config) command.
+
+### Examples
+
+```console
+$ metaDMG config-gui
+```
+
+The GUI presented looks like this:
+
+```{figure} images/config-gui.png
+:class: bg-primary mb-1
+:width: 700px
+:align: center
+```
+
+Mandatory fields that need to be filled are coloured red.
+Note that if you change the damage mode to `LOCAL` or `GLOBAL`, the bottom left
+square becomes disabled, since these parameters are only relevant for `LCA`.
+
+---
+
 
 (command_line_interface_compute)=
 ## Compute

@@ -450,6 +450,12 @@ To compare two different analysis, one simply need to compare the <code class="d
 </div>
 <p>Most of the options should be quite self-explanatory. <code class="docutils literal notranslate"><span class="pre">--bayesian</span></code> indicates that we want to run the full Bayesian model, which is slower than the faster, approximate model that we use by default. The <code class="docutils literal notranslate"><span class="pre">--custom-database</span></code> flag is needed since this database is not the full NCBI one.</p>
 <p>After running this command, you should notice a new file in your directory: <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code>. This is a normal <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file which can be opened and edited with your favorite text editor. In case you wanted to call the config file something different, you can add <code class="docutils literal notranslate"><span class="pre">--config-file</span> <span class="pre">config_simple.yaml</span></code>.</p>
+<p>The same as above can also be done more visually by using the <code class="docutils literal notranslate"><span class="pre">config-gui</span></code> command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG config-gui
+</pre></div>
+</div>
+<p>Just remember to check the relevant boxes off and save a config file.
+In case you are missing any mandatory fields, it should pop up and warn you automatically.</p>
 </div>
 <div class="section" id="compute">
 <h3>Compute<a class="headerlink" href="#compute" title="Permalink to this headline">¶</a></h3>

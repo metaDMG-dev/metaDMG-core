@@ -385,7 +385,7 @@ In case you want to compile it yourself, the dependencies are:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">joblib</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">psutil</span></code></p></li>
 </ul>
-<p>And the visualization related (<code class="docutils literal notranslate"><span class="pre">[viz]</span></code>) dependencies are:</p>
+<p>The visualization related (<code class="docutils literal notranslate"><span class="pre">[viz]</span></code>) dependencies are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">matplotlib</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">plotly</span></code></p></li>
@@ -394,7 +394,11 @@ In case you want to compile it yourself, the dependencies are:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">orjson</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">tqdm</span></code></p></li>
 </ul>
-<p>In general, we allow for the custom installion of only the core packages <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">metaDMG</span></code>, core + fit related packages: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;metaDMG[fit]&quot;</span></code>, core + visualization related packages: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;metaDMG[viz]&quot;</span></code> or core + fit + viz: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;metaDMG[all]&quot;</span></code>.</p>
+<p>And the GUI related (<code class="docutils literal notranslate"><span class="pre">[gui]</span></code>) dependencies are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">customtkinter</span></code></p></li>
+</ul>
+<p>In general, we allow for the custom installion of only the core packages <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">metaDMG</span></code>, core + fit related packages: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;metaDMG[fit]&quot;</span></code>, core + visualization related packages: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;metaDMG[viz]&quot;</span></code> or core + fit + viz + gui: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;metaDMG[all]&quot;</span></code>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>metaDMG is not tested on Windows.</p>
@@ -454,14 +458,19 @@ poetry add metaDMG["all"]
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG config raw_data/alignment.sorted.bam <span class="se">\</span>
     --names raw_data/names-mdmg.dmp <span class="se">\</span>
     --nodes raw_data/nodes-mdmg.dmp <span class="se">\</span>
-    --acc2tax raw_data/acc2taxid.map.gz
+    --acc2tax raw_data/acc2taxid.map.gz <span class="se">\</span>
+    --custom-database
+</pre></div>
+</div>
+<p>If you prefer a more visual approach, the same can also be done using the <code class="docutils literal notranslate"><span class="pre">config-gui</span></code> command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG config-gui
 </pre></div>
 </div>
 </div>
 <div class="section" id="run-the-computation">
 <h3>Run the computation<a class="headerlink" href="#run-the-computation" title="Permalink to this headline">¶</a></h3>
 <p>After the config has been created, we run the actual program using the <code class="docutils literal notranslate"><span class="pre">compute</span></code> command. This can take a while depending on the number (and size) of the files.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG compute
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG compute config.yaml
 </pre></div>
 </div>
 </div>
