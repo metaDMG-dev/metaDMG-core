@@ -310,55 +310,23 @@ def compute(
 ):
     """Compute the LCA and Ancient Damage given the configuration file."""
 
-    # print("Hello" + 3)
+    from metaDMG import utils
 
-    # setup_logger()
-    from logger_tt import setup_logging
+    utils.check_metaDMG_fit()
 
-    from metaDMG.errors import metadamageError
     from metaDMG.fit import get_logger_port_and_path, run_workflow, setup_logger
 
-    # setup_logging(full_context=1)
+    log_port, log_path = get_logger_port_and_path()
+    setup_logger(log_port=log_port, log_path=log_path)
 
-    setup_logging(
-        config_path="",
-        log_path="",
-        # capture_print=False,
-        capture_print=True,
-        strict=False,
-        guess_level=False,
-        full_context=False,
-        # suppress_level_below=logging.WARNING,
-        use_multiprocessing=False,
-        limit_line_length=1000,
-        analyze_raise_statement=False,
-        host="",
-        port=0,
+    configs = utils.make_configs(
+        config_file=config_file,
+        log_port=log_port,
+        log_path=log_path,
+        force=force,
     )
 
-    from logger_tt import logger
-
-    print("Hello" + 3)
-
-    # # raise metadamageError("Text here")
-
-    # from metaDMG import utils
-
-    # utils.check_metaDMG_fit()
-
-    # from metaDMG.fit import get_logger_port_and_path, run_workflow, setup_logger
-
-    # log_port, log_path = get_logger_port_and_path()
-    # setup_logger(log_port=log_port, log_path=log_path)
-
-    # configs = utils.make_configs(
-    #     config_file=config_file,
-    #     log_port=log_port,
-    #     log_path=log_path,
-    #     force=force,
-    # )
-
-    # run_workflow(configs)
+    run_workflow(configs)
 
 
 #%%
