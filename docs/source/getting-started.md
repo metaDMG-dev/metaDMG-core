@@ -38,7 +38,7 @@ The fit related (`[fit]`) dependencies are:
 - `joblib`
 - `psutil`
 
-And the visualization related (`[viz]`) dependencies are:
+The visualization related (`[viz]`) dependencies are:
 - `matplotlib`
 - `plotly`
 - `dash`
@@ -46,7 +46,11 @@ And the visualization related (`[viz]`) dependencies are:
 - `orjson`
 - `tqdm`
 
-In general, we allow for the custom installion of only the core packages `pip install metaDMG`, core + fit related packages: `pip install "metaDMG[fit]"`, core + visualization related packages: `pip install "metaDMG[viz]"` or core + fit + viz: `pip install "metaDMG[all]"`.
+
+And the GUI related (`[gui]`) dependencies are:
+- `customtkinter`
+
+In general, we allow for the custom installion of only the core packages `pip install metaDMG`, core + fit related packages: `pip install "metaDMG[fit]"`, core + visualization related packages: `pip install "metaDMG[viz]"` or core + fit + viz + gui: `pip install "metaDMG[all]"`.
 
 ```{warning} metaDMG is not tested on Windows.
 ```
@@ -110,7 +114,14 @@ Here we sketch how a typical workflow works in `metaDMG`. In short:
 $ metaDMG config raw_data/alignment.sorted.bam \
     --names raw_data/names-mdmg.dmp \
     --nodes raw_data/nodes-mdmg.dmp \
-    --acc2tax raw_data/acc2taxid.map.gz
+    --acc2tax raw_data/acc2taxid.map.gz \
+    --custom-database
+```
+
+If you prefer a more visual approach, the same can also be done using the `config-gui` command:
+
+```console
+$ metaDMG config-gui
 ```
 
 ### Run the computation
@@ -118,7 +129,7 @@ $ metaDMG config raw_data/alignment.sorted.bam \
 After the config has been created, we run the actual program using the `compute` command. This can take a while depending on the number (and size) of the files.
 
 ```console
-$ metaDMG compute
+$ metaDMG compute config.yaml
 ```
 
 ### Dashboard

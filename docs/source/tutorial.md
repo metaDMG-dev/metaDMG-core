@@ -45,6 +45,14 @@ Most of the options should be quite self-explanatory. `--bayesian` indicates tha
 
 After running this command, you should notice a new file in your directory: `config.yaml`. This is a normal `.yaml` file which can be opened and edited with your favorite text editor. In case you wanted to call the config file something different, you can add `--config-file config_simple.yaml`.
 
+The same as above can also be done more visually by using the `config-gui` command:
+
+```console
+$ metaDMG config-gui
+```
+Just remember to check the relevant boxes off and save a config file.
+In case you are missing any mandatory fields, it should pop up and warn you automatically.
+
 ### Compute
 
 Now that we have generated a config file with all of the necessary parameters, we can start the actual computation. This is done by running:
