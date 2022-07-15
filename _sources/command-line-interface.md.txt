@@ -106,7 +106,7 @@ $ metaDMG config-gui
 
 The GUI presented looks like this:
 
-```{figure} images/config-gui.png
+```{figure} images/config_gui.png
 :class: bg-primary mb-1
 :width: 700px
 :align: center
