@@ -914,11 +914,10 @@ both cannot be set at the same time.</p>
 </div>
 <div class="section" id="pmd">
 <span id="command-line-interface-pmd"></span><h2>PMD<a class="headerlink" href="#pmd" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">metaDMG</span> <span class="pre">PMD</span></code> command takes config-file as argument and computes the PMD scores for each read in the samples.
-The results are located as gzipped files in <code class="docutils literal notranslate"><span class="pre">data/pmd/SAMPLE.pmd.txt.gz</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">metaDMG</span> <span class="pre">PMD</span></code> command takes an alingment file as argument and computes the PMD scores for each read in the file. The results are saved to a csv file.</p>
 <div class="section" id="id15">
 <h3>Examples<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG PMD config.yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>metaDMG PMD raw_data/alignment.sorted.bam --output PMDs.csv --metaDMG-cpp ./metaDMG-cpp
 </pre></div>
 </div>
 </div>
