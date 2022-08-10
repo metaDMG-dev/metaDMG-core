@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v0.27.1 (2022-08-10)
+### Fix
+* Fix PMD command handle errors and output csv ([`84c002f`](https://github.com/metaDMG-dev/metaDMG-core/commit/84c002f95e6c442157400307c501e437c039dc80))
+
+### Documentation
+* Update config-gui image in docs ([`9700d88`](https://github.com/metaDMG-dev/metaDMG-core/commit/9700d8822bd514a2678ab525ea4e3959acf181a4))
+* Add config-gui image to docs ([`e62e603`](https://github.com/metaDMG-dev/metaDMG-core/commit/e62e603e2d968c0b0b3a5c4ecc0dee045a8d041c))
+
 ## v0.27.0 (2022-07-15)
 ### Feature
 * Add config-gui to CLI ([`672fea7`](https://github.com/metaDMG-dev/metaDMG-core/commit/672fea743f64a4aa54ee3a90679afb72ab2bca1f))
