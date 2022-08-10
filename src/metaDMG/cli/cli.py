@@ -618,20 +618,34 @@ def mismatch_to_mapDamage(
 
 
 @cli_app.command("PMD", rich_help_panel="Utils")
-def compute_PMD(
-    config_file: Path = typer.Argument(
+def PMD(
+    filename: Path = typer.Argument(
         ...,
         file_okay=True,
-        help="Path to the config-file.",
+        help="Path to the config-file or a single BAM file.",
+    ),
+    csv_out: Path = typer.Option(
+        ...,
+        "--output",
+        "-o",
+        file_okay=True,
+        help="Output CSV file.",
+    ),
+    metaDMG_cpp: str = typer.Option(
+        "./metaDMG-cpp",
+        "--metaDMG-cpp",
+        "-m",
+        help="The command needed to run the metaDMG-cpp program.",
     ),
 ):
-    """Compute the PMD scores for the samples in the config file."""
+    """Compute the PMD scores for the chosen BAM file and save to csv."""
 
-    from metaDMG.utils import make_configs, run_PMD
+    from metaDMG.PMD import compute_PMDs
 
-    configs = make_configs(config_file)
-    for config in configs:
-        run_PMD(config)
+    df_PMDs = compute_PMDs(filename, metaDMG_cpp)
+
+    csv_out.parent.mkdir(parents=True, exist_ok=True)
+    df_PMDs.to_csv(csv_out, index=False)
 
 
 #%%
