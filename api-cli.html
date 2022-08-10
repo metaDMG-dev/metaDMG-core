@@ -395,14 +395,32 @@
 
 <div class="section" id="cli-pmd">
 <h2>PMD<a class="headerlink" href="#cli-pmd" title="Permalink to this headline">¶</a></h2>
-<p>Compute the PMD scores for the samples in the config file.</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>CLI PMD <span class="o">[</span>OPTIONS<span class="o">]</span> CONFIG_FILE
+<p>Compute the PMD scores for the chosen BAM file and save to csv.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>CLI PMD <span class="o">[</span>OPTIONS<span class="o">]</span> FILENAME
 </pre></div>
 </div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-PMD-o">
+<span id="cmdoption-cli-pmd-o"></span><span id="cmdoption-CLI-PMD-output"></span><span id="cmdoption-cli-pmd-output"></span><span class="sig-name descname"><span class="pre">-o</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--output</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;csv_out&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-PMD-o" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> Output CSV file.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-CLI-PMD-m">
+<span id="cmdoption-cli-pmd-m"></span><span id="cmdoption-CLI-PMD-metaDMG-cpp"></span><span id="cmdoption-cli-pmd-metadmg-cpp"></span><span class="sig-name descname"><span class="pre">-m</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--metaDMG-cpp</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;metaDMG_cpp&gt;</span></span><a class="headerlink" href="#cmdoption-CLI-PMD-m" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command needed to run the metaDMG-cpp program.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>./metaDMG-cpp</p>
+</dd>
+</dl>
+</dd></dl>
+
 <p class="rubric">Arguments</p>
 <dl class="std option">
-<dt class="sig sig-object std" id="cmdoption-CLI-PMD-arg-CONFIG_FILE">
-<span id="cmdoption-cli-pmd-arg-config-file"></span><span class="sig-name descname"><span class="pre">CONFIG_FILE</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-PMD-arg-CONFIG_FILE" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="cmdoption-CLI-PMD-arg-FILENAME">
+<span id="cmdoption-cli-pmd-arg-filename"></span><span class="sig-name descname"><span class="pre">FILENAME</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-CLI-PMD-arg-FILENAME" title="Permalink to this definition">¶</a></dt>
 <dd><p>Required argument</p>
 </dd></dl>
 
