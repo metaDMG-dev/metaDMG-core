@@ -292,13 +292,12 @@ $ metaDMG plot --query "100_000 <= N_reads & 8_000 <= phi" --tax-ids "1, 2, 42" 
 (command_line_interface_pmd)=
 ## PMD
 
-The `metaDMG PMD` command takes config-file as argument and computes the PMD scores for each read in the samples.
-The results are located as gzipped files in `data/pmd/SAMPLE.pmd.txt.gz`.
+The `metaDMG PMD` command takes an alingment file as argument and computes the PMD scores for each read in the file. The results are saved to a csv file.
 
 ### Examples
 
 ```console
-$ metaDMG PMD config.yaml
+$ metaDMG PMD raw_data/alignment.sorted.bam --output PMDs.csv --metaDMG-cpp ./metaDMG-cpp
 ```
 
 ---
