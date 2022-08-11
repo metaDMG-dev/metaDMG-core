@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.27.2 (2022-08-11)
+### Fix
+* Update dependencies ([`299a6c4`](https://github.com/metaDMG-dev/metaDMG-core/commit/299a6c4cd389b8673815df73a4e24915a1693805))
+
+### Documentation
+* Update PMD command ([`9bb6382`](https://github.com/metaDMG-dev/metaDMG-core/commit/9bb638248bedbb98351782afa4df378b7a625353))
+
 ## v0.27.1 (2022-08-10)
 ### Fix
 * Fix PMD command handle errors and output csv ([`84c002f`](https://github.com/metaDMG-dev/metaDMG-core/commit/84c002f95e6c442157400307c501e437c039dc80))
