@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.28.0 (2022-08-12)
+### Feature
+* Better fits for low-damage groups ([`793ffff`](https://github.com/metaDMG-dev/metaDMG-core/commit/793ffffab0fce83a61b14a0712ad98ad4cc8d2b8))
+
 ## v0.27.2 (2022-08-11)
 ### Fix
 * Update dependencies ([`299a6c4`](https://github.com/metaDMG-dev/metaDMG-core/commit/299a6c4cd389b8673815df73a4e24915a1693805))
