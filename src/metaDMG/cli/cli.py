@@ -622,7 +622,7 @@ def PMD(
     filename: Path = typer.Argument(
         ...,
         file_okay=True,
-        help="Path to the config-file or a single BAM file.",
+        help="Path to the alignment file.",
     ),
     csv_out: Path = typer.Option(
         ...,
