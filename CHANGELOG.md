@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.28.1 (2022-08-12)
+### Fix
+* Improve low-damage fits ([`838143b`](https://github.com/metaDMG-dev/metaDMG-core/commit/838143b0eef0e469797d1049d6c32b12b0371bd5))
+
+### Documentation
+* Update the docstring for the PMD command ([`102f7aa`](https://github.com/metaDMG-dev/metaDMG-core/commit/102f7aa28957afa259e4bfd00734c13dea10deb2))
+
 ## v0.28.0 (2022-08-12)
 ### Feature
 * Better fits for low-damage groups ([`793ffff`](https://github.com/metaDMG-dev/metaDMG-core/commit/793ffffab0fce83a61b14a0712ad98ad4cc8d2b8))
