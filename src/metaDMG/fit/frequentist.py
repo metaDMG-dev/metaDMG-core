@@ -51,13 +51,16 @@ def log_posterior_PMD(A, q, c, phi, x, k, N):
 
 
 class FrequentistPMD:
-    def __init__(self, data, sample, tax_id, method="posterior", p0=None):
+    def __init__(
+        self, data, sample, tax_id, method="posterior", p0=None, verbose=False
+    ):
         self.sample = sample
         self.tax_id = tax_id
         self.x = data["x"]
         self.k = data["k"]
         self.N = data["N"]
         self.method = method
+        self.verbose = verbose
         self._setup_p0(p0)
         self._setup_minuit()
         self.is_fitted = False
@@ -163,20 +166,33 @@ class FrequentistPMD:
         self.m.migrad()
         self.is_fitted = True
 
-        # first time try to reinitialise with previous fit result
+        # First try to refit it
         if not self.m.valid:
-            self.m.migrad()
+            if self.verbose:
+                print("refitting A")
+            for i in range(10):
+                self.m.migrad()
+                if self.m.valid:
+                    if self.verbose:
+                        print(f"Got out, A {i}")
+                    break
 
-        # second try time with a totally flat guess
+        # Then try with a totally flat guess
         if not self.m.valid:
+            if self.verbose:
+                print("refitting B")
             p0_flat = {"q": 0.0, "A": 0.0, "c": 0.01, "phi": 100}
             self._setup_p0(p0_flat)
             self.m.migrad()
+            if self.verbose:
+                print(f"Got out, B")
 
-        # if not working, continue with new guesses
+        # If not working, continue with new guesses
         MAX_GUESSES = 100
         if not self.m.valid:
             self.i = 0
+            if self.verbose:
+                print("refitting C")
             while True:
                 p0 = fit_utils.sample_from_param_grid(self.param_grid)
                 for key, val in p0.items():
@@ -188,6 +204,9 @@ class FrequentistPMD:
                 if self.m.valid or self.i >= MAX_GUESSES:
                     break
                 self.i += 1
+
+            if self.m.valid and self.verbose:
+                print(f"Got out, C {self.i}")
 
         self.valid = self.m.valid
 
