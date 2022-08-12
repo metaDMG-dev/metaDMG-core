@@ -482,14 +482,20 @@ def compute(config, df_mismatches):
     # filter out tax_id's with too few reads
     df_mismatches = filter_tax_ids(config, df_stats, df_stat_cut, df_mismatches)
 
-    # filter out tax_id's with 0 k_sum_total
-    df_mismatches = filter_k_sum(config, df_mismatches)
-
     if len(df_mismatches) == 0:
-        s = f"{config['sample']} df_mismatches.query('k_sum_total > 0') is empty."
+        s = f"{config['sample']} cut on min reads > {config['min_reads']} made data empty."
         logger.debug("WARNING: BadDataError")
         logger.debug(s)
         raise BadDataError(s)
+
+    # # filter out tax_id's with 0 k_sum_total
+    # df_mismatches = filter_k_sum(config, df_mismatches)
+
+    # if len(df_mismatches) == 0:
+    #     s = f"{config['sample']} df_mismatches.query('k_sum_total > 0') is empty."
+    #     logger.debug("WARNING: BadDataError")
+    #     logger.debug(s)
+    #     raise BadDataError(s)
 
     # find unique tax_ids (when compairing the mismatches matrices)
     # such that only those are fitted

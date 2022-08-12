@@ -167,7 +167,14 @@ class FrequentistPMD:
         if not self.m.valid:
             self.m.migrad()
 
+        # second try time with a totally flat guess
+        if not self.m.valid:
+            p0_flat = {"q": 0.0, "A": 0.0, "c": 0.01, "phi": 100}
+            self._setup_p0(p0_flat)
+            self.m.migrad()
+
         # if not working, continue with new guesses
+        MAX_GUESSES = 100
         if not self.m.valid:
             self.i = 0
             while True:
@@ -175,10 +182,10 @@ class FrequentistPMD:
                 for key, val in p0.items():
                     self.m.values[key] = val
                 self.m.migrad()
-                if self.m.valid or self.i >= 100:
+                if self.m.valid or self.i >= MAX_GUESSES:
                     break
                 self.m.migrad()
-                if self.m.valid or self.i >= 100:
+                if self.m.valid or self.i >= MAX_GUESSES:
                     break
                 self.i += 1
 
@@ -623,7 +630,7 @@ def make_forward_reverse_fits(fit_result, data, sample, tax_id):
         fit_result[f"{var}"] = getattr(fit_all, var)
 
     numerator = fit_forward.D_max - fit_reverse.D_max
-    denominator = np.sqrt(fit_forward.D_max_std ** 2 + fit_reverse.D_max_std ** 2)
+    denominator = np.sqrt(fit_forward.D_max_std**2 + fit_reverse.D_max_std**2)
     fit_result["asymmetry"] = np.abs(numerator) / denominator
 
     for var in vars_to_keep:
