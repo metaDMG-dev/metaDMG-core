@@ -122,11 +122,6 @@ def compute_D_max(mcmc, data):
     # D_max_mu = np.mean(D_max_samples).item()
     # D_max_std = np.std(D_max_samples).item()
 
-    # A = np.mean(mcmc.get_samples()["A"]).item()
-    # phi = np.mean(mcmc.get_samples()["phi"]).item()
-    # N = data["N"][0]
-    # np.sqrt(A*(1-A)*(phi+N)/((phi+1)*N))
-
     # New method, more similar to frequentist and better when few reads
     A = mcmc.get_samples()["A"]
     c = mcmc.get_samples()["c"]
