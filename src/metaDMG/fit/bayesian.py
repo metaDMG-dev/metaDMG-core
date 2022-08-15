@@ -114,20 +114,29 @@ def compute_posterior(
 
 
 def compute_D_max(mcmc, data):
-    posterior = get_posterior_predictive(mcmc, data)
-    c = mcmc.get_samples()["c"]
-    f = posterior["obs"] / data["N"]
-    f = f[:, 0]
-    D_max_samples = f - c
-    D_max_mu = np.mean(D_max_samples).item()
-    D_max_std = np.std(D_max_samples).item()
+    # posterior = get_posterior_predictive(mcmc, data)
+    # c = mcmc.get_samples()["c"]
+    # f = posterior["obs"] / data["N"]
+    # f = f[:, 0]
+    # D_max_samples = f - c
+    # D_max_mu = np.mean(D_max_samples).item()
+    # D_max_std = np.std(D_max_samples).item()
 
     # A = np.mean(mcmc.get_samples()["A"]).item()
     # phi = np.mean(mcmc.get_samples()["phi"]).item()
     # N = data["N"][0]
     # np.sqrt(A*(1-A)*(phi+N)/((phi+1)*N))
 
-    return {"mu": D_max_mu, "std": D_max_std}
+    # New method, more similar to frequentist and better when few reads
+    A = mcmc.get_samples()["A"]
+    c = mcmc.get_samples()["c"]
+    phi = mcmc.get_samples()["phi"]
+    N = max(data["N"][0], 1)
+    mu = np.mean(A)
+    std = np.mean(np.sqrt(A * (1 - A) * (phi + N) / ((phi + 1) * N)))
+    mu.item(), std.item()
+
+    return {"mu": mu.item(), "std": std.item()}
 
 
 #%%

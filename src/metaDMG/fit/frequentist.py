@@ -289,14 +289,11 @@ class FrequentistPMD:
         c = self.c
         phi = self.phi
 
-        N = self.N[0]
+        N = max(self.N[0], 1)
 
         mu = A
 
-        if N != 0:
-            std = np.sqrt(A * (1 - A) * (phi + N) / ((phi + 1) * N))
-        else:
-            std = np.nan
+        std = np.sqrt(A * (1 - A) * (phi + N) / ((phi + 1) * N))
 
         return mu, std
 
