@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.28.2 (2022-08-15)
+### Fix
+* Improve Bayesian D_max when few reads ([`35d7247`](https://github.com/metaDMG-dev/metaDMG-core/commit/35d7247d1822e8d82db4a4f43cc56c6019bf85ae))
+
 ## v0.28.1 (2022-08-12)
 ### Fix
 * Improve low-damage fits ([`838143b`](https://github.com/metaDMG-dev/metaDMG-core/commit/838143b0eef0e469797d1049d6c32b12b0371bd5))
