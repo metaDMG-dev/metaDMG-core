@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.28.4 (2022-08-17)
+### Fix
+* Handle empty data and better error handling ([`f2d27ff`](https://github.com/metaDMG-dev/metaDMG-core/commit/f2d27ff6b1c16a18736e9d2ac3078504e046abd6))
+
 ## v0.28.3 (2022-08-17)
 ### Fix
 * Catch metaDMG-cpp error with unsorted files ([`7c42082`](https://github.com/metaDMG-dev/metaDMG-core/commit/7c42082b8ab3b531dce21613bcf5cc275d8d2ef0))
