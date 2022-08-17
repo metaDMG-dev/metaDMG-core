@@ -129,7 +129,7 @@ def compute_D_max(mcmc, data):
     N = max(data["N"][0], 1)
     mu = np.mean(A)
     std = np.mean(np.sqrt(A * (1 - A) * (phi + N) / ((phi + 1) * N)))
-    mu.item(), std.item()
+    # mu.item(), std.item()
 
     return {"mu": mu.item(), "std": std.item()}
 

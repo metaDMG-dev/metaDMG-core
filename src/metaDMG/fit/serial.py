@@ -249,6 +249,8 @@ def handle_returncode(command, line, counter):
 
 def run_command_helper(config: Config, command: str) -> None:
 
+    command_string = " ".join(command.split()[:2])
+
     # add a counter to avoid too many similar lines
     counter = Counter()
     for line in run_command(command):
@@ -256,6 +258,10 @@ def run_command_helper(config: Config, command: str) -> None:
         # if finished, check returncode
         if isinstance(line, int):
             return handle_returncode(command, line, counter)
+
+        if "ERROR: We require files to be sorted by readname, will exit" in line:
+            s = f"The alignment file ({config['bam']}) has to be sorted by filename. "
+            raise metadamageError(s)
 
         # continue running and logging
         if counter[line] < 3:

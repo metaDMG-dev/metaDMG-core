@@ -135,11 +135,6 @@ def mu_phi_to_alpha_beta(mu, phi):
 
 
 @njit
-def gammaln_scalar(x):
-    return math.lgamma(x)
-
-
-@njit
 def gammaln_vec(xs):
     out = np.empty(len(xs), dtype="float")
     for i, x in enumerate(xs):
@@ -178,6 +173,11 @@ def xlogy(x, y):
         return 0
 
     return x * np.log(y)
+
+
+@njit
+def gammaln_scalar(x):
+    return math.lgamma(x)
 
 
 @njit
