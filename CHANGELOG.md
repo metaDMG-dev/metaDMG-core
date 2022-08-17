@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.28.3 (2022-08-17)
+### Fix
+* Catch metaDMG-cpp error with unsorted files ([`7c42082`](https://github.com/metaDMG-dev/metaDMG-core/commit/7c42082b8ab3b531dce21613bcf5cc275d8d2ef0))
+
 ## v0.28.2 (2022-08-15)
 ### Fix
 * Improve Bayesian D_max when few reads ([`35d7247`](https://github.com/metaDMG-dev/metaDMG-core/commit/35d7247d1822e8d82db4a4f43cc56c6019bf85ae))
