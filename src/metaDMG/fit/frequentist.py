@@ -163,50 +163,69 @@ class FrequentistPMD:
         self.m.errordef = Minuit.LIKELIHOOD
 
     def fit(self):
+        if self.verbose:
+            print("Initial fit")
         self.m.migrad()
         self.is_fitted = True
+        if self.m.valid and self.verbose:
+            print("Valid fit")
 
         # First try to refit it
         if not self.m.valid:
             if self.verbose:
-                print("refitting A")
+                print("Refitting up to 10 times using last values as p0")
             for i in range(10):
                 self.m.migrad()
                 if self.m.valid:
-                    if self.verbose:
-                        print(f"Got out, A {i}")
                     break
+        if self.m.valid and self.verbose:
+            print("Valid fit")
 
         # Then try with a totally flat guess
         if not self.m.valid:
             if self.verbose:
-                print("refitting B")
-            p0_flat = {"q": 0.0, "A": 0.0, "c": 0.01, "phi": 100}
-            self._setup_p0(p0_flat)
+                print("Refitting using a flat p0")
+            self._setup_p0({"q": 0.0, "A": 0.0, "c": 0.01, "phi": 100})
+            self._setup_minuit()
             self.m.migrad()
+        if self.m.valid and self.verbose:
+            print("Valid fit")
+
+        # Also try with the default guess
+        if not self.m.valid:
             if self.verbose:
-                print(f"Got out, B")
+                print("Refitting using the default p0")
+            self._setup_p0({"q": 0.1, "A": 0.1, "c": 0.01, "phi": 1000})
+            self._setup_minuit()
+            self.m.migrad()
+        if self.m.valid and self.verbose:
+            print("Valid fit")
 
         # If not working, continue with new guesses
         MAX_GUESSES = 100
         if not self.m.valid:
-            self.i = 0
+
             if self.verbose:
-                print("refitting C")
+                print("Getting desperate, trying random p0's")
+
+            self.i = 0
             while True:
                 p0 = fit_utils.sample_from_param_grid(self.param_grid)
-                for key, val in p0.items():
-                    self.m.values[key] = val
+                self._setup_p0(p0)
+                self._setup_minuit()
                 self.m.migrad()
+
                 if self.m.valid or self.i >= MAX_GUESSES:
                     break
                 self.m.migrad()
+
                 if self.m.valid or self.i >= MAX_GUESSES:
                     break
+
                 self.i += 1
 
-            if self.m.valid and self.verbose:
-                print(f"Got out, C {self.i}")
+        if self.m.valid and self.verbose:
+            print(f"Valid fit, number of tries = {self.i}")
 
         self.valid = self.m.valid
 

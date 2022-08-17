@@ -11,7 +11,7 @@ import pandas as pd
 from logger_tt import logger
 from tqdm import tqdm
 
-from metaDMG.errors import BadDataError
+from metaDMG.errors import BadDataError, FittingError
 from metaDMG.fit import bayesian, fit_utils, frequentist
 from metaDMG.utils import Config
 
@@ -141,6 +141,16 @@ def fit_single_group(
     sample = config["sample"]
     tax_id = group["tax_id"].iloc[0]
 
+    if data["N"].sum() == 0:
+        from metaDMG.fit.serial import _setup_logger
+
+        _setup_logger(config)
+
+        s = f"No data for tax_id {tax_id}, sample = {sample}, i.e. sum(N) = 0. "
+        s += "Skipping the fit."
+        logger.warning(s)
+        return None
+
     with warnings.catch_warnings():
         warnings.filterwarnings("ignore")
 
@@ -155,7 +165,15 @@ def fit_single_group(
     add_count_information(fit_result, config, group, data)
 
     if mcmc_PMD is not None and mcmc_null is not None:
-        bayesian.make_fits(fit_result, data, mcmc_PMD, mcmc_null)
+        try:
+            bayesian.make_fits(fit_result, data, mcmc_PMD, mcmc_null)
+        except:
+            from metaDMG.fit.serial import _setup_logger
+
+            _setup_logger(config)
+            s = f"Error in bayesian.make_fits for tax_id {tax_id}, sample = {sample}."
+            s += "Skipping the Bayesian fit."
+            logger.warning(s)
 
     return fit_result
 
@@ -177,12 +195,15 @@ def compute_fits_seriel(config, df_mismatches, with_progressbar=False):
         if with_progressbar:
             groupby.set_description(f"Fitting Tax ID {tax_id}")
 
-        d_fit_results[tax_id] = fit_single_group(
+        res = fit_single_group(
             config,
             group,
             mcmc_PMD,
             mcmc_null,
         )
+
+        if res is not None:
+            d_fit_results[tax_id] = res
 
     return d_fit_results
 
