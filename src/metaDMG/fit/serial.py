@@ -551,6 +551,17 @@ def run_single_config(
 def run_single_config_count_errors(
     config: Config,
 ) -> int:
+    """Allows for using pool.map() (multiprocessing) while also counting the errors.
+
+    Parameters
+    ----------
+    config
+        A config file.
+
+    Returns
+    -------
+        0 if no error, 1 if error
+    """
 
     try:
         run_single_config(config)
