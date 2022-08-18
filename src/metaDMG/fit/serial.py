@@ -233,23 +233,18 @@ def run_command(command: str):
 
 def handle_returncode(command, line, counter):
 
-    command_string = " ".join(command.split()[:2])
-
     returncode = line
     if returncode != 0:
-        s = f"{command_string} did not terminate properly."
+        s = f"{command} did not terminate properly. See log file for more information."
         raise metadamageError(s)
 
     lines_hidden = {key: val for key, val in counter.items() if val >= 3}
     if len(lines_hidden) > 0:
         logger.debug(f"Hid the following lines: {lines_hidden}.")
-    logger.debug(f"Got return code {returncode} from {command_string}.")
-    return None
+    logger.debug(f"Got return code {returncode} from {command}.")
 
 
-def run_command_helper(config: Config, command: str) -> None:
-
-    command_string = " ".join(command.split()[:2])
+def run_command_helper(config: Config, command: str):
 
     # add a counter to avoid too many similar lines
     counter = Counter()
@@ -260,6 +255,7 @@ def run_command_helper(config: Config, command: str) -> None:
             return handle_returncode(command, line, counter)
 
         if "ERROR: We require files to be sorted by readname, will exit" in line:
+            logger.debug(line)
             s = f"The alignment file ({config['bam']}) has to be sorted by filename. "
             raise metadamageError(s)
 
@@ -510,11 +506,15 @@ def run_single_config(
         run_cpp(config, force=force)
     except metadamageError as e:
         logger.exception(
+            f"{config['sample']} | "
             f"metadamageError with run_LCA. See log-file for more information."
         )
         raise e
     except AlignmentFileError as e:
-        logger.exception(f"Bad alignment file. See log-file for more information.")
+        logger.exception(
+            f"{config['sample']} | "
+            f"Bad alignment file. See log-file for more information."
+        )
         raise e
     except KeyboardInterrupt:
         logger.info("Got KeyboardInterrupt. Cleaning up.")
@@ -525,6 +525,7 @@ def run_single_config(
         df_mismatches = get_df_mismatches(config, force=force)
     except MismatchFileError as e:
         logger.exception(
+            f"{config['sample']} | "
             f"MismatchFileError with get_df_mismatches. "
             f"See log-file for more information."
         )
@@ -534,8 +535,9 @@ def run_single_config(
         df_fit_results = get_df_fit_results(config, df_mismatches, force=force)
     except BadDataError as e:
         logger.warning(
-            "BadDataError happened while fitting, see log file for more info. "
-            "Skipping for now."
+            f"{config['sample']} | "
+            f"BadDataError happened while fitting, see log file for more info. "
+            f"Skipping for now."
         )
         raise e
 

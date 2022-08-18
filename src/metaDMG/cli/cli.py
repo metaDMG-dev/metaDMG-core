@@ -326,7 +326,9 @@ def compute(
         force=force,
     )
 
-    run_workflow(configs)
+    return_code = run_workflow(configs)
+    if return_code != 0:
+        raise typer.Exit(return_code)
 
 
 #%%
