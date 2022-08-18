@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.28.6 (2022-08-18)
+### Fix
+* Fix issue with logging in parallel ([`9e065aa`](https://github.com/metaDMG-dev/metaDMG-core/commit/9e065aa5cf3af81ec670bcd039e964ca848574eb))
+
+### Documentation
+* Add docstring to workflow function ([`2ee4c6b`](https://github.com/metaDMG-dev/metaDMG-core/commit/2ee4c6b4b96bc3e269dd5a83fe716b3b2b389812))
+
 ## v0.28.5 (2022-08-18)
 ### Fix
 * Improve logging messages ([`7a35b3a`](https://github.com/metaDMG-dev/metaDMG-core/commit/7a35b3a8899ab879df822444506521ebd52d6410))
