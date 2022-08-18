@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.28.5 (2022-08-18)
+### Fix
+* Improve logging messages ([`7a35b3a`](https://github.com/metaDMG-dev/metaDMG-core/commit/7a35b3a8899ab879df822444506521ebd52d6410))
+
 ## v0.28.4 (2022-08-17)
 ### Fix
 * Handle empty data and better error handling ([`f2d27ff`](https://github.com/metaDMG-dev/metaDMG-core/commit/f2d27ff6b1c16a18736e9d2ac3078504e046abd6))
