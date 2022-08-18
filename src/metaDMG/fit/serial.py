@@ -546,3 +546,14 @@ def run_single_config(
 
     logger.info("Finished.")
     return df_mismatches, df_fit_results, df_results
+
+
+def run_single_config_count_errors(
+    config: Config,
+) -> int:
+
+    try:
+        run_single_config(config)
+        return 0
+    except:
+        return 1
