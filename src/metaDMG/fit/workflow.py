@@ -10,6 +10,17 @@ from metaDMG.utils import Configs
 
 
 def run_workflow(configs: Configs) -> int:
+    """Runs the entire metaDMG workflow.
+
+    Parameters
+    ----------
+    configs
+        A Configs object containing the configuration parameters for the workflow.
+
+    Returns
+    -------
+        _description_
+    """
 
     parallel_samples = min(configs["parallel_samples"], len(configs))
 
