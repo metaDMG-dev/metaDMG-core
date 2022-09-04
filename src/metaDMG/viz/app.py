@@ -264,12 +264,34 @@ def get_app(results_dir):
                 s1 = "Bayesian_D_max_confidence_interval_1_sigma_low"
                 s2 = "Bayesian_D_max_confidence_interval_1_sigma_high"
                 if s1 in ds and s2 in ds:
-                    confidence_interval = [
-                        html.Br(),
-                        f"D-max lower bound: {ds[s1]:.3f}, upper bound {ds[s2]:.3f}",
-                    ]
+
+                    s_D_max = f", [{ds[s1]:.3f}, {ds[s2]:.3f}]"
+
+                    conf_q_low = ds["Bayesian_q_confidence_interval_1_sigma_low"]
+                    conf_q_high = ds["Bayesian_q_confidence_interval_1_sigma_high"]
+                    s_q = f", [{conf_q_low:.3f}, {conf_q_high:.3f}]"
+
+                    conf_phi_low = viz_utils.human_format(
+                        ds["Bayesian_phi_confidence_interval_1_sigma_low"]
+                    )
+                    conf_phi_high = viz_utils.human_format(
+                        ds["Bayesian_phi_confidence_interval_1_sigma_high"]
+                    )
+                    s_phi = f", [{conf_phi_low}, {conf_phi_high}]"
+
+                    conf_A_low = ds["Bayesian_A_confidence_interval_1_sigma_low"]
+                    conf_A_high = ds["Bayesian_A_confidence_interval_1_sigma_high"]
+                    s_A = f", [{conf_A_low:.3f}, {conf_A_high:.3f}]"
+
+                    conf_c_low = ds["Bayesian_c_confidence_interval_1_sigma_low"]
+                    conf_c_high = ds["Bayesian_c_confidence_interval_1_sigma_high"]
+                    s_c = f", [{conf_c_low:.3f}, {conf_c_high:.3f}]"
+
                 else:
-                    confidence_interval = []
+                    s_D_max = ""
+                    s_q = ""
+                    s_phi = ""
+                    s_c = ""
 
                 bayesian_list = [
                     "Fit results:",
@@ -277,13 +299,16 @@ def get_app(results_dir):
                     f"z: {ds['Bayesian_z']:.2f}",
                     html.Br(),
                     f"D-max: {ds['Bayesian_D_max']:.3f} "
-                    f"± {ds['Bayesian_D_max_std']:.3f}",
-                    *confidence_interval,
+                    f"± {ds['Bayesian_D_max_std']:.3f}" + s_D_max,
                     html.Br(),
-                    f"q: {ds['Bayesian_q']:.3f} " f"± {ds['Bayesian_q_std']:.3f}",
+                    f"q: {ds['Bayesian_q']:.3f} " f"± {ds['Bayesian_q_std']:.3f}" + s_q,
                     html.Br(),
                     f"phi: {viz_utils.human_format(ds['Bayesian_phi'])} "
-                    f"± {viz_utils.human_format(ds['Bayesian_phi_std'])}",
+                    f"± {viz_utils.human_format(ds['Bayesian_phi_std'])}" + s_phi,
+                    html.Br(),
+                    f"A: {ds['Bayesian_A']:.3f} " f"± {ds['Bayesian_A_std']:.3f}" + s_A,
+                    html.Br(),
+                    f"c: {ds['Bayesian_c']:.3f} " f"± {ds['Bayesian_c_std']:.3f}" + s_c,
                     html.Br(),
                     f"rho Ac: {ds['Bayesian_rho_Ac']:.3f}",
                     html.Br(),
