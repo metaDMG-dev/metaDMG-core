@@ -212,14 +212,38 @@ def get_lppd_and_waic(mcmc, data):
 #%%
 
 
-def get_mean_of_variable(mcmc, variable, axis=0):
-    values = mcmc.get_samples()[variable]
-    return np.mean(values, axis=axis).item()
+# def get_mean_of_variable(mcmc, variable, axis=0):
+#     values = mcmc.get_samples()[variable]
+#     return np.mean(values, axis=axis).item()
 
 
-def get_std_of_variable(mcmc, variable, axis=0):
-    values = mcmc.get_samples()[variable]
-    return np.std(values, axis=axis).item()
+# def get_std_of_variable(mcmc, variable, axis=0):
+#     values = mcmc.get_samples()[variable]
+#     return np.std(values, axis=axis).item()
+
+
+def add_summary_of_variable(
+    fit_result,
+    mcmc,
+    variable,
+    prefix="Bayesian_",
+    axis=0,
+):
+    values = np.array(mcmc.get_samples()[variable])
+
+    s = f"{prefix}{variable}"
+    q_low = (1 - CONF_1_SIGMA) / 2.0
+    q_high = (1 + CONF_1_SIGMA) / 2.0
+
+    fit_result[f"{s}"] = np.mean(values, axis=axis)
+    fit_result[f"{s}_std"] = np.std(values, axis=axis)
+    fit_result[f"{s}_median"] = np.median(values, axis=axis)
+    fit_result[f"{s}_confidence_interval_1_sigma_low"] = np.quantile(
+        values, q_low, axis=axis
+    )
+    fit_result[f"{s}_confidence_interval_1_sigma_high"] = np.quantile(
+        values, q_high, axis=axis
+    )
 
 
 def compute_rho_Ac(mcmc):
@@ -342,17 +366,10 @@ def add_Bayesian_fit_result(
         "confidence_interval_95_high"
     ]
 
-    fit_result["Bayesian_A"] = get_mean_of_variable(mcmc_PMD, "A")
-    fit_result["Bayesian_A_std"] = get_std_of_variable(mcmc_PMD, "A")
-
-    fit_result["Bayesian_q"] = get_mean_of_variable(mcmc_PMD, "q")
-    fit_result["Bayesian_q_std"] = get_std_of_variable(mcmc_PMD, "q")
-
-    fit_result["Bayesian_c"] = get_mean_of_variable(mcmc_PMD, "c")
-    fit_result["Bayesian_c_std"] = get_std_of_variable(mcmc_PMD, "c")
-
-    fit_result["Bayesian_phi"] = get_mean_of_variable(mcmc_PMD, "phi")
-    fit_result["Bayesian_phi_std"] = get_std_of_variable(mcmc_PMD, "phi")
+    add_summary_of_variable(fit_result, mcmc_PMD, "A")
+    add_summary_of_variable(fit_result, mcmc_PMD, "q")
+    add_summary_of_variable(fit_result, mcmc_PMD, "c")
+    add_summary_of_variable(fit_result, mcmc_PMD, "phi")
 
     fit_result["Bayesian_rho_Ac"] = compute_rho_Ac(mcmc_PMD)
 
