@@ -260,6 +260,17 @@ def get_app(results_dir):
 
             bayesian_list = []
             if viz_results.Bayesian:
+
+                s1 = "Bayesian_D_max_confidence_interval_1_sigma_low"
+                s2 = "Bayesian_D_max_confidence_interval_1_sigma_high"
+                if s1 in ds and s2 in ds:
+                    confidence_interval = [
+                        html.Br(),
+                        f"D-max lower bound: {ds[s1]:.3f}, upper bound {ds[s2]:.3f}",
+                    ]
+                else:
+                    confidence_interval = []
+
                 bayesian_list = [
                     "Fit results:",
                     html.Br(),
@@ -267,6 +278,7 @@ def get_app(results_dir):
                     html.Br(),
                     f"D-max: {ds['Bayesian_D_max']:.3f} "
                     f"± {ds['Bayesian_D_max_std']:.3f}",
+                    *confidence_interval,
                     html.Br(),
                     f"q: {ds['Bayesian_q']:.3f} " f"± {ds['Bayesian_q_std']:.3f}",
                     html.Br(),
