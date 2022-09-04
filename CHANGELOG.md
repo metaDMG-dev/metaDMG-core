@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.29.0 (2022-09-04)
+### Feature
+* Add confidence intervals to Bayesian model ([`38c95d5`](https://github.com/metaDMG-dev/metaDMG-core/commit/38c95d5ea48ce59354eaa050e67f0a41166aad21))
+
 ## v0.28.6 (2022-08-18)
 ### Fix
 * Fix issue with logging in parallel ([`9e065aa`](https://github.com/metaDMG-dev/metaDMG-core/commit/9e065aa5cf3af81ec670bcd039e964ca848574eb))
