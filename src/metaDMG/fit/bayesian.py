@@ -9,6 +9,8 @@ from numba import njit
 from numpyro import distributions as dist
 from numpyro.infer import MCMC, NUTS, Predictive, log_likelihood
 from scipy.special import logsumexp
+from scipy.stats import betabinom as sp_betabinom
+from scipy.stats import norm as sp_norm
 
 from metaDMG.fit import fit_utils
 
@@ -101,6 +103,13 @@ def get_posterior_predictive_obs(mcmc, data):
 #%%
 
 
+def get_n_sigma_probability(n_sigma):
+    return sp_norm.cdf(n_sigma) - sp_norm.cdf(-n_sigma)
+
+
+CONF_1_SIGMA = get_n_sigma_probability(1)
+
+
 def compute_posterior(
     mcmc, data, func_avg=np.mean, func_dispersion=lambda x: np.std(x, axis=0)
 ):
@@ -131,7 +140,21 @@ def compute_D_max(mcmc, data):
     std = np.mean(np.sqrt(A * (1 - A) * (phi + N) / ((phi + 1) * N)))
     # mu.item(), std.item()
 
-    return {"mu": mu.item(), "std": std.item()}
+    Dx = A
+    alpha = Dx * phi
+    beta = (1 - Dx) * phi
+
+    pdf = sp_betabinom(N, alpha, beta)
+    return {
+        "mu": mu.item(),
+        "std": std.item(),
+        "median": pdf.median().mean() / N,
+        "confidence_interval_1_sigma_low": pdf.ppf((1 - CONF_1_SIGMA) / 2.0).mean() / N,
+        "confidence_interval_1_sigma_high": pdf.ppf((1 + CONF_1_SIGMA) / 2.0).mean()
+        / N,
+        "confidence_interval_95_low": pdf.ppf((1 - 0.95) / 2.0).mean() / N,
+        "confidence_interval_95_high": pdf.ppf((1 + 0.95) / 2.0).mean() / N,
+    }
 
 
 #%%
@@ -305,6 +328,19 @@ def add_Bayesian_fit_result(
     D_max = compute_D_max(mcmc_PMD, data)
     fit_result["Bayesian_D_max"] = D_max["mu"]
     fit_result["Bayesian_D_max_std"] = D_max["std"]
+    fit_result["Bayesian_D_max_median"] = D_max["median"]
+    fit_result["Bayesian_D_max_confidence_interval_1_sigma_low"] = D_max[
+        "confidence_interval_1_sigma_low"
+    ]
+    fit_result["Bayesian_D_max_confidence_interval_1_sigma_high"] = D_max[
+        "confidence_interval_1_sigma_high"
+    ]
+    fit_result["Bayesian_D_max_confidence_interval_95_low"] = D_max[
+        "confidence_interval_95_low"
+    ]
+    fit_result["Bayesian_D_max_confidence_interval_95_high"] = D_max[
+        "confidence_interval_95_high"
+    ]
 
     fit_result["Bayesian_A"] = get_mean_of_variable(mcmc_PMD, "A")
     fit_result["Bayesian_A_std"] = get_std_of_variable(mcmc_PMD, "A")
