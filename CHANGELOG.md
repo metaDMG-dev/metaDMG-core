@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.30.0 (2022-09-06)
+### Feature
+* Update priors to be more conservative ([`cb98015`](https://github.com/metaDMG-dev/metaDMG-core/commit/cb980159820ff8f0f4e09e3e2677c97ca7683955))
+
 ## v0.29.1 (2022-09-06)
 ### Fix
 * Use approximate conf. intervals for bayesian ([`e92f298`](https://github.com/metaDMG-dev/metaDMG-core/commit/e92f298fc6833076673244465ebb7b7a05ca4ce8))
