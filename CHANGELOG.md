@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.29.1 (2022-09-06)
+### Fix
+* Use approximate conf. intervals for bayesian ([`e92f298`](https://github.com/metaDMG-dev/metaDMG-core/commit/e92f298fc6833076673244465ebb7b7a05ca4ce8))
+
 ## v0.29.0 (2022-09-04)
 ### Feature
 * Add confidence intervals to Bayesian model ([`38c95d5`](https://github.com/metaDMG-dev/metaDMG-core/commit/38c95d5ea48ce59354eaa050e67f0a41166aad21))
