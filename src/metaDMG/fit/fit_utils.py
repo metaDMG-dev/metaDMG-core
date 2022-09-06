@@ -27,6 +27,44 @@ for ref in ACTG:
 #%%
 
 
+def get_priors():
+
+    # beta new
+    A_prior = mu_phi_to_alpha_beta(mu=0.01, phi=1)  # mean = 0.01, concentration = 1
+    q_prior = mu_phi_to_alpha_beta(mu=0.2, phi=5)  # mean = 0.2, concentration = 5
+    c_prior = mu_phi_to_alpha_beta(mu=0.1, phi=10)  # mean = 0.01, concentration = 1
+
+    # # beta old
+    # A_prior = mu_phi_to_alpha_beta(mu=0.2, phi=5)  # mean = 0.2, concentration = 5
+    # q_prior = mu_phi_to_alpha_beta(mu=0.2, phi=5)  # mean = 0.2, concentration = 5
+    # c_prior = mu_phi_to_alpha_beta(mu=0.1, phi=10)  # mean = 0.1, concentration = 10
+
+    # exponential (min, scale)
+    phi_prior = (2, 1000)
+
+    return {
+        "A": A_prior,
+        "q": q_prior,
+        "c": c_prior,
+        "phi": phi_prior,
+    }
+
+
+def alpha_beta_to_mu_phi(alpha, beta):
+    mu = alpha / (alpha + beta)
+    phi = alpha + beta
+    return mu, phi
+
+
+def mu_phi_to_alpha_beta(mu, phi):
+    alpha = mu * phi
+    beta = phi * (1 - mu)
+    return alpha, beta
+
+
+#%%
+
+
 def downcast_dataframe(df, categories=None, fully_automatic=False):
 
     if categories is None:
@@ -72,22 +110,7 @@ def get_forward(df):
     return df.query("direction == @s")
 
 
-def get_priors():
-
-    # beta
-    A_prior = mu_phi_to_alpha_beta(mu=0.2, phi=5)  # mean = 0.2, concentration = 5
-    q_prior = mu_phi_to_alpha_beta(mu=0.2, phi=5)  # mean = 0.2, concentration = 5
-    c_prior = mu_phi_to_alpha_beta(mu=0.1, phi=10)  # mean = 0.1, concentration = 10
-
-    # exponential (min, scale)
-    phi_prior = (2, 1000)
-
-    return {
-        "A": A_prior,
-        "q": q_prior,
-        "c": c_prior,
-        "phi": phi_prior,
-    }
+#%%
 
 
 #%%
@@ -117,18 +140,6 @@ def sample_from_param_grid(param_grid, random_state=None):
     for key, dist in param_grid.items():
         parameters[key] = dist.rvs(random_state=random_state)
     return parameters
-
-
-def alpha_beta_to_mu_phi(alpha, beta):
-    mu = alpha / (alpha + beta)
-    phi = alpha + beta
-    return mu, phi
-
-
-def mu_phi_to_alpha_beta(mu, phi):
-    alpha = mu * phi
-    beta = phi * (1 - mu)
-    return alpha, beta
 
 
 #%%

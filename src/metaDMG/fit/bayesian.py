@@ -20,7 +20,7 @@ from metaDMG.fit import fit_utils
 numpyro.enable_x64()
 
 priors = fit_utils.get_priors()
-A_prior = priors["A"]  # mean = 0.2, concentration = 5
+A_prior = priors["A"]  # mean = 0.01, concentration = 1
 q_prior = priors["q"]  # mean = 0.2, concentration = 5
 c_prior = priors["c"]  # mean = 0.1, concentration = 10
 phi_prior = priors["phi"]
