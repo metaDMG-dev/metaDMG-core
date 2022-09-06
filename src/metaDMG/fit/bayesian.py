@@ -145,6 +145,7 @@ def compute_D_max(mcmc, data):
     beta = (1 - Dx) * phi
 
     pdf = sp_betabinom(N, alpha, beta)
+    # pdf = sp_betabinom(N, alpha.mean(), beta.mean())  # 1000x faster approximation
     return {
         "mu": mu.item(),
         "std": std.item(),

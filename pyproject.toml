@@ -29,9 +29,10 @@ psutil = "^5.9.1"
 
 # Fit related packages: poetry install --extras fit
 iminuit = {version = "^2.15.2", optional = true}
-numpyro = {version = "^0.10.0", optional = true}
+numpyro = {version = "^0.10.1", optional = true}
 joblib = {version = "^1.1.0", optional = true}
 numba = {version = "^0.56.0", optional = true}
+flatbuffers = {version = "^2.0.7", optional = true}
 
 # Viz related packages: poetry install --extras viz
 matplotlib = {version = "^3.5.3", optional = true}
@@ -98,6 +99,7 @@ fit = [ # poetry install --extras fit
     "joblib",
     "psutil",
     "numba",
+    "flatbuffers",
 ]
 
 viz = [ # poetry install --extras fit
@@ -122,6 +124,7 @@ all = [ # poetry install --extras all
     "joblib",
     "psutil",
     "numba",
+    "flatbuffers",
     "matplotlib",
     "plotly",
     "dash",
