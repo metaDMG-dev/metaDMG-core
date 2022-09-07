@@ -29,15 +29,19 @@ for ref in ACTG:
 
 def get_priors():
 
-    # beta new
-    A_prior = mu_phi_to_alpha_beta(mu=0.01, phi=1)  # mean = 0.01, concentration = 1
-    q_prior = mu_phi_to_alpha_beta(mu=0.2, phi=5)  # mean = 0.2, concentration = 5
-    c_prior = mu_phi_to_alpha_beta(mu=0.1, phi=10)  # mean = 0.01, concentration = 1
+    # # beta new
+    # A_prior = mu_phi_to_alpha_beta(mu=0.01, phi=1)  # mean = 0.01, concentration = 1
+    # q_prior = mu_phi_to_alpha_beta(mu=0.2, phi=5)  # mean = 0.2, concentration = 5
+    # c_prior = mu_phi_to_alpha_beta(mu=0.1, phi=10)  # mean = 0.01, concentration = 1
 
-    # # beta old
+    # beta old
     # A_prior = mu_phi_to_alpha_beta(mu=0.2, phi=5)  # mean = 0.2, concentration = 5
     # q_prior = mu_phi_to_alpha_beta(mu=0.2, phi=5)  # mean = 0.2, concentration = 5
     # c_prior = mu_phi_to_alpha_beta(mu=0.1, phi=10)  # mean = 0.1, concentration = 10
+
+    A_prior = mu_phi_to_alpha_beta(mu=0.1, phi=10)  # mean = 0.1, concentration = 10
+    q_prior = mu_phi_to_alpha_beta(mu=0.2, phi=5)  # mean = 0.2, concentration = 5
+    c_prior = mu_phi_to_alpha_beta(mu=0.1, phi=10)  # mean = 0.1, concentration = 10
 
     # exponential (min, scale)
     phi_prior = (2, 1000)
