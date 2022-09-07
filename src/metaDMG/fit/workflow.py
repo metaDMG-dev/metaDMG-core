@@ -29,7 +29,9 @@ def run_workflow(configs: Configs) -> int:
     N_errors = 0
 
     if parallel_samples == 1 or len(configs) == 1:
-        logger.info(f"Running in serial (1 core)")
+        N = configs["cores_per_sample"]
+        s = f"Running the samples in serial (sequentially), each using {N} core(s)."
+        logger.info(s)
         for config in configs:
             N_errors += run_single_config_count_errors(config)
 

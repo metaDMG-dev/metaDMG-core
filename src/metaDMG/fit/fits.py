@@ -2,6 +2,7 @@
 import itertools
 import warnings
 from collections import defaultdict
+from math import ceil
 from multiprocessing import Pool
 
 import joblib
@@ -20,8 +21,7 @@ numpyro.enable_x64()
 
 #%%
 
-timeout_first_fit = 5 * 60  # 5 minutes, very first fit
-timeout_subsequent_fits = 60  # 1 minute
+BAYESIAN_MAXIMUM_SIZE = 100
 
 #%%
 
@@ -237,17 +237,20 @@ def use_progressbar(config, position):
     return False
 
 
-def get_list_of_groups(config, df_mismatches, N_in_each_group=100):
+def get_list_of_groups(
+    config,
+    df_mismatches_unique,
+    N_splits=None,
+    N_maximum_group_size=BAYESIAN_MAXIMUM_SIZE,
+):
 
-    cores_per_sample = config["cores_per_sample"]
+    tax_ids = df_mismatches_unique["tax_id"].unique()
 
-    tax_ids = df_mismatches["tax_id"].unique()
-
-    if not config["bayesian"]:
-        N_splits = cores_per_sample
-    else:
-        # make splits, each with N_in_each_group groups in them
-        N_splits = len(tax_ids) // N_in_each_group + 1
+    if N_splits is None:
+        cores_per_sample = config["cores_per_sample"]
+        N_splits = cores_per_sample * ceil(
+            len(tax_ids) / cores_per_sample / N_maximum_group_size
+        )
 
     tax_id_list = np.array_split(tax_ids, N_splits)
 
@@ -255,7 +258,7 @@ def get_list_of_groups(config, df_mismatches, N_in_each_group=100):
     for position, tax_ids in enumerate(tax_id_list):
         dfs.append(
             (
-                df_mismatches.query(f"tax_id in {list(tax_ids)}"),
+                df_mismatches_unique.query(f"tax_id in {list(tax_ids)}"),
                 config,
                 use_progressbar(config, position),
             )
@@ -263,14 +266,17 @@ def get_list_of_groups(config, df_mismatches, N_in_each_group=100):
     return dfs
 
 
-def compute_fits_parallel(config, df_mismatches, N_in_each_group=100):
+def compute_fits_parallel(
+    config,
+    df_mismatches_unique,
+):
 
     cores_per_sample = config["cores_per_sample"]
 
     dfs = get_list_of_groups(
         config,
-        df_mismatches,
-        N_in_each_group=N_in_each_group,
+        df_mismatches_unique,
+        N_splits=cores_per_sample,
     )
 
     d_fit_results = {}
@@ -284,25 +290,37 @@ def compute_fits_parallel(config, df_mismatches, N_in_each_group=100):
     return d_fit_results
 
 
-def compute_fits_parallel_Bayesian(config, df_mismatches, N_in_each_group=100):
+def compute_fits_parallel_Bayesian(
+    config,
+    df_mismatches_unique,
+    N_maximum_group_size=BAYESIAN_MAXIMUM_SIZE,
+):
 
     cores_per_sample = config["cores_per_sample"]
 
     dfs = get_list_of_groups(
         config=config,
-        df_mismatches=df_mismatches,
-        N_in_each_group=N_in_each_group,
+        df_mismatches_unique=df_mismatches_unique,
+        N_maximum_group_size=N_maximum_group_size,
     )
 
     do_progressbar = config["parallel_samples"] == 1 or len(config["samples"]) == 1
 
+    if len(dfs) == 1:
+        logger.debug(f"Computing Bayesian fits in serial (using 1 core).")
+        d_fit_results = compute_fits_seriel(
+            config,
+            df_mismatches_unique,
+            with_progressbar=do_progressbar,
+        )
+        return d_fit_results
+
+    logger.debug(f"Computing Bayesian fits")
+
     it = grouper(dfs, cores_per_sample)
     if do_progressbar:
-        it = tqdm(
-            grouper(dfs, cores_per_sample),
-            total=len(dfs) // cores_per_sample,
-            unit="chunks",
-        )
+        N_chunks = int(np.ceil(len(dfs) / cores_per_sample))
+        it = tqdm(it, total=N_chunks, unit="chunks")
 
     d_fit_results = {}
     for dfs_ in it:
@@ -310,7 +328,8 @@ def compute_fits_parallel_Bayesian(config, df_mismatches, N_in_each_group=100):
 
         if do_progressbar:
             size = dfs_[0][0]["tax_id"].nunique()
-            it.set_description(f"Fitting in chunks of size {size}")
+            s = f"Fitting in {N_chunks} chunk(s), each of size {size}, using {cores_per_sample} core(s)"
+            it.set_description(s)
 
         with Pool(processes=cores_per_sample) as pool:
             for d_fit_results_ in pool.imap_unordered(
@@ -530,7 +549,7 @@ def compute(config, df_mismatches):
     df_mismatches_unique = df_mismatches.query(f"tax_id in {unique}")
 
     if config["bayesian"]:
-        logger.debug(f"compute_fits_parallel_Bayesian")
+        # logger.debug(f"Computing Bayesian fits")
         d_fit_results = compute_fits_parallel_Bayesian(config, df_mismatches_unique)
 
     else:
@@ -549,9 +568,8 @@ def compute(config, df_mismatches):
             )
 
         else:
-            logger.debug(
-                f"Fitting in parallel with {config['cores_per_sample']} cores."
-            )
+            s = f"Fitting in parallel with {config['cores_per_sample']} cores."
+            logger.debug(s)
             d_fit_results = compute_fits_parallel(
                 config,
                 df_mismatches_unique,
