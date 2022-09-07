@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v0.31.0 (2022-09-07)
+### Feature
+* Improve Bayesian priors ([`1ad7c82`](https://github.com/metaDMG-dev/metaDMG-core/commit/1ad7c8298e4b5c2d0ed9d0cb2369dbf24b449698))
+
+### Fix
+* Improve progress bar for Bayesian runs ([`5ee0aa5`](https://github.com/metaDMG-dev/metaDMG-core/commit/5ee0aa55d95fd088c5bb06fe28ae121ce461f907))
+* Improve speed of Bayesian confidence interval ([`c4585f7`](https://github.com/metaDMG-dev/metaDMG-core/commit/c4585f78438cbb8935b53c500a66169ef1cf436f))
+
 ## v0.30.1 (2022-09-07)
 ### Fix
 * Improve multiprocessing api ([`e196a53`](https://github.com/metaDMG-dev/metaDMG-core/commit/e196a5374809ebd5e7a1d77df13374b69f9c73c9))
