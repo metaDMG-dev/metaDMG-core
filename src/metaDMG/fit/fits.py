@@ -317,18 +317,33 @@ def compute_fits_parallel_Bayesian(
 
     logger.debug(f"Computing Bayesian fits")
 
+    d_fit_results = {}
+
+    N_chunks = int(np.ceil(len(dfs) / cores_per_sample))
+
+    if N_chunks == 1:
+
+        if do_progressbar:
+            dfs[0] = (dfs[0][0], dfs[0][1], True)
+
+        with Pool(processes=cores_per_sample) as pool:
+            for d_fit_results_ in pool.imap_unordered(
+                compute_fits_parallel_worker,
+                dfs,
+            ):
+                d_fit_results.update(d_fit_results_)
+        return d_fit_results
+
     it = grouper(dfs, cores_per_sample)
     if do_progressbar:
-        N_chunks = int(np.ceil(len(dfs) / cores_per_sample))
         it = tqdm(it, total=N_chunks, unit="chunks")
 
-    d_fit_results = {}
     for dfs_ in it:
         # break
 
         if do_progressbar:
             size = dfs_[0][0]["tax_id"].nunique()
-            s = f"Fitting in {N_chunks} chunk(s), each of size {size}, using {cores_per_sample} core(s)"
+            s = f"Fitting in {N_chunks} chunks, each of size {size}, using {cores_per_sample} core(s)"
             it.set_description(s)
 
         with Pool(processes=cores_per_sample) as pool:
