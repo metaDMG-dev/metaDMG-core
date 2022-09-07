@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.30.1 (2022-09-07)
+### Fix
+* Improve multiprocessing api ([`e196a53`](https://github.com/metaDMG-dev/metaDMG-core/commit/e196a5374809ebd5e7a1d77df13374b69f9c73c9))
+
 ## v0.30.0 (2022-09-06)
 ### Feature
 * Update priors to be more conservative ([`cb98015`](https://github.com/metaDMG-dev/metaDMG-core/commit/cb980159820ff8f0f4e09e3e2677c97ca7683955))
