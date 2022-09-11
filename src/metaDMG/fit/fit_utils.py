@@ -81,8 +81,10 @@ def downcast_dataframe(df, categories=None, fully_automatic=False):
 
     int_cols = df2.select_dtypes(include=["integer"]).columns
 
+    int_type = "uint32"
     if df2[int_cols].max().max() > np.iinfo("uint32").max:
-        raise AssertionError("Dataframe contains too large values.")
+        int_type = "uint64"
+        # raise AssertionError("Dataframe contains too large values.")
 
     for col in int_cols:
         if fully_automatic:
@@ -91,7 +93,7 @@ def downcast_dataframe(df, categories=None, fully_automatic=False):
             if col == "position":
                 df2.loc[:, col] = df2[col].astype("int8")
             else:
-                df2.loc[:, col] = df2[col].astype("uint32")
+                df2.loc[:, col] = df2[col].astype(int_type)
 
     for col in df2.select_dtypes(include=["float"]).columns:
         if fully_automatic:
