@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.31.1 (2022-09-11)
+### Fix
+* Allow for larger values in dataframe counts ([`1fc9db1`](https://github.com/metaDMG-dev/metaDMG-core/commit/1fc9db10377a1cbac50419e543b2f98a595c3f5f))
+
 ## v0.31.0 (2022-09-07)
 ### Feature
 * Improve Bayesian priors ([`1ad7c82`](https://github.com/metaDMG-dev/metaDMG-core/commit/1ad7c8298e4b5c2d0ed9d0cb2369dbf24b449698))
