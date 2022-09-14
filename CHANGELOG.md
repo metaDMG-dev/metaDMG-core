@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.32.0 (2022-09-14)
+### Feature
+* Add CI interval to dashboard ([`7e1653f`](https://github.com/metaDMG-dev/metaDMG-core/commit/7e1653fd2c5e1c84c234ebe0fe32c840c9324de2))
+
+### Fix
+* Add D-max to dashboard ([`dcfe019`](https://github.com/metaDMG-dev/metaDMG-core/commit/dcfe019bc37f53e056740f854d9f8567d35c0a79))
+
 ## v0.31.1 (2022-09-11)
 ### Fix
 * Allow for larger values in dataframe counts ([`1fc9db1`](https://github.com/metaDMG-dev/metaDMG-core/commit/1fc9db10377a1cbac50419e543b2f98a595c3f5f))
