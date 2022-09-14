@@ -485,6 +485,36 @@ class VizResults:
 
         return d_out
 
+    def get_D_max(self, sample, tax_id):
+        query = f"sample == '{sample}' & tax_id == '{tax_id}'"
+        ds = self.df.query(query)
+
+        if len(ds) != 1:
+            s = (
+                f"Something wrong here, ds should be of length 1, got {len(ds)}"
+                + f"{ds}"
+            )
+            raise AssertionError(s)
+
+        if self.Bayesian:
+            prefix = "Bayesian_"
+        else:
+            prefix = ""
+
+        D_max = ds[f"{prefix}D_max"].iloc[0]
+
+        s1 = "Bayesian_D_max_confidence_interval_1_sigma_low"
+        s2 = "Bayesian_D_max_confidence_interval_1_sigma_high"
+        if s1 in ds and s2 in ds:
+            D_max_low = ds[s1].iloc[0]
+            D_max_high = ds[s2].iloc[0]
+        else:
+            std = ds[f"{prefix}D_max_std"].iloc[0]
+            D_max_low = D_max - std
+            D_max_high = D_max + std
+
+        return D_max, D_max_low, D_max_high
+
     def _ds_to_fit_text(self, ds):
 
         d_columns_latex = viz_utils.get_d_columns_latex(self)[0]

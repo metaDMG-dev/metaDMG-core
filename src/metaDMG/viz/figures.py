@@ -1,6 +1,8 @@
 # import matplotlib
 # matplotlib.use("Agg")
 
+#%%
+
 import matplotlib.pyplot as plt
 import numpy as np
 import plotly.express as px
@@ -11,7 +13,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib.ticker import EngFormatter
 from tqdm import tqdm
 
-from metaDMG.viz import figures, viz_utils
+from metaDMG.viz import viz_utils
 
 
 #%%
@@ -115,7 +117,7 @@ def make_figure(
         hovertemplate=viz_results.hovertemplate,
         marker_line_width=0,
         marker_sizemode="area",
-        marker_sizeref=2.0 * viz_results.max_of_size / (viz_results.marker_size ** 2),
+        marker_sizeref=2.0 * viz_results.max_of_size / (viz_results.marker_size**2),
     )
 
     fig.update_layout(
@@ -159,7 +161,7 @@ def make_figure(
 #%%
 
 
-def plot_group(viz_results, group, fit=None, forward_reverse=""):
+def plot_group(viz_results, group, D_max_info=None, fit=None, forward_reverse=""):
 
     custom_data_columns = [
         "direction",
@@ -191,7 +193,7 @@ def plot_group(viz_results, group, fit=None, forward_reverse=""):
     fig.update_xaxes(
         title_text=r"$|x|$",
         title_standoff=0,
-        range=[0.5, max_position + 0.5],
+        range=[0.3, max_position + 0.5],
     )
     fig.update_yaxes(
         title=r"",
@@ -242,6 +244,32 @@ def plot_group(viz_results, group, fit=None, forward_reverse=""):
     else:
 
         fig.update_layout(**layout, showlegend=False)
+
+    # add D-max as single errorbar
+    if D_max_info is not None:
+
+        D_max, D_max_low, D_max_high = D_max_info
+
+        # fit with errorbars
+        fig.add_trace(
+            go.Scatter(
+                x=[0.5],
+                y=[D_max],
+                error_y=dict(
+                    type="data",
+                    symmetric=False,
+                    array=[D_max_high - D_max],
+                    arrayminus=[D_max - D_max_low],
+                    visible=True,
+                    color="black",
+                ),
+                mode="markers",
+                name="D-max",
+                marker_color="black",
+                # hovertemplate=viz_results.hovertemplate_D_max,
+                hoverinfo="skip",
+            )
+        )
 
     if fit is None:
         return fig
@@ -331,7 +359,16 @@ def update_raw_count_plots(viz_results, click_data, forward_reverse):
             tax_id,
             forward_reverse,
         )
-        fig = figures.plot_group(viz_results, group, fit, forward_reverse)
+
+        D_max_info = viz_results.get_D_max(sample, tax_id)
+
+        fig = plot_group(
+            viz_results,
+            group,
+            D_max_info,
+            fit,
+            forward_reverse,
+        )
         return fig
     else:
         raise PreventUpdate
@@ -677,3 +714,6 @@ def save_pdf_plots(
         d = pdf.infodict()
         d["Title"] = "metaDMG plots"
         d["Author"] = "Christian Michelsen"
+
+
+# %%
