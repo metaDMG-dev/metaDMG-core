@@ -241,35 +241,35 @@ def plot_group(viz_results, group, D_max_info=None, fit=None, forward_reverse=""
             font_size=30,
         )
 
+        # add D-max as single errorbar
+        if D_max_info is not None:
+
+            D_max, D_max_low, D_max_high = D_max_info
+
+            # fit with errorbars
+            fig.add_trace(
+                go.Scatter(
+                    x=[0.5],
+                    y=[D_max],
+                    error_y=dict(
+                        type="data",
+                        symmetric=False,
+                        array=[D_max_high - D_max],
+                        arrayminus=[D_max - D_max_low],
+                        visible=True,
+                        color="black",
+                    ),
+                    mode="markers",
+                    name="D-max",
+                    marker_color="black",
+                    # hovertemplate=viz_results.hovertemplate_D_max,
+                    hoverinfo="skip",
+                )
+            )
+
     else:
 
         fig.update_layout(**layout, showlegend=False)
-
-    # add D-max as single errorbar
-    if D_max_info is not None:
-
-        D_max, D_max_low, D_max_high = D_max_info
-
-        # fit with errorbars
-        fig.add_trace(
-            go.Scatter(
-                x=[0.5],
-                y=[D_max],
-                error_y=dict(
-                    type="data",
-                    symmetric=False,
-                    array=[D_max_high - D_max],
-                    arrayminus=[D_max - D_max_low],
-                    visible=True,
-                    color="black",
-                ),
-                mode="markers",
-                name="D-max",
-                marker_color="black",
-                # hovertemplate=viz_results.hovertemplate_D_max,
-                hoverinfo="skip",
-            )
-        )
 
     if fit is None:
         return fig

@@ -164,6 +164,15 @@ class VizResults:
                 df, phi_string="Bayesian_phi"
             )
 
+            s1 = "Bayesian_D_max_confidence_interval_1_sigma_low"
+            s2 = "Bayesian_D_max_confidence_interval_1_sigma_high"
+            if s1 in df.columns and s2 in df.columns:
+                df["Bayesian_D_max_CI_low"] = df[s1]
+                df["Bayesian_D_max_CI_high"] = df[s2]
+
+        df["D_max_CI_low"] = df["D_max"] - df["D_max_std"]
+        df["D_max_CI_high"] = df["D_max"] + df["D_max_std"]
+
         log_columns = [
             "N_reads",
             "N_alignments",
