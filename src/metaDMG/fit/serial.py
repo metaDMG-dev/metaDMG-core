@@ -256,7 +256,11 @@ def run_command_helper(config: Config, command: str):
 
         if "ERROR: We require files to be sorted by readname, will exit" in line:
             logger.debug(line)
-            s = f"The alignment file ({config['bam']}) has to be sorted by filename. "
+            s = (
+                f"\n\nThe alignment file has to be sorted by filename. "
+                + f"\nUse samtools sort -n to sort the file: "
+                + f"'samtools sort -n {config['bam']}' \n"
+            )
             raise metadamageError(s)
 
         # continue running and logging
