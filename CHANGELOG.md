@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.32.1 (2022-09-21)
+### Fix
+* Fix issue when metaDMG binary does not exist ([`3c949be`](https://github.com/metaDMG-dev/metaDMG-core/commit/3c949be656d87b249d7f4da0b80be211d51157d5))
+
 ## v0.32.0 (2022-09-14)
 ### Feature
 * Add CI interval to dashboard ([`7e1653f`](https://github.com/metaDMG-dev/metaDMG-core/commit/7e1653fd2c5e1c84c234ebe0fe32c840c9324de2))
