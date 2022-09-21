@@ -1,7 +1,7 @@
 from enum import Enum
 from functools import partial
 from pathlib import Path
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Union
 
 import click
 import typer
@@ -64,7 +64,7 @@ def is_in_range_or_None(
     """
 
     if x is None:
-        return x
+        return None
 
     if x < val_min or val_max < x:
         raise typer.BadParameter(
@@ -92,10 +92,42 @@ def is_positive_int_or_None(x: Optional[int]) -> Optional[int]:
     """
 
     if x is None:
-        return x
+        return None
 
     if x < 0:
         raise typer.BadParameter(f"x has to be positive. Got: {x}")
+
+    return x
+
+
+def path_exists_or_None(x: Union[str, Path, None]) -> Union[str, Path, None]:
+    """Confirms that x exists or is None
+
+    Parameters
+    ----------
+    x
+        Value to check
+
+    Returns
+    -------
+        Confirmed value
+
+    Raises
+    ------
+    typer.BadParameter
+        If x is outside bounds
+    """
+
+    if x is None:
+        return None
+
+    if isinstance(x, str):
+        path = Path(x)
+    else:
+        path = x
+
+    if not path.is_file():
+        raise typer.BadParameter(f"The file {path} does not exists.")
 
     return x
 

@@ -293,6 +293,11 @@ def run_LCA(config: Config, force: bool = False) -> None:
                 f"{config['sample']}: The alignment file is invalid."
             )
 
+        if not metaDMG_cpp_is_valid(config):
+            raise metadamageError()
+
+        config["metaDMG_cpp"]
+
         logger.info(f"LCA has to be computed. This can take a while, please wait.")
 
         command_LCA = get_LCA_command(config)
@@ -331,6 +336,9 @@ def run_damage_no_lca(config: Config, force: bool = False) -> None:
             raise AlignmentFileError(
                 f"{config['sample']}: The alignment file is invalid."
             )
+
+        if not metaDMG_cpp_is_valid(config):
+            raise metadamageError()
 
         logger.info(f"Computing damage. NOTE: NO LCA.")
 
@@ -486,6 +494,19 @@ def BAM_file_is_valid(config: Config) -> bool:
 
     if config["bam"].stat().st_size == 0:
         logger.error(f"The sample bam file is of size 0: {config['bam']}.")
+        return False
+
+    return True
+
+
+def metaDMG_cpp_is_valid(config: Config) -> bool:
+
+    if not Path(config["metaDMG_cpp"]).is_file():
+        logger.error(f"The metaDMG-cpp binary does not exist: {config['metaDMG_cpp']}.")
+        return False
+
+    if config["bam"].stat().st_size == 0:
+        logger.error(f"The metaDMG-cpp binary is of size 0: {config['metaDMG_cpp']}.")
         return False
 
     return True

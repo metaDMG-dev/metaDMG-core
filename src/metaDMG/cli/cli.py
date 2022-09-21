@@ -57,6 +57,7 @@ def create_config(
         file_okay=True,
         help="Path to the (NCBI) names-mdmg.dmp.",
         rich_help_panel="LCA parameters",
+        callback=cli_utils.path_exists_or_None,
     ),
     nodes: Optional[Path] = typer.Option(
         None,
@@ -64,6 +65,7 @@ def create_config(
         file_okay=True,
         help="Path to the (NCBI) nodes-mdmg.dmp.",
         rich_help_panel="LCA parameters",
+        callback=cli_utils.path_exists_or_None,
     ),
     acc2tax: Optional[Path] = typer.Option(
         None,
@@ -71,6 +73,7 @@ def create_config(
         file_okay=True,
         help="Path to the (NCBI) acc2tax.gz.",
         rich_help_panel="LCA parameters",
+        callback=cli_utils.path_exists_or_None,
     ),
     min_similarity_score: Optional[float] = typer.Option(
         None,
@@ -135,6 +138,7 @@ def create_config(
         "-m",
         help="The command needed to run the metaDMG-cpp program.",
         rich_help_panel="General parameters",
+        callback=cli_utils.path_exists_or_None,
     ),
     max_position: int = typer.Option(
         15,
