@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.32.2 (2022-09-21)
+### Fix
+* Improve error message when unsorted bam file ([`1d53682`](https://github.com/metaDMG-dev/metaDMG-core/commit/1d53682c46cb8d4fadc21501b6f7ba78f79acdf8))
+
 ## v0.32.1 (2022-09-21)
 ### Fix
 * Fix issue when metaDMG binary does not exist ([`3c949be`](https://github.com/metaDMG-dev/metaDMG-core/commit/3c949be656d87b249d7f4da0b80be211d51157d5))
