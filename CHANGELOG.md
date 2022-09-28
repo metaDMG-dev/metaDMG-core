@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.32.3 (2022-09-28)
+### Fix
+* Fix Futurewarning in new Pandas version ([`c918ca5`](https://github.com/metaDMG-dev/metaDMG-core/commit/c918ca5769e6ade251c285d340fd0f1428511d6c))
+
 ## v0.32.2 (2022-09-21)
 ### Fix
 * Improve error message when unsorted bam file ([`1d53682`](https://github.com/metaDMG-dev/metaDMG-core/commit/1d53682c46cb8d4fadc21501b6f7ba78f79acdf8))
