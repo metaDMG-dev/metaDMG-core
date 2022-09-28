@@ -172,7 +172,7 @@ def get_dropdown_file_selection(viz_results, id, samples_to_show="all"):
 
     special_samples = ["Select all", "Default selection"]
     N_special_samples = len(special_samples)
-    all_samples = special_samples + viz_results.samples
+    all_samples = special_samples + sorted(viz_results.samples)
 
     if samples_to_show is None:
         values = all_samples
