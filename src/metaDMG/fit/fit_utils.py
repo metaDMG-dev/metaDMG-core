@@ -1,3 +1,4 @@
+#%%
 import math
 from itertools import islice
 from pathlib import Path
@@ -91,15 +92,15 @@ def downcast_dataframe(df, categories=None, fully_automatic=False):
             df2.loc[:, col] = pd.to_numeric(df2[col], downcast="integer")
         else:
             if col == "position":
-                df2.loc[:, col] = df2[col].astype("int8")
+                df2[col] = df2[col].astype("int8")
             else:
-                df2.loc[:, col] = df2[col].astype(int_type)
+                df2[col] = df2[col].astype(int_type)
 
     for col in df2.select_dtypes(include=["float"]).columns:
         if fully_automatic:
-            df2.loc[:, col] = pd.to_numeric(df2[col], downcast="float")
+            df2[col] = pd.to_numeric(df2[col], downcast="float")
         else:
-            df2.loc[:, col] = df2[col].astype("float32")
+            df2[col] = df2[col].astype("float32")
 
     return df2
 

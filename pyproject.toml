@@ -19,7 +19,7 @@ packages = [{ include = "metaDMG", from = "src" }]
 python = ">=3.9,<3.11" # 3.11 due to numba
 typer = {version = "^0.6.1", extras = ["all"]}
 PyYAML = "^6.0"
-pandas = "^1.4.3"
+pandas = "^1.5.0"
 scipy = "^1.9.0"
 pyarrow = "^9.0.0"
 logger-tt = "^1.7.0"

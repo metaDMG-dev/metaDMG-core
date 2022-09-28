@@ -86,24 +86,24 @@ def wide_to_long_df(group_wide):
 
 def correct_for_non_LCA(df):
     if "N_alignments" in df.columns:
-        df.loc[:, "N_alignments"] = df["N_alignments"].fillna(np.nan)
+        df["N_alignments"] = df["N_alignments"].fillna(np.nan)
     else:
-        df.loc[:, "N_alignments"] = np.nan
+        df["N_alignments"] = np.nan
 
     if "tax_name" in df.columns:
-        df.loc[:, "tax_name"] = df["tax_name"].fillna("NO TAX NAME")
+        df["tax_name"] = df["tax_name"].fillna("NO TAX NAME")
     else:
-        df.loc[:, "tax_name"] = "NO TAX NAME"
+        df["tax_name"] = "NO TAX NAME"
 
     if "tax_rank" in df.columns:
-        df.loc[:, "tax_rank"] = df["tax_rank"].fillna("NO TAX RANK")
+        df["tax_rank"] = df["tax_rank"].fillna("NO TAX RANK")
     else:
-        df.loc[:, "tax_rank"] = "NO TAX RANK"
+        df["tax_rank"] = "NO TAX RANK"
 
     if "tax_path" in df.columns:
-        df.loc[:, "tax_path"] = df["tax_path"].fillna("NO TAX PATH")
+        df["tax_path"] = df["tax_path"].fillna("NO TAX PATH")
     else:
-        df.loc[:, "tax_path"] = "NO TAX PATH"
+        df["tax_path"] = "NO TAX PATH"
 
     return df
 
@@ -141,7 +141,7 @@ class VizResults:
 
         # force tax_id to be categorical strings.
         # XXX remove in final version
-        df.loc[:, "tax_id"] = df["tax_id"].astype("str").astype("category")
+        df["tax_id"] = df["tax_id"].astype("str").astype("category")
 
         for column in ["lambda_LR", "forward_lambda_LR", "reverse_lambda_LR"]:
             clip_df(df, column)
