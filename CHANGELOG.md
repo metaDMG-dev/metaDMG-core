@@ -2,128 +2,88 @@
 
 <!--next-version-placeholder-->
 
-## v0.32.4 (2022-09-28)
-### Fix
-* Sort samples in dashboard automatically ([`2bb0bd0`](https://github.com/metaDMG-dev/metaDMG-core/commit/2bb0bd097192a84e31d148f814d19054229807d9))
-
-## v0.32.3 (2022-09-28)
-### Fix
-* Fix Futurewarning in new Pandas version ([`c918ca5`](https://github.com/metaDMG-dev/metaDMG-core/commit/c918ca5769e6ade251c285d340fd0f1428511d6c))
-
-## v0.32.2 (2022-09-21)
-### Fix
-* Improve error message when unsorted bam file ([`1d53682`](https://github.com/metaDMG-dev/metaDMG-core/commit/1d53682c46cb8d4fadc21501b6f7ba78f79acdf8))
-
-## v0.32.1 (2022-09-21)
-### Fix
-* Fix issue when metaDMG binary does not exist ([`3c949be`](https://github.com/metaDMG-dev/metaDMG-core/commit/3c949be656d87b249d7f4da0b80be211d51157d5))
-
-## v0.32.0 (2022-09-14)
+## v0.32 (2022-09-14)
 ### Feature
 * Add CI interval to dashboard ([`7e1653f`](https://github.com/metaDMG-dev/metaDMG-core/commit/7e1653fd2c5e1c84c234ebe0fe32c840c9324de2))
 
 ### Fix
+* Sort samples in dashboard automatically ([`2bb0bd0`](https://github.com/metaDMG-dev/metaDMG-core/commit/2bb0bd097192a84e31d148f814d19054229807d9))
+* Fix Futurewarning in new Pandas version ([`c918ca5`](https://github.com/metaDMG-dev/metaDMG-core/commit/c918ca5769e6ade251c285d340fd0f1428511d6c))
+* Improve error message when unsorted bam file ([`1d53682`](https://github.com/metaDMG-dev/metaDMG-core/commit/1d53682c46cb8d4fadc21501b6f7ba78f79acdf8))
+* Fix issue when metaDMG binary does not exist ([`3c949be`](https://github.com/metaDMG-dev/metaDMG-core/commit/3c949be656d87b249d7f4da0b80be211d51157d5))
 * Add D-max to dashboard ([`dcfe019`](https://github.com/metaDMG-dev/metaDMG-core/commit/dcfe019bc37f53e056740f854d9f8567d35c0a79))
 
-## v0.31.1 (2022-09-11)
-### Fix
-* Allow for larger values in dataframe counts ([`1fc9db1`](https://github.com/metaDMG-dev/metaDMG-core/commit/1fc9db10377a1cbac50419e543b2f98a595c3f5f))
-
-## v0.31.0 (2022-09-07)
+## v0.31 (2022-09-07)
 ### Feature
 * Improve Bayesian priors ([`1ad7c82`](https://github.com/metaDMG-dev/metaDMG-core/commit/1ad7c8298e4b5c2d0ed9d0cb2369dbf24b449698))
 
 ### Fix
+* Allow for larger values in dataframe counts ([`1fc9db1`](https://github.com/metaDMG-dev/metaDMG-core/commit/1fc9db10377a1cbac50419e543b2f98a595c3f5f))
 * Improve progress bar for Bayesian runs ([`5ee0aa5`](https://github.com/metaDMG-dev/metaDMG-core/commit/5ee0aa55d95fd088c5bb06fe28ae121ce461f907))
 * Improve speed of Bayesian confidence interval ([`c4585f7`](https://github.com/metaDMG-dev/metaDMG-core/commit/c4585f78438cbb8935b53c500a66169ef1cf436f))
 
-## v0.30.1 (2022-09-07)
-### Fix
-* Improve multiprocessing api ([`e196a53`](https://github.com/metaDMG-dev/metaDMG-core/commit/e196a5374809ebd5e7a1d77df13374b69f9c73c9))
 
-## v0.30.0 (2022-09-06)
+
+## v0.30 (2022-09-06)
 ### Feature
 * Update priors to be more conservative ([`cb98015`](https://github.com/metaDMG-dev/metaDMG-core/commit/cb980159820ff8f0f4e09e3e2677c97ca7683955))
 
-## v0.29.1 (2022-09-06)
+### Fix
+* Improve multiprocessing api ([`e196a53`](https://github.com/metaDMG-dev/metaDMG-core/commit/e196a5374809ebd5e7a1d77df13374b69f9c73c9))
+
+
+## v0.29 (2022-09-04)
+### Feature
+* Add confidence intervals to Bayesian model ([`38c95d5`](https://github.com/metaDMG-dev/metaDMG-core/commit/38c95d5ea48ce59354eaa050e67f0a41166aad21))
 ### Fix
 * Use approximate conf. intervals for bayesian ([`e92f298`](https://github.com/metaDMG-dev/metaDMG-core/commit/e92f298fc6833076673244465ebb7b7a05ca4ce8))
 
-## v0.29.0 (2022-09-04)
-### Feature
-* Add confidence intervals to Bayesian model ([`38c95d5`](https://github.com/metaDMG-dev/metaDMG-core/commit/38c95d5ea48ce59354eaa050e67f0a41166aad21))
-
-## v0.28.6 (2022-08-18)
-### Fix
-* Fix issue with logging in parallel ([`9e065aa`](https://github.com/metaDMG-dev/metaDMG-core/commit/9e065aa5cf3af81ec670bcd039e964ca848574eb))
-
-### Documentation
-* Add docstring to workflow function ([`2ee4c6b`](https://github.com/metaDMG-dev/metaDMG-core/commit/2ee4c6b4b96bc3e269dd5a83fe716b3b2b389812))
-
-## v0.28.5 (2022-08-18)
-### Fix
-* Improve logging messages ([`7a35b3a`](https://github.com/metaDMG-dev/metaDMG-core/commit/7a35b3a8899ab879df822444506521ebd52d6410))
-
-## v0.28.4 (2022-08-17)
-### Fix
-* Handle empty data and better error handling ([`f2d27ff`](https://github.com/metaDMG-dev/metaDMG-core/commit/f2d27ff6b1c16a18736e9d2ac3078504e046abd6))
-
-## v0.28.3 (2022-08-17)
-### Fix
-* Catch metaDMG-cpp error with unsorted files ([`7c42082`](https://github.com/metaDMG-dev/metaDMG-core/commit/7c42082b8ab3b531dce21613bcf5cc275d8d2ef0))
-
-## v0.28.2 (2022-08-15)
-### Fix
-* Improve Bayesian D_max when few reads ([`35d7247`](https://github.com/metaDMG-dev/metaDMG-core/commit/35d7247d1822e8d82db4a4f43cc56c6019bf85ae))
-
-## v0.28.1 (2022-08-12)
-### Fix
-* Improve low-damage fits ([`838143b`](https://github.com/metaDMG-dev/metaDMG-core/commit/838143b0eef0e469797d1049d6c32b12b0371bd5))
-
-### Documentation
-* Update the docstring for the PMD command ([`102f7aa`](https://github.com/metaDMG-dev/metaDMG-core/commit/102f7aa28957afa259e4bfd00734c13dea10deb2))
-
-## v0.28.0 (2022-08-12)
+## v0.28 (2022-08-12)
 ### Feature
 * Better fits for low-damage groups ([`793ffff`](https://github.com/metaDMG-dev/metaDMG-core/commit/793ffffab0fce83a61b14a0712ad98ad4cc8d2b8))
 
-## v0.27.2 (2022-08-11)
 ### Fix
-* Update dependencies ([`299a6c4`](https://github.com/metaDMG-dev/metaDMG-core/commit/299a6c4cd389b8673815df73a4e24915a1693805))
+* Fix issue with logging in parallel ([`9e065aa`](https://github.com/metaDMG-dev/metaDMG-core/commit/9e065aa5cf3af81ec670bcd039e964ca848574eb))
+* Improve logging messages ([`7a35b3a`](https://github.com/metaDMG-dev/metaDMG-core/commit/7a35b3a8899ab879df822444506521ebd52d6410))
+* Handle empty data and better error handling ([`f2d27ff`](https://github.com/metaDMG-dev/metaDMG-core/commit/f2d27ff6b1c16a18736e9d2ac3078504e046abd6))
+* Catch metaDMG-cpp error with unsorted files ([`7c42082`](https://github.com/metaDMG-dev/metaDMG-core/commit/7c42082b8ab3b531dce21613bcf5cc275d8d2ef0))
+* Improve Bayesian D_max when few reads ([`35d7247`](https://github.com/metaDMG-dev/metaDMG-core/commit/35d7247d1822e8d82db4a4f43cc56c6019bf85ae))
+* Improve low-damage fits ([`838143b`](https://github.com/metaDMG-dev/metaDMG-core/commit/838143b0eef0e469797d1049d6c32b12b0371bd5))
 
 ### Documentation
-* Update PMD command ([`9bb6382`](https://github.com/metaDMG-dev/metaDMG-core/commit/9bb638248bedbb98351782afa4df378b7a625353))
+* Add docstring to workflow function ([`2ee4c6b`](https://github.com/metaDMG-dev/metaDMG-core/commit/2ee4c6b4b96bc3e269dd5a83fe716b3b2b389812))
+* Update the docstring for the PMD command ([`102f7aa`](https://github.com/metaDMG-dev/metaDMG-core/commit/102f7aa28957afa259e4bfd00734c13dea10deb2))
 
-## v0.27.1 (2022-08-10)
-### Fix
-* Fix PMD command handle errors and output csv ([`84c002f`](https://github.com/metaDMG-dev/metaDMG-core/commit/84c002f95e6c442157400307c501e437c039dc80))
 
-### Documentation
-* Update config-gui image in docs ([`9700d88`](https://github.com/metaDMG-dev/metaDMG-core/commit/9700d8822bd514a2678ab525ea4e3959acf181a4))
-* Add config-gui image to docs ([`e62e603`](https://github.com/metaDMG-dev/metaDMG-core/commit/e62e603e2d968c0b0b3a5c4ecc0dee045a8d041c))
 
-## v0.27.0 (2022-07-15)
+## v0.27 (2022-07-15)
 ### Feature
 * Add config-gui to CLI ([`672fea7`](https://github.com/metaDMG-dev/metaDMG-core/commit/672fea743f64a4aa54ee3a90679afb72ab2bca1f))
 * Use Rich with Typer for pretty CLI ([`3a960a5`](https://github.com/metaDMG-dev/metaDMG-core/commit/3a960a5bd584e16ab08e34ddea146d882ef2d0c5))
 
 ### Fix
+* Fix PMD command handle errors and output csv ([`84c002f`](https://github.com/metaDMG-dev/metaDMG-core/commit/84c002f95e6c442157400307c501e437c039dc80))
 * Add groups to CLI ([`8762292`](https://github.com/metaDMG-dev/metaDMG-core/commit/876229267d4805bb8a86e622945bf48aacf83098))
 * Update dependencies ([`2f91c56`](https://github.com/metaDMG-dev/metaDMG-core/commit/2f91c567b0e6b1b019e1e9573ef85bf6cd0168f5))
+* Update dependencies ([`299a6c4`](https://github.com/metaDMG-dev/metaDMG-core/commit/299a6c4cd389b8673815df73a4e24915a1693805))
 
 ### Documentation
+* Update PMD command ([`9bb6382`](https://github.com/metaDMG-dev/metaDMG-core/commit/9bb638248bedbb98351782afa4df378b7a625353))
+* Update config-gui image in docs ([`9700d88`](https://github.com/metaDMG-dev/metaDMG-core/commit/9700d8822bd514a2678ab525ea4e3959acf181a4))
+* Add config-gui image to docs ([`e62e603`](https://github.com/metaDMG-dev/metaDMG-core/commit/e62e603e2d968c0b0b3a5c4ecc0dee045a8d041c))
 * Include config-gui in docs ([`480f813`](https://github.com/metaDMG-dev/metaDMG-core/commit/480f813ad2d4bb229b9dda34e0306d4df0dacce2))
 
-## v0.26.1 (2022-07-04)
+
+## v0.26 (2022-07-04)
+### Feature
+* Add minimum reads as an optional threshold ([`23f9c16`](https://github.com/metaDMG-dev/metaDMG-core/commit/23f9c16bd0291e41ff8fb59e22cf004ab8605e13))
+
 ### Fix
 * Change alignment file in test dir ([`2beed66`](https://github.com/metaDMG-dev/metaDMG-core/commit/2beed66e16c6bf15517867d1b968af56bbbf2fcf))
 
 ### Documentation
 * Add min-reads to onoine docs ([`0f74800`](https://github.com/metaDMG-dev/metaDMG-core/commit/0f74800a681a1fbe3dce85c4c02a364fae8802c6))
 
-## v0.26.0 (2022-07-04)
-### Feature
-* Add minimum reads as an optional threshold ([`23f9c16`](https://github.com/metaDMG-dev/metaDMG-core/commit/23f9c16bd0291e41ff8fb59e22cf004ab8605e13))
 
 ## v0.25.0 (2022-07-04)
 ### Feature
