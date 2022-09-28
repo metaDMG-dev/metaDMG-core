@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.32.4 (2022-09-28)
+### Fix
+* Sort samples in dashboard automatically ([`2bb0bd0`](https://github.com/metaDMG-dev/metaDMG-core/commit/2bb0bd097192a84e31d148f814d19054229807d9))
+
 ## v0.32.3 (2022-09-28)
 ### Fix
 * Fix Futurewarning in new Pandas version ([`c918ca5`](https://github.com/metaDMG-dev/metaDMG-core/commit/c918ca5769e6ade251c285d340fd0f1428511d6c))
