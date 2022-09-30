@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.33.0 (2022-09-30)
+### Feature
+* Add non_CT_GA_damage_frequency ([`ea18e7a`](https://github.com/metaDMG-dev/metaDMG-core/commit/ea18e7a0deedd1796003b0071500ea928efae906))
+
 ## v0.32 (2022-09-14)
 ### Feature
 * Add CI interval to dashboard ([`7e1653f`](https://github.com/metaDMG-dev/metaDMG-core/commit/7e1653fd2c5e1c84c234ebe0fe32c840c9324de2))
