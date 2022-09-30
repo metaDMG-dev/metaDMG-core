@@ -14,6 +14,7 @@ from tqdm import tqdm
 
 from metaDMG.errors import BadDataError, FittingError
 from metaDMG.fit import bayesian, fit_utils, frequentist
+from metaDMG.fit.mismatches import add_reference_count
 from metaDMG.utils import Config
 
 
@@ -74,6 +75,24 @@ def group_to_numpyro_data(config, group):
 #%%
 
 
+def add_non_CT_GA_mismatches(fit_result, group_in):
+
+    group = group_in.copy()
+
+    for base in ["A", "C", "G", "T"]:
+        if base not in group.columns:
+            add_reference_count(group, base)
+
+    bases = ["AC", "AG", "AT", "CA", "CG", "GC", "GT", "TA", "TC", "TG"]
+    out = []
+    for base in bases:
+        out.append(group[base].values / group[base[0]].values)
+
+    # out = np.concatenate(out)
+    fit_result["non_CT_GA_damage_frequency_mean"] = np.mean(out, axis=1).mean()
+    fit_result["non_CT_GA_damage_frequency_std"] = np.std(out, axis=1).mean()
+
+
 def add_count_information(fit_result, config, group, data):
 
     if config["forward_only"]:
@@ -104,6 +123,8 @@ def add_count_information(fit_result, config, group, data):
         fit_result["k_sum_total"] = data["k"].sum()
         fit_result["k_sum_forward"] = data["k"][: config["max_position"]].sum()
         fit_result["k_sum_reverse"] = data["k"][config["max_position"] :].sum()
+
+        add_non_CT_GA_mismatches(fit_result, group)
 
 
 #%%
