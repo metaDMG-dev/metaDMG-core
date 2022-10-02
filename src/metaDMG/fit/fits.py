@@ -88,7 +88,9 @@ def add_non_CT_GA_mismatches(fit_result, group_in):
     for base in bases:
         num = group[base].values
         den = group[base[0]].values
-        ratio = np.divide(num, den, out=np.zeros_like(num), where=den != 0)
+        ratio = np.divide(
+            num, den, out=np.zeros(num.shape, dtype=float), where=den != 0
+        )
         out.append(ratio)
 
     # out = np.concatenate(out)
