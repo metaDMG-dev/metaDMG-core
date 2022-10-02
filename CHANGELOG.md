@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.33.1 (2022-10-02)
+### Fix
+* Fix divide by zero error in non CT/GA mismatc ([`3bae3c6`](https://github.com/metaDMG-dev/metaDMG-core/commit/3bae3c6fd810fcf5a0c311f4bb73e7ed6793e010))
+
 ## v0.33.0 (2022-09-30)
 ### Feature
 * Add non_CT_GA_damage_frequency ([`ea18e7a`](https://github.com/metaDMG-dev/metaDMG-core/commit/ea18e7a0deedd1796003b0071500ea928efae906))
