@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.33.2 (2022-10-02)
+### Fix
+* Fix dtype error ([`c623661`](https://github.com/metaDMG-dev/metaDMG-core/commit/c6236612f2b4eb1940f726407030485212f93792))
+
 ## v0.33.1 (2022-10-02)
 ### Fix
 * Fix divide by zero error in non CT/GA mismatc ([`3bae3c6`](https://github.com/metaDMG-dev/metaDMG-core/commit/3bae3c6fd810fcf5a0c311f4bb73e7ed6793e010))
