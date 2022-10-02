@@ -86,7 +86,10 @@ def add_non_CT_GA_mismatches(fit_result, group_in):
     bases = ["AC", "AG", "AT", "CA", "CG", "GC", "GT", "TA", "TC", "TG"]
     out = []
     for base in bases:
-        out.append(group[base].values / group[base[0]].values)
+        num = group[base].values
+        den = group[base[0]].values
+        ratio = np.divide(num, den, out=np.zeros_like(num), where=den != 0)
+        out.append(ratio)
 
     # out = np.concatenate(out)
     fit_result["non_CT_GA_damage_frequency_mean"] = np.mean(out, axis=1).mean()
