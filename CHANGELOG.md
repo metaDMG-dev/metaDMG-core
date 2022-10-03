@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.33.3 (2022-10-03)
+### Fix
+* Fix issue in Dashboard when k_sum is zero ([`2379728`](https://github.com/metaDMG-dev/metaDMG-core/commit/23797287ef462b4c2c510da19554e682e50ba18a))
+
 ## v0.33.2 (2022-10-02)
 ### Fix
 * Fix dtype error ([`c623661`](https://github.com/metaDMG-dev/metaDMG-core/commit/c6236612f2b4eb1940f726407030485212f93792))
