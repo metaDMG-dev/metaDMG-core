@@ -330,7 +330,6 @@ def get_sidebar_left(viz_results, start_configuration):
     #%%
 
     # default sliders (with default values)
-
     slider_N_reads = make_new_slider(
         viz_results,
         column="N_reads",
@@ -662,7 +661,12 @@ def get_slider_name(column, low_high):
 
 
 def make_new_slider(
-    viz_results, column, id_type, N_steps=100, value=None, min_value=None
+    viz_results,
+    column,
+    id_type,
+    N_steps=100,
+    value=None,
+    min_value=None,
 ):
 
     d_range_slider = viz_utils.get_range_slider_keywords(

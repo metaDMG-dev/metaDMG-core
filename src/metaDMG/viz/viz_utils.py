@@ -228,27 +228,39 @@ def get_range_slider_keywords(viz_results, column="N_reads", N_steps=100):
     if is_log_transform_column(column):
 
         x = df[column]
+        x_pos = x[x > 0]
+        if len(x_pos) == 0:
+            range_min = 0.0
+            range_max = 1.0
+            marks = {
+                0: {"label": no_min, "style": {"color": "#a3ada9"}},
+                1: {"label": no_max, "style": {"color": "#a3ada9"}},
+            }
 
-        range_log = np.log10(x[x > 0])
-        range_min = np.floor(range_log.min())
-        range_max = np.ceil(range_log.max())
-        marks_steps = np.arange(range_min, range_max + 1)
+        else:
 
-        # if x contains 0-values
-        if (x <= 0).sum() != 0:
-            range_min = -1
-            marks_steps = np.insert(marks_steps, 0, -1)
+            range_log = np.log10(x[x > 0])
+            range_min = np.floor(range_log.min())
+            range_max = np.ceil(range_log.max())
+            marks_steps = np.arange(range_min, range_max + 1)
 
-        if len(marks_steps) > 6:
-            marks_steps = (
-                [marks_steps[0]] + [x for x in marks_steps[1:-1:2]] + [marks_steps[-1]]
-            )
+            # if x contains 0-values
+            if (x <= 0).sum() != 0:
+                range_min = -1
+                marks_steps = np.insert(marks_steps, 0, -1)
 
-        f = lambda x: human_format(log_transform_slider(x))
-        marks = {int(i): f"{f(i)}" for i in marks_steps}
+            if len(marks_steps) > 6:
+                marks_steps = (
+                    [marks_steps[0]]
+                    + [x for x in marks_steps[1:-1:2]]
+                    + [marks_steps[-1]]
+                )
 
-        marks[marks_steps[0]] = {"label": no_min, "style": {"color": "#a3ada9"}}
-        marks[marks_steps[-1]] = {"label": no_max, "style": {"color": "#a3ada9"}}
+            f = lambda x: human_format(log_transform_slider(x))
+            marks = {int(i): f"{f(i)}" for i in marks_steps}
+
+            marks[marks_steps[0]] = {"label": no_min, "style": {"color": "#a3ada9"}}
+            marks[marks_steps[-1]] = {"label": no_max, "style": {"color": "#a3ada9"}}
 
     elif column in ["D_max", "q", "A", "c"] or column in [
         "Bayesian_D_max",
