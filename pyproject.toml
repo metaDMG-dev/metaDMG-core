@@ -24,6 +24,7 @@ scipy = "^1.9.0"
 pyarrow = "^9.0.0"
 logger-tt = "^1.7.0"
 psutil = "^5.9.1"
+natsort = "^8.2.0"
 
 # scipy = { version = "^1.7.3", python = ">=3.9,<3.11" }
 

@@ -1,3 +1,5 @@
+#%%
+
 from enum import Enum
 from functools import partial
 from pathlib import Path
@@ -284,10 +286,13 @@ def extract_alignment_files(paths: list[Path]) -> list[Path]:
     -------
         Output list of alignment files
     """
+
+    from natsort import os_sorted
+
     alignments = []
     suffixes = (".bam", ".sam", ".sam.gz")
 
-    for path in paths:
+    for path in os_sorted(paths):
         # break
         if path.is_file() and any(path_endswith(path, suffix) for suffix in suffixes):
             alignments.append(path)
@@ -338,6 +343,9 @@ def extract_samples(
         suffix=suffix,
         long_name=long_name,
     )
+
+    if len(alignments) == 0:
+        raise typer.BadParameter("No alignment files found.")
 
     d_alignments = {}
     for sample, path in zip(samples, alignments):
