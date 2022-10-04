@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.33.4 (2022-10-04)
+### Fix
+* Update dependencies ([`e32bad2`](https://github.com/metaDMG-dev/metaDMG-core/commit/e32bad2a9a476bad794decfba4ba88bb93e2377a))
+* Add sorting of input files ([`1f77e1d`](https://github.com/metaDMG-dev/metaDMG-core/commit/1f77e1d3deedc9277680641689582545b5245821))
+
 ## v0.33.3 (2022-10-03)
 ### Fix
 * Fix issue in Dashboard when k_sum is zero ([`2379728`](https://github.com/metaDMG-dev/metaDMG-core/commit/23797287ef462b4c2c510da19554e682e50ba18a))
