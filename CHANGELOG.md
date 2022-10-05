@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.33.5 (2022-10-05)
+### Fix
+* Re-run empty files ([`2da8b51`](https://github.com/metaDMG-dev/metaDMG-core/commit/2da8b5106116432865c946ac24e706a48c2e51ff))
+
 ## v0.33.4 (2022-10-04)
 ### Fix
 * Update dependencies ([`e32bad2`](https://github.com/metaDMG-dev/metaDMG-core/commit/e32bad2a9a476bad794decfba4ba88bb93e2377a))
