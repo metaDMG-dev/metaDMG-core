@@ -7,7 +7,7 @@ import subprocess
 from collections import Counter
 from multiprocessing import current_process
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Union
 
 import pandas as pd
 from logger_tt import logger
@@ -28,6 +28,11 @@ from metaDMG.utils import Config
 #%%
 
 
+def path_exists_and_not_empty(path: Union[Path, str]) -> bool:
+    path = Path(path)
+    return path.exists() and path.stat().st_size > 0
+
+
 def do_run(targets, force=False):
 
     if force:
@@ -39,7 +44,7 @@ def do_run(targets, force=False):
     if not isinstance(targets, list):
         targets = [targets]
 
-    if all(Path(target).exists() for target in targets):
+    if all(path_exists_and_not_empty(target) for target in targets):
         return False
     else:
         return True
