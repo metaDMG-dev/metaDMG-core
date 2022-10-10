@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.34.0 (2022-10-10)
+### Feature
+* Add significance as main fit quality ([`be20230`](https://github.com/metaDMG-dev/metaDMG-core/commit/be20230da84e381cfab0d86537fb493b226d3675))
+
 ## v0.33.5 (2022-10-05)
 ### Fix
 * Re-run empty files ([`2da8b51`](https://github.com/metaDMG-dev/metaDMG-core/commit/2da8b5106116432865c946ac24e706a48c2e51ff))
