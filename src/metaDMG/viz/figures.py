@@ -85,7 +85,7 @@ def set_opacity_for_trace(
 def make_figure(
     viz_results,
     df=None,
-    xaxis_column_name="lambda_LR",
+    xaxis_column_name="significance",
     yaxis_column_name="D_max",
     d_columns_latex=None,
 ):
@@ -391,7 +391,7 @@ def compute_markersize(
 
 def plt_scatterplot(df, viz_results):
 
-    x = "Bayesian_z" if viz_results.Bayesian else "lambda_LR"
+    x = "Bayesian_z" if viz_results.Bayesian else "significance"
     y = "Bayesian_D_max" if viz_results.Bayesian else "D_max"
 
     size_max = df["size"].max()

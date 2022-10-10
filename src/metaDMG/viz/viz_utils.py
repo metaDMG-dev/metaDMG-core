@@ -630,12 +630,11 @@ def get_d_columns_latex(viz_results):
         "Bayesian_z": r"$z$",
         "Bayesian_D_max": r"$D_\text{max}$",
         #
-        "lambda_LR": r"$\lambda_\text{LR} \text{(MAP)}$",
-        "D_max": r"$D_\text{max} \text{(MAP)}$",
+        "D_max": r"$D_\text{max} \,\, \text{(MAP)}$",
+        "significance": r"$\text{significance} \,\, \text{(MAP)}$",
         #
         "asymmetry": r"$\text{asymmetry} \text{(MAP)}$",
         "Bayesian_D_max_significance": r"$D_\text{max} \,\, \text{sig.}$",
-        "D_max_significance": r"$D_\text{max} \,\, \text{sig.} \,\, \text{(MAP)}$",
         "Bayesian_D_max_CI_low": r"$D_\text{max} \,\, \text{CI. low}$",
         "Bayesian_D_max_CI_high": r"$D_\text{max} \,\, \text{CI. high}$",
         "D_max_CI_low": r"$D_\text{max} \,\, \text{CI. low} \,\, \text{(MAP)}$",
@@ -653,6 +652,7 @@ def get_d_columns_latex(viz_results):
         "rho_Ac": r"$\rho_{A, c} \text{(MAP)}$",
         "Bayesian_rho_Ac_abs": r"$|\rho_{A, c}|$",
         "rho_Ac_abs": r"$|\rho_{A, c}| \text{(MAP)}$",
+        "lambda_LR": r"$\lambda_\text{LR} \text{(MAP)}$",
         #
         "N_reads": r"$N_\text{reads}$",
         "N_alignments": r"$N_\text{alignments}$",

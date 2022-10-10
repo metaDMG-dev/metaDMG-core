@@ -143,8 +143,8 @@ class VizResults:
         # XXX remove in final version
         df["tax_id"] = df["tax_id"].astype("str").astype("category")
 
-        for column in ["lambda_LR", "forward_lambda_LR", "reverse_lambda_LR"]:
-            clip_df(df, column)
+        # for column in ["lambda_LR", "forward_lambda_LR", "reverse_lambda_LR"]:
+        #     clip_df(df, column)
 
         Bayesian = any(["Bayesian" in column for column in df.columns]) and (
             not any(df["Bayesian_z"].isna())
@@ -176,7 +176,7 @@ class VizResults:
         log_columns = [
             "N_reads",
             "N_alignments",
-            "lambda_LR",
+            # "lambda_LR",
             "phi",
             "k_sum_total",
             "N_sum_total",
@@ -321,9 +321,9 @@ class VizResults:
             "tax_id",
             # Bayesian Fits
             # Frequentist fits
-            "lambda_LR",
             "D_max",
             "D_max_std",
+            "significance",
             "q",
             "q_std",
             "phi",
@@ -355,8 +355,8 @@ class VizResults:
             "    Rank: %{customdata[_XXX_]} <br>"
             "    ID:   %{customdata[_XXX_]} <br><br>"
             "<b>MAP results</b>: <br>"
-            "    LR:       %{customdata[_XXX_]:9.2f} <br>"
             "    D max:    %{customdata[_XXX_]:9.2f} ± %{customdata[_XXX_]:.2f} <br>"
+            "    significance: %{customdata[_XXX_]:9.2f} <br>"
             "    q:        %{customdata[_XXX_]:9.2f} ± %{customdata[_XXX_]:.2f} <br>"
             "    phi:      %{customdata[_XXX_]:.3s} ± %{customdata[_XXX_]:.3s} <br>"
             "    asymmetry:%{customdata[_XXX_]:9.3f} <br>"
@@ -388,7 +388,7 @@ class VizResults:
 
         # if Bayesian fits, include these results
         if self.Bayesian:
-            index = self.custom_data_columns.index("lambda_LR")
+            index = self.custom_data_columns.index("significance")
             self.custom_data_columns[index:index] = custom_data_columns_Bayesian
 
             index = self.hovertemplate.find("<b>MAP results</b>: <br>")
@@ -547,7 +547,7 @@ class VizResults:
         )
         text += "\n"
 
-        fitqual_col = "Bayesian_z" if self.Bayesian else "lambda_LR"
+        fitqual_col = "Bayesian_z" if self.Bayesian else "significance"
         fitqual_str = sanitize(fitqual_col)
         fitqual = ds[fitqual_col].iloc[0]
         text += "$" + fitqual_str + f" = {fitqual:.2f} " + r"$"
