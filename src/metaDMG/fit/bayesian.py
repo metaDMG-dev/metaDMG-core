@@ -9,6 +9,7 @@ from numba import njit
 from numpyro import distributions as dist
 from numpyro.infer import MCMC, NUTS, Predictive, log_likelihood
 from scipy.special import logsumexp
+from scipy.stats import beta as sp_beta
 from scipy.stats import betabinom as sp_betabinom
 from scipy.stats import norm as sp_norm
 
@@ -110,19 +111,19 @@ def get_n_sigma_probability(n_sigma):
 CONF_1_SIGMA = get_n_sigma_probability(1)
 
 
-def compute_posterior(
-    mcmc, data, func_avg=np.mean, func_dispersion=lambda x: np.std(x, axis=0)
-):
-    """func = central tendency function, e.g. np.mean or np.median"""
-    posterior_predictive = get_posterior_predictive(mcmc, data)
-    predictions_fraction = posterior_predictive["obs"] / data["N"]
-    y_average = func_avg(predictions_fraction, axis=0)
-    # y_dispersion = numpyro.diagnostics.hpdi(predictions_fraction, prob=0.68)
-    y_dispersion = func_dispersion(predictions_fraction)
-    return y_average, y_dispersion
+# def compute_posterior(
+#     mcmc, data, func_avg=np.mean, func_dispersion=lambda x: np.std(x, axis=0)
+# ):
+#     """func = central tendency function, e.g. np.mean or np.median"""
+#     posterior_predictive = get_posterior_predictive(mcmc, data)
+#     predictions_fraction = posterior_predictive["obs"] / data["N"]
+#     y_average = func_avg(predictions_fraction, axis=0)
+#     # y_dispersion = numpyro.diagnostics.hpdi(predictions_fraction, prob=0.68)
+#     y_dispersion = func_dispersion(predictions_fraction)
+#     return y_average, y_dispersion
 
 
-def compute_D_max(mcmc, data):
+def add_D_max_information(fit_result, mcmc, data):
     # posterior = get_posterior_predictive(mcmc, data)
     # c = mcmc.get_samples()["c"]
     # f = posterior["obs"] / data["N"]
@@ -133,7 +134,7 @@ def compute_D_max(mcmc, data):
 
     # New method, more similar to frequentist and better when few reads
     A = mcmc.get_samples()["A"]
-    c = mcmc.get_samples()["c"]
+    # c = mcmc.get_samples()["c"]
     phi = mcmc.get_samples()["phi"]
     N = max(data["N"][0], 1)
     mu = np.mean(A)
@@ -144,18 +145,65 @@ def compute_D_max(mcmc, data):
     alpha = Dx * phi
     beta = (1 - Dx) * phi
 
-    # pdf = sp_betabinom(N, alpha, beta)
-    pdf = sp_betabinom(N, alpha.mean(), beta.mean())  # 1000x faster approximation
-    return {
-        "mu": mu.item(),
-        "std": std.item(),
-        "median": pdf.median().mean() / N,
-        "confidence_interval_1_sigma_low": pdf.ppf((1 - CONF_1_SIGMA) / 2.0).mean() / N,
-        "confidence_interval_1_sigma_high": pdf.ppf((1 + CONF_1_SIGMA) / 2.0).mean()
-        / N,
-        "confidence_interval_95_low": pdf.ppf((1 - 0.95) / 2.0).mean() / N,
-        "confidence_interval_95_high": pdf.ppf((1 + 0.95) / 2.0).mean() / N,
-    }
+    pdf = sp_betabinom(N, alpha, beta)
+    # 1000x faster approximation for ppf
+    pdf_approx = sp_betabinom(N, alpha.mean(), beta.mean())
+
+    pdf_beta = sp_beta(alpha, beta)
+
+    # pdf.pmf(0).mean()
+    # pdf_approx.pmf(0) # 3 times faster for pmf
+
+    prefix = "Bayesian_"
+    fit_result[f"{prefix}D_max"] = mu.item()
+    fit_result[f"{prefix}D_max_std"] = std.item()
+
+    fit_result[f"{prefix}prob_lt_5p_damage"] = pdf_beta.cdf(0.05).mean()
+    # fit_result[f"{prefix}prob_lt_5p_damage_betabinom"] = pdf.cdf(0.05 * N).mean()
+    fit_result[f"{prefix}prob_lt_2p_damage"] = pdf_beta.cdf(0.02).mean()
+    # fit_result[f"{prefix}prob_lt_2p_damage_betabinom"] = pdf.cdf(0.02 * N).mean()
+    fit_result[f"{prefix}prob_lt_1p_damage"] = pdf_beta.cdf(0.01).mean()
+    # fit_result[f"{prefix}prob_lt_1p_damage_betabinom"] = pdf.cdf(0.01 * N).mean()
+    fit_result[f"{prefix}prob_lt_0.1p_damage"] = pdf_beta.cdf(0.001).mean()
+    # fit_result[f"{prefix}prob_lt_0.1p_damage_betabinom"] = pdf.cdf(0.001 * N).mean()
+
+    fit_result[f"{prefix}prob_zero_damage"] = pdf.cdf(0).mean()
+
+    fit_result[f"{prefix}D_max_median"] = pdf.median().mean() / N
+
+    for n_sigma in [1, 2, 3]:
+        conf = get_n_sigma_probability(n_sigma)
+        fit_result[f"{prefix}D_max_confidence_interval_{n_sigma}_sigma_low"] = (
+            pdf_approx.ppf((1 - conf) / 2.0).mean() / N
+        )
+        fit_result[f"{prefix}D_max_confidence_interval_{n_sigma}_sigma_high"] = (
+            pdf_approx.ppf((1 + conf) / 2.0).mean() / N
+        )
+
+    fit_result[f"{prefix}D_max_confidence_interval_95_low"] = (
+        pdf_approx.ppf((1 - 0.95) / 2.0).mean() / N
+    )
+    fit_result[f"{prefix}D_max_confidence_interval_95_high"] = (
+        pdf_approx.ppf((1 + 0.95) / 2.0).mean() / N
+    )
+
+    # fit_result["Bayesian_D_max"] = D_max["mu"]
+    # fit_result["Bayesian_D_max_std"] = D_max["std"]
+    # fit_result["Bayesian_D_max_median"] = D_max["median"]
+    # fit_result["Bayesian_D_max_confidence_interval_1_sigma_low"] = D_max[
+    #     "confidence_interval_1_sigma_low"
+    # ]
+    # fit_result["Bayesian_D_max_confidence_interval_1_sigma_high"] = D_max[
+    #     "confidence_interval_1_sigma_high"
+    # ]
+    # fit_result["Bayesian_D_max_confidence_interval_95_low"] = D_max[
+    #     "confidence_interval_95_low"
+    # ]
+    # fit_result["Bayesian_D_max_confidence_interval_95_high"] = D_max[
+    #     "confidence_interval_95_high"
+    # ]
+
+    return fit_result
 
 
 #%%
@@ -347,25 +395,7 @@ def add_Bayesian_fit_result(
     d_results_PMD = get_lppd_and_waic(mcmc_PMD, data)
     d_results_null = get_lppd_and_waic(mcmc_null, data)
 
-    z = compute_z(d_results_PMD, d_results_null)
-    fit_result["Bayesian_z"] = z
-
-    D_max = compute_D_max(mcmc_PMD, data)
-    fit_result["Bayesian_D_max"] = D_max["mu"]
-    fit_result["Bayesian_D_max_std"] = D_max["std"]
-    fit_result["Bayesian_D_max_median"] = D_max["median"]
-    fit_result["Bayesian_D_max_confidence_interval_1_sigma_low"] = D_max[
-        "confidence_interval_1_sigma_low"
-    ]
-    fit_result["Bayesian_D_max_confidence_interval_1_sigma_high"] = D_max[
-        "confidence_interval_1_sigma_high"
-    ]
-    fit_result["Bayesian_D_max_confidence_interval_95_low"] = D_max[
-        "confidence_interval_95_low"
-    ]
-    fit_result["Bayesian_D_max_confidence_interval_95_high"] = D_max[
-        "confidence_interval_95_high"
-    ]
+    add_D_max_information(fit_result, mcmc_PMD, data)
 
     add_summary_of_variable(fit_result, mcmc_PMD, "A")
     add_summary_of_variable(fit_result, mcmc_PMD, "q")
@@ -374,10 +404,13 @@ def add_Bayesian_fit_result(
 
     fit_result["Bayesian_rho_Ac"] = compute_rho_Ac(mcmc_PMD)
 
+    z = compute_z(d_results_PMD, d_results_null)
+    fit_result["Bayesian_z"] = z
+
 
 def make_fits(fit_result, data, mcmc_PMD, mcmc_null):
     fit_mcmc(mcmc_PMD, data)
-    fit_mcmc(mcmc_null, data)
+    fit_mcmc(mcmc_null, data)  # do not use non-PMD model later on
     add_Bayesian_fit_result(fit_result, data, mcmc_PMD, mcmc_null)
     # mcmc_PMD.print_summary(prob=0.68)
     # mcmc_null.print_summary(prob=0.68)

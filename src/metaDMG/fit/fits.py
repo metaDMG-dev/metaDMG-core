@@ -627,19 +627,22 @@ def compute(config, df_mismatches):
     df_fit_results = pd.merge(df_fit_results, df_stat_cut, on="tax_id")
 
     cols_ordered = [
+        "sample",
         "tax_id",
         "tax_name",
         "tax_rank",
         "N_reads",
         "N_alignments",
-        "lambda_LR",
         "D_max",
+        "significance",
         "mean_L",
         "std_L",
         "mean_GC",
         "std_GC",
         "tax_path",
-        *df_fit_results.loc[:, "D_max_std":"sample"].columns.drop("tax_id"),
+    ]
+    cols_ordered = cols_ordered + [
+        c for c in df_fit_results.columns if c not in cols_ordered
     ]
 
     # if local or global damage

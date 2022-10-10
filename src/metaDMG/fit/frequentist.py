@@ -66,7 +66,7 @@ class FrequentistPMD:
         self.is_fitted = False
 
     def __repr__(self):
-        s = f"FrequentistPMD(data, method={self.method}). \n\n"
+        s = f"FrequentistPMD(data, method={self.method}). \n"
         if self.is_fitted:
             s += self.__str__()
         return s
@@ -77,6 +77,7 @@ class FrequentistPMD:
             s += f"A = {self.A:.3f}, q = {self.q:.3f},"
             s += f"c = {self.c:.5f}, phi = {self.phi:.1f} \n"
             s += f"D_max = {self.D_max:.3f} +/- {self.D_max_std:.3f} \n"
+            s += f"significance = {self.significance:.3f} \n"
             s += f"rho_Ac = {self.rho_Ac:.3f} \n"
             s += f"log_likelihood = {self.log_likelihood:.3f} \n"
             s += f"valid = {self.valid}"
@@ -230,9 +231,9 @@ class FrequentistPMD:
         self.valid = self.m.valid
 
         if self.valid:
-            self.D_max, self.D_max_std = self._get_D_max()
+            self.D_max, self.D_max_std, self.significance = self._get_D_max()
         else:
-            self.D_max, self.D_max_std = np.nan, np.nan
+            self.D_max, self.D_max_std, self.significance = np.nan, np.nan, np.nan
 
         return self
 
@@ -314,7 +315,9 @@ class FrequentistPMD:
 
         std = np.sqrt(A * (1 - A) * (phi + N) / ((phi + 1) * N))
 
-        return mu, std
+        significance = mu / std
+
+        return mu, std, significance
 
         # Dx_x1 = A
         # alpha = Dx_x1 * phi
@@ -508,8 +511,11 @@ class Frequentist:
     def __init__(self, data, sample, tax_id, method="posterior", p0=None):
         self.PMD = FrequentistPMD(data, sample, tax_id, method=method, p0=p0).fit()
         self.null = FrequentistNull(data, sample, tax_id, method=method).fit()
-        p = fit_utils.compute_likelihood_ratio(self.PMD, self.null)
-        self.lambda_LR, self.lambda_LR_P, self.lambda_LR_z = p
+        self.lambda_LR = fit_utils.compute_likelihood_ratio(
+            self.PMD,
+            self.null,
+            only_LR=True,
+        )
 
         self.valid = self.PMD.valid
 
@@ -530,14 +536,14 @@ class Frequentist:
         s = f"sample = {self.sample}, tax_id = {self.tax_id} \n"
         s += f"A = {self.A:.3f}, q = {self.q:.3f}, "
         s += f"c = {self.c:.5f}, phi = {self.phi:.1f} \n"
-        s += f"D_max = {self.D_max:.3f} +/- {self.D_max_std:.3f}, "
+        s += f"D_max = {self.D_max:.3f} +/- {self.D_max_std:.3f}, significance = {self.significance:.3f} \n"
         s += f"rho_Ac = {self.rho_Ac:.3f} \n"
         s += f"log_likelihood_PMD  = {self.PMD.log_likelihood:.3f} \n"
         s += f"log_likelihood_null = {self.null.log_likelihood:.3f} \n"
         s += (
-            f"lambda_LR = {self.lambda_LR:.3f}, "
-            f"lambda_LR as prob = {self.lambda_LR_P:.4%}, "
-            f"lambda_LR as z = {self.lambda_LR_z:.3f} \n"
+            f"lambda_LR = {self.lambda_LR:.3f} \n"
+            # f"lambda_LR as prob = {self.lambda_LR_P:.4%}, "
+            # f"lambda_LR as z = {self.lambda_LR_z:.3f} \n"
         )
         s += f"valid = {self.valid}"
         return s
@@ -594,6 +600,10 @@ class Frequentist:
     def PMD_values(self):
         return self.PMD.values
 
+    @property
+    def significance(self):
+        return self.PMD.significance
+
 
 #%%
 
@@ -644,9 +654,10 @@ def make_forward_reverse_fits(fit_result, data, sample, tax_id):
     )
 
     vars_to_keep = [
-        "lambda_LR",
         "D_max",
         "D_max_std",
+        "significance",
+        "lambda_LR",
         "q",
         "q_std",
         "phi",
@@ -656,8 +667,8 @@ def make_forward_reverse_fits(fit_result, data, sample, tax_id):
         "c",
         "c_std",
         "rho_Ac",
-        "lambda_LR_P",
-        "lambda_LR_z",
+        # "lambda_LR_P",
+        # "lambda_LR_z",
         "valid",
     ]
 
@@ -694,9 +705,10 @@ def make_forward_fits(fit_result, data, sample, tax_id):
     fit_all = Frequentist(data, sample, tax_id, method="posterior")
 
     vars_to_keep = [
-        "lambda_LR",
         "D_max",
         "D_max_std",
+        "significance",
+        "lambda_LR",
         "q",
         "q_std",
         "phi",
@@ -706,8 +718,8 @@ def make_forward_fits(fit_result, data, sample, tax_id):
         "c",
         "c_std",
         "rho_Ac",
-        "lambda_LR_P",
-        "lambda_LR_z",
+        # "lambda_LR_P",
+        # "lambda_LR_z",
         "valid",
     ]
 

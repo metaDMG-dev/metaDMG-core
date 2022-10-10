@@ -131,8 +131,11 @@ def z_to_prob(z):
     return erf(z / np.sqrt(2))
 
 
-def compute_likelihood_ratio(frequentist_PMD, frequentist_null):
+def compute_likelihood_ratio(frequentist_PMD, frequentist_null, only_LR=False):
     LR = -2 * (frequentist_PMD.log_likelihood - frequentist_null.log_likelihood)
+
+    if only_LR:
+        return LR
 
     df = len(describe(frequentist_PMD)) - len(describe(frequentist_null))
     LR_P = sp_chi2.sf(x=LR, df=df)

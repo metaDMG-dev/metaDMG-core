@@ -108,15 +108,15 @@ def merge(
     df_results = pd.merge(df_fit_results, df_mismatches_wide, on=["tax_id"])
 
     columns_order = [
+        "sample",
         "tax_id",
         "tax_name",
         "tax_rank",
-        "sample",
         "N_reads",
         "N_alignments",
         #
-        "lambda_LR",
         "D_max",
+        "significance",
         "mean_L",
         "mean_GC",
         "q",
