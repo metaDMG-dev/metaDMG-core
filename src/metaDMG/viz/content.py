@@ -81,7 +81,7 @@ def get_content_main(viz_results, start_configuration):
     dropdown_x_axis = dcc.Dropdown(
         id="xaxis_column",
         options=[{"label": i, "value": i} for i in columns],
-        value="Bayesian_z" if viz_results.Bayesian else "significance",
+        value="Bayesian_prob_lt_1p_damage" if viz_results.Bayesian else "significance",
     )
 
     dropdown_y_axis = dcc.Dropdown(
