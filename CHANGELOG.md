@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.35.0 (2022-10-12)
+### Feature
+* Update dashboard to new fit main metric ([`2ed91fb`](https://github.com/metaDMG-dev/metaDMG-core/commit/2ed91fb2eba9004b0b91ba5ecf554f33ba0a63ce))
+
 ## v0.34.0 (2022-10-10)
 ### Feature
 * Add significance as main fit quality ([`be20230`](https://github.com/metaDMG-dev/metaDMG-core/commit/be20230da84e381cfab0d86537fb493b226d3675))
