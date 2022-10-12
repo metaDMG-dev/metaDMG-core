@@ -124,6 +124,26 @@ def compute_variance_scaling(df, phi_string):
 #%%
 
 
+def add_MAP_measures(df):
+    df["rho_Ac_abs"] = np.abs(df["rho_Ac"])
+    df["D_max_CI_low"] = df["D_max"] - df["D_max_std"]
+    df["D_max_CI_high"] = df["D_max"] + df["D_max_std"]
+
+
+def add_bayesia_measures(df):
+    df["Bayesian_significance"] = df["Bayesian_D_max"] / df["Bayesian_D_max_std"]
+    df["Bayesian_rho_Ac_abs"] = np.abs(df["Bayesian_rho_Ac"])
+
+    df["Bayesian_D_max_CI_low"] = df["Bayesian_D_max_confidence_interval_1_sigma_low"]
+    df["Bayesian_D_max_CI_high"] = df["Bayesian_D_max_confidence_interval_1_sigma_high"]
+
+    df["Bayesian_prob_not_zero_damage"] = 1 - df["Bayesian_prob_zero_damage"]
+    df["Bayesian_prob_gt_1p_damage"] = 1 - df["Bayesian_prob_lt_1p_damage"]
+
+
+#%%
+
+
 class VizResults:
     def __init__(self, results_dir):
         self.results_dir = Path(results_dir)
@@ -143,35 +163,13 @@ class VizResults:
         # XXX remove in final version
         df["tax_id"] = df["tax_id"].astype("str").astype("category")
 
-        # for column in ["lambda_LR", "forward_lambda_LR", "reverse_lambda_LR"]:
-        #     clip_df(df, column)
+        add_MAP_measures(df)
 
-        Bayesian = any(["Bayesian" in column for column in df.columns]) and (
-            not any(df["Bayesian_z"].isna())
-        )
-        self.Bayesian = Bayesian
-
-        # df["D_max_significance"] = df["D_max"] / df["D_max_std"]
-        df["rho_Ac_abs"] = np.abs(df["rho_Ac"])
-        df["variance_scaling"] = compute_variance_scaling(df, phi_string="phi")
-
-        if Bayesian:
-            df["Bayesian_D_max_significance"] = (
-                df["Bayesian_D_max"] / df["Bayesian_D_max_std"]
-            )
-            df["Bayesian_rho_Ac_abs"] = np.abs(df["Bayesian_rho_Ac"])
-            df["Bayesian_variance_scaling"] = compute_variance_scaling(
-                df, phi_string="Bayesian_phi"
-            )
-
-            s1 = "Bayesian_D_max_confidence_interval_1_sigma_low"
-            s2 = "Bayesian_D_max_confidence_interval_1_sigma_high"
-            if s1 in df.columns and s2 in df.columns:
-                df["Bayesian_D_max_CI_low"] = df[s1]
-                df["Bayesian_D_max_CI_high"] = df[s2]
-
-        df["D_max_CI_low"] = df["D_max"] - df["D_max_std"]
-        df["D_max_CI_high"] = df["D_max"] + df["D_max_std"]
+        if any(["Bayesian" in column for column in df.columns]) and (
+            not any(df["Bayesian_D_max"].isna())
+        ):
+            self.Bayesian = True
+            add_bayesia_measures(df)
 
         log_columns = [
             "N_reads",
@@ -328,8 +326,8 @@ class VizResults:
             "q_std",
             "phi",
             "phi_std",
-            "asymmetry",
             "rho_Ac",
+            "asymmetry",
             # Counts
             "N_reads",
             "N_alignments",
@@ -340,7 +338,7 @@ class VizResults:
         custom_data_columns_Bayesian = [
             "Bayesian_D_max",
             "Bayesian_D_max_std",
-            "Bayesian_prob_lt_1p_damage",
+            "Bayesian_significance",
             "Bayesian_q",
             "Bayesian_q_std",
             "Bayesian_phi",
@@ -359,8 +357,8 @@ class VizResults:
             "    significance: %{customdata[_XXX_]:6.2f} <br>"
             "    q:            %{customdata[_XXX_]:6.2f}  ± %{customdata[_XXX_]:.2f} <br>"
             "    phi:            %{customdata[_XXX_]:.3s} ± %{customdata[_XXX_]:.3s} <br>"
-            "    asymmetry:     %{customdata[_XXX_]:6.3f} <br>"
-            "    corr. Ac:      %{customdata[_XXX_]:6.3f} <br><br>"
+            "    corr. Ac:      %{customdata[_XXX_]:6.3f} <br>"
+            "    asymmetry:     %{customdata[_XXX_]:6.3f} <br><br>"
             "<b>Counts</b>: <br>"
             "    N reads:      %{customdata[_XXX_]:6.3s} <br>"
             "    N alignments: %{customdata[_XXX_]:6.3s} <br>"
@@ -372,7 +370,7 @@ class VizResults:
         hovertemplate_Bayesian = (
             "<b>Fit results</b>: <br>"
             "    D max:         %{customdata[_XXX_]:6.2%} ± %{customdata[_XXX_]:.2%} <br>"
-            "    P(<1%):       %{customdata[_XXX_]:7.2%} <br>"
+            "    significance: %{customdata[_XXX_]:6.2f} <br>"
             "    q:            %{customdata[_XXX_]:6.2f}  ± %{customdata[_XXX_]:.2f} <br>"
             "    phi:            %{customdata[_XXX_]:.3s} ± %{customdata[_XXX_]:.3s} <br>"
             "    corr. Ac:      %{customdata[_XXX_]:6.3f} <br><br>"
@@ -547,7 +545,7 @@ class VizResults:
         )
         text += "\n"
 
-        fitqual_col = "Bayesian_prob_lt_1p_damage" if self.Bayesian else "significance"
+        fitqual_col = "Bayesian_significance" if self.Bayesian else "significance"
         fitqual_str = sanitize(fitqual_col)
         fitqual = ds[fitqual_col].iloc[0]
         text += "$" + fitqual_str + f" = {fitqual:.2f} " + r"$"

@@ -391,7 +391,7 @@ def compute_markersize(
 
 def plt_scatterplot(df, viz_results):
 
-    x = "Bayesian_prob_lt_1p_damage" if viz_results.Bayesian else "significance"
+    x = "Bayesian_significance" if viz_results.Bayesian else "significance"
     y = "Bayesian_D_max" if viz_results.Bayesian else "D_max"
 
     size_max = df["size"].max()

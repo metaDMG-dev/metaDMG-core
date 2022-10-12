@@ -299,7 +299,11 @@ def get_app(results_dir):
                     f"D-max: {ds['Bayesian_D_max']:.3f} "
                     f"± {ds['Bayesian_D_max_std']:.3f}" + s_D_max,
                     html.Br(),
-                    f"P(<1%): {ds['Bayesian_prob_lt_1p_damage']:.2%}",
+                    f"significance: {ds['Bayesian_significance']:.2f}",
+                    html.Br(),
+                    f"P(>1%): {ds['Bayesian_prob_gt_1p_damage']:.2%}",
+                    html.Br(),
+                    f"P(>0%): {ds['Bayesian_prob_not_zero_damage']:.2%}",
                     html.Br(),
                     f"q: {ds['Bayesian_q']:.3f} " f"± {ds['Bayesian_q_std']:.3f}" + s_q,
                     html.Br(),

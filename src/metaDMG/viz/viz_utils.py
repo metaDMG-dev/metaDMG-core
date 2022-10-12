@@ -630,14 +630,11 @@ def get_d_columns_latex(viz_results):
         "Bayesian_D_max": r"$D_\text{max}$",
         "D_max": r"$D_\text{max} \,\, \text{(MAP)}$",
         #
-        "Bayesian_D_max_significance": r"$D_\text{max} \,\, \text{sig.}$",
+        "Bayesian_significance": r"$\text{significance}$",
         "significance": r"$\text{significance} \,\, \text{(MAP)}$",
         #
-        "Bayesian_prob_lt_5p_damage": r"$\mathcal{P}(D_\text{max} < 5\%)$",
-        "Bayesian_prob_lt_2p_damage": r"$\mathcal{P}(D_\text{max} < 2\%)$",
-        "Bayesian_prob_lt_1p_damage": r"$\mathcal{P}(D_\text{max} < 1\%)$",
-        "Bayesian_prob_lt_0.1p_damage": r"$\mathcal{P}(D_\text{max} < 0.1\%)$",
-        "Bayesian_prob_zero_damage": r"$\mathcal{P}(D_\text{max} = 0\%)$",
+        "Bayesian_prob_not_zero_damage": r"$\mathcal{P}(D_\text{max} > 0\%)$",
+        "Bayesian_prob_gt_1p_damage": r"$\mathcal{P}(D_\text{max} > 1\%)$",
         #
         "asymmetry": r"$\text{asymmetry} \text{(MAP)}$",
         "Bayesian_D_max_CI_low": r"$D_\text{max} \,\, \text{CI. low}$",
@@ -673,6 +670,11 @@ def get_d_columns_latex(viz_results):
         #
         # "LR_P": r"$\text{P}_\lambda \text{(MAP)}$ ",
         # "LR_z": r"$z_\lambda \text{(MAP)}$",
+        # "Bayesian_prob_lt_5p_damage": r"$\mathcal{P}(D_\text{max} < 5\%)$",
+        # "Bayesian_prob_lt_2p_damage": r"$\mathcal{P}(D_\text{max} < 2\%)$",
+        # "Bayesian_prob_lt_1p_damage": r"$\mathcal{P}(D_\text{max} < 1\%)$",
+        # "Bayesian_prob_lt_0.1p_damage": r"$\mathcal{P}(D_\text{max} < 0.1\%)$",
+        # "Bayesian_prob_zero_damage": r"$\mathcal{P}(D_\text{max} = 0\%)$",
         #
         "Bayesian_D_max_std": r"$\sigma_{D_\text{max}}$",
         "D_max_std": r"$\sigma_{D_\text{max}} \text{(MAP)}$",
