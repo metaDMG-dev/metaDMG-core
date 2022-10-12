@@ -296,10 +296,10 @@ def get_app(results_dir):
                 bayesian_list = [
                     "Fit results:",
                     html.Br(),
-                    f"z: {ds['Bayesian_z']:.2f}",
-                    html.Br(),
                     f"D-max: {ds['Bayesian_D_max']:.3f} "
                     f"± {ds['Bayesian_D_max_std']:.3f}" + s_D_max,
+                    html.Br(),
+                    f"P(<1%): {ds['Bayesian_prob_lt_1p_damage']:.2%}",
                     html.Br(),
                     f"q: {ds['Bayesian_q']:.3f} " f"± {ds['Bayesian_q_std']:.3f}" + s_q,
                     html.Br(),
@@ -344,10 +344,10 @@ def get_app(results_dir):
 
                 "MAP results:",
                 html.Br(),
-                f"lambda LR: {ds['lambda_LR']:.2f}",
-                html.Br(),
                 f"D-max: {ds['D_max']:.3f} "
                 f"± {ds['D_max_std']:.3f}",
+                html.Br(),
+                f"significance: {ds['significance']:.2f}",
                 html.Br(),
                 f"q: {ds['q']:.3f} ± {ds['q_std']:.3f}",
                 html.Br(),

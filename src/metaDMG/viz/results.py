@@ -143,15 +143,15 @@ class VizResults:
         # XXX remove in final version
         df["tax_id"] = df["tax_id"].astype("str").astype("category")
 
-        for column in ["lambda_LR", "forward_lambda_LR", "reverse_lambda_LR"]:
-            clip_df(df, column)
+        # for column in ["lambda_LR", "forward_lambda_LR", "reverse_lambda_LR"]:
+        #     clip_df(df, column)
 
         Bayesian = any(["Bayesian" in column for column in df.columns]) and (
             not any(df["Bayesian_z"].isna())
         )
         self.Bayesian = Bayesian
 
-        df["D_max_significance"] = df["D_max"] / df["D_max_std"]
+        # df["D_max_significance"] = df["D_max"] / df["D_max_std"]
         df["rho_Ac_abs"] = np.abs(df["rho_Ac"])
         df["variance_scaling"] = compute_variance_scaling(df, phi_string="phi")
 
@@ -176,7 +176,7 @@ class VizResults:
         log_columns = [
             "N_reads",
             "N_alignments",
-            "lambda_LR",
+            # "lambda_LR",
             "phi",
             "k_sum_total",
             "N_sum_total",
@@ -321,9 +321,9 @@ class VizResults:
             "tax_id",
             # Bayesian Fits
             # Frequentist fits
-            "lambda_LR",
             "D_max",
             "D_max_std",
+            "significance",
             "q",
             "q_std",
             "phi",
@@ -338,9 +338,9 @@ class VizResults:
         ]
 
         custom_data_columns_Bayesian = [
-            "Bayesian_z",
             "Bayesian_D_max",
             "Bayesian_D_max_std",
+            "Bayesian_prob_lt_1p_damage",
             "Bayesian_q",
             "Bayesian_q_std",
             "Bayesian_phi",
@@ -355,27 +355,27 @@ class VizResults:
             "    Rank: %{customdata[_XXX_]} <br>"
             "    ID:   %{customdata[_XXX_]} <br><br>"
             "<b>MAP results</b>: <br>"
-            "    LR:       %{customdata[_XXX_]:9.2f} <br>"
-            "    D max:    %{customdata[_XXX_]:9.2f} ± %{customdata[_XXX_]:.2f} <br>"
-            "    q:        %{customdata[_XXX_]:9.2f} ± %{customdata[_XXX_]:.2f} <br>"
-            "    phi:      %{customdata[_XXX_]:.3s} ± %{customdata[_XXX_]:.3s} <br>"
-            "    asymmetry:%{customdata[_XXX_]:9.3f} <br>"
-            "    rho_Ac:   %{customdata[_XXX_]:9.3f} <br><br>"
+            "    D max:         %{customdata[_XXX_]:6.2%} ± %{customdata[_XXX_]:.2%} <br>"
+            "    significance: %{customdata[_XXX_]:6.2f} <br>"
+            "    q:            %{customdata[_XXX_]:6.2f}  ± %{customdata[_XXX_]:.2f} <br>"
+            "    phi:            %{customdata[_XXX_]:.3s} ± %{customdata[_XXX_]:.3s} <br>"
+            "    asymmetry:     %{customdata[_XXX_]:6.3f} <br>"
+            "    corr. Ac:      %{customdata[_XXX_]:6.3f} <br><br>"
             "<b>Counts</b>: <br>"
-            "    N reads:     %{customdata[_XXX_]:.3s} <br>"
-            "    N alignments:%{customdata[_XXX_]:.3s} <br>"
-            "    N sum total: %{customdata[_XXX_]:.3s} <br>"
-            "    k sum total: %{customdata[_XXX_]:.3s} <br>"
+            "    N reads:      %{customdata[_XXX_]:6.3s} <br>"
+            "    N alignments: %{customdata[_XXX_]:6.3s} <br>"
+            "    N sum total:  %{customdata[_XXX_]:6.3s} <br>"
+            "    k sum total:  %{customdata[_XXX_]:6.3s} <br>"
             "<extra></extra>"
         )
 
         hovertemplate_Bayesian = (
             "<b>Fit results</b>: <br>"
-            "    z:        %{customdata[_XXX_]:9.2f} <br>"
-            "    D max:    %{customdata[_XXX_]:9.2f} ± %{customdata[_XXX_]:.2f} <br>"
-            "    q:        %{customdata[_XXX_]:9.2f} ± %{customdata[_XXX_]:.2f} <br>"
-            "    phi:      %{customdata[_XXX_]:.3s} ± %{customdata[_XXX_]:.3s} <br>"
-            "    rho_Ac:   %{customdata[_XXX_]:9.3f} <br><br>"
+            "    D max:         %{customdata[_XXX_]:6.2%} ± %{customdata[_XXX_]:.2%} <br>"
+            "    P(<1%):       %{customdata[_XXX_]:7.2%} <br>"
+            "    q:            %{customdata[_XXX_]:6.2f}  ± %{customdata[_XXX_]:.2f} <br>"
+            "    phi:            %{customdata[_XXX_]:.3s} ± %{customdata[_XXX_]:.3s} <br>"
+            "    corr. Ac:      %{customdata[_XXX_]:6.3f} <br><br>"
         )
 
         if self.forward_only:
@@ -388,7 +388,7 @@ class VizResults:
 
         # if Bayesian fits, include these results
         if self.Bayesian:
-            index = self.custom_data_columns.index("lambda_LR")
+            index = self.custom_data_columns.index("D_max")
             self.custom_data_columns[index:index] = custom_data_columns_Bayesian
 
             index = self.hovertemplate.find("<b>MAP results</b>: <br>")
@@ -547,7 +547,7 @@ class VizResults:
         )
         text += "\n"
 
-        fitqual_col = "Bayesian_z" if self.Bayesian else "lambda_LR"
+        fitqual_col = "Bayesian_prob_lt_1p_damage" if self.Bayesian else "significance"
         fitqual_str = sanitize(fitqual_col)
         fitqual = ds[fitqual_col].iloc[0]
         text += "$" + fitqual_str + f" = {fitqual:.2f} " + r"$"

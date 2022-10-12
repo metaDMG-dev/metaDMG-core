@@ -627,15 +627,19 @@ def get_graph_kwargs_no_buttons():
 
 def get_d_columns_latex(viz_results):
     d_columns_latex = {
-        "Bayesian_z": r"$z$",
         "Bayesian_D_max": r"$D_\text{max}$",
+        "D_max": r"$D_\text{max} \,\, \text{(MAP)}$",
         #
-        "lambda_LR": r"$\lambda_\text{LR} \text{(MAP)}$",
-        "D_max": r"$D_\text{max} \text{(MAP)}$",
+        "Bayesian_D_max_significance": r"$D_\text{max} \,\, \text{sig.}$",
+        "significance": r"$\text{significance} \,\, \text{(MAP)}$",
+        #
+        "Bayesian_prob_lt_5p_damage": r"$\mathcal{P}(D_\text{max} < 5\%)$",
+        "Bayesian_prob_lt_2p_damage": r"$\mathcal{P}(D_\text{max} < 2\%)$",
+        "Bayesian_prob_lt_1p_damage": r"$\mathcal{P}(D_\text{max} < 1\%)$",
+        "Bayesian_prob_lt_0.1p_damage": r"$\mathcal{P}(D_\text{max} < 0.1\%)$",
+        "Bayesian_prob_zero_damage": r"$\mathcal{P}(D_\text{max} = 0\%)$",
         #
         "asymmetry": r"$\text{asymmetry} \text{(MAP)}$",
-        "Bayesian_D_max_significance": r"$D_\text{max} \,\, \text{sig.}$",
-        "D_max_significance": r"$D_\text{max} \,\, \text{sig.} \,\, \text{(MAP)}$",
         "Bayesian_D_max_CI_low": r"$D_\text{max} \,\, \text{CI. low}$",
         "Bayesian_D_max_CI_high": r"$D_\text{max} \,\, \text{CI. high}$",
         "D_max_CI_low": r"$D_\text{max} \,\, \text{CI. low} \,\, \text{(MAP)}$",
@@ -653,6 +657,8 @@ def get_d_columns_latex(viz_results):
         "rho_Ac": r"$\rho_{A, c} \text{(MAP)}$",
         "Bayesian_rho_Ac_abs": r"$|\rho_{A, c}|$",
         "rho_Ac_abs": r"$|\rho_{A, c}| \text{(MAP)}$",
+        "lambda_LR": r"$\lambda_\text{LR} \text{(MAP)}$",
+        "Bayesian_z": r"$z$",
         #
         "N_reads": r"$N_\text{reads}$",
         "N_alignments": r"$N_\text{alignments}$",
