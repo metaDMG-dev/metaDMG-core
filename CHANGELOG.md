@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.35.1 (2022-10-12)
+### Fix
+* Improve dashboard for significance ([`3d731d1`](https://github.com/metaDMG-dev/metaDMG-core/commit/3d731d11b6f75fb4409a69da9946ecec9afa0a49))
+
 ## v0.35.0 (2022-10-12)
 ### Feature
 * Update dashboard to new fit main metric ([`2ed91fb`](https://github.com/metaDMG-dev/metaDMG-core/commit/2ed91fb2eba9004b0b91ba5ecf554f33ba0a63ce))
