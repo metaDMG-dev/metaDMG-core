@@ -630,28 +630,42 @@ def compute_LR_ForRev_All(fit_all, fit_forward, fit_reverse):
 #%%
 
 
-def make_forward_reverse_fits(fit_result, data, sample, tax_id):
+def make_fits(
+    config, fit_result, data, sample, tax_id, forward_only=None, method="posterior"
+):
     np.random.seed(42)
 
-    fit_all = Frequentist(data, sample, tax_id, method="posterior")
+    forward_only = config["forward_only"] if forward_only is None else forward_only
 
-    data_forward = {key: val[data["x"] > 0] for key, val in data.items()}
-    data_reverse = {key: val[data["x"] < 0] for key, val in data.items()}
+    if forward_only:
+        data_forward = {key: val[data["x"] > 0] for key, val in data.items()}
+        fit_forward = Frequentist(
+            data_forward,
+            sample,
+            tax_id,
+            method=method,
+        )
 
-    fit_forward = Frequentist(
-        data_forward,
-        sample,
-        tax_id,
-        method="posterior",
-        p0=fit_all.PMD_values,
-    )
-    fit_reverse = Frequentist(
-        data_reverse,
-        sample,
-        tax_id,
-        method="posterior",
-        p0=fit_all.PMD_values,
-    )
+    else:
+        fit_all = Frequentist(data, sample, tax_id, method=method)
+
+        data_forward = {key: val[data["x"] > 0] for key, val in data.items()}
+        data_reverse = {key: val[data["x"] < 0] for key, val in data.items()}
+
+        fit_forward = Frequentist(
+            data_forward,
+            sample,
+            tax_id,
+            method=method,
+            p0=fit_all.PMD_values,
+        )
+        fit_reverse = Frequentist(
+            data_reverse,
+            sample,
+            tax_id,
+            method=method,
+            p0=fit_all.PMD_values,
+        )
 
     vars_to_keep = [
         "D_max",
@@ -667,10 +681,32 @@ def make_forward_reverse_fits(fit_result, data, sample, tax_id):
         "c",
         "c_std",
         "rho_Ac",
-        # "lambda_LR_P",
-        # "lambda_LR_z",
         "valid",
     ]
+
+    if forward_only:
+
+        # duplicate entries for forward only
+
+        for var in vars_to_keep:
+            fit_result[f"{var}"] = getattr(fit_forward, var)
+
+        for var in vars_to_keep:
+            fit_result[f"forward_{var}"] = getattr(fit_forward, var)
+
+        for var in vars_to_keep:
+            fit_result[f"reverse_{var}"] = np.nan
+
+        fit_result["asymmetry"] = np.nan
+        fit_result["LR_All"] = compute_LR_All(fit_forward)
+        fit_result["LR_ForRev"] = np.nan
+        fit_result["LR_ForRev_All"] = np.nan
+
+        fit_result["chi2_all"] = fit_forward.chi2
+        fit_result["chi2_forward"] = fit_forward.chi2
+        fit_result["chi2_reverse"] = np.nan
+        fit_result["chi2_ForRev"] = np.nan
+        return fit_forward
 
     for var in vars_to_keep:
         fit_result[f"{var}"] = getattr(fit_all, var)
@@ -699,42 +735,42 @@ def make_forward_reverse_fits(fit_result, data, sample, tax_id):
     return fit_all, fit_forward, fit_reverse
 
 
-def make_forward_fits(fit_result, data, sample, tax_id):
-    np.random.seed(42)
+# def make_forward_fits(fit_result, data, sample, tax_id):
+#     np.random.seed(42)
 
-    fit_all = Frequentist(data, sample, tax_id, method="posterior")
+#     fit_all = Frequentist(data, sample, tax_id, method="posterior")
 
-    vars_to_keep = [
-        "D_max",
-        "D_max_std",
-        "significance",
-        "lambda_LR",
-        "q",
-        "q_std",
-        "phi",
-        "phi_std",
-        "A",
-        "A_std",
-        "c",
-        "c_std",
-        "rho_Ac",
-        # "lambda_LR_P",
-        # "lambda_LR_z",
-        "valid",
-    ]
+#     vars_to_keep = [
+#         "D_max",
+#         "D_max_std",
+#         "significance",
+#         "lambda_LR",
+#         "q",
+#         "q_std",
+#         "phi",
+#         "phi_std",
+#         "A",
+#         "A_std",
+#         "c",
+#         "c_std",
+#         "rho_Ac",
+#         # "lambda_LR_P",
+#         # "lambda_LR_z",
+#         "valid",
+#     ]
 
-    for var in vars_to_keep:
-        fit_result[f"{var}"] = getattr(fit_all, var)
+#     for var in vars_to_keep:
+#         fit_result[f"{var}"] = getattr(fit_all, var)
 
-    fit_result["asymmetry"] = np.nan
-    fit_result["LR_All"] = compute_LR_All(fit_all)
-    fit_result["chi2_all"] = fit_all.chi2
+#     fit_result["asymmetry"] = np.nan
+#     fit_result["LR_All"] = compute_LR_All(fit_all)
+#     fit_result["chi2_all"] = fit_all.chi2
 
-    return fit_all
+#     return fit_all
 
 
-def make_fits(config, fit_result, data, sample, tax_id):
-    if config["forward_only"]:
-        return make_forward_fits(fit_result, data, sample, tax_id)
-    else:
-        return make_forward_reverse_fits(fit_result, data, sample, tax_id)
+# def make_fits(config, fit_result, data, sample, tax_id):
+#     if config["forward_only"]:
+#         return make_forward_fits(fit_result, data, sample, tax_id)
+#     else:
+#         return make_forward_reverse_fits(fit_result, data, sample, tax_id)

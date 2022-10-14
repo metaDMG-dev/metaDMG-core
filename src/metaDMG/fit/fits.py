@@ -102,17 +102,17 @@ def add_count_information(fit_result, config, group, data):
 
     if config["forward_only"]:
         fit_result["N_x=1_forward"] = data["N"][0]
-        # fit_result["N_x=1_reverse"] = np.nan
+        fit_result["N_x=1_reverse"] = np.nan
 
         fit_result["N_sum_total"] = data["N"].sum()
         fit_result["N_sum_forward"] = fit_result["N_sum_total"]
-        # fit_result["N_sum_reverse"] = np.nan
+        fit_result["N_sum_reverse"] = np.nan
 
         fit_result["N_min"] = data["N"].min()
 
         fit_result["k_sum_total"] = data["k"].sum()
         fit_result["k_sum_forward"] = fit_result["k_sum_total"]
-        # fit_result["k_sum_reverse"] = np.nan
+        fit_result["k_sum_reverse"] = np.nan
 
     else:
 
@@ -129,7 +129,7 @@ def add_count_information(fit_result, config, group, data):
         fit_result["k_sum_forward"] = data["k"][: config["max_position"]].sum()
         fit_result["k_sum_reverse"] = data["k"][config["max_position"] :].sum()
 
-        add_non_CT_GA_mismatches(fit_result, group)
+    add_non_CT_GA_mismatches(fit_result, group)
 
 
 #%%
