@@ -552,6 +552,19 @@ def filter_k_sum(
     return df_mismatches.query("k_sum_total > 0")
 
 
+def filter_max_N_in_group(
+    config: Config,
+    df_mismatches: pd.DataFrame,
+) -> pd.DataFrame:
+
+    # filter out tax_id's with 0 k_sum_total
+    tax_ids_to_drop = set(df_mismatches.query("max_N_in_group == 0")["tax_id"].unique())
+    if len(tax_ids_to_drop) > 0:
+        logger.debug(f"Dropping the following Tax IDs since max_N_in_group == 0:")
+        logger.debug(tax_ids_to_drop)
+    return df_mismatches.query("max_N_in_group > 0")
+
+
 #%%
 
 
@@ -565,6 +578,15 @@ def compute(config, df_mismatches):
 
     if len(df_mismatches) == 0:
         s = f"{config['sample']} cut on min reads > {config['min_reads']} made data empty."
+        logger.debug("WARNING: BadDataError")
+        logger.debug(s)
+        raise BadDataError(s)
+
+    # filter out tax_id's with no data in them (max_N_in_group == 0)
+    df_mismatches = filter_max_N_in_group(config, df_mismatches)
+
+    if len(df_mismatches) == 0:
+        s = f"{config['sample']} df_mismatches.query('max_N_in_group > 0') is empty."
         logger.debug("WARNING: BadDataError")
         logger.debug(s)
         raise BadDataError(s)

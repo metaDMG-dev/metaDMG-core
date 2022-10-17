@@ -148,18 +148,37 @@ def add_k_sum_counts(df):
     return df
 
 
-def compute_min_N_in_group(group, config):
-    if config["forward_only"]:
-        return group[group.position > 0][bases_forward[0]].min()
-    else:
-        min_N_forward = group[group.position > 0][bases_forward[0]].min()
-        min_N_reverse = group[group.position < 0][bases_reverse[0]].min()
-        return min(min_N_forward, min_N_reverse)
+def compute_min_max_N_in_group(group, config):
+    min_N, max_N = group["N"].min(), group["N"].max()
+    return pd.Series({"min_N_in_group": min_N, "max_N_in_group": max_N})
+
+    # mask_forward = group.position > 0
+    # mask_reverse = group.position < 0
+
+    # if config["forward_only"]:
+    #     min_N = group[mask_forward][bases_forward[0]].min()
+    #     max_N = group[mask_forward][bases_forward[0]].max()
+    #     # return min_N, max_N
+    #     return pd.Series({"min_N_in_group": min_N, "max_N_in_group": max_N})
+
+    # min_N_forward = group[mask_forward > 0][bases_forward[0]].min()
+    # min_N_reverse = group[mask_reverse < 0][bases_reverse[0]].min()
+    # min_N = min(min_N_forward, min_N_reverse)
+
+    # max_N_forward = group[mask_forward > 0][bases_forward[0]].max()
+    # max_N_reverse = group[mask_reverse < 0][bases_reverse[0]].max()
+    # max_N = max(max_N_forward, max_N_reverse)
+
+    # # return min_N, max_N
+    # return pd.Series({"min_N_in_group": min_N, "max_N_in_group": max_N})
 
 
-def add_min_N_in_group(df, config):
-    ds = df.groupby("tax_id").apply(compute_min_N_in_group, config)
-    ds = ds.reset_index().rename(columns={0: "min_N_in_group"})
+def add_min_max_N_in_group(df, config):
+    ds = (
+        df.groupby("tax_id")
+        .apply(compute_min_max_N_in_group, config)
+        .reset_index(drop=False)
+    )
     df = pd.merge(df, ds, on=["tax_id"])
     return df
 
@@ -213,7 +232,7 @@ def compute(config: Config) -> pd.DataFrame:
         .pipe(make_reverse_position_negative)
         .pipe(add_k_N_x_names, config)
         .pipe(add_k_sum_counts)
-        .pipe(add_min_N_in_group, config)
+        .pipe(add_min_max_N_in_group, config)
         .pipe(make_tax_id_str)
         .reset_index(drop=True)
         .fillna(0)
