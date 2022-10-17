@@ -194,8 +194,14 @@ class VizResults:
 
         if np.isnan(df["asymmetry"]).any():
             self.contains_forward_only = True
-            df["forward_only"] = df["k-1"].isna()
-            df["forward_only_str"] = np.where(df["forward_only"], "Forward only!", "")
+            if "k-1" in df.columns:
+                df["forward_only"] = df["k-1"].isna()
+                df["forward_only_str"] = np.where(
+                    df["forward_only"], "Forward only!", ""
+                )
+            else:
+                df["forward_only"] = True
+                df["forward_only_str"] = "Forward only!"
 
         else:
             self.contains_forward_only = False
