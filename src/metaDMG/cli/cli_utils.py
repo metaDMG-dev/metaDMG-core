@@ -422,6 +422,9 @@ def save_config_file(
                 print("Exiting")
                 raise typer.Abort()
 
+    if not ("yaml" in config_file.name or "yml" in config_file.name):
+        config_file = config_file.with_suffix(".yaml")
+
     with open(config_file, "w") as file:
         yaml.dump(config, file, sort_keys=False)
     if verbose:
