@@ -414,6 +414,9 @@ def save_config_file(
         Do not overwrite automatically
     """
 
+    if not ("yaml" in config_file.name or "yml" in config_file.name):
+        config_file = config_file.with_suffix(".yaml")
+
     if not overwrite_config:
         if config_file.is_file():
             s = "Config file already exists. Do you want to overwrite it?"
@@ -421,9 +424,6 @@ def save_config_file(
             if not confirmed:
                 print("Exiting")
                 raise typer.Abort()
-
-    if not ("yaml" in config_file.name or "yml" in config_file.name):
-        config_file = config_file.with_suffix(".yaml")
 
     with open(config_file, "w") as file:
         yaml.dump(config, file, sort_keys=False)
