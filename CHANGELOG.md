@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.35.3 (2022-10-17)
+### Fix
+* Allow forward-only and normal in same dashboard ([`4acbe05`](https://github.com/metaDMG-dev/metaDMG-core/commit/4acbe05eb2bbf7d9bf1fb3e43d7d00b50c450e5e))
+
 ## v0.35.2 (2022-10-14)
 ### Fix
 * Add variables to forward only ([`ff737b7`](https://github.com/metaDMG-dev/metaDMG-core/commit/ff737b7edc935b59d3ef618781b2f0609969e0ea))
