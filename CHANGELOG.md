@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.35.4 (2022-10-17)
+### Fix
+* Do not overwrite previous config-file when auto suffix ([`5b370dc`](https://github.com/metaDMG-dev/metaDMG-core/commit/5b370dc884c760da6b9791470b763b2a78e324fd))
+* Automatically add suffix to config-file ([`75fcb19`](https://github.com/metaDMG-dev/metaDMG-core/commit/75fcb19fcba4e09c078d48e9f9e6bae77ac3f788))
+
 ## v0.35.3 (2022-10-17)
 ### Fix
 * Allow forward-only and normal in same dashboard ([`4acbe05`](https://github.com/metaDMG-dev/metaDMG-core/commit/4acbe05eb2bbf7d9bf1fb3e43d7d00b50c450e5e))
