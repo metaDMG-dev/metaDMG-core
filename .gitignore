@@ -1,6 +1,7 @@
 data/
 data*/
 real-data*/
+old-real-data*/
 raw_data/
 !raw_data/alignment.bam
 !raw_data/names-mdmg.dmp
