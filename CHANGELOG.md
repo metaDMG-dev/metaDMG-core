@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.35.2 (2022-10-14)
+### Fix
+* Add variables to forward only ([`ff737b7`](https://github.com/metaDMG-dev/metaDMG-core/commit/ff737b7edc935b59d3ef618781b2f0609969e0ea))
+
 ## v0.35.1 (2022-10-12)
 ### Fix
 * Improve dashboard for significance ([`3d731d1`](https://github.com/metaDMG-dev/metaDMG-core/commit/3d731d11b6f75fb4409a69da9946ecec9afa0a49))
