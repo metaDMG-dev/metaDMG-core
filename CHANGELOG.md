@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.35.5 (2022-10-17)
+### Fix
+* Remove empty data before fitting ([`94d7975`](https://github.com/metaDMG-dev/metaDMG-core/commit/94d797527f2f434604ac659d5ecf772a52792c48))
+
 ## v0.35.4 (2022-10-17)
 ### Fix
 * Do not overwrite previous config-file when auto suffix ([`5b370dc`](https://github.com/metaDMG-dev/metaDMG-core/commit/5b370dc884c760da6b9791470b763b2a78e324fd))
