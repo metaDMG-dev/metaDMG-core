@@ -596,5 +596,7 @@ def run_single_config_count_errors(
     try:
         run_single_config(config)
         return 0
+    except KeyboardInterrupt as e:
+        raise e
     except:
         return 1
