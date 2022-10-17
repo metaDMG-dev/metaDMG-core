@@ -3,6 +3,7 @@ from pathlib import Path
 import dash
 import dash_bootstrap_components as dbc
 import diskcache
+import numpy as np
 import pandas as pd
 from dash import ALL, MATCH, Input, Output, State, dcc, html
 from dash.exceptions import PreventUpdate
@@ -244,6 +245,7 @@ def get_app(results_dir):
     )
     def update_sidebar_right_datatable_results(click_data):
         if click_data:
+
             sample, tax_id = viz_utils.get_sample_tax_id_from_click_data(
                 viz_results, click_data
             )
@@ -255,7 +257,7 @@ def get_app(results_dir):
             ds = df_fit.iloc[0]
 
             forward_only = []
-            if viz_results.forward_only:
+            if ds["forward_only"]:
                 forward_only = ["Forward only!", html.Br(), html.Br()]
 
             bayesian_list = []

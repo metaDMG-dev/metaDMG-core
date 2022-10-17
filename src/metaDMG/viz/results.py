@@ -10,6 +10,7 @@ from metaDMG.viz import viz_utils
 
 
 def sort_dataframe(df):
+
     samples_ordered = list(
         df.groupby("sample")
         .sum("N_reads")
@@ -24,11 +25,14 @@ def sort_dataframe(df):
     # the dataframe numerically
     df["sample_rank"] = df["sample"].map(sorterIndex)
 
-    df = df.sort_values(
-        ["sample_rank", "tax_id"],
-        ascending=[True, True],
-        inplace=False,
-    ).drop(columns="sample_rank")
+    df = (
+        df.sort_values(
+            ["sample_rank", "N_reads"],
+            ascending=[True, False],
+        )
+        .drop(columns="sample_rank")
+        .reset_index(drop=True)
+    )
 
     return df
 
@@ -130,7 +134,7 @@ def add_MAP_measures(df):
     df["D_max_CI_high"] = df["D_max"] + df["D_max_std"]
 
 
-def add_bayesia_measures(df):
+def add_bayesian_measures(df):
     df["Bayesian_significance"] = df["Bayesian_D_max"] / df["Bayesian_D_max_std"]
     df["Bayesian_rho_Ac_abs"] = np.abs(df["Bayesian_rho_Ac"])
 
@@ -152,7 +156,11 @@ class VizResults:
         self._set_hover_info()
 
     def _load_parquet_file(self, results_dir):
-        df = pd.read_parquet(results_dir)
+        # df = pd.read_parquet(results_dir)
+        dfs = []
+        for path in results_dir.glob("*.parquet"):
+            dfs.append(pd.read_parquet(path))
+        df = pd.concat(dfs, ignore_index=True)
         return correct_for_non_LCA(df)
 
     def _load_df_results(self):
@@ -169,7 +177,7 @@ class VizResults:
             not any(df["Bayesian_D_max"].isna())
         ):
             self.Bayesian = True
-            add_bayesia_measures(df)
+            add_bayesian_measures(df)
 
         log_columns = [
             "N_reads",
@@ -184,10 +192,15 @@ class VizResults:
             log_column = "log_" + column
             df.loc[:, log_column] = np.log10(1 + df[column])
 
-        if np.isnan(df["asymmetry"]).all() and not "forward_A" in df.columns:
-            self.forward_only = True
+        if np.isnan(df["asymmetry"]).any():
+            self.contains_forward_only = True
+            df["forward_only"] = df["k-1"].isna()
+            df["forward_only_str"] = np.where(df["forward_only"], "Forward only!", "")
+
         else:
-            self.forward_only = False
+            self.contains_forward_only = False
+            df["forward_only"] = False
+            df["forward_only_str"] = ""
 
         self.df = df
 
@@ -376,11 +389,14 @@ class VizResults:
             "    corr. Ac:      %{customdata[_XXX_]:6.3f} <br><br>"
         )
 
-        if self.forward_only:
+        if self.contains_forward_only:
+            index = self.custom_data_columns.index("D_max")
+            self.custom_data_columns[index:index] = ["forward_only_str"]
+
             index = self.hovertemplate.find("<b>MAP results</b>: <br>")
             self.hovertemplate = (
                 self.hovertemplate[:index]
-                + "<b>Forward only! </b><br><br>"
+                + "<b>%{customdata[_XXX_]}</b><br><br>"
                 + self.hovertemplate[index:]
             )
 
@@ -430,7 +446,7 @@ class VizResults:
     def get_single_count_group(self, sample, tax_id, forward_reverse=""):
         query = f"sample == '{sample}' & tax_id == '{tax_id}'"
         group_wide = self.df.query(query)
-        group = wide_to_long_df(group_wide)
+        group = wide_to_long_df(group_wide).dropna(axis="rows")
 
         if forward_reverse.lower() == "forward":
             return group.query(f"direction=='Forward'")
@@ -445,13 +461,21 @@ class VizResults:
         if len(ds) != 1:
             raise AssertionError(f"Something wrong here, got: {ds}")
 
-        if self.forward_only:
-            if forward_reverse.lower() == "reverse":
+        group = self.get_single_count_group(sample, tax_id, forward_reverse)
+
+        if len(group) == 0:
+            if ds.iloc[0]["forward_only"] and forward_reverse.lower() == "reverse":
                 return "FORWARD ONLY"
             else:
-                forward_reverse = ""
+                raise AssertionError(
+                    f"Something wrong here, got: {group=}, {tax_id=}, {forward_reverse=}"
+                )
 
-        group = self.get_single_count_group(sample, tax_id, forward_reverse)
+        # if self.contains_forward_only:
+        #     if forward_reverse.lower() == "reverse":
+        #         return "FORWARD ONLY"
+        #     else:
+        #         forward_reverse = ""
 
         if forward_reverse.lower() == "forward":
             prefix = "forward_"

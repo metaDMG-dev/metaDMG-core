@@ -696,16 +696,17 @@ def make_fits(
 
         for var in vars_to_keep:
             fit_result[f"reverse_{var}"] = np.nan
+        fit_result[f"reverse_valid"] = False
 
         fit_result["asymmetry"] = np.nan
-        fit_result["LR_All"] = compute_LR_All(fit_forward)
-        fit_result["LR_ForRev"] = np.nan
-        fit_result["LR_ForRev_All"] = np.nan
+        # fit_result["LR_All"] = compute_LR_All(fit_forward)
+        # fit_result["LR_ForRev"] = np.nan
+        # fit_result["LR_ForRev_All"] = np.nan
 
         fit_result["chi2_all"] = fit_forward.chi2
-        fit_result["chi2_forward"] = fit_forward.chi2
+        fit_result["chi2_forward"] = fit_result["chi2_all"]
         fit_result["chi2_reverse"] = np.nan
-        fit_result["chi2_ForRev"] = np.nan
+        # fit_result["chi2_ForRev"] = np.nan
         return fit_forward
 
     for var in vars_to_keep:
@@ -721,16 +722,16 @@ def make_fits(
     for var in vars_to_keep:
         fit_result[f"reverse_{var}"] = getattr(fit_reverse, var)
 
-    fit_result["LR_All"] = compute_LR_All(fit_all)
-    fit_result["LR_ForRev"] = compute_LR_ForRev(fit_forward, fit_reverse)
-    fit_result["LR_ForRev_All"] = compute_LR_ForRev_All(
-        fit_all, fit_forward, fit_reverse
-    )
+    # fit_result["LR_All"] = compute_LR_All(fit_all)
+    # fit_result["LR_ForRev"] = compute_LR_ForRev(fit_forward, fit_reverse)
+    # fit_result["LR_ForRev_All"] = compute_LR_ForRev_All(
+    #     fit_all, fit_forward, fit_reverse
+    # )
 
     fit_result["chi2_all"] = fit_all.chi2
     fit_result["chi2_forward"] = fit_forward.chi2
     fit_result["chi2_reverse"] = fit_reverse.chi2
-    fit_result["chi2_ForRev"] = fit_forward.chi2 + fit_reverse.chi2
+    # fit_result["chi2_ForRev"] = fit_forward.chi2 + fit_reverse.chi2
 
     return fit_all, fit_forward, fit_reverse
 

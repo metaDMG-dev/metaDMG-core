@@ -557,7 +557,7 @@ def plt_errorplot(viz_results, group, fit=None):
             label="Forward",
         )
 
-        if not viz_results.forward_only:
+        if sum(mask_reverse) > 0:
             ax.plot(
                 group.loc[mask_reverse, ["|x|"]].values,
                 group.loc[mask_reverse, ["f"]].values,
