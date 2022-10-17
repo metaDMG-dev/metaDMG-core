@@ -149,7 +149,7 @@ def add_D_max_information(fit_result, mcmc, data):
     # 1000x faster approximation for ppf
     pdf_approx = sp_betabinom(N, alpha.mean(), beta.mean())
 
-    pdf_beta = sp_beta(alpha, beta)
+    # pdf_beta = sp_beta(alpha, beta)
 
     # pdf.pmf(0).mean()
     # pdf_approx.pmf(0) # 3 times faster for pmf
@@ -157,19 +157,20 @@ def add_D_max_information(fit_result, mcmc, data):
     prefix = "Bayesian_"
     fit_result[f"{prefix}D_max"] = mu.item()
     fit_result[f"{prefix}D_max_std"] = std.item()
+    fit_result[f"{prefix}D_max_median"] = np.median(A)
+    # fit_result[f"{prefix}D_max_median"] = pdf_approx.median().mean() / N
 
-    fit_result[f"{prefix}prob_lt_5p_damage"] = pdf_beta.cdf(0.05).mean()
-    # fit_result[f"{prefix}prob_lt_5p_damage_betabinom"] = pdf.cdf(0.05 * N).mean()
-    fit_result[f"{prefix}prob_lt_2p_damage"] = pdf_beta.cdf(0.02).mean()
-    # fit_result[f"{prefix}prob_lt_2p_damage_betabinom"] = pdf.cdf(0.02 * N).mean()
-    fit_result[f"{prefix}prob_lt_1p_damage"] = pdf_beta.cdf(0.01).mean()
-    # fit_result[f"{prefix}prob_lt_1p_damage_betabinom"] = pdf.cdf(0.01 * N).mean()
-    fit_result[f"{prefix}prob_lt_0.1p_damage"] = pdf_beta.cdf(0.001).mean()
-    # fit_result[f"{prefix}prob_lt_0.1p_damage_betabinom"] = pdf.cdf(0.001 * N).mean()
+    # fit_result[f"{prefix}prob_lt_5p_damage"] = pdf_beta.cdf(0.05).mean()
+    # # fit_result[f"{prefix}prob_lt_5p_damage_betabinom"] = pdf.cdf(0.05 * N).mean()
+    # fit_result[f"{prefix}prob_lt_2p_damage"] = pdf_beta.cdf(0.02).mean()
+    # # fit_result[f"{prefix}prob_lt_2p_damage_betabinom"] = pdf.cdf(0.02 * N).mean()
+    # fit_result[f"{prefix}prob_lt_1p_damage"] = pdf_beta.cdf(0.01).mean()
+    # # fit_result[f"{prefix}prob_lt_1p_damage_betabinom"] = pdf.cdf(0.01 * N).mean()
+    # fit_result[f"{prefix}prob_lt_0.1p_damage"] = pdf_beta.cdf(0.001).mean()
+    # # fit_result[f"{prefix}prob_lt_0.1p_damage_betabinom"] = pdf.cdf(0.001 * N).mean()
+    # fit_result[f"{prefix}prob_zero_damage"] = pdf.cdf(0).mean()
 
-    fit_result[f"{prefix}prob_zero_damage"] = pdf.cdf(0).mean()
-
-    fit_result[f"{prefix}D_max_median"] = pdf.median().mean() / N
+    # fit_result[f"{prefix}D_max_median"] = pdf.median().mean() / N
 
     for n_sigma in [1, 2, 3]:
         conf = get_n_sigma_probability(n_sigma)
@@ -369,11 +370,12 @@ def init_mcmc_null(**kwargs):
 def init_mcmcs(config, **kwargs):
     if config["bayesian"]:
         mcmc_PMD = init_mcmc_PMD(**kwargs)
-        mcmc_null = init_mcmc_null(**kwargs)
+        # mcmc_null = init_mcmc_null(**kwargs)
     else:
         mcmc_PMD = None
-        mcmc_null = None
-    return mcmc_PMD, mcmc_null
+        # mcmc_null = None
+    return mcmc_PMD
+    # return mcmc_PMD, mcmc_null
 
 
 def fit_mcmc(mcmc, data, seed=0):
@@ -389,11 +391,11 @@ def add_Bayesian_fit_result(
     fit_result,
     data,
     mcmc_PMD,
-    mcmc_null,
+    # mcmc_null,
 ):
 
-    d_results_PMD = get_lppd_and_waic(mcmc_PMD, data)
-    d_results_null = get_lppd_and_waic(mcmc_null, data)
+    # d_results_PMD = get_lppd_and_waic(mcmc_PMD, data)
+    # d_results_null = get_lppd_and_waic(mcmc_null, data)
 
     add_D_max_information(fit_result, mcmc_PMD, data)
 
@@ -404,14 +406,24 @@ def add_Bayesian_fit_result(
 
     fit_result["Bayesian_rho_Ac"] = compute_rho_Ac(mcmc_PMD)
 
-    z = compute_z(d_results_PMD, d_results_null)
-    fit_result["Bayesian_z"] = z
+    # z = compute_z(d_results_PMD, d_results_null)
+    # fit_result["Bayesian_z"] = z
 
 
-def make_fits(fit_result, data, mcmc_PMD, mcmc_null):
+def make_fits(
+    fit_result,
+    data,
+    mcmc_PMD,
+    # mcmc_null,
+):
     fit_mcmc(mcmc_PMD, data)
-    fit_mcmc(mcmc_null, data)  # do not use non-PMD model later on
-    add_Bayesian_fit_result(fit_result, data, mcmc_PMD, mcmc_null)
+    # fit_mcmc(mcmc_null, data)  # do not use non-PMD model later on
+    add_Bayesian_fit_result(
+        fit_result,
+        data,
+        mcmc_PMD,
+        # mcmc_null,
+    )
     # mcmc_PMD.print_summary(prob=0.68)
     # mcmc_null.print_summary(prob=0.68)
 

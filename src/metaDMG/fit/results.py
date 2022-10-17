@@ -125,7 +125,7 @@ def merge(
         "phi",
         "rho_Ac",
         "valid",
-        "asymmetry",
+        # "asymmetry",
     ]
 
     # if local or global damage

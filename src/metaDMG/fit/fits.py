@@ -158,7 +158,7 @@ def fit_single_group(
     config,
     group,
     mcmc_PMD=None,
-    mcmc_null=None,
+    # mcmc_null=None,
 ):
 
     fit_result = {}
@@ -190,9 +190,14 @@ def fit_single_group(
 
     add_count_information(fit_result, config, group, data)
 
-    if mcmc_PMD is not None and mcmc_null is not None:
+    if mcmc_PMD is not None:  # and mcmc_null is not None:
         try:
-            bayesian.make_fits(fit_result, data, mcmc_PMD, mcmc_null)
+            bayesian.make_fits(
+                fit_result,
+                data,
+                mcmc_PMD,
+                # mcmc_null,
+            )
         except:
             from metaDMG.fit.serial import _setup_logger
 
@@ -207,7 +212,8 @@ def fit_single_group(
 def compute_fits_seriel(config, df_mismatches, with_progressbar=False):
 
     # Do not initialise MCMC if config["bayesian"] is False
-    mcmc_PMD, mcmc_null = bayesian.init_mcmcs(config)
+    # mcmc_PMD, mcmc_null = bayesian.init_mcmcs(config)
+    mcmc_PMD = bayesian.init_mcmcs(config)
 
     groupby = get_groupby(df_mismatches)
 
@@ -225,7 +231,7 @@ def compute_fits_seriel(config, df_mismatches, with_progressbar=False):
             config,
             group,
             mcmc_PMD,
-            mcmc_null,
+            # mcmc_null,
         )
 
         if res is not None:

@@ -631,47 +631,60 @@ def compute_LR_ForRev_All(fit_all, fit_forward, fit_reverse):
 
 
 def make_fits(
-    config, fit_result, data, sample, tax_id, forward_only=None, method="posterior"
+    config,
+    fit_result,
+    data,
+    sample,
+    tax_id,
+    forward_only=None,
+    method="posterior",
 ):
     np.random.seed(42)
 
     forward_only = config["forward_only"] if forward_only is None else forward_only
 
     if forward_only:
-        data_forward = {key: val[data["x"] > 0] for key, val in data.items()}
-        fit_forward = Frequentist(
-            data_forward,
-            sample,
-            tax_id,
-            method=method,
-        )
+        data = {key: val[data["x"] > 0] for key, val in data.items()}
+        # fit_forward = Frequentist(
+        #     data_forward,
+        #     sample,
+        #     tax_id,
+        #     method=method,
+        # )
 
-    else:
-        fit_all = Frequentist(data, sample, tax_id, method=method)
+    # else:
+    #     fit_all = Frequentist(data, sample, tax_id, method=method)
 
-        data_forward = {key: val[data["x"] > 0] for key, val in data.items()}
-        data_reverse = {key: val[data["x"] < 0] for key, val in data.items()}
+    fit = Frequentist(
+        data,
+        sample,
+        tax_id,
+        method=method,
+    )
 
-        fit_forward = Frequentist(
-            data_forward,
-            sample,
-            tax_id,
-            method=method,
-            p0=fit_all.PMD_values,
-        )
-        fit_reverse = Frequentist(
-            data_reverse,
-            sample,
-            tax_id,
-            method=method,
-            p0=fit_all.PMD_values,
-        )
+    # data_forward = {key: val[data["x"] > 0] for key, val in data.items()}
+    # data_reverse = {key: val[data["x"] < 0] for key, val in data.items()}
+
+    # fit_forward = Frequentist(
+    #     data_forward,
+    #     sample,
+    #     tax_id,
+    #     method=method,
+    #     p0=fit_all.PMD_values,
+    # )
+    # fit_reverse = Frequentist(
+    #     data_reverse,
+    #     sample,
+    #     tax_id,
+    #     method=method,
+    #     p0=fit_all.PMD_values,
+    # )
 
     vars_to_keep = [
         "D_max",
         "D_max_std",
         "significance",
-        "lambda_LR",
+        # "lambda_LR",
         "q",
         "q_std",
         "phi",
@@ -684,43 +697,48 @@ def make_fits(
         "valid",
     ]
 
-    if forward_only:
-
-        # duplicate entries for forward only
-
-        for var in vars_to_keep:
-            fit_result[f"{var}"] = getattr(fit_forward, var)
-
-        for var in vars_to_keep:
-            fit_result[f"forward_{var}"] = getattr(fit_forward, var)
-
-        for var in vars_to_keep:
-            fit_result[f"reverse_{var}"] = np.nan
-        fit_result[f"reverse_valid"] = False
-
-        fit_result["asymmetry"] = np.nan
-        # fit_result["LR_All"] = compute_LR_All(fit_forward)
-        # fit_result["LR_ForRev"] = np.nan
-        # fit_result["LR_ForRev_All"] = np.nan
-
-        fit_result["chi2_all"] = fit_forward.chi2
-        fit_result["chi2_forward"] = fit_result["chi2_all"]
-        fit_result["chi2_reverse"] = np.nan
-        # fit_result["chi2_ForRev"] = np.nan
-        return fit_forward
-
     for var in vars_to_keep:
-        fit_result[f"{var}"] = getattr(fit_all, var)
+        fit_result[f"{var}"] = getattr(fit, var)
 
-    numerator = fit_forward.D_max - fit_reverse.D_max
-    denominator = np.sqrt(fit_forward.D_max_std**2 + fit_reverse.D_max_std**2)
-    fit_result["asymmetry"] = np.abs(numerator) / denominator
+    return fit
 
-    for var in vars_to_keep:
-        fit_result[f"forward_{var}"] = getattr(fit_forward, var)
+    # if forward_only:
 
-    for var in vars_to_keep:
-        fit_result[f"reverse_{var}"] = getattr(fit_reverse, var)
+    # duplicate entries for forward only
+
+    # for var in vars_to_keep:
+    #     fit_result[f"{var}"] = getattr(fit_forward, var)
+
+    # for var in vars_to_keep:
+    #     fit_result[f"forward_{var}"] = getattr(fit_forward, var)
+
+    # for var in vars_to_keep:
+    #     fit_result[f"reverse_{var}"] = np.nan
+    # fit_result[f"reverse_valid"] = False
+
+    # fit_result["asymmetry"] = np.nan
+    # fit_result["LR_All"] = compute_LR_All(fit_forward)
+    # fit_result["LR_ForRev"] = np.nan
+    # fit_result["LR_ForRev_All"] = np.nan
+
+    # fit_result["chi2_all"] = fit_forward.chi2
+    # fit_result["chi2_forward"] = fit_result["chi2_all"]
+    # fit_result["chi2_reverse"] = np.nan
+    # fit_result["chi2_ForRev"] = np.nan
+    # return fit_forward
+
+    # for var in vars_to_keep:
+    #     fit_result[f"{var}"] = getattr(fit_all, var)
+
+    # numerator = fit_forward.D_max - fit_reverse.D_max
+    # denominator = np.sqrt(fit_forward.D_max_std**2 + fit_reverse.D_max_std**2)
+    # fit_result["asymmetry"] = np.abs(numerator) / denominator
+
+    # for var in vars_to_keep:
+    #     fit_result[f"forward_{var}"] = getattr(fit_forward, var)
+
+    # for var in vars_to_keep:
+    #     fit_result[f"reverse_{var}"] = getattr(fit_reverse, var)
 
     # fit_result["LR_All"] = compute_LR_All(fit_all)
     # fit_result["LR_ForRev"] = compute_LR_ForRev(fit_forward, fit_reverse)
@@ -728,12 +746,12 @@ def make_fits(
     #     fit_all, fit_forward, fit_reverse
     # )
 
-    fit_result["chi2_all"] = fit_all.chi2
-    fit_result["chi2_forward"] = fit_forward.chi2
-    fit_result["chi2_reverse"] = fit_reverse.chi2
+    # fit_result["chi2_all"] = fit_all.chi2
+    # fit_result["chi2_forward"] = fit_forward.chi2
+    # fit_result["chi2_reverse"] = fit_reverse.chi2
     # fit_result["chi2_ForRev"] = fit_forward.chi2 + fit_reverse.chi2
 
-    return fit_all, fit_forward, fit_reverse
+    # return fit_all  # , fit_forward, fit_reverse
 
 
 # def make_forward_fits(fit_result, data, sample, tax_id):
