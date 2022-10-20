@@ -28,6 +28,7 @@ metaDMG-cpp
 *.bam.bin
 *.csv
 *.lca.gz
+*.bam
 
 build.sh
 publish.sh

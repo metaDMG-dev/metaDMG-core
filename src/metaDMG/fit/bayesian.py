@@ -145,7 +145,7 @@ def add_D_max_information(fit_result, mcmc, data):
     alpha = Dx * phi
     beta = (1 - Dx) * phi
 
-    pdf = sp_betabinom(N, alpha, beta)
+    # pdf = sp_betabinom(N, alpha, beta)
     # 1000x faster approximation for ppf
     pdf_approx = sp_betabinom(N, alpha.mean(), beta.mean())
 

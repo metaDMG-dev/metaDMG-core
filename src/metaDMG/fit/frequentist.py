@@ -312,11 +312,8 @@ class FrequentistPMD:
         N = max(self.N[0], 1)
 
         mu = A
-
         std = np.sqrt(A * (1 - A) * (phi + N) / ((phi + 1) * N))
-
         significance = mu / std
-
         return mu, std, significance
 
         # Dx_x1 = A
