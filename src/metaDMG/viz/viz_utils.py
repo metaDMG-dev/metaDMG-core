@@ -262,13 +262,13 @@ def get_range_slider_keywords(viz_results, column="N_reads", N_steps=100):
             marks[marks_steps[0]] = {"label": no_min, "style": {"color": "#a3ada9"}}
             marks[marks_steps[-1]] = {"label": no_max, "style": {"color": "#a3ada9"}}
 
-    elif column in ["D_max", "q", "A", "c"] or column in [
-        "Bayesian_D_max",
-        "Bayesian_q",
-        "Bayesian_A",
-        "Bayesian_c",
-        "Bayesian_D_max_CI_low",
-        "Bayesian_D_max_CI_high",
+    elif column in ["MAP_D", "MAP_q", "MAP_A", "MAP_c"] or column in [
+        "D",
+        "q",
+        "A",
+        "c",
+        "D_CI_low",
+        "D_CI_high",
     ]:
         range_min = 0.0
         range_max = 1.0
@@ -627,35 +627,29 @@ def get_graph_kwargs_no_buttons():
 
 def get_d_columns_latex(viz_results):
     d_columns_latex = {
-        "Bayesian_D_max": r"$D_\text{max}$",
-        "D_max": r"$D_\text{max} \,\, \text{(MAP)}$",
+        "D": r"$Damage$",
+        "MAP_D": r"$Damage \,\, \text{(MAP)}$",
         #
-        "Bayesian_significance": r"$\text{significance}$",
-        "significance": r"$\text{significance} \,\, \text{(MAP)}$",
+        "significance": r"$\text{significance}$",
+        "MAP_significance": r"$\text{significance} \,\, \text{(MAP)}$",
         #
-        "Bayesian_prob_not_zero_damage": r"$\mathcal{P}(D_\text{max} > 0\%)$",
-        "Bayesian_prob_gt_1p_damage": r"$\mathcal{P}(D_\text{max} > 1\%)$",
+        "D_CI_low": r"$D \,\, \text{CI. low}$",
+        "D_CI_high": r"$D \,\, \text{CI. high}$",
+        "MAP_D_CI_low": r"$D \,\, \text{CI. low} \,\, \text{(MAP)}$",
+        "MAP_D_CI_high": r"$D \,\, \text{CI. high} \,\, \text{(MAP)}$",
         #
-        "asymmetry": r"$\text{asymmetry} \text{(MAP)}$",
-        "Bayesian_D_max_CI_low": r"$D_\text{max} \,\, \text{CI. low}$",
-        "Bayesian_D_max_CI_high": r"$D_\text{max} \,\, \text{CI. high}$",
-        "D_max_CI_low": r"$D_\text{max} \,\, \text{CI. low} \,\, \text{(MAP)}$",
-        "D_max_CI_high": r"$D_\text{max} \,\, \text{CI. high} \,\, \text{(MAP)}$",
-        #
-        "Bayesian_q": r"$q$",
-        "q": r"$q \text{(MAP)}$",
-        "Bayesian_phi": r"$\phi$",
-        "phi": r"$\phi \text{(MAP)}$",
-        "Bayesian_A": r"$A$",
-        "A": r"$A \text{(MAP)}$",
-        "Bayesian_c": r"$c$",
-        "c": r"$c \text{(MAP)}$",
-        "Bayesian_rho_Ac": r"$\rho_{A, c}$",
-        "rho_Ac": r"$\rho_{A, c} \text{(MAP)}$",
-        "Bayesian_rho_Ac_abs": r"$|\rho_{A, c}|$",
-        "rho_Ac_abs": r"$|\rho_{A, c}| \text{(MAP)}$",
-        "lambda_LR": r"$\lambda_\text{LR} \text{(MAP)}$",
-        "Bayesian_z": r"$z$",
+        "q": r"$q$",
+        "MAP_q": r"$q \text{(MAP)}$",
+        "phi": r"$\phi$",
+        "MAP_phi": r"$\phi \text{(MAP)}$",
+        "A": r"$A$",
+        "MAP_A": r"$A \text{(MAP)}$",
+        "c": r"$c$",
+        "MAP_c": r"$c \text{(MAP)}$",
+        "rho_Ac": r"$\rho_{A, c}$",
+        "MAP_rho_Ac": r"$\rho_{A, c} \text{(MAP)}$",
+        "rho_Ac_abs": r"$|\rho_{A, c}|$",
+        "MAP_rho_Ac_abs": r"$|\rho_{A, c}| \text{(MAP)}$",
         #
         "N_reads": r"$N_\text{reads}$",
         "N_alignments": r"$N_\text{alignments}$",
@@ -668,78 +662,13 @@ def get_d_columns_latex(viz_results):
         "mean_GC": r"$\text{mean GC}$",
         "std_GC": r"$\text{std GC}$",
         #
-        # "LR_P": r"$\text{P}_\lambda \text{(MAP)}$ ",
-        # "LR_z": r"$z_\lambda \text{(MAP)}$",
-        # "Bayesian_prob_lt_5p_damage": r"$\mathcal{P}(D_\text{max} < 5\%)$",
-        # "Bayesian_prob_lt_2p_damage": r"$\mathcal{P}(D_\text{max} < 2\%)$",
-        # "Bayesian_prob_lt_1p_damage": r"$\mathcal{P}(D_\text{max} < 1\%)$",
-        # "Bayesian_prob_lt_0.1p_damage": r"$\mathcal{P}(D_\text{max} < 0.1\%)$",
-        # "Bayesian_prob_zero_damage": r"$\mathcal{P}(D_\text{max} = 0\%)$",
-        #
-        "Bayesian_D_max_std": r"$\sigma_{D_\text{max}}$",
-        "D_max_std": r"$\sigma_{D_\text{max}} \text{(MAP)}$",
+        "D_std": r"$\sigma_{D}$",
+        "MAP_D_std": r"$\sigma_{D} \text{(MAP)}$",
         "q_std": r"$\sigma_q \text{(MAP)}$",
         "phi_std": r"$\sigma_\phi \text{(MAP)}$",
         "A_std": r"$\sigma_A \text{(MAP)}$",
         "c_std": r"$\sigma_c \text{(MAP)}$",
         #
-        # "Bayesian_variance_scaling": r"$\text{variance} \,\, \text{scaling}$",
-        # "variance_scaling": r"$\text{variance} \,\, \text{scaling} \,\, \text{(MAP)}$",
-        #
-        # "log_lambda_LR": r"$\log_{10}(1+\lambda_\text{LR})$",
-        # "log_phi": r"$\log_{10}(1+\phi)$",
-        # "log_N_reads": r"$\log_{10}(1+N_\text{reads})$",
-        # "log_N_alignments": r"$\log_{10}(1+N_\text{alignments})$",
-        # "log_k_sum_total": r"$\log_{10}(1+\sum_i k_i)$",
-        # "log_N_sum_total": r"$\log_{10}(1+\sum_i N_i)$",
-        #
-        "forward_lambda_LR": r"$ \lambda_\text{LR} \,\, \text{(forward)}$",
-        "forward_D_max": r"$ D_\text{max} \,\, \text{(forward)}$",
-        "forward_q": r"$ q \,\, \text{(forward)}$",
-        "forward_phi": r"$ \phi \,\, \text{(forward)}$",
-        "forward_A": r"$ A \,\, \text{(forward)}$",
-        "forward_c": r"$ c \,\, \text{(forward)}$",
-        "forward_rho_Ac": r"$ \rho_{A, c} \,\, \text{(forward)}$",
-        "forward_LR_P": r"$ \text{P}_\lambda \,\, \text{(forward)}$",
-        "forward_LR_z": r"$ z_\lambda \,\, \text{(forward)}$",
-        #
-        "forward_D_max_std": r"$ \sigma_{D_\text{max}} \,\, \text{(forward)}$",
-        "forward_q_std": r"$ \sigma_q \,\, \text{(forward)}$",
-        "forward_phi_std": r"$ \sigma_\phi \,\, \text{(forward)}$",
-        "forward_A_std": r"$ \sigma_A \,\, \text{(forward)}$",
-        "forward_c_std": r"$ \sigma_c \,\, \text{(forward)}$",
-        #
-        "k_sum_forward": r"$\sum_i k_i \,\, \text{(forward)}$",
-        "N_x=1_forward": r"$N_{x=1} \,\, \text{(forward)}$",
-        "N_sum_forward": r"$\sum_i N_i \,\, \text{(forward)}$",
-        #
-        "reverse_lambda_LR": r"$ \lambda_\text{LR} \,\, \text{(reverse)}$",
-        "reverse_D_max": r"$ D_\text{max} \,\, \text{(reverse)}$",
-        "reverse_q": r"$ q \,\, \text{(reverse)}$",
-        "reverse_phi": r"$ \phi \,\, \text{(reverse)}$",
-        "reverse_A": r"$ A \,\, \text{(reverse)}$",
-        "reverse_c": r"$ c \,\, \text{(reverse)}$",
-        "reverse_rho_Ac": r"$ \rho_{A, c} \,\, \text{(reverse)}$",
-        "reverse_LR_P": r"$ \text{P}_\lambda \,\, \text{(reverse)}$",
-        "reverse_LR_z": r"$ z_\lambda \,\, \text{(reverse)}$",
-        #
-        "reverse_D_max_std": r"$ \sigma_{D_\text{max}} \,\, \text{(reverse)}$",
-        "reverse_q_std": r"$ \sigma_q \,\, \text{(reverse)}$",
-        "reverse_phi_std": r"$ \sigma_\phi \,\, \text{(reverse)}$",
-        "reverse_A_std": r"$ \sigma_A \,\, \text{(reverse)}$",
-        "reverse_c_std": r"$ \sigma_c \,\, \text{(reverse)}$",
-        #
-        "k_sum_reverse": r"$\sum_i k_i \,\, \text{(reverse)}$",
-        "N_x=1_reverse": r"$N_{x=1} \,\, \text{(reverse)}$",
-        "N_sum_reverse": r"$\sum_i N_i \,\, \text{(reverse)}$",
-        #
-        #
-        # "LR_All": r"$\text{LR All}$",
-        # "LR_ForRev": r"$\text{LR ForRev}$",
-        # "LR_ForRev_All": r"$\text{LR ForRev All}$",
-        # #
-        # "chi2_all": r"$\chi^2 \text{all}$",
-        # "chi2_ForRev": r"$\chi^2 \text{ForRev}$",
     }
 
     keys_to_remove = [

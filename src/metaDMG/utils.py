@@ -350,12 +350,12 @@ def get_results_dir(
 
 def get_single_fit_prediction(df_results):
 
-    Bayesian = any(["Bayesian" in column for column in df_results.columns])
+    Bayesian = any([column == "D" for column in df_results.columns])
 
     if Bayesian:
-        prefix = "Bayesian_"
-    else:
         prefix = ""
+    else:
+        prefix = "MAP_"
 
     if "k-1" in df_results.columns:
         forward_only = False

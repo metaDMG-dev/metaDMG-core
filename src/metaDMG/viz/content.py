@@ -81,13 +81,13 @@ def get_content_main(viz_results, start_configuration):
     dropdown_x_axis = dcc.Dropdown(
         id="xaxis_column",
         options=[{"label": i, "value": i} for i in columns],
-        value="Bayesian_significance" if viz_results.Bayesian else "significance",
+        value="significance" if viz_results.Bayesian else "MAP_significance",
     )
 
     dropdown_y_axis = dcc.Dropdown(
         id="yaxis_column",
         options=[{"label": i, "value": i} for i in columns],
-        value="Bayesian_D_max" if viz_results.Bayesian else "D_max",
+        value="D" if viz_results.Bayesian else "MAP_D",
     )
 
     XY_axis_dropdowns = [
@@ -343,7 +343,7 @@ def get_sidebar_left(viz_results, start_configuration):
         min_value=np.log10(10),
     )
 
-    slider_phi_column = "Bayesian_phi" if viz_results.Bayesian else "phi"
+    slider_phi_column = "phi" if viz_results.Bayesian else "MAP_phi"
     slider_phi = make_new_slider(
         viz_results,
         column=slider_phi_column,

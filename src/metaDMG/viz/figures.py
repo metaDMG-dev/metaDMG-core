@@ -86,7 +86,7 @@ def make_figure(
     viz_results,
     df=None,
     xaxis_column_name="significance",
-    yaxis_column_name="D_max",
+    yaxis_column_name="D",
     d_columns_latex=None,
 ):
 
@@ -161,7 +161,13 @@ def make_figure(
 #%%
 
 
-def plot_group(viz_results, group, D_max_info=None, fit=None, forward_reverse=""):
+def plot_group(
+    viz_results,
+    group,
+    D_info=None,
+    fit=None,
+    forward_reverse="",
+):
 
     custom_data_columns = [
         "direction",
@@ -242,27 +248,27 @@ def plot_group(viz_results, group, D_max_info=None, fit=None, forward_reverse=""
         )
 
         # add D-max as single errorbar
-        if D_max_info is not None:
+        if D_info is not None:
 
-            D_max, D_max_low, D_max_high = D_max_info
+            D, D_low, D_high = D_info
 
             # fit with errorbars
             fig.add_trace(
                 go.Scatter(
                     x=[0.5],
-                    y=[D_max],
+                    y=[D],
                     error_y=dict(
                         type="data",
                         symmetric=False,
-                        array=[D_max_high - D_max],
-                        arrayminus=[D_max - D_max_low],
+                        array=[D_high - D],
+                        arrayminus=[D - D_low],
                         visible=True,
                         color="black",
                     ),
                     mode="markers",
                     name="D-max",
                     marker_color="black",
-                    # hovertemplate=viz_results.hovertemplate_D_max,
+                    # hovertemplate=viz_results.hovertemplate_D,
                     hoverinfo="skip",
                 )
             )
@@ -360,12 +366,12 @@ def update_raw_count_plots(viz_results, click_data, forward_reverse):
             forward_reverse,
         )
 
-        D_max_info = viz_results.get_D_max(sample, tax_id)
+        D_info = viz_results.get_D(sample, tax_id)
 
         fig = plot_group(
             viz_results,
             group,
-            D_max_info,
+            D_info,
             fit,
             forward_reverse,
         )
@@ -391,8 +397,8 @@ def compute_markersize(
 
 def plt_scatterplot(df, viz_results):
 
-    x = "Bayesian_significance" if viz_results.Bayesian else "significance"
-    y = "Bayesian_D_max" if viz_results.Bayesian else "D_max"
+    x = "significance" if viz_results.Bayesian else "MAP_significance"
+    y = "D" if viz_results.Bayesian else "MAP_D"
 
     size_max = df["size"].max()
     size_min = df["size"].min()
@@ -420,11 +426,11 @@ def plt_scatterplot(df, viz_results):
             )
 
         ax.set_xlabel(
-            r"$z$" if viz_results.Bayesian else r"$\lambda_\mathrm{LR}$",
+            r"$Significance$" if viz_results.Bayesian else r"$Significance (MAP)$",
             fontsize=12,
         )
         ax.set_ylabel(
-            r"$D_\mathrm{max}$",
+            r"$Damage$" if viz_results.Bayesian else r"$Damage (MAP)$",
             fontsize=12,
             labelpad=5,
         )

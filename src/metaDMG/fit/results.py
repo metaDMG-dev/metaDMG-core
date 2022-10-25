@@ -126,7 +126,6 @@ def merge(
         f"{prefix}c",
         f"{prefix}rho_Ac",
         "MAP_valid",
-        # "asymmetry",
     ]
 
     # if local or global damage

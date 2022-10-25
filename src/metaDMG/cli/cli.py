@@ -172,7 +172,7 @@ def create_config(
         False,
         "--bayesian",
         "-b",
-        help="Include a fully Bayesian model (probably better, but also _a lot_ slower, about a factor of 100.",
+        help="Include a fully Bayesian model (better, but also slower, about a factor of 100.",
         rich_help_panel="General parameters",
     ),
     output_dir: Path = typer.Option(

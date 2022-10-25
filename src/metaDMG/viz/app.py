@@ -263,60 +263,41 @@ def get_app(results_dir):
             bayesian_list = []
             if viz_results.Bayesian:
 
-                s1 = "Bayesian_D_max_confidence_interval_1_sigma_low"
-                s2 = "Bayesian_D_max_confidence_interval_1_sigma_high"
-                if s1 in ds and s2 in ds:
+                s_D = f", [{ds['D_CI_1_sigma_low']:.3f}, {ds['D_CI_1_sigma_high']:.3f}]"
 
-                    s_D_max = f", [{ds[s1]:.3f}, {ds[s2]:.3f}]"
+                conf_q_low = ds["q_CI_1_sigma_low"]
+                conf_q_high = ds["q_CI_1_sigma_high"]
+                s_q = f", [{conf_q_low:.3f}, {conf_q_high:.3f}]"
 
-                    conf_q_low = ds["Bayesian_q_confidence_interval_1_sigma_low"]
-                    conf_q_high = ds["Bayesian_q_confidence_interval_1_sigma_high"]
-                    s_q = f", [{conf_q_low:.3f}, {conf_q_high:.3f}]"
+                conf_phi_low = viz_utils.human_format(ds["phi_CI_1_sigma_low"])
+                conf_phi_high = viz_utils.human_format(ds["phi_CI_1_sigma_high"])
+                s_phi = f", [{conf_phi_low}, {conf_phi_high}]"
 
-                    conf_phi_low = viz_utils.human_format(
-                        ds["Bayesian_phi_confidence_interval_1_sigma_low"]
-                    )
-                    conf_phi_high = viz_utils.human_format(
-                        ds["Bayesian_phi_confidence_interval_1_sigma_high"]
-                    )
-                    s_phi = f", [{conf_phi_low}, {conf_phi_high}]"
+                conf_A_low = ds["A_CI_1_sigma_low"]
+                conf_A_high = ds["A_CI_1_sigma_high"]
+                s_A = f", [{conf_A_low:.3f}, {conf_A_high:.3f}]"
 
-                    conf_A_low = ds["Bayesian_A_confidence_interval_1_sigma_low"]
-                    conf_A_high = ds["Bayesian_A_confidence_interval_1_sigma_high"]
-                    s_A = f", [{conf_A_low:.3f}, {conf_A_high:.3f}]"
-
-                    conf_c_low = ds["Bayesian_c_confidence_interval_1_sigma_low"]
-                    conf_c_high = ds["Bayesian_c_confidence_interval_1_sigma_high"]
-                    s_c = f", [{conf_c_low:.3f}, {conf_c_high:.3f}]"
-
-                else:
-                    s_D_max = ""
-                    s_q = ""
-                    s_phi = ""
-                    s_c = ""
+                conf_c_low = ds["c_CI_1_sigma_low"]
+                conf_c_high = ds["c_CI_1_sigma_high"]
+                s_c = f", [{conf_c_low:.3f}, {conf_c_high:.3f}]"
 
                 bayesian_list = [
                     "Fit results:",
                     html.Br(),
-                    f"D-max: {ds['Bayesian_D_max']:.3f} "
-                    f"± {ds['Bayesian_D_max_std']:.3f}" + s_D_max,
+                    f"D: {ds['D']:.3f} " f"± {ds['D_std']:.3f}" + s_D,
                     html.Br(),
-                    f"significance: {ds['Bayesian_significance']:.2f}",
+                    f"significance: {ds['significance']:.2f}",
                     html.Br(),
-                    f"P(>1%): {ds['Bayesian_prob_gt_1p_damage']:.2%}",
+                    f"q: {ds['q']:.3f} " f"± {ds['q_std']:.3f}" + s_q,
                     html.Br(),
-                    f"P(>0%): {ds['Bayesian_prob_not_zero_damage']:.2%}",
+                    f"phi: {viz_utils.human_format(ds['phi'])} "
+                    f"± {viz_utils.human_format(ds['phi_std'])}" + s_phi,
                     html.Br(),
-                    f"q: {ds['Bayesian_q']:.3f} " f"± {ds['Bayesian_q_std']:.3f}" + s_q,
+                    f"A: {ds['A']:.3f} " f"± {ds['A_std']:.3f}" + s_A,
                     html.Br(),
-                    f"phi: {viz_utils.human_format(ds['Bayesian_phi'])} "
-                    f"± {viz_utils.human_format(ds['Bayesian_phi_std'])}" + s_phi,
+                    f"c: {ds['c']:.3f} " f"± {ds['c_std']:.3f}" + s_c,
                     html.Br(),
-                    f"A: {ds['Bayesian_A']:.3f} " f"± {ds['Bayesian_A_std']:.3f}" + s_A,
-                    html.Br(),
-                    f"c: {ds['Bayesian_c']:.3f} " f"± {ds['Bayesian_c_std']:.3f}" + s_c,
-                    html.Br(),
-                    f"rho Ac: {ds['Bayesian_rho_Ac']:.3f}",
+                    f"rho Ac: {ds['rho_Ac']:.3f}",
                     html.Br(),
                     html.Br(),
                 ]
@@ -350,25 +331,23 @@ def get_app(results_dir):
 
                 "MAP results:",
                 html.Br(),
-                f"D-max: {ds['D_max']:.3f} "
-                f"± {ds['D_max_std']:.3f}",
+                f"D: {ds['MAP_D']:.3f} "
+                f"± {ds['MAP_D_std']:.3f}",
                 html.Br(),
-                f"significance: {ds['significance']:.2f}",
+                f"significance: {ds['MAP_significance']:.2f}",
                 html.Br(),
-                f"q: {ds['q']:.3f} ± {ds['q_std']:.3f}",
+                f"q: {ds['q']:.3f} ± {ds['MAP_q_std']:.3f}",
                 html.Br(),
-                f"phi: {viz_utils.human_format(ds['phi'])} "
-                f"± {viz_utils.human_format(ds['phi_std'])}",
+                f"phi: {viz_utils.human_format(ds['MAP_phi'])} "
+                f"± {viz_utils.human_format(ds['MAP_phi_std'])}",
                 html.Br(),
-                f"A: {ds['A']:.3f} ± {ds['A_std']:.3f}",
+                f"A: {ds['A']:.3f} ± {ds['MAP_A_std']:.3f}",
                 html.Br(),
-                f"c: {ds['c']:.3f} ± {ds['c_std']:.3f}",
+                f"c: {ds['c']:.3f} ± {ds['MAP_c_std']:.3f}",
                 html.Br(),
-                f"asymmetry: {ds['asymmetry']:.3f}",
+                f"rho Ac: {ds['MAP_rho_Ac']:.3f}",
                 html.Br(),
-                f"rho Ac: {ds['rho_Ac']:.3f}",
-                html.Br(),
-                f"Fit valid: {ds['valid']}",
+                f"Fit valid: {ds['MAP_valid']}",
                 html.Br(),
                 html.Br(),
 
@@ -376,11 +355,6 @@ def get_app(results_dir):
                 html.Br(),
                 html.Br(),
 
-                # f"LR_All: {ds['LR_All']:.3f}", html.Br(),
-                # f"LR_ForRev: {ds['LR_ForRev']:.3f}", html.Br(),
-                # f"LR_ForRev_All: {ds['LR_ForRev_All']:.3f}", html.Br(), html.Br(),
-                # f"chi2 all: {ds['chi2_all']:.3f}", html.Br(),
-                # f"chi2_ForRev: {ds['chi2_ForRev']:.3f}", html.Br(),
             ]
             # fmt: on
 
