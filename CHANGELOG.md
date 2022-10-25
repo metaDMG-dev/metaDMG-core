@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.36.0 (2022-10-25)
+### Feature
+* Add MAP version of dashboard as well ([`849c13e`](https://github.com/metaDMG-dev/metaDMG-core/commit/849c13e21629c16efe38eadc127a46c5f55957c9))
+* Update variable names ([`a87e712`](https://github.com/metaDMG-dev/metaDMG-core/commit/a87e7126f9560a3fca36e022b9efb8f25a533a50))
+
 ## v0.35.7 (2022-10-17)
 ### Fix
 * Stop immediately after keyboard interruption ([`157e9f0`](https://github.com/metaDMG-dev/metaDMG-core/commit/157e9f0f382baaf048aaebb2b0560e2865054337))
