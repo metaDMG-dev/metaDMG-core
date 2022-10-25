@@ -4,6 +4,7 @@
 #%%
 
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mtick
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
@@ -155,6 +156,9 @@ def make_figure(
     fig.update_xaxes(title=d_columns_latex[xaxis_column_name])
     fig.update_yaxes(title=d_columns_latex[yaxis_column_name])
 
+    if yaxis_column_name == "D" or yaxis_column_name == "MAP_D":
+        fig.update_yaxes(tickformat=".1%")
+
     return fig
 
 
@@ -204,6 +208,7 @@ def plot_group(
     fig.update_yaxes(
         title=r"",
         rangemode="nonnegative",  # tozero, nonnegative
+        tickformat=".1%",
     )
 
     fig.update_traces(hovertemplate=hovertemplate, marker={"size": 10})
@@ -425,12 +430,13 @@ def plt_scatterplot(df, viz_results):
                 label=r"$\verb|" + sample + r"|$" if viz_utils.has_latex() else sample,
             )
 
+        ax.yaxis.set_major_formatter(mtick.PercentFormatter(1.0))
         ax.set_xlabel(
-            r"$Significance$" if viz_results.Bayesian else r"$Significance (MAP)$",
+            r"Significance" if viz_results.Bayesian else r"Significance (MAP)",
             fontsize=12,
         )
         ax.set_ylabel(
-            r"$Damage$" if viz_results.Bayesian else r"$Damage (MAP)$",
+            r"Damage" if viz_results.Bayesian else r"Damage (MAP)",
             fontsize=12,
             labelpad=5,
         )
@@ -618,6 +624,7 @@ def plt_errorplot(viz_results, group, fit=None):
         ax.set_title(title, pad=30)
 
         ax.xaxis.set_major_locator(MultipleOffsetLocator(base=2, offset=1))
+        ax.yaxis.set_major_formatter(mtick.PercentFormatter(1.0))
 
         legend = ax.legend(
             # title=r"Direction:",
