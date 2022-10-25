@@ -469,7 +469,7 @@ def get_df_results(
             return df_results
 
         # if df_results has already been run with Bayesian, return this
-        if dataframe_columns_contains(df_results, "Bayesian"):
+        if dataframe_columns_contains(df_results, "damage"):
             return df_results
 
     # Compute the results:

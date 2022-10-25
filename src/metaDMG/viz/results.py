@@ -105,8 +105,8 @@ def correct_for_non_LCA(df):
 
 def add_MAP_measures(df):
     df["MAP_rho_Ac_abs"] = np.abs(df["MAP_rho_Ac"])
-    df["MAP_damage_CI_low"] = df["MAP_damage"] - df["damage_std"]
-    df["MAP_damage_CI_high"] = df["MAP_damage"] + df["damage_std"]
+    df["MAP_damage_CI_low"] = df["MAP_damage"] - df["MAP_damage_std"]
+    df["MAP_damage_CI_high"] = df["MAP_damage"] + df["MAP_damage_std"]
 
 
 def add_bayesian_measures(df):
@@ -143,20 +143,21 @@ class VizResults:
 
         add_MAP_measures(df)
 
-        if any([column == "damage" for column in df.columns]) and (
-            not any(df["damage"].isna())
-        ):
+        if "damage" in df.columns and (not any(df["damage"].isna())):
             self.Bayesian = True
             add_bayesian_measures(df)
+        else:
+            self.Bayesian = False
 
         log_columns = [
             "N_reads",
             "N_alignments",
-            # "lambda_LR",
-            "phi",
+            "MAP_phi",
             "k_sum_total",
             "N_sum_total",
         ]
+        if self.Bayesian:
+            log_columns.append("phi")
 
         for column in log_columns:
             log_column = "log_" + column
@@ -355,7 +356,7 @@ class VizResults:
             "    significance: %{customdata[_XXX_]:6.2f} <br>"
             "    q:            %{customdata[_XXX_]:6.2f}  ± %{customdata[_XXX_]:.2f} <br>"
             "    phi:            %{customdata[_XXX_]:.3s} ± %{customdata[_XXX_]:.3s} <br>"
-            "    corr. Ac:      %{customdata[_XXX_]:6.3f} <br>"
+            "    corr. Ac:      %{customdata[_XXX_]:6.3f} <br><br>"
             "<b>Counts</b>: <br>"
             "    N reads:      %{customdata[_XXX_]:6.3s} <br>"
             "    N alignments: %{customdata[_XXX_]:6.3s} <br>"
@@ -502,15 +503,10 @@ class VizResults:
 
         D = ds[f"{prefix}damage"].iloc[0]
 
-        s1 = "damage_CI_1_sigma_low"
-        s2 = "damage_CI_1_sigma_high"
-        if s1 in ds and s2 in ds:
-            D_low = ds[s1].iloc[0]
-            D_high = ds[s2].iloc[0]
-        else:
-            std = ds[f"{prefix}damage_std"].iloc[0]
-            D_low = D - std
-            D_high = D + std
+        s1 = f"{prefix}damage_CI_low"
+        s2 = f"{prefix}damage_CI_high"
+        D_low = ds[s1].iloc[0]
+        D_high = ds[s2].iloc[0]
 
         return D, D_low, D_high
 
@@ -528,27 +524,27 @@ class VizResults:
         text = r"$\mathrm{Bayesian}" if self.Bayesian else r"$\mathrm{MAP}"
         text += r"\,\, \mathrm{fit}$" + "\n\n"
 
-        D_col = "damage" if self.Bayesian else "damage"
+        D_col = "damage" if self.Bayesian else "MAP_damage"
         D_str = sanitize(D_col)
         D = ds[D_col].iloc[0]
         D_std = ds[D_col + "_std"].iloc[0]
         text += "$" + D_str + f" = {D:.3f} " + r"\pm" + f" {D_std:.3f}" + r"$"
         text += "\n"
 
-        fitqual_col = "significance" if self.Bayesian else "significance"
+        fitqual_col = "significance" if self.Bayesian else "MAP_significance"
         fitqual_str = sanitize(fitqual_col)
         fitqual = ds[fitqual_col].iloc[0]
         text += "$" + fitqual_str + f" = {fitqual:.2f} " + r"$"
         text += "\n"
 
-        phi_col = "phi" if self.Bayesian else "phi"
+        phi_col = "phi" if self.Bayesian else "MAP_phi"
         phi_str = sanitize(phi_col)
         phi = viz_utils.human_format(ds[phi_col].iloc[0])
         phi_std = viz_utils.human_format(ds[phi_col + "_std"].iloc[0])
         text += "$" + phi_str + f" = {phi} " + r"\pm" + f" {phi_std}" + r"$"
         text += "\n"
 
-        q_col = "q" if self.Bayesian else "q"
+        q_col = "q" if self.Bayesian else "MAP_q"
         q_str = sanitize(q_col)
         q = ds[q_col].iloc[0]
         q_std = ds[q_col + "_std"].iloc[0]
