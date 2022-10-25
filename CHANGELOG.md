@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v0.35.7 (2022-10-17)
+### Fix
+* Stop immediately after keyboard interruption ([`157e9f0`](https://github.com/metaDMG-dev/metaDMG-core/commit/157e9f0f382baaf048aaebb2b0560e2865054337))
+
+## v0.35.6 (2022-10-17)
+### Fix
+* Fix issue in dashboard when only forward samples ([`288f24b`](https://github.com/metaDMG-dev/metaDMG-core/commit/288f24b7a7946b147922412704b6de21566a5192))
+
 ## v0.35.5 (2022-10-17)
 ### Fix
 * Remove empty data before fitting ([`94d7975`](https://github.com/metaDMG-dev/metaDMG-core/commit/94d797527f2f434604ac659d5ecf772a52792c48))
