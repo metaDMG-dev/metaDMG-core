@@ -116,7 +116,7 @@ def merge(
         "N_reads",
         "N_alignments",
         #
-        f"{prefix}D",
+        f"{prefix}damage",
         f"{prefix}significance",
         "mean_L",
         "mean_GC",

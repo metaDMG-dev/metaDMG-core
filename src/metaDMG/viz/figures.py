@@ -87,7 +87,7 @@ def make_figure(
     viz_results,
     df=None,
     xaxis_column_name="significance",
-    yaxis_column_name="D",
+    yaxis_column_name="damage",
     d_columns_latex=None,
 ):
 
@@ -156,7 +156,7 @@ def make_figure(
     fig.update_xaxes(title=d_columns_latex[xaxis_column_name])
     fig.update_yaxes(title=d_columns_latex[yaxis_column_name])
 
-    if yaxis_column_name == "D" or yaxis_column_name == "MAP_D":
+    if yaxis_column_name == "damage" or yaxis_column_name == "MAP_damage":
         fig.update_yaxes(tickformat=".1%")
 
     return fig
@@ -403,7 +403,7 @@ def compute_markersize(
 def plt_scatterplot(df, viz_results):
 
     x = "significance" if viz_results.Bayesian else "MAP_significance"
-    y = "D" if viz_results.Bayesian else "MAP_D"
+    y = "damage" if viz_results.Bayesian else "MAP_damage"
 
     size_max = df["size"].max()
     size_min = df["size"].min()

@@ -263,7 +263,7 @@ def get_app(results_dir):
             bayesian_list = []
             if viz_results.Bayesian:
 
-                s_D = f", [{ds['D_CI_1_sigma_low']:.2%}, {ds['D_CI_1_sigma_high']:.2%}]"
+                s_D = f", [{ds['damage_CI_1_sigma_low']:.2%}, {ds['damage_CI_1_sigma_high']:.2%}]"
 
                 conf_q_low = ds["q_CI_1_sigma_low"]
                 conf_q_high = ds["q_CI_1_sigma_high"]
@@ -284,7 +284,7 @@ def get_app(results_dir):
                 bayesian_list = [
                     "Fit results:",
                     html.Br(),
-                    f"D: {ds['D']:.2%} " f"± {ds['D_std']:.2%}" + s_D,
+                    f"D: {ds['damage']:.2%} " f"± {ds['damage_std']:.2%}" + s_D,
                     html.Br(),
                     f"significance: {ds['significance']:.2f}",
                     html.Br(),
@@ -331,8 +331,8 @@ def get_app(results_dir):
 
                 "MAP results:",
                 html.Br(),
-                f"D: {ds['MAP_D']:.2%} "
-                f"± {ds['MAP_D_std']:.2%}",
+                f"D: {ds['MAP_damage']:.2%} "
+                f"± {ds['MAP_damage_std']:.2%}",
                 html.Br(),
                 f"significance: {ds['MAP_significance']:.2f}",
                 html.Br(),

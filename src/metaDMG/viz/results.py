@@ -104,15 +104,15 @@ def correct_for_non_LCA(df):
 
 
 def add_MAP_measures(df):
-    df["rho_Ac_abs"] = np.abs(df["rho_Ac"])
-    df["MAP_D_CI_low"] = df["MAP_D"] - df["D_std"]
-    df["MAP_D_CI_high"] = df["MAP_D"] + df["D_std"]
+    df["MAP_rho_Ac_abs"] = np.abs(df["MAP_rho_Ac"])
+    df["MAP_damage_CI_low"] = df["MAP_damage"] - df["damage_std"]
+    df["MAP_damage_CI_high"] = df["MAP_damage"] + df["damage_std"]
 
 
 def add_bayesian_measures(df):
     df["rho_Ac_abs"] = np.abs(df["rho_Ac"])
-    df["D_CI_low"] = df["D_CI_1_sigma_low"]
-    df["D_CI_high"] = df["D_CI_1_sigma_high"]
+    df["damage_CI_low"] = df["damage_CI_1_sigma_low"]
+    df["damage_CI_high"] = df["damage_CI_1_sigma_high"]
 
 
 #%%
@@ -143,7 +143,9 @@ class VizResults:
 
         add_MAP_measures(df)
 
-        if any([column == "D" for column in df.columns]) and (not any(df["D"].isna())):
+        if any([column == "damage" for column in df.columns]) and (
+            not any(df["damage"].isna())
+        ):
             self.Bayesian = True
             add_bayesian_measures(df)
 
@@ -283,7 +285,7 @@ class VizResults:
         symbol_counter = 0
         d_cmap = {}
         d_symbols = {}
-        markers = ["o", "s", "^", "v", "<", ">", "d"]
+        markers = ["o", "s", "^", "v", "<", ">", "damage"]
         d_markers = {}
         for i, (name, _) in enumerate(groupby):
 
@@ -316,8 +318,8 @@ class VizResults:
             "tax_id",
             # Bayesian Fits
             # Frequentist fits
-            "MAP_D",
-            "MAP_D_std",
+            "MAP_damage",
+            "MAP_damage_std",
             "MAP_significance",
             "MAP_q",
             "MAP_q_std",
@@ -332,8 +334,8 @@ class VizResults:
         ]
 
         custom_data_columns_Bayesian = [
-            "D",
-            "D_std",
+            "damage",
+            "damage_std",
             "significance",
             "q",
             "q_std",
@@ -372,7 +374,7 @@ class VizResults:
         )
 
         if self.contains_forward_only:
-            index = self.custom_data_columns.index("MAP_D")
+            index = self.custom_data_columns.index("MAP_damage")
             self.custom_data_columns[index:index] = ["forward_only_str"]
 
             index = self.hovertemplate.find("<b>MAP results</b>: <br>")
@@ -384,7 +386,7 @@ class VizResults:
 
         # if Bayesian fits, include these results
         if self.Bayesian:
-            index = self.custom_data_columns.index("MAP_D")
+            index = self.custom_data_columns.index("MAP_damage")
             self.custom_data_columns[index:index] = custom_data_columns_Bayesian
 
             index = self.hovertemplate.find("<b>MAP results</b>: <br>")
@@ -496,17 +498,17 @@ class VizResults:
         if self.Bayesian:
             prefix = ""
         else:
-            prefix = ""
+            prefix = "MAP_"
 
-        D = ds[f"{prefix}D"].iloc[0]
+        D = ds[f"{prefix}damage"].iloc[0]
 
-        s1 = "D_CI_1_sigma_low"
-        s2 = "D_CI_1_sigma_high"
+        s1 = "damage_CI_1_sigma_low"
+        s2 = "damage_CI_1_sigma_high"
         if s1 in ds and s2 in ds:
             D_low = ds[s1].iloc[0]
             D_high = ds[s2].iloc[0]
         else:
-            std = ds[f"{prefix}D_std"].iloc[0]
+            std = ds[f"{prefix}damage_std"].iloc[0]
             D_low = D - std
             D_high = D + std
 
@@ -526,7 +528,7 @@ class VizResults:
         text = r"$\mathrm{Bayesian}" if self.Bayesian else r"$\mathrm{MAP}"
         text += r"\,\, \mathrm{fit}$" + "\n\n"
 
-        D_col = "D" if self.Bayesian else "D"
+        D_col = "damage" if self.Bayesian else "damage"
         D_str = sanitize(D_col)
         D = ds[D_col].iloc[0]
         D_std = ds[D_col + "_std"].iloc[0]

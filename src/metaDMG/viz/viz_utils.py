@@ -262,13 +262,13 @@ def get_range_slider_keywords(viz_results, column="N_reads", N_steps=100):
             marks[marks_steps[0]] = {"label": no_min, "style": {"color": "#a3ada9"}}
             marks[marks_steps[-1]] = {"label": no_max, "style": {"color": "#a3ada9"}}
 
-    elif column in ["MAP_D", "MAP_q", "MAP_A", "MAP_c"] or column in [
-        "D",
+    elif column in ["MAP_damage", "MAP_q", "MAP_A", "MAP_c"] or column in [
+        "damage",
         "q",
         "A",
         "c",
-        "D_CI_low",
-        "D_CI_high",
+        "damage_CI_low",
+        "damage_CI_high",
     ]:
         range_min = 0.0
         range_max = 1.0
@@ -627,16 +627,16 @@ def get_graph_kwargs_no_buttons():
 
 def get_d_columns_latex(viz_results):
     d_columns_latex = {
-        "D": r"$\text{Damage}$",
-        "MAP_D": r"$\text{Damage} \,\, \text{(MAP)}$",
+        "damage": r"$\text{Damage}$",
+        "MAP_damage": r"$Damage \,\, \text{(MAP)}$",
         #
         "significance": r"$\text{significance}$",
         "MAP_significance": r"$\text{significance} \,\, \text{(MAP)}$",
         #
-        "D_CI_low": r"$D \,\, \text{CI. low}$",
-        "D_CI_high": r"$D \,\, \text{CI. high}$",
-        "MAP_D_CI_low": r"$D \,\, \text{CI. low} \,\, \text{(MAP)}$",
-        "MAP_D_CI_high": r"$D \,\, \text{CI. high} \,\, \text{(MAP)}$",
+        "damage_CI_low": r"$D \,\, \text{CI. low}$",
+        "damage_CI_high": r"$D \,\, \text{CI. high}$",
+        "MAP_damage_CI_low": r"$D \,\, \text{CI. low} \,\, \text{(MAP)}$",
+        "MAP_damage_CI_high": r"$D \,\, \text{CI. high} \,\, \text{(MAP)}$",
         #
         "q": r"$q$",
         "MAP_q": r"$q \text{(MAP)}$",
@@ -662,8 +662,8 @@ def get_d_columns_latex(viz_results):
         "mean_GC": r"$\text{mean GC}$",
         "std_GC": r"$\text{std GC}$",
         #
-        "D_std": r"$\sigma_{D}$",
-        "MAP_D_std": r"$\sigma_{D} \text{(MAP)}$",
+        "damage_std": r"$\sigma_{D}$",
+        "MAP_damage_std": r"$\sigma_{D} \text{(MAP)}$",
         "q_std": r"$\sigma_q \text{(MAP)}$",
         "phi_std": r"$\sigma_\phi \text{(MAP)}$",
         "A_std": r"$\sigma_A \text{(MAP)}$",

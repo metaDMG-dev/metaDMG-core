@@ -643,7 +643,7 @@ def compute(config, df_mismatches):
         "tax_rank",
         "N_reads",
         "N_alignments",
-        f"{prefix}D",
+        f"{prefix}damage",
         f"{prefix}significance",
         "mean_L",
         "std_L",

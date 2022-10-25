@@ -99,10 +99,10 @@ def add_D_information(
     # 1000x faster approximation for sp_betabinom(N, alpha, beta)
     pdf_approx = sp_betabinom(N, alpha.mean(), beta.mean())
 
-    fit_result[f"{prefix}D"] = mu.item()
-    fit_result[f"{prefix}D_std"] = std.item()
+    fit_result[f"{prefix}damage"] = mu.item()
+    fit_result[f"{prefix}damage_std"] = std.item()
     fit_result[f"{prefix}significance"] = mu.item() / std.item()
-    fit_result[f"{prefix}D_median"] = np.median(A)
+    fit_result[f"{prefix}damage_median"] = np.median(A)
 
     # fit_result[f"{prefix}prob_lt_1p_damage"] = pdf_beta.cdf(0.01).mean()
     # # fit_result[f"{prefix}prob_lt_1p_damage_betabinom"] = pdf.cdf(0.01 * N).mean()
@@ -110,15 +110,19 @@ def add_D_information(
 
     for n_sigma in [1, 2, 3]:
         conf = get_n_sigma_probability(n_sigma)
-        fit_result[f"{prefix}D_CI_{n_sigma}_sigma_low"] = (
+        fit_result[f"{prefix}damage_CI_{n_sigma}_sigma_low"] = (
             pdf_approx.ppf((1 - conf) / 2.0).mean() / N
         )
-        fit_result[f"{prefix}D_CI_{n_sigma}_sigma_high"] = (
+        fit_result[f"{prefix}damage_CI_{n_sigma}_sigma_high"] = (
             pdf_approx.ppf((1 + conf) / 2.0).mean() / N
         )
 
-    fit_result[f"{prefix}D_CI_95_low"] = pdf_approx.ppf((1 - 0.95) / 2.0).mean() / N
-    fit_result[f"{prefix}D_CI_95_high"] = pdf_approx.ppf((1 + 0.95) / 2.0).mean() / N
+    fit_result[f"{prefix}damage_CI_95_low"] = (
+        pdf_approx.ppf((1 - 0.95) / 2.0).mean() / N
+    )
+    fit_result[f"{prefix}damage_CI_95_high"] = (
+        pdf_approx.ppf((1 + 0.95) / 2.0).mean() / N
+    )
 
     return fit_result
 

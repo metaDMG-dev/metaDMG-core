@@ -72,7 +72,7 @@ class Frequentist:
         self.is_fitted = False
 
     def __repr__(self):
-        s = f"FrequentistPMD(data, method={self.method}). \n"
+        s = f"Frequentist(data, method={self.method}). \n"
         if self.is_fitted:
             s += self.__str__()
         return s
@@ -82,14 +82,14 @@ class Frequentist:
             s = f"sample = {self.sample}, tax_id = {self.tax_id} \n"
             s += f"A = {self.A:.3f}, q = {self.q:.3f},"
             s += f"c = {self.c:.5f}, phi = {self.phi:.1f} \n"
-            s += f"D = {self.D:.3f} +/- {self.D_std:.3f} \n"
+            s += f"damage = {self.damage:.3f} +/- {self.damage_std:.3f} \n"
             s += f"significance = {self.significance:.3f} \n"
             s += f"rho_Ac = {self.rho_Ac:.3f} \n"
             s += f"log_likelihood = {self.log_likelihood:.3f} \n"
             s += f"valid = {self.valid}"
             return s
         else:
-            return f"FrequentistPMD(data, method={self.method}). \n\n"
+            return f"Frequentist(data, method={self.method}, is_fitted=False). \n\n"
 
     def __call__(self, A, q, c, phi):
         if self.method == "likelihood":
@@ -237,9 +237,9 @@ class Frequentist:
         self.valid = self.m.valid
 
         if self.valid:
-            self.D, self.D_std, self.significance = self._get_D()
+            self.damage, self.damage_std, self.significance = self._get_D()
         else:
-            self.D, self.D_std, self.significance = np.nan, np.nan, np.nan
+            self.damage, self.damage_std, self.significance = np.nan, np.nan, np.nan
 
         return self
 
@@ -400,8 +400,8 @@ def make_fits(
     ).fit()
 
     vars_to_keep = [
-        "D",
-        "D_std",
+        "damage",
+        "damage_std",
         "significance",
         "q",
         "q_std",

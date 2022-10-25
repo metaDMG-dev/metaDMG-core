@@ -87,7 +87,7 @@ def get_content_main(viz_results, start_configuration):
     dropdown_y_axis = dcc.Dropdown(
         id="yaxis_column",
         options=[{"label": i, "value": i} for i in columns],
-        value="D" if viz_results.Bayesian else "MAP_D",
+        value="damage" if viz_results.Bayesian else "MAP_damage",
     )
 
     XY_axis_dropdowns = [
