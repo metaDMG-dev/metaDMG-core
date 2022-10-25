@@ -576,12 +576,12 @@
 
 <span class="k">def</span> <span class="nf">get_single_fit_prediction</span><span class="p">(</span><span class="n">df_results</span><span class="p">):</span>
 
-    <span class="n">Bayesian</span> <span class="o">=</span> <span class="nb">any</span><span class="p">([</span><span class="s2">&quot;Bayesian&quot;</span> <span class="ow">in</span> <span class="n">column</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">df_results</span><span class="o">.</span><span class="n">columns</span><span class="p">])</span>
+    <span class="n">Bayesian</span> <span class="o">=</span> <span class="nb">any</span><span class="p">([</span><span class="n">column</span> <span class="o">==</span> <span class="s2">&quot;damage&quot;</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">df_results</span><span class="o">.</span><span class="n">columns</span><span class="p">])</span>
 
     <span class="k">if</span> <span class="n">Bayesian</span><span class="p">:</span>
-        <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;Bayesian_&quot;</span>
-    <span class="k">else</span><span class="p">:</span>
         <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;MAP_&quot;</span>
 
     <span class="k">if</span> <span class="s2">&quot;k-1&quot;</span> <span class="ow">in</span> <span class="n">df_results</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
         <span class="n">forward_only</span> <span class="o">=</span> <span class="kc">False</span>
