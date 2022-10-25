@@ -166,7 +166,7 @@ def plot_group(
     group,
     D_info=None,
     fit=None,
-    forward_reverse="",
+    forward_only=False,
 ):
 
     custom_data_columns = [
@@ -217,7 +217,7 @@ def plot_group(
         hoverlabel_font_size=14,
     )
 
-    if forward_reverse == "":
+    if not forward_only:
         fig.update_layout(
             **layout,
             legend=dict(
@@ -347,7 +347,7 @@ def plot_group(
 #%%
 
 
-def update_raw_count_plots(viz_results, click_data, forward_reverse):
+def update_raw_count_plots(viz_results, click_data, forward_only):
     if click_data is not None:
 
         sample, tax_id = viz_utils.get_sample_tax_id_from_click_data(
@@ -358,12 +358,12 @@ def update_raw_count_plots(viz_results, click_data, forward_reverse):
         group = viz_results.get_single_count_group(
             sample,
             tax_id,
-            forward_reverse,
+            forward_only,
         )
         fit = viz_results.get_single_fit_prediction(
             sample,
             tax_id,
-            forward_reverse,
+            forward_only,
         )
 
         D_info = viz_results.get_D(sample, tax_id)
@@ -373,7 +373,7 @@ def update_raw_count_plots(viz_results, click_data, forward_reverse):
             group,
             D_info,
             fit,
-            forward_reverse,
+            forward_only,
         )
         return fig
     else:

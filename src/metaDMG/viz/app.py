@@ -153,32 +153,32 @@ def get_app(results_dir):
             return not is_open, is_open
         return is_open, True
 
-    @app.callback(
-        output=[
-            Output(
-                "sidebar_right_collapsed_toggle_forward_reverse",
-                "is_open",
-            ),
-            Output(
-                "sidebar_right_btn_toggle_forward_reverse",
-                "outline",
-            ),
-        ],
-        inputs=dict(
-            n=Input(
-                "sidebar_right_btn_toggle_forward_reverse",
-                "n_clicks",
-            ),
-            is_open=State(
-                "sidebar_right_collapsed_toggle_forward_reverse",
-                "is_open",
-            ),
-        ),
-    )
-    def toggle_sidebar_right_forward_reverse(n, is_open):
-        if n:
-            return not is_open, is_open
-        return is_open, True
+    # @app.callback(
+    #     output=[
+    #         Output(
+    #             "sidebar_right_collapsed_toggle_forward_only",
+    #             "is_open",
+    #         ),
+    #         Output(
+    #             "sidebar_right_btn_toggle_forward_only",
+    #             "outline",
+    #         ),
+    #     ],
+    #     inputs=dict(
+    #         n=Input(
+    #             "sidebar_right_btn_toggle_forward_only",
+    #             "n_clicks",
+    #         ),
+    #         is_open=State(
+    #             "sidebar_right_collapsed_toggle_forward_only",
+    #             "is_open",
+    #         ),
+    #     ),
+    # )
+    # def toggle_sidebar_right_forward_only(n, is_open):
+    #     if n:
+    #         return not is_open, is_open
+    #     return is_open, True
 
     #%%
 
@@ -196,42 +196,42 @@ def get_app(results_dir):
         return figures.update_raw_count_plots(
             viz_results,
             click_data,
-            forward_reverse="",
+            forward_only=False,
         )
 
-    @app.callback(
-        output=Output(
-            "sidebar_right_graph_forward",
-            "figure",
-        ),
-        inputs=Input(
-            "main_graph",
-            "clickData",
-        ),
-    )
-    def update_sidebar_right_plot_forward(click_data):
-        return figures.update_raw_count_plots(
-            viz_results,
-            click_data,
-            forward_reverse="Forward",
-        )
+    # @app.callback(
+    #     output=Output(
+    #         "sidebar_right_graph_forward",
+    #         "figure",
+    #     ),
+    #     inputs=Input(
+    #         "main_graph",
+    #         "clickData",
+    #     ),
+    # )
+    # def update_sidebar_right_plot_forward(click_data):
+    #     return figures.update_raw_count_plots(
+    #         viz_results,
+    #         click_data,
+    #         forward_only=True,
+    #     )
 
-    @app.callback(
-        output=Output(
-            "sidebar_right_graph_reverse",
-            "figure",
-        ),
-        inputs=Input(
-            "main_graph",
-            "clickData",
-        ),
-    )
-    def update_sidebar_right_plot_reverse(click_data):
-        return figures.update_raw_count_plots(
-            viz_results,
-            click_data,
-            forward_reverse="Reverse",
-        )
+    # @app.callback(
+    #     output=Output(
+    #         "sidebar_right_graph_reverse",
+    #         "figure",
+    #     ),
+    #     inputs=Input(
+    #         "main_graph",
+    #         "clickData",
+    #     ),
+    # )
+    # def update_sidebar_right_plot_reverse(click_data):
+    #     return figures.update_raw_count_plots(
+    #         viz_results,
+    #         click_data,
+    #         forward_only="Reverse",
+    #     )
 
     @app.callback(
         output=Output(
@@ -263,7 +263,7 @@ def get_app(results_dir):
             bayesian_list = []
             if viz_results.Bayesian:
 
-                s_D = f", [{ds['D_CI_1_sigma_low']:.3f}, {ds['D_CI_1_sigma_high']:.3f}]"
+                s_D = f", [{ds['D_CI_1_sigma_low']:.2%}, {ds['D_CI_1_sigma_high']:.2%}]"
 
                 conf_q_low = ds["q_CI_1_sigma_low"]
                 conf_q_high = ds["q_CI_1_sigma_high"]
@@ -284,7 +284,7 @@ def get_app(results_dir):
                 bayesian_list = [
                     "Fit results:",
                     html.Br(),
-                    f"D: {ds['D']:.3f} " f"± {ds['D_std']:.3f}" + s_D,
+                    f"D: {ds['D']:.2%} " f"± {ds['D_std']:.2%}" + s_D,
                     html.Br(),
                     f"significance: {ds['significance']:.2f}",
                     html.Br(),
@@ -331,8 +331,8 @@ def get_app(results_dir):
 
                 "MAP results:",
                 html.Br(),
-                f"D: {ds['MAP_D']:.3f} "
-                f"± {ds['MAP_D_std']:.3f}",
+                f"D: {ds['MAP_D']:.2%} "
+                f"± {ds['MAP_D_std']:.2%}",
                 html.Br(),
                 f"significance: {ds['MAP_significance']:.2f}",
                 html.Br(),
@@ -354,6 +354,10 @@ def get_app(results_dir):
                 f"Tax path: {viz_utils.tax_path_to_string(ds['tax_path'])}",
                 html.Br(),
                 html.Br(),
+                html.Br(),
+                html.Br(),
+                html.Br(),
+                f"space here",
 
             ]
             # fmt: on

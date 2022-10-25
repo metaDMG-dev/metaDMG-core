@@ -484,45 +484,45 @@ def get_sidebar_right(start_configuration):
         ]
     )
 
-    sidebar_right_collapsed_toggle_forward_reverse_graph = dbc.Form(
-        [
-            dcc.Graph(
-                figure=figures.create_empty_figure(),
-                id="sidebar_right_graph_forward",
-                style={"height": "20vh"},
-                **viz_utils.get_graph_kwargs_no_buttons(),
-            ),
-            dcc.Graph(
-                figure=figures.create_empty_figure(),
-                id="sidebar_right_graph_reverse",
-                style={"height": "20vh"},
-                **viz_utils.get_graph_kwargs_no_buttons(),
-            ),
-        ]
-    )
+    # sidebar_right_collapsed_toggle_forward_only_graph = dbc.Form(
+    #     [
+    #         dcc.Graph(
+    #             figure=figures.create_empty_figure(),
+    #             id="sidebar_right_graph_forward",
+    #             style={"height": "20vh"},
+    #             **viz_utils.get_graph_kwargs_no_buttons(),
+    #         ),
+    #         # dcc.Graph(
+    #         #     figure=figures.create_empty_figure(),
+    #         #     id="sidebar_right_graph_reverse",
+    #         #     style={"height": "20vh"},
+    #         #     **viz_utils.get_graph_kwargs_no_buttons(),
+    #         # ),
+    #     ]
+    # )
 
-    sidebar_right_collapsed_toggle_forward_reverse = html.Div(
-        [
-            html.Div(
-                dbc.Button(
-                    "Forward / Reverse",
-                    id="sidebar_right_btn_toggle_forward_reverse",
-                    color="secondary",
-                    outline=True,
-                    size="lg",
-                ),
-                className="d-grid gap-2",
-            ),
-            dbc.Collapse(
-                sidebar_right_collapsed_toggle_forward_reverse_graph,
-                id="sidebar_right_collapsed_toggle_forward_reverse",
-                is_open=False,
-            ),
-            html.Br(),
-            html.Br(),
-            html.Br(),
-        ]
-    )
+    # sidebar_right_collapsed_toggle_forward_only = html.Div(
+    #     [
+    #         html.Div(
+    #             dbc.Button(
+    #                 "Forward / Reverse",
+    #                 id="sidebar_right_btn_toggle_forward_only",
+    #                 color="secondary",
+    #                 outline=True,
+    #                 size="lg",
+    #             ),
+    #             className="d-grid gap-2",
+    #         ),
+    #         dbc.Collapse(
+    #             sidebar_right_collapsed_toggle_forward_only_graph,
+    #             id="sidebar_right_collapsed_toggle_forward_only",
+    #             is_open=False,
+    #         ),
+    #         html.Br(),
+    #         html.Br(),
+    #         html.Br(),
+    #     ]
+    # )
 
     sidebar_right = html.Div(
         [
@@ -531,8 +531,8 @@ def get_sidebar_right(start_configuration):
             sidebar_right_collapsed_toggle_combined,
             html.Hr(),
             sidebar_right_results,
-            html.Hr(),
-            sidebar_right_collapsed_toggle_forward_reverse,
+            # html.Hr(),
+            # sidebar_right_collapsed_toggle_forward_only,
         ],
         id="sidebar_right",
         style=start_configuration.style_sidebar_right,

@@ -37,7 +37,7 @@ def sort_dataframe(df):
     return df
 
 
-def pd_wide_to_long_forward_reverse(group_wide, sep, direction):
+def pd_wide_to_long_forward_only(group_wide, sep, direction):
     stub_names = ["k", "N", "f"]
     group_long = pd.wide_to_long(
         group_wide,
@@ -52,14 +52,14 @@ def pd_wide_to_long_forward_reverse(group_wide, sep, direction):
 
 def wide_to_long_df(group_wide):
 
-    group_long_forward = pd_wide_to_long_forward_reverse(
+    group_long_forward = pd_wide_to_long_forward_only(
         group_wide,
         sep="+",
         direction="Forward",
     )
 
     try:
-        group_long_reverse = pd_wide_to_long_forward_reverse(
+        group_long_reverse = pd_wide_to_long_forward_only(
             group_wide,
             sep="-",
             direction="Reverse",
@@ -301,7 +301,7 @@ class VizResults:
 
         self.d_cmap_fit = {
             "Forward": cmap[0],
-            "Reverse": cmap[3],
+            "Reverse": cmap[1],
             "Fit": cmap[2],
         }
 
@@ -425,49 +425,33 @@ class VizResults:
         except Exception as e:
             raise e
 
-    def get_single_count_group(self, sample, tax_id, forward_reverse=""):
+    def get_single_count_group(self, sample, tax_id, forward_only=False):
         query = f"sample == '{sample}' & tax_id == '{tax_id}'"
         group_wide = self.df.query(query)
         group = wide_to_long_df(group_wide).dropna(axis="rows")
 
-        if forward_reverse.lower() == "forward":
+        if forward_only:
             return group.query(f"direction=='Forward'")
-        elif forward_reverse.lower() == "reverse":
-            return group.query(f"direction=='Reverse'")
         else:
             return group
 
-    def get_single_fit_prediction(self, sample, tax_id, forward_reverse=""):
+    def get_single_fit_prediction(self, sample, tax_id, forward_only=False):
         query = f"sample == '{sample}' & tax_id == '{tax_id}'"
         ds = self.df.query(query)
         if len(ds) != 1:
             raise AssertionError(f"Something wrong here, got: {ds}")
 
-        group = self.get_single_count_group(sample, tax_id, forward_reverse)
+        group = self.get_single_count_group(sample, tax_id, forward_only)
 
         if len(group) == 0:
-            if ds.iloc[0]["forward_only"] and forward_reverse.lower() == "reverse":
-                return "FORWARD ONLY"
-            else:
-                raise AssertionError(
-                    f"Something wrong here, got: {group=}, {tax_id=}, {forward_reverse=}"
-                )
+            raise AssertionError(
+                f"Something wrong here, got: {group=}, {tax_id=}, {forward_only=}"
+            )
 
-        # if self.contains_forward_only:
-        #     if forward_reverse.lower() == "reverse":
-        #         return "FORWARD ONLY"
-        #     else:
-        #         forward_reverse = ""
-
-        if forward_reverse.lower() == "forward":
-            prefix = "forward_"
-        elif forward_reverse.lower() == "reverse":
-            prefix = "reverse_"
+        if self.Bayesian:
+            prefix = ""
         else:
-            if self.Bayesian:
-                prefix = ""
-            else:
-                prefix = ""
+            prefix = "MAP_"
 
         A = getattr(ds, f"{prefix}A").values
         q = getattr(ds, f"{prefix}q").values
