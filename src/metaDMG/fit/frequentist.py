@@ -22,7 +22,7 @@ phi_prior = priors["phi"]
 
 
 @njit
-def log_likelihood_PMD(A, q, c, phi, x, k, N):
+def compute_log_likelihood(A, q, c, phi, x, k, N):
     Dx = A * (1 - q) ** (np.abs(x) - 1) + c
     alpha = Dx * phi
     beta = (1 - Dx) * phi
@@ -30,7 +30,7 @@ def log_likelihood_PMD(A, q, c, phi, x, k, N):
 
 
 @njit
-def log_prior_PMD(A, q, c, phi):
+def compute_log_prior(A, q, c, phi):
     lp = (
         fit_utils.log_beta(A, *A_prior)
         + fit_utils.log_beta(q, *q_prior)
@@ -41,18 +41,24 @@ def log_prior_PMD(A, q, c, phi):
 
 
 @njit
-def log_posterior_PMD(A, q, c, phi, x, k, N):
-    log_likelihood = log_likelihood_PMD(A=A, q=q, c=c, phi=phi, x=x, k=k, N=N)
-    log_p = log_prior_PMD(A=A, q=q, c=c, phi=phi)
+def compute_log_posterior(A, q, c, phi, x, k, N):
+    log_likelihood = compute_log_likelihood(A=A, q=q, c=c, phi=phi, x=x, k=k, N=N)
+    log_p = compute_log_prior(A=A, q=q, c=c, phi=phi)
     return log_likelihood + log_p
 
 
 #%%
 
 
-class FrequentistPMD:
+class Frequentist:
     def __init__(
-        self, data, sample, tax_id, method="posterior", p0=None, verbose=False
+        self,
+        data,
+        sample,
+        tax_id,
+        method="posterior",
+        p0=None,
+        verbose=False,
     ):
         self.sample = sample
         self.tax_id = tax_id
@@ -76,7 +82,7 @@ class FrequentistPMD:
             s = f"sample = {self.sample}, tax_id = {self.tax_id} \n"
             s += f"A = {self.A:.3f}, q = {self.q:.3f},"
             s += f"c = {self.c:.5f}, phi = {self.phi:.1f} \n"
-            s += f"D_max = {self.D_max:.3f} +/- {self.D_max_std:.3f} \n"
+            s += f"D = {self.D:.3f} +/- {self.D_std:.3f} \n"
             s += f"significance = {self.significance:.3f} \n"
             s += f"rho_Ac = {self.rho_Ac:.3f} \n"
             s += f"log_likelihood = {self.log_likelihood:.3f} \n"
@@ -87,22 +93,22 @@ class FrequentistPMD:
 
     def __call__(self, A, q, c, phi):
         if self.method == "likelihood":
-            return self.log_likelihood_PMD(
+            return self.compute_log_likelihood(
                 A=A,
                 q=q,
                 c=c,
                 phi=phi,
             )
         elif self.method == "posterior":
-            return self.log_posterior_PMD(
+            return self.compute_log_posterior(
                 A=A,
                 q=q,
                 c=c,
                 phi=phi,
             )
 
-    def log_likelihood_PMD(self, A, q, c, phi):
-        return log_likelihood_PMD(
+    def compute_log_likelihood(self, A, q, c, phi):
+        return compute_log_likelihood(
             A=A,
             q=q,
             c=c,
@@ -112,8 +118,8 @@ class FrequentistPMD:
             N=self.N,
         )
 
-    def log_posterior_PMD(self, A, q, c, phi):
-        return log_posterior_PMD(
+    def compute_log_posterior(self, A, q, c, phi):
+        return compute_log_posterior(
             A=A,
             q=q,
             c=c,
@@ -130,19 +136,19 @@ class FrequentistPMD:
             self.p0 = p0
 
         self.param_grid = {
-            "A": sp_beta(*A_prior),  # mean = 0.2, shape = 4
-            "q": sp_beta(*q_prior),  # mean = 0.2, shape = 4
-            "c": sp_beta(*c_prior),  # mean = 0.1, shape = 10
+            "A": sp_beta(*A_prior),
+            "q": sp_beta(*q_prior),
+            "c": sp_beta(*c_prior),
             "phi": sp_exponential(*phi_prior),
         }
 
     def _setup_minuit(self, m=None):
 
         if self.method == "likelihood":
-            f = self.log_likelihood_PMD
+            f = self.compute_log_likelihood
 
         elif self.method == "posterior":
-            f = self.log_posterior_PMD
+            f = self.compute_log_posterior
 
         if m is None:
             self.m = Minuit(f, **self.p0)
@@ -231,16 +237,16 @@ class FrequentistPMD:
         self.valid = self.m.valid
 
         if self.valid:
-            self.D_max, self.D_max_std, self.significance = self._get_D_max()
+            self.D, self.D_std, self.significance = self._get_D()
         else:
-            self.D_max, self.D_max_std, self.significance = np.nan, np.nan, np.nan
+            self.D, self.D_std, self.significance = np.nan, np.nan, np.nan
 
         return self
 
     @property
     def log_likelihood(self):
         if self.valid:
-            return self.log_likelihood_PMD(*self.m.values)
+            return self.compute_log_likelihood(*self.m.values)
         else:
             return np.nan
 
@@ -303,7 +309,7 @@ class FrequentistPMD:
     def phi_std(self):
         return self.errors["phi"]
 
-    def _get_D_max(self):
+    def _get_D(self):
 
         A = self.A
         c = self.c
@@ -315,22 +321,6 @@ class FrequentistPMD:
         std = np.sqrt(A * (1 - A) * (phi + N) / ((phi + 1) * N))
         significance = mu / std
         return mu, std, significance
-
-        # Dx_x1 = A
-        # alpha = Dx_x1 * phi
-        # beta = (1 - Dx_x1) * phi
-
-        # dist = sp_betabinom(n=self.N[0], a=alpha, b=beta)
-
-        # # mu = dist.mean() / fit.N[0] - c
-        # mu = A
-        # if self.N[0] != 0:
-        #     std = np.sqrt(dist.var()) / self.N[0]
-        # else:
-        #     std = np.nan
-
-        # self.D_max = mu  # A
-        # self.D_max_std = std
 
     @property
     def correlation(self):
@@ -385,248 +375,6 @@ class FrequentistPMD:
 #%%
 
 
-# @njit
-# def f_fit_null(c, phi, k, N):
-#     alpha = c * phi
-#     beta = (1 - c) * phi
-#     return -fit_utils.log_betabinom_null(k=k, N=N, alpha=alpha, beta=beta).sum()
-
-
-@njit
-def log_likelihood_null(c, phi, x, k, N):
-    alpha = c * phi
-    beta = (1 - c) * phi
-    return -fit_utils.log_betabinom_null(k=k, N=N, alpha=alpha, beta=beta).sum()
-
-
-@njit
-def log_prior_null(c, phi):
-    lp = fit_utils.log_beta(c, *c_prior) + fit_utils.log_exponential(phi, *phi_prior)
-    return -lp
-
-
-@njit
-def log_posterior_null(c, phi, x, k, N):
-    log_likelihood = log_likelihood_null(c=c, phi=phi, x=x, k=k, N=N)
-    log_p = log_prior_null(c=c, phi=phi)
-    return log_likelihood + log_p
-
-
-class FrequentistNull:
-    def __init__(self, data, sample, tax_id, method="posterior"):
-        self.sample = sample
-        self.tax_id = tax_id
-        self.x = data["x"]
-        self.k = data["k"]
-        self.N = data["N"]
-        self.method = method
-        self._setup_minuit()
-
-    def __repr__(self):
-        s = f"Frequentist(data, method={self.method}). \n\n"
-        s += self.__str__()
-        return s
-
-    def __str__(self):
-        s = f"sample = {self.sample}, tax_id = {self.tax_id} \n"
-        s += f"c = {self.c:.5f}, phi = {self.phi:.1f} \n"
-        s += f"log_likelihood = {self.log_likelihood:.3f} \n"
-        return s
-
-    def __call__(self, A, q, c, phi):
-        if self.method == "likelihood":
-            return self.log_likelihood_null(A=A, q=q, c=c, phi=phi)
-        elif self.method == "posterior":
-            return self.log_posterior_null(A=A, q=q, c=c, phi=phi)
-
-    def log_likelihood_null(self, c, phi):
-        return log_likelihood_null(c=c, phi=phi, x=self.x, k=self.k, N=self.N)
-
-    def log_posterior_null(self, c, phi):
-        return log_posterior_null(c=c, phi=phi, x=self.x, k=self.k, N=self.N)
-
-    # def __call__(self, c, phi):
-    # return f_fit_null(c, phi, self.k, self.N)
-
-    def _setup_minuit(self):
-
-        if self.method == "likelihood":
-            f = self.log_likelihood_null
-
-        elif self.method == "posterior":
-            f = self.log_posterior_null
-
-        self.m = Minuit(f, c=0.1, phi=100)
-
-        if self.method == "likelihood":
-            self.m.limits["c"] = (0, 1)
-
-        elif self.method == "posterior":
-            eps = 1e-10
-            self.m.limits["c"] = (0 + eps, 1 - eps)
-
-        self.m.limits["phi"] = (2, None)
-        self.m.errordef = Minuit.LIKELIHOOD
-
-    def fit(self):
-        self.m.migrad()
-        return self
-
-    def migrad(self):
-        self.m.migrad()
-        return self
-
-    def minos(self):
-        self.m.minos()
-        return self
-
-    @property
-    def log_likelihood(self):
-        return self.log_likelihood_null(*self.m.values)
-
-    @property
-    def c(self):
-        return self.values["c"]
-
-    @property
-    def phi(self):
-        return self.values["phi"]
-
-    @property
-    def values(self):
-        return self.m.values.to_dict()
-
-    @property
-    def errors(self):
-        return self.m.errors.to_dict()
-
-
-#%%
-
-
-class Frequentist:
-    def __init__(self, data, sample, tax_id, method="posterior", p0=None):
-        self.PMD = FrequentistPMD(data, sample, tax_id, method=method, p0=p0).fit()
-        self.null = FrequentistNull(data, sample, tax_id, method=method).fit()
-        self.lambda_LR = fit_utils.compute_likelihood_ratio(
-            self.PMD,
-            self.null,
-            only_LR=True,
-        )
-
-        self.valid = self.PMD.valid
-
-        self.data = data
-        self.sample = sample
-        self.tax_id = tax_id
-        self.x = data["x"]
-        self.k = data["k"]
-        self.N = data["N"]
-        self.method = method
-
-    def __repr__(self):
-        s = f"Frequentist(data, method={self.method}). \n\n"
-        s += self.__str__()
-        return s
-
-    def __str__(self):
-        s = f"sample = {self.sample}, tax_id = {self.tax_id} \n"
-        s += f"A = {self.A:.3f}, q = {self.q:.3f}, "
-        s += f"c = {self.c:.5f}, phi = {self.phi:.1f} \n"
-        s += f"D_max = {self.D_max:.3f} +/- {self.D_max_std:.3f}, significance = {self.significance:.3f} \n"
-        s += f"rho_Ac = {self.rho_Ac:.3f} \n"
-        s += f"log_likelihood_PMD  = {self.PMD.log_likelihood:.3f} \n"
-        s += f"log_likelihood_null = {self.null.log_likelihood:.3f} \n"
-        s += (
-            f"lambda_LR = {self.lambda_LR:.3f} \n"
-            # f"lambda_LR as prob = {self.lambda_LR_P:.4%}, "
-            # f"lambda_LR as z = {self.lambda_LR_z:.3f} \n"
-        )
-        s += f"valid = {self.valid}"
-        return s
-
-    @property
-    def D_max(self):
-        return self.PMD.D_max
-
-    @property
-    def D_max_std(self):
-        return self.PMD.D_max_std
-
-    @property
-    def A(self):
-        return self.PMD.A
-
-    @property
-    def A_std(self):
-        return self.PMD.A_std
-
-    @property
-    def q(self):
-        return self.PMD.q
-
-    @property
-    def q_std(self):
-        return self.PMD.q_std
-
-    @property
-    def c(self):
-        return self.PMD.c
-
-    @property
-    def c_std(self):
-        return self.PMD.c_std
-
-    @property
-    def phi(self):
-        return self.PMD.phi
-
-    @property
-    def phi_std(self):
-        return self.PMD.phi_std
-
-    @property
-    def rho_Ac(self):
-        return self.PMD.rho_Ac
-
-    @property
-    def chi2(self):
-        return self.PMD.chi2
-
-    @property
-    def PMD_values(self):
-        return self.PMD.values
-
-    @property
-    def significance(self):
-        return self.PMD.significance
-
-
-#%%
-
-
-def compute_LR(fit1, fit2):
-    return -2 * (fit1.log_likelihood - fit2.log_likelihood)
-
-
-def compute_LR_All(fit_all):
-    return compute_LR(fit_all.PMD, fit_all.null)
-
-
-def compute_LR_ForRev(fit_forward, fit_reverse):
-    LR_forward = compute_LR(fit_forward.PMD, fit_forward.null)
-    LR_reverse = compute_LR(fit_reverse.PMD, fit_reverse.null)
-    return LR_forward + LR_reverse
-
-
-def compute_LR_ForRev_All(fit_all, fit_forward, fit_reverse):
-    log_lik_ForRev = fit_forward.PMD.log_likelihood + fit_reverse.PMD.log_likelihood
-    return -2 * (log_lik_ForRev - fit_all.PMD.log_likelihood)
-
-
-#%%
-
-
 def make_fits(
     config,
     fit_result,
@@ -638,50 +386,23 @@ def make_fits(
 ):
     np.random.seed(42)
 
-    forward_only = config["forward_only"] if forward_only is None else forward_only
+    if forward_only is None:
+        forward_only = config["forward_only"]
 
     if forward_only:
         data = {key: val[data["x"] > 0] for key, val in data.items()}
-        # fit_forward = Frequentist(
-        #     data_forward,
-        #     sample,
-        #     tax_id,
-        #     method=method,
-        # )
-
-    # else:
-    #     fit_all = Frequentist(data, sample, tax_id, method=method)
 
     fit = Frequentist(
         data,
         sample,
         tax_id,
         method=method,
-    )
-
-    # data_forward = {key: val[data["x"] > 0] for key, val in data.items()}
-    # data_reverse = {key: val[data["x"] < 0] for key, val in data.items()}
-
-    # fit_forward = Frequentist(
-    #     data_forward,
-    #     sample,
-    #     tax_id,
-    #     method=method,
-    #     p0=fit_all.PMD_values,
-    # )
-    # fit_reverse = Frequentist(
-    #     data_reverse,
-    #     sample,
-    #     tax_id,
-    #     method=method,
-    #     p0=fit_all.PMD_values,
-    # )
+    ).fit()
 
     vars_to_keep = [
-        "D_max",
-        "D_max_std",
+        "D",
+        "D_std",
         "significance",
-        # "lambda_LR",
         "q",
         "q_std",
         "phi",
@@ -695,98 +416,6 @@ def make_fits(
     ]
 
     for var in vars_to_keep:
-        fit_result[f"{var}"] = getattr(fit, var)
+        fit_result[f"MAP_{var}"] = getattr(fit, var)
 
     return fit
-
-    # if forward_only:
-
-    # duplicate entries for forward only
-
-    # for var in vars_to_keep:
-    #     fit_result[f"{var}"] = getattr(fit_forward, var)
-
-    # for var in vars_to_keep:
-    #     fit_result[f"forward_{var}"] = getattr(fit_forward, var)
-
-    # for var in vars_to_keep:
-    #     fit_result[f"reverse_{var}"] = np.nan
-    # fit_result[f"reverse_valid"] = False
-
-    # fit_result["asymmetry"] = np.nan
-    # fit_result["LR_All"] = compute_LR_All(fit_forward)
-    # fit_result["LR_ForRev"] = np.nan
-    # fit_result["LR_ForRev_All"] = np.nan
-
-    # fit_result["chi2_all"] = fit_forward.chi2
-    # fit_result["chi2_forward"] = fit_result["chi2_all"]
-    # fit_result["chi2_reverse"] = np.nan
-    # fit_result["chi2_ForRev"] = np.nan
-    # return fit_forward
-
-    # for var in vars_to_keep:
-    #     fit_result[f"{var}"] = getattr(fit_all, var)
-
-    # numerator = fit_forward.D_max - fit_reverse.D_max
-    # denominator = np.sqrt(fit_forward.D_max_std**2 + fit_reverse.D_max_std**2)
-    # fit_result["asymmetry"] = np.abs(numerator) / denominator
-
-    # for var in vars_to_keep:
-    #     fit_result[f"forward_{var}"] = getattr(fit_forward, var)
-
-    # for var in vars_to_keep:
-    #     fit_result[f"reverse_{var}"] = getattr(fit_reverse, var)
-
-    # fit_result["LR_All"] = compute_LR_All(fit_all)
-    # fit_result["LR_ForRev"] = compute_LR_ForRev(fit_forward, fit_reverse)
-    # fit_result["LR_ForRev_All"] = compute_LR_ForRev_All(
-    #     fit_all, fit_forward, fit_reverse
-    # )
-
-    # fit_result["chi2_all"] = fit_all.chi2
-    # fit_result["chi2_forward"] = fit_forward.chi2
-    # fit_result["chi2_reverse"] = fit_reverse.chi2
-    # fit_result["chi2_ForRev"] = fit_forward.chi2 + fit_reverse.chi2
-
-    # return fit_all  # , fit_forward, fit_reverse
-
-
-# def make_forward_fits(fit_result, data, sample, tax_id):
-#     np.random.seed(42)
-
-#     fit_all = Frequentist(data, sample, tax_id, method="posterior")
-
-#     vars_to_keep = [
-#         "D_max",
-#         "D_max_std",
-#         "significance",
-#         "lambda_LR",
-#         "q",
-#         "q_std",
-#         "phi",
-#         "phi_std",
-#         "A",
-#         "A_std",
-#         "c",
-#         "c_std",
-#         "rho_Ac",
-#         # "lambda_LR_P",
-#         # "lambda_LR_z",
-#         "valid",
-#     ]
-
-#     for var in vars_to_keep:
-#         fit_result[f"{var}"] = getattr(fit_all, var)
-
-#     fit_result["asymmetry"] = np.nan
-#     fit_result["LR_All"] = compute_LR_All(fit_all)
-#     fit_result["chi2_all"] = fit_all.chi2
-
-#     return fit_all
-
-
-# def make_fits(config, fit_result, data, sample, tax_id):
-#     if config["forward_only"]:
-#         return make_forward_fits(fit_result, data, sample, tax_id)
-#     else:
-#         return make_forward_reverse_fits(fit_result, data, sample, tax_id)

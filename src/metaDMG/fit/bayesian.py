@@ -29,7 +29,7 @@ phi_prior = priors["phi"]
 #%%
 
 
-def model_PMD(x, N, k=None):
+def numpyro_model(x, N, k=None):
     x_abs = jnp.abs(x)
 
     A = numpyro.sample("A", dist.Beta(A_prior[0], A_prior[1]))
@@ -46,18 +46,6 @@ def model_PMD(x, N, k=None):
     numpyro.sample("obs", dist.BetaBinomial(alpha, beta, N), obs=k)
 
 
-def model_null(x, N, k=None):
-    c = numpyro.sample("c", dist.Beta(c_prior[0], c_prior[1]))
-    Dx = numpyro.deterministic("Dx", c)
-    delta = numpyro.sample("delta", dist.Exponential(1 / phi_prior[1]))
-    phi = numpyro.deterministic("phi", delta + phi_prior[0])
-
-    alpha = numpyro.deterministic("alpha", Dx * phi)
-    beta = numpyro.deterministic("beta", (1 - Dx) * phi)
-
-    numpyro.sample("obs", dist.BetaBinomial(alpha, beta, N), obs=k)
-
-
 #%%
 
 
@@ -65,36 +53,16 @@ def filter_out_k(data):
     return {key: value for key, value in data.items() if key != "k"}
 
 
-def is_model_PMD(model):
-    name = model.__name__.lower()
-    if "pmd" in name:
-        return True
-    elif "null" in name:
-        return False
-    raise AssertionError(f"Model should be PMD or null, got {model}")
-
-
-#%%
-
-
 @jit
-def _get_posterior_PMD(rng_key, samples, *args, **kwargs):
-    return Predictive(model_PMD, samples)(rng_key, *args, **kwargs)
-
-
-@jit
-def _get_posterior_null(rng_key, samples, *args, **kwargs):
-    return Predictive(model_null, samples)(rng_key, *args, **kwargs)
+def _get_posterior(rng_key, samples, *args, **kwargs):
+    return Predictive(numpyro_model, samples)(rng_key, *args, **kwargs)
 
 
 def get_posterior_predictive(mcmc, data):
     posterior_samples = mcmc.get_samples()
     rng_key = Key(0)
     data_no_k = filter_out_k(data)
-    if is_model_PMD(mcmc.sampler.model):
-        return _get_posterior_PMD(rng_key, posterior_samples, **data_no_k)
-    else:
-        return _get_posterior_null(rng_key, posterior_samples, **data_no_k)
+    return _get_posterior(rng_key, posterior_samples, **data_no_k)
 
 
 def get_posterior_predictive_obs(mcmc, data):
@@ -111,98 +79,46 @@ def get_n_sigma_probability(n_sigma):
 CONF_1_SIGMA = get_n_sigma_probability(1)
 
 
-# def compute_posterior(
-#     mcmc, data, func_avg=np.mean, func_dispersion=lambda x: np.std(x, axis=0)
-# ):
-#     """func = central tendency function, e.g. np.mean or np.median"""
-#     posterior_predictive = get_posterior_predictive(mcmc, data)
-#     predictions_fraction = posterior_predictive["obs"] / data["N"]
-#     y_average = func_avg(predictions_fraction, axis=0)
-#     # y_dispersion = numpyro.diagnostics.hpdi(predictions_fraction, prob=0.68)
-#     y_dispersion = func_dispersion(predictions_fraction)
-#     return y_average, y_dispersion
+def add_D_information(
+    fit_result,
+    mcmc,
+    data,
+    prefix="",
+):
 
-
-def add_D_max_information(fit_result, mcmc, data):
-    # posterior = get_posterior_predictive(mcmc, data)
-    # c = mcmc.get_samples()["c"]
-    # f = posterior["obs"] / data["N"]
-    # f = f[:, 0]
-    # D_max_samples = f - c
-    # D_max_mu = np.mean(D_max_samples).item()
-    # D_max_std = np.std(D_max_samples).item()
-
-    # New method, more similar to frequentist and better when few reads
     A = mcmc.get_samples()["A"]
-    # c = mcmc.get_samples()["c"]
     phi = mcmc.get_samples()["phi"]
     N = max(data["N"][0], 1)
     mu = np.mean(A)
     std = np.mean(np.sqrt(A * (1 - A) * (phi + N) / ((phi + 1) * N)))
-    # mu.item(), std.item()
 
     Dx = A
     alpha = Dx * phi
     beta = (1 - Dx) * phi
 
-    # pdf = sp_betabinom(N, alpha, beta)
-    # 1000x faster approximation for ppf
+    # 1000x faster approximation for sp_betabinom(N, alpha, beta)
     pdf_approx = sp_betabinom(N, alpha.mean(), beta.mean())
 
-    # pdf_beta = sp_beta(alpha, beta)
+    fit_result[f"{prefix}D"] = mu.item()
+    fit_result[f"{prefix}D_std"] = std.item()
+    fit_result[f"{prefix}significance"] = mu.item() / std.item()
+    fit_result[f"{prefix}D_median"] = np.median(A)
 
-    # pdf.pmf(0).mean()
-    # pdf_approx.pmf(0) # 3 times faster for pmf
-
-    prefix = "Bayesian_"
-    fit_result[f"{prefix}D_max"] = mu.item()
-    fit_result[f"{prefix}D_max_std"] = std.item()
-    fit_result[f"{prefix}D_max_median"] = np.median(A)
-    # fit_result[f"{prefix}D_max_median"] = pdf_approx.median().mean() / N
-
-    # fit_result[f"{prefix}prob_lt_5p_damage"] = pdf_beta.cdf(0.05).mean()
-    # # fit_result[f"{prefix}prob_lt_5p_damage_betabinom"] = pdf.cdf(0.05 * N).mean()
-    # fit_result[f"{prefix}prob_lt_2p_damage"] = pdf_beta.cdf(0.02).mean()
-    # # fit_result[f"{prefix}prob_lt_2p_damage_betabinom"] = pdf.cdf(0.02 * N).mean()
     # fit_result[f"{prefix}prob_lt_1p_damage"] = pdf_beta.cdf(0.01).mean()
     # # fit_result[f"{prefix}prob_lt_1p_damage_betabinom"] = pdf.cdf(0.01 * N).mean()
-    # fit_result[f"{prefix}prob_lt_0.1p_damage"] = pdf_beta.cdf(0.001).mean()
-    # # fit_result[f"{prefix}prob_lt_0.1p_damage_betabinom"] = pdf.cdf(0.001 * N).mean()
     # fit_result[f"{prefix}prob_zero_damage"] = pdf.cdf(0).mean()
-
-    # fit_result[f"{prefix}D_max_median"] = pdf.median().mean() / N
 
     for n_sigma in [1, 2, 3]:
         conf = get_n_sigma_probability(n_sigma)
-        fit_result[f"{prefix}D_max_confidence_interval_{n_sigma}_sigma_low"] = (
+        fit_result[f"{prefix}D_CI_{n_sigma}_sigma_low"] = (
             pdf_approx.ppf((1 - conf) / 2.0).mean() / N
         )
-        fit_result[f"{prefix}D_max_confidence_interval_{n_sigma}_sigma_high"] = (
+        fit_result[f"{prefix}D_CI_{n_sigma}_sigma_high"] = (
             pdf_approx.ppf((1 + conf) / 2.0).mean() / N
         )
 
-    fit_result[f"{prefix}D_max_confidence_interval_95_low"] = (
-        pdf_approx.ppf((1 - 0.95) / 2.0).mean() / N
-    )
-    fit_result[f"{prefix}D_max_confidence_interval_95_high"] = (
-        pdf_approx.ppf((1 + 0.95) / 2.0).mean() / N
-    )
-
-    # fit_result["Bayesian_D_max"] = D_max["mu"]
-    # fit_result["Bayesian_D_max_std"] = D_max["std"]
-    # fit_result["Bayesian_D_max_median"] = D_max["median"]
-    # fit_result["Bayesian_D_max_confidence_interval_1_sigma_low"] = D_max[
-    #     "confidence_interval_1_sigma_low"
-    # ]
-    # fit_result["Bayesian_D_max_confidence_interval_1_sigma_high"] = D_max[
-    #     "confidence_interval_1_sigma_high"
-    # ]
-    # fit_result["Bayesian_D_max_confidence_interval_95_low"] = D_max[
-    #     "confidence_interval_95_low"
-    # ]
-    # fit_result["Bayesian_D_max_confidence_interval_95_high"] = D_max[
-    #     "confidence_interval_95_high"
-    # ]
+    fit_result[f"{prefix}D_CI_95_low"] = pdf_approx.ppf((1 - 0.95) / 2.0).mean() / N
+    fit_result[f"{prefix}D_CI_95_high"] = pdf_approx.ppf((1 + 0.95) / 2.0).mean() / N
 
     return fit_result
 
@@ -211,72 +127,23 @@ def add_D_max_information(fit_result, mcmc, data):
 
 
 @jit
-def _compute_log_likelihood_PMD(posterior_samples, data):
-    return log_likelihood(model_PMD, posterior_samples, **data)["obs"]
-
-
-@jit
-def _compute_log_likelihood_null(posterior_samples, data):
-    return log_likelihood(model_null, posterior_samples, **data)["obs"]
+def _compute_log_likelihood(posterior_samples, data):
+    return log_likelihood(numpyro_model, posterior_samples, **data)["obs"]
 
 
 def compute_log_likelihood(mcmc, data):
     posterior_samples = mcmc.get_samples()
-    if is_model_PMD(mcmc.sampler.model):
-        return _compute_log_likelihood_PMD(posterior_samples, data)
-    else:
-        return _compute_log_likelihood_null(posterior_samples, data)
+    return _compute_log_likelihood(posterior_samples, data)
 
 
 #%%
-
-
-def get_lppd_and_waic(mcmc, data):
-    d_results = {}
-    # get the log likehood for each (point, num_samples)
-    logprob = np.asarray(compute_log_likelihood(mcmc, data))
-    # lppd for each observation
-    lppd_i = logsumexp(logprob, 0) - np.log(logprob.shape[0])
-    d_results["lppd_i"] = lppd_i
-    # lppd
-    lppd = lppd_i.sum()
-    d_results["lppd"] = lppd
-    # waic penalty for each observation
-    pWAIC_i = np.var(logprob, 0)
-    d_results["pWAIC_i"] = pWAIC_i
-    # waic penalty # the effective number of parameters penalty
-    pWAIC = pWAIC_i.sum()
-    d_results["pWAIC"] = pWAIC
-    # waic  for each observation
-    waic_i = -2 * (lppd_i - pWAIC_i)
-    d_results["waic_i"] = waic_i
-    # waic # prediction of  out-of-sample deviance
-    waic = waic_i.sum()
-    d_results["waic"] = waic
-    # standard error of waic
-    # waic_vec = -2 * (lppd_i - pWAIC_i)
-    # waic_uncertainty = jnp.sqrt(logprob.shape[1] * jnp.var(waic_vec))
-    return d_results
-
-
-#%%
-
-
-# def get_mean_of_variable(mcmc, variable, axis=0):
-#     values = mcmc.get_samples()[variable]
-#     return np.mean(values, axis=axis).item()
-
-
-# def get_std_of_variable(mcmc, variable, axis=0):
-#     values = mcmc.get_samples()[variable]
-#     return np.std(values, axis=axis).item()
 
 
 def add_summary_of_variable(
     fit_result,
     mcmc,
     variable,
-    prefix="Bayesian_",
+    prefix="",
     axis=0,
 ):
     values = np.array(mcmc.get_samples()[variable])
@@ -288,12 +155,8 @@ def add_summary_of_variable(
     fit_result[f"{s}"] = np.mean(values, axis=axis)
     fit_result[f"{s}_std"] = np.std(values, axis=axis)
     fit_result[f"{s}_median"] = np.median(values, axis=axis)
-    fit_result[f"{s}_confidence_interval_1_sigma_low"] = np.quantile(
-        values, q_low, axis=axis
-    )
-    fit_result[f"{s}_confidence_interval_1_sigma_high"] = np.quantile(
-        values, q_high, axis=axis
-    )
+    fit_result[f"{s}_CI_1_sigma_low"] = np.quantile(values, q_low, axis=axis)
+    fit_result[f"{s}_CI_1_sigma_high"] = np.quantile(values, q_high, axis=axis)
 
 
 def compute_rho_Ac(mcmc):
@@ -302,48 +165,10 @@ def compute_rho_Ac(mcmc):
     return np.corrcoef(A, c)[0, 1]
 
 
-@njit
-def compute_dse(waic_i_x, waic_i_y):
-    N = len(waic_i_x)
-    return np.sqrt(N * np.var(waic_i_x - waic_i_y))
-
-
-@njit
-def compute_z_from_waic_is(waic_i_x, waic_i_y):
-    dse = compute_dse(waic_i_x, waic_i_y)
-    d_waic = waic_i_y.sum() - waic_i_x.sum()
-    z = d_waic / dse
-    return z
-
-
-def compute_z(d_results_PMD, d_results_null):
-    z = compute_z_from_waic_is(d_results_PMD["waic_i"], d_results_null["waic_i"])
-    return z
-
-
-@njit
-def compute_z_jackknife_error_from_waic_is(waic_i_x, waic_i_y):
-    N = len(waic_i_x)
-    all_ids = np.arange(N)
-    zs = np.empty(N)
-    for i in range(N):
-        mask = all_ids != i
-        zs[i] = compute_z_from_waic_is(waic_i_x[mask], waic_i_y[mask])
-    z_jack_std = np.std(zs)
-    return z_jack_std
-
-
-def compute_z_jackknife_error(d_results_PMD, d_results_null):
-    return compute_z_jackknife_error_from_waic_is(
-        d_results_PMD["waic_i"],
-        d_results_null["waic_i"],
-    )
-
-
 #%%
 
 
-def init_mcmc(model, **kwargs):
+def _init_mcmc(model, **kwargs):
 
     mcmc_kwargs = dict(
         progress_bar=False,
@@ -357,25 +182,12 @@ def init_mcmc(model, **kwargs):
     return MCMC(NUTS(model), jit_model_args=True, **mcmc_kwargs, **kwargs)
 
 
-def init_mcmc_PMD(**kwargs):
-    mcmc_PMD = init_mcmc(model_PMD, **kwargs)
-    return mcmc_PMD
-
-
-def init_mcmc_null(**kwargs):
-    mcmc_null = init_mcmc(model_null, **kwargs)
-    return mcmc_null
-
-
-def init_mcmcs(config, **kwargs):
+def init_mcmc(config, **kwargs):
     if config["bayesian"]:
-        mcmc_PMD = init_mcmc_PMD(**kwargs)
-        # mcmc_null = init_mcmc_null(**kwargs)
+        mcmc = _init_mcmc(numpyro_model, **kwargs)
     else:
-        mcmc_PMD = None
-        # mcmc_null = None
-    return mcmc_PMD
-    # return mcmc_PMD, mcmc_null
+        mcmc = None
+    return mcmc
 
 
 def fit_mcmc(mcmc, data, seed=0):
@@ -390,43 +202,31 @@ def use_last_state_as_warmup_state(mcmc):
 def add_Bayesian_fit_result(
     fit_result,
     data,
-    mcmc_PMD,
-    # mcmc_null,
+    mcmc,
 ):
 
-    # d_results_PMD = get_lppd_and_waic(mcmc_PMD, data)
-    # d_results_null = get_lppd_and_waic(mcmc_null, data)
+    add_D_information(fit_result, mcmc, data)
 
-    add_D_max_information(fit_result, mcmc_PMD, data)
+    add_summary_of_variable(fit_result, mcmc, "A")
+    add_summary_of_variable(fit_result, mcmc, "q")
+    add_summary_of_variable(fit_result, mcmc, "c")
+    add_summary_of_variable(fit_result, mcmc, "phi")
 
-    add_summary_of_variable(fit_result, mcmc_PMD, "A")
-    add_summary_of_variable(fit_result, mcmc_PMD, "q")
-    add_summary_of_variable(fit_result, mcmc_PMD, "c")
-    add_summary_of_variable(fit_result, mcmc_PMD, "phi")
-
-    fit_result["Bayesian_rho_Ac"] = compute_rho_Ac(mcmc_PMD)
-
-    # z = compute_z(d_results_PMD, d_results_null)
-    # fit_result["Bayesian_z"] = z
+    fit_result["rho_Ac"] = compute_rho_Ac(mcmc)
 
 
 def make_fits(
     fit_result,
     data,
-    mcmc_PMD,
-    # mcmc_null,
+    mcmc,
 ):
-    fit_mcmc(mcmc_PMD, data)
-    # fit_mcmc(mcmc_null, data)  # do not use non-PMD model later on
+    fit_mcmc(mcmc, data)
     add_Bayesian_fit_result(
         fit_result,
         data,
-        mcmc_PMD,
-        # mcmc_null,
+        mcmc,
     )
-    # mcmc_PMD.print_summary(prob=0.68)
-    # mcmc_null.print_summary(prob=0.68)
 
+    # mcmc.print_summary(prob=0.68)
     # if False:
-    #     use_last_state_as_warmup_state(mcmc_PMD)
-    #     use_last_state_as_warmup_state(mcmc_null)
+    #     use_last_state_as_warmup_state(mcmc)

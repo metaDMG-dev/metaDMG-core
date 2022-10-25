@@ -427,7 +427,7 @@ def get_df_fit_results(
             return df_fit_results
 
         # if df_fit_results has already been run with Bayesian, return this
-        if dataframe_columns_contains(df_fit_results, "Bayesian"):
+        if dataframe_columns_contains(df_fit_results, "D"):
             logger.info(f"Loading df_fit_results (Bayesian).")
             return df_fit_results
 

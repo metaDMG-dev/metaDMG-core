@@ -135,30 +135,13 @@ def add_count_information(fit_result, config, group, data):
 #%%
 
 
-# def timer_fit_MAP(config, data):
-#     # data = group_to_numpyro_data(config, group)
-#     # %timeit timer_fit_MAP(config, data)
-#     fit_result = {}
-#     with warnings.catch_warnings():
-#         warnings.filterwarnings("ignore")
-#         fit_all, fit_forward, fit_reverse = frequentist.make_fits(fit_result, data)
-
-
-# def timer_fit_bayesian(config, data, mcmc_PMD, mcmc_null):
-#     # data = group_to_numpyro_data(config, group)
-#     # %timeit timer_fit_bayesian(config, data, mcmc_PMD, mcmc_null)
-#     fit_result = {}
-#     bayesian.make_fits(fit_result, data, mcmc_PMD, mcmc_null)
-
-
 #%%
 
 
 def fit_single_group(
     config,
     group,
-    mcmc_PMD=None,
-    # mcmc_null=None,
+    mcmm=None,
 ):
 
     fit_result = {}
@@ -177,26 +160,12 @@ def fit_single_group(
         logger.warning(s)
         return None
 
-    with warnings.catch_warnings():
-        warnings.filterwarnings("ignore")
-
-        frequentist.make_fits(
-            config,
-            fit_result,
-            data,
-            sample,
-            tax_id,
-        )  # fit_all, fit_forward, fit_reverse
-
-    add_count_information(fit_result, config, group, data)
-
-    if mcmc_PMD is not None:  # and mcmc_null is not None:
+    if mcmm is not None:
         try:
             bayesian.make_fits(
                 fit_result,
                 data,
-                mcmc_PMD,
-                # mcmc_null,
+                mcmm,
             )
         except:
             from metaDMG.fit.serial import _setup_logger
@@ -206,14 +175,26 @@ def fit_single_group(
             s += "Skipping the Bayesian fit."
             logger.warning(s)
 
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore")
+
+        frequentist.make_fits(
+            config,
+            fit_result,
+            data,
+            sample,
+            tax_id,
+        )  # fit
+
+    add_count_information(fit_result, config, group, data)
+
     return fit_result
 
 
 def compute_fits_seriel(config, df_mismatches, with_progressbar=False):
 
     # Do not initialise MCMC if config["bayesian"] is False
-    # mcmc_PMD, mcmc_null = bayesian.init_mcmcs(config)
-    mcmc_PMD = bayesian.init_mcmcs(config)
+    mcmm = bayesian.init_mcmc(config)
 
     groupby = get_groupby(df_mismatches)
 
@@ -230,7 +211,7 @@ def compute_fits_seriel(config, df_mismatches, with_progressbar=False):
         res = fit_single_group(
             config,
             group,
-            mcmc_PMD,
+            mcmm,
             # mcmc_null,
         )
 
@@ -654,6 +635,7 @@ def compute(config, df_mismatches):
 
     df_fit_results = pd.merge(df_fit_results, df_stat_cut, on="tax_id")
 
+    prefix = "" if config["bayesian"] else "MAP_"
     cols_ordered = [
         "sample",
         "tax_id",
@@ -661,8 +643,8 @@ def compute(config, df_mismatches):
         "tax_rank",
         "N_reads",
         "N_alignments",
-        "D_max",
-        "significance",
+        f"{prefix}D",
+        f"{prefix}significance",
         "mean_L",
         "std_L",
         "mean_GC",

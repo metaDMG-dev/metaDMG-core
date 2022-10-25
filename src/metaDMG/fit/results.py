@@ -107,6 +107,7 @@ def merge(
     df_mismatches_wide = compute_df_mismatches_wide(df_mismatches)
     df_results = pd.merge(df_fit_results, df_mismatches_wide, on=["tax_id"])
 
+    prefix = "" if config["bayesian"] else "MAP_"
     columns_order = [
         "sample",
         "tax_id",
@@ -115,16 +116,16 @@ def merge(
         "N_reads",
         "N_alignments",
         #
-        "D_max",
-        "significance",
+        f"{prefix}D",
+        f"{prefix}significance",
         "mean_L",
         "mean_GC",
-        "q",
-        "A",
-        "c",
-        "phi",
-        "rho_Ac",
-        "valid",
+        f"{prefix}A",
+        f"{prefix}q",
+        f"{prefix}phi",
+        f"{prefix}c",
+        f"{prefix}rho_Ac",
+        "MAP_valid",
         # "asymmetry",
     ]
 
