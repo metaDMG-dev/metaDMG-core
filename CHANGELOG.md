@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v0.36.2 (2022-10-27)
+### Fix
+* Fix minor issue with mix of forward-only and normal in dashboard ([`4d44f16`](https://github.com/metaDMG-dev/metaDMG-core/commit/4d44f168505d18626e9f7005b55f60658d276127))
+
+### Documentation
+* Remove heroku links ([`6a118fd`](https://github.com/metaDMG-dev/metaDMG-core/commit/6a118fd9e80e4dc941251decdc8c00bbbe765772))
+* Update docs ([`be56114`](https://github.com/metaDMG-dev/metaDMG-core/commit/be561147adc98221d0e2dce1c56741a9f6600e97))
+
 ## v0.36.1 (2022-10-27)
 ### Fix
 * Update web address in dashboard ([`451a4ff`](https://github.com/metaDMG-dev/metaDMG-core/commit/451a4ff24b52174b08551a5e0c0a0aa49210db3e))
