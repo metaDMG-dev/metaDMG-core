@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.36.1 (2022-10-27)
+### Fix
+* Update web address in dashboard ([`451a4ff`](https://github.com/metaDMG-dev/metaDMG-core/commit/451a4ff24b52174b08551a5e0c0a0aa49210db3e))
+
+### Documentation
+* Update readme live dashboard link ([`b73b141`](https://github.com/metaDMG-dev/metaDMG-core/commit/b73b14177872336ae952cee00f223a69aae11115))
+
 ## v0.36.0 (2022-10-25)
 ### Feature
 * Add MAP version of dashboard as well ([`849c13e`](https://github.com/metaDMG-dev/metaDMG-core/commit/849c13e21629c16efe38eadc127a46c5f55957c9))
