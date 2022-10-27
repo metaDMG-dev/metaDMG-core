@@ -317,20 +317,15 @@
 <div class="section" id="fit-related-parameters">
 <h2>Fit related parameters<a class="headerlink" href="#fit-related-parameters" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">lambda_LR</span></code>: The likelihood ratio, <span class="math notranslate nohighlight">\(\lambda_\text{LR}\)</span>, between the null model and the ancient damage model. This can be interpreted as the fit certainty, where higher values means higher certainty. float64.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">lambda_LR_P</span></code>: The likelihood ratio expressed as a probability. float64.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">lambda_LR_z</span></code>: The likelihood ratio expressed as number of <span class="math notranslate nohighlight">\(\sigma\)</span>. float64.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">D_max</span></code>: The estimated damage, <span class="math notranslate nohighlight">\(D_\text{max}\)</span>. This can be interpreted as the amount of damage in the specific taxa. float64.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">damage</span></code>: The estimated damage in the specific taxa, <span class="math notranslate nohighlight">\(D\)</span>. float64.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">significance</span></code>: The number of sigmas that the damage is away from 0, i.e. how certain one should be about there being non-zero damage. float64.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">q</span></code>: The damage decay rate. float64.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">A</span></code>: The background independent damage. float64.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">c</span></code>: The background. float64.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">phi</span></code>: The concentration for a beta binomial distribution (parametrised by <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\phi\)</span>). float64.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">rho_Ac</span></code>: The correlation between <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(c\)</span>, <span class="math notranslate nohighlight">\(\rho_{Ac}\)</span>. High values of this are often a sign of a bad fit. float64.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">valid</span></code>: Wether or not the fit is valid (defined by <a class="reference external" href="https://iminuit.readthedocs.io/en/stable/">iminuit</a>). bool.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">asymmetry</span></code>: An estimate of the asymmetry of the forward and reverse fits. See below for more information. float64.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">XXX_std</span></code>: the uncertainty (standard deviation) of the variable <code class="docutils literal notranslate"><span class="pre">XXX</span></code> for <span class="math notranslate nohighlight">\(D_\text{max}\)</span>, <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(q\)</span>, <span class="math notranslate nohighlight">\(c\)</span>, and <span class="math notranslate nohighlight">\(\phi\)</span>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">forward__XXX</span></code>: The same description as above for variable <code class="docutils literal notranslate"><span class="pre">XXX</span></code>, but only for the forward read.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">reverse__XXX</span></code>: The same description as above for variable <code class="docutils literal notranslate"><span class="pre">XXX</span></code>, but only for the reverse read.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">XXX_std</span></code>: the uncertainty (standard deviation) of the variable <code class="docutils literal notranslate"><span class="pre">XXX</span></code> for <span class="math notranslate nohighlight">\(D\)</span>, <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(q\)</span>, <span class="math notranslate nohighlight">\(c\)</span>, and <span class="math notranslate nohighlight">\(\phi\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MAP_valid</span></code>: Whether or not the MAP fit is valid (defined by <a class="reference external" href="https://iminuit.readthedocs.io/en/stable/">iminuit</a>). bool.</p></li>
 </ul>
 </div>
 <div class="section" id="read-related-parameters">
@@ -359,7 +354,7 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">k-i</span></code>: Same as above, but for the reverse direction. int64.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">N+i</span></code>: The number of <em>“trials”</em>, <span class="math notranslate nohighlight">\(N\)</span> at position <span class="math notranslate nohighlight">\(x=i\)</span>: <span class="math notranslate nohighlight">\(N(x=i)\)</span> in the forward direction. int64.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">N-i</span></code>: Same as above, but for the reverse direction. int64.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">f+i</span></code>: The fraction between <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(N\)</span>, <span class="math notranslate nohighlight">\(f = k / N\)</span>, at position <span class="math notranslate nohighlight">\(x=i\)</span> in the forward direction. int64.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">f+i</span></code>: The damage frequency, <span class="math notranslate nohighlight">\(f\)</span>, given <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(N\)</span>: <span class="math notranslate nohighlight">\(f(x) = k(x) / N(x)\)</span>, at position <span class="math notranslate nohighlight">\(x=i\)</span> in the forward direction. int64.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">f-i</span></code>: Same as above, but for the reverse direction. int64.</p></li>
 </ul>
 </div>

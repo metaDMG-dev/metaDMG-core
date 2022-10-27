@@ -92,9 +92,9 @@ The command above will open a page in web browser automatically where you will s
 :align: center
 ```
 
-In the middle of the page, we see the overview plot. This shows the amount of damage, $D_\text{max}$, on the y-axis and the fit quality, $z$, on the x-axis. In this case, we see three blue dots; one single dot per tax ID.
+In the middle of the page, we see the overview plot. This shows the amount of damage, $D$, on the y-axis and the significance, $Z$, on the x-axis. In this case, we see three blue dots; one single dot per tax ID.
 
-In general, we want a large amount of damage along with a high fit quality to believe that the related data is significantly ancient. In this case, the two points in the upper right seem like good potential candidates.
+In general, we want a large amount of damage along with a high significance to believe that the related data is significantly ancient. In this case, the two points in the upper right seem like good potential candidates.
 
 #### Hover info
 
@@ -106,9 +106,9 @@ To extract more concrete information about the individual tax IDs (points in the
 :align: center
 ```
 
-Here we have hovered the mouse on the tax ID 711 which is the Lactobacillales order. Below the tax information, we can see the fit results, in particular the position-dependent damage-rate, $q$, the fit concentration $\phi$ and the correlation between $A$ and $c$, $\rho_{Ac}$, along with the fit quality and damage amount.
+Here we have hovered the mouse on the tax ID 711 which is the Lactobacillales order. Below the tax information, we can see the fit results, in particular the position-dependent damage-rate, $q$, the fit concentration $\phi$ and the correlation between $A$ and $c$, $\rho_{Ac}$, along with the significance and damage amount.
 
-In this small analyses, we ran the full Bayesian model. In the more general case where this would be too time consuming, we would only have the MAP results. These are show below. In this case, the fit quality is measured by the likelihood ratio $\lambda_\text{LR}$. Note the strong correspondence between the Bayesian fit results and the approximate MAP results.
+In this small analyses, we ran the full Bayesian model. In the more general case where this would be too time consuming, we would only have the MAP results. These are show below. In this case, the MAPsignificance is measured by the MAP significance $Z_\text{MAP}$. Note the strong correspondence between the Bayesian fit results and the approximate MAP results.
 
 In the buttom of hover square, we see the count information. This shows, that this tax ID consisted of $22.5 \times 10^3$ individual reads with the same number of alignments (indicating very little amount of overlap between the references in this case). The `k sum total` is the total number of $C \rightarrow T$ transistions across all reads at all positions (and $G \rightarrow A$ for the reverse strand). `N sum total` is the total number of $C$ to anything, $C \rightarrow X$, across all reads at all positions (and $G \rightarrow X$ for the reverse strand).
 
@@ -123,7 +123,7 @@ So now we have managed to extract the fit results of the specific tax ID. Howeve
 ```
 In this plot, the position dependent frequency of the $C \rightarrow T$ transitions are shown in blue dots and the $G \rightarrow A$ transitions in red. The green curve is the fit and the dashed area shows the $1\sigma$ (68%) confidence interval of the fit.
 
-We see that damage frequency starts at around 0.085 and then drops to about 0.025. This is an elevated amount of damage of about 0.06 in the beginning of the read compared to the asymptotic value, which is exactly what $D_\text{max}$ explains. Similarly see a quite clear trend in the data; the visual appearence of the data matches the quantitative fit results.
+We see that damage frequency starts at around 0.085 and then drops to about 0.025. This is an elevated amount of damage of about 0.06 in the beginning of the read compared to the asymptotic value, which is exactly what $D$ explains. Similarly see a quite clear trend in the data; the visual appearance of the data matches the quantitative fit results.
 
 We can compare this to the data in the bottom left of the overview plot.
 
@@ -133,7 +133,7 @@ We can compare this to the data in the bottom left of the overview plot.
 :align: center
 ```
 
-Here we see that there does seem to be some damage in this tax ID, although the data is a lot more noisy and scattered around. This is also why the fit quality, $z$, is a lot smaller than it is for the previous tax ID.
+Here we see that there does seem to be some damage in this tax ID, although the data is a lot more noisy and scattered around. This is also why the significance, $X$, is a lot smaller than it is for the previous tax ID.
 
 #### Export CSV
 
