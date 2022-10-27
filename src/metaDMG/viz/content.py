@@ -62,7 +62,7 @@ def get_navbar():
             dcc.Download(id="export_pdf"),
         ],
         brand="metaDMG",
-        brand_href="https://github.com/metaDMG/metaDMG",
+        brand_href="https://github.com/metaDMG-dev/metaDMG-core",
         color="dark",
         dark=True,
         fluid=True,
