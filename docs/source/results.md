@@ -11,20 +11,15 @@ The column names in the results and their explanation:
   - `N_alignments`: The number of alignments. int64.
 
 ## Fit related parameters
-  - `lambda_LR`: The likelihood ratio, $\lambda_\text{LR}$, between the null model and the ancient damage model. This can be interpreted as the fit certainty, where higher values means higher certainty. float64.
-  - `lambda_LR_P`: The likelihood ratio expressed as a probability. float64.
-  - `lambda_LR_z`: The likelihood ratio expressed as number of $\sigma$. float64.
-  - `D_max`: The estimated damage, $D_\text{max}$. This can be interpreted as the amount of damage in the specific taxa. float64.
+  - `damage`: The estimated damage in the specific taxa, $D$. float64.
+  - `significance`: The number of sigmas that the damage is away from 0, i.e. how certain one should be about there being non-zero damage. float64.
   - `q`: The damage decay rate. float64.
   - `A`: The background independent damage. float64.
   - `c`: The background. float64.
   - `phi`: The concentration for a beta binomial distribution (parametrised by $\mu$ and $\phi$). float64.
   - `rho_Ac`: The correlation between $A$ and $c$, $\rho_{Ac}$. High values of this are often a sign of a bad fit. float64.
-  - `valid`: Wether or not the fit is valid (defined by [iminuit](https://iminuit.readthedocs.io/en/stable/)). bool.
-  - `asymmetry`: An estimate of the asymmetry of the forward and reverse fits. See below for more information. float64.
-  - `XXX_std`: the uncertainty (standard deviation) of the variable `XXX` for $D_\text{max}$, $A$, $q$, $c$, and $\phi$.
-  - `forward__XXX`: The same description as above for variable `XXX`, but only for the forward read.
-  - `reverse__XXX`: The same description as above for variable `XXX`, but only for the reverse read.
+  - `XXX_std`: the uncertainty (standard deviation) of the variable `XXX` for $D$, $A$, $q$, $c$, and $\phi$.
+  - `MAP_valid`: Whether or not the MAP fit is valid (defined by [iminuit](https://iminuit.readthedocs.io/en/stable/)). bool.
 
 ## Read related parameters
   - `mean_L`: The mean read length of all the individual, unique reads that map to the specific taxa. float64.
@@ -47,5 +42,5 @@ The column names in the results and their explanation:
   - `k-i`: Same as above, but for the reverse direction. int64.
   - `N+i`: The number of _"trials"_, $N$ at position $x=i$: $N(x=i)$ in the forward direction. int64.
   - `N-i`: Same as above, but for the reverse direction. int64.
-  - `f+i`: The fraction between $k$ and $N$, $f = k / N$, at position $x=i$ in the forward direction. int64.
+  - `f+i`: The damage frequency, $f$, given $k$ and $N$: $f(x) = k(x) / N(x)$, at position $x=i$ in the forward direction. int64.
   - `f-i`: Same as above, but for the reverse direction. int64.

@@ -24,9 +24,9 @@ When you open the dashboard, you will see the following:
 :align: center
 ```
 
-In the middle of the page, we see the overview plot. This shows the amount of damage, $D_\text{max}$, on the y-axis and the fit quality, $z$, on the x-axis. In this case, we see three blue dots; one single dot per tax ID.
+In the middle of the page, we see the overview plot. This shows the amount of damage, $D$, on the y-axis and the significance, $Z$, on the x-axis. In this case, we see three blue dots; one single dot per tax ID.
 
-In general, we want a large amount of damage along with a high fit quality to believe that the related data is significantly ancient. In this case, the two points in the upper right seem like good potential candidates.
+In general, we want a large amount of damage along with a high significance to believe that the related data is significantly ancient. In this case, the two points in the upper right seem like good potential candidates.
 
 ## Hover info
 
@@ -38,9 +38,9 @@ To extract more concrete information about the individual tax IDs (points in the
 :align: center
 ```
 
-Here we have hovered the mouse on the tax ID 711 which is the Lactobacillales order. Below the tax information, we can see the fit results, in particular the position-dependent damage-rate, $q$, the fit concentration $\phi$ and the correlation between $A$ and $c$, $\rho_{Ac}$, along with the fit quality and damage amount.
+Here we have hovered the mouse on the tax ID 711 which is the Lactobacillales order. Below the tax information, we can see the fit results, in particular the position-dependent damage-rate, $q$, the fit concentration $\phi$ and the correlation between $A$ and $c$, $\rho_{Ac}$, along with the significance and damage amount.
 
-In smaller analyses, the full Bayesian model can be used (which is recommended). In the more general case where this would be too time consuming, we would only have the MAP results. In this case, the fit quality is measured by the likelihood ratio $\lambda_\text{LR}$.
+In smaller analyses, the full Bayesian model can be used (which is recommended). In the more general case where this would be too time consuming, we would only have the MAP results. In this case, the significance is measured by the MAP significance $Z_\text{MAP}$.
 
 In the bottom of the hover square, we see the count information. This shows, that this tax ID consisted of $22.5 \times 10^3$ individual reads with the same number of alignments (indicating very little amount of overlap between the references in this case). The `k sum total` is the total number of $C \rightarrow T$ transitions across all reads at all positions (and $G \rightarrow A$ for the reverse strand). `N sum total` is the total number of $C$ to anything, $C \rightarrow X$, across all reads at all positions (and $G \rightarrow X$ for the reverse strand).
 
@@ -106,7 +106,7 @@ If we hide the `Filters` pane by clicking on it and instead show the `Styling` p
 :align: center
 ```
 
-This allows to go deeper into the fit results and explore more advanced relationships between the variables. If one e.g. changes the x-axis to show `D_max`, it is possible to visually compare the two estimates of $D_\text{max}$; the MAP one and the Bayesian one.
+This allows to go deeper into the fit results and explore more advanced relationships between the variables. If one e.g. changes the x-axis to show `MAP_damage`, it is possible to visually compare the two estimates of $D$; the MAP one and the Bayesian one.
 All of the points in the dashboard are sized according to the number of reads. This can be changed in the `Variable` dropdown. By default, they are sized according to the square root of this variable; this can also be changed in the `Function` dropdown. Finally, a relative scaling is also positive in the `Scale` slider.
 
 ## Export CSV

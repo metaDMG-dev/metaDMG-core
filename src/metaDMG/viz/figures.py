@@ -252,7 +252,7 @@ def plot_group(
             font_size=30,
         )
 
-        # add D-max as single errorbar
+        # add damage as single errorbar
         if D_info is not None:
 
             D, D_low, D_high = D_info
@@ -271,7 +271,7 @@ def plot_group(
                         color="black",
                     ),
                     mode="markers",
-                    name="D-max",
+                    name="Damage",
                     marker_color="black",
                     # hovertemplate=viz_results.hovertemplate_D,
                     hoverinfo="skip",
