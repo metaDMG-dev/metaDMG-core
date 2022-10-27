@@ -163,7 +163,7 @@ class VizResults:
             log_column = "log_" + column
             df.loc[:, log_column] = np.log10(1 + df[column])
 
-        if np.isnan(df["k-1"]).any():
+        if "k-1" not in df.columns or np.isnan(df["k-1"]).any():
             self.contains_forward_only = True
             if "k-1" in df.columns:
                 df["forward_only"] = df["k-1"].isna()
