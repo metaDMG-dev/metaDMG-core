@@ -146,7 +146,7 @@ $ metaDMG compute non-default-config.yaml --force
 (command_line_interface_dashboard)=
 ## Dashboard
 
-You can now see a preview of the [interactive dashboard](https://metadmg.herokuapp.com).
+You can now see a preview of the [interactive dashboard](https://metadmg.onrender.com).
 
 The `metaDMG dashboard` command takes first an optional config-file as argument
 (defaults to `config.yaml` if not specified).

@@ -13,7 +13,7 @@ $ metaDMG dashboard config_simple.yaml
 
 For a short introduction on how to run it on a server and use a local browser, see the tutorial on the [Kap K dashboard](KapK_dashboard).
 
-In case you just want a small preview of the dashboard, you can also use the following online [test site](https://metadmg.herokuapp.com).
+In case you just want a small preview of the dashboard, you can also use the following [live dashboard](https://metadmg.onrender.com).
 
 ## Overview plot
 
