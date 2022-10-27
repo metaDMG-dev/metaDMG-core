@@ -10,7 +10,7 @@
 # A fast and accurate ancient DNA damage toolkit for metagenomic data
 
 [![Documentation](https://img.shields.io/badge/documentation-latest-blue.svg)](https://metadmg-dev.github.io/metaDMG-core/)
-[![Documentation](https://img.shields.io/badge/dashboard-live-blue.svg)](https://metadmg.herokuapp.com/)
+[![Documentation](https://img.shields.io/badge/dashboard-live-blue.svg)](https://metadmg.onrender.com//)
 ![](https://img.shields.io/pypi/v/metadmg)
 ![](https://img.shields.io/pypi/pyversions/metaDMG)
 <!-- ![](https://img.shields.io/pypi/l/metaDMG) -->
@@ -23,7 +23,7 @@
 `metaDMG` is a novel framework and suite of programs for analysing large-scale genomic data especially in the context of environmental DNA. This includes state-of-the-art statistical methods for computing nucleotide misincorporation and fragmentation patterns of even highly complex samples.
 
 For more information, see the [documentation](https://metadmg-dev.github.io/metaDMG-core).
-For a quick preview of the interactivity, see the [dashboard](https://metadmg.herokuapp.com).
+For a quick preview of the interactivity, see the [live dashboard](https://metadmg.onrender.com/). Do note that the speed of the live dashboard is severely limited since it's running on a free server and thus indicative of the actual speed of the dashboard.
 
 ## Table of contents
 * [Getting started](#getting-started)
