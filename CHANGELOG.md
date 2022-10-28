@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v0.37.0 (2022-10-28)
+### Feature
+* Update version ([`5c11819`](https://github.com/metaDMG-dev/metaDMG-core/commit/5c118192cad37b2edd2244895071816ff67e068c))
+
+### Fix
+* Improve logging ([`40b6341`](https://github.com/metaDMG-dev/metaDMG-core/commit/40b63410113d3a83aaa74bfc47fa09872dfaccef))
+* Remove unnecessary computations ([`3515083`](https://github.com/metaDMG-dev/metaDMG-core/commit/351508350391251e715e3fbfc5068ecc161709e6))
+
 ## v0.36.2 (2022-10-27)
 ### Fix
 * Fix minor issue with mix of forward-only and normal in dashboard ([`4d44f16`](https://github.com/metaDMG-dev/metaDMG-core/commit/4d44f168505d18626e9f7005b55f60658d276127))
