@@ -92,9 +92,9 @@ def add_D_information(
     mu = np.mean(A)
     std = np.mean(np.sqrt(A * (1 - A) * (phi + N) / ((phi + 1) * N)))
 
-    Dx = A
-    alpha = Dx * phi
-    beta = (1 - Dx) * phi
+    # Dx = A
+    # alpha = Dx * phi
+    # beta = (1 - Dx) * phi
 
     # 1000x faster approximation for sp_betabinom(N, alpha, beta)
     # pdf_approx = sp_betabinom(N, alpha.mean(), beta.mean())
