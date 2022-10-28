@@ -332,7 +332,7 @@ def run_LCA(config: Config, force: bool = False) -> None:
 
 def run_damage_no_lca(config: Config, force: bool = False) -> None:
 
-    logger.info(f"Getting damage.")
+    # logger.info(f"Getting damage.")
 
     targets = [
         config["path_mismatches_txt"],
@@ -349,7 +349,7 @@ def run_damage_no_lca(config: Config, force: bool = False) -> None:
         if not metaDMG_cpp_is_valid(config):
             raise metadamageError()
 
-        logger.info(f"Computing damage. NOTE: NO LCA.")
+        logger.info(f"Computing mismatch matrices (without LCA).")
 
         command_damage = get_damage_command(config)
         command_damage_ugly = get_damage_ugly_command(config)
@@ -366,7 +366,7 @@ def run_damage_no_lca(config: Config, force: bool = False) -> None:
         delete_tmp_dir(config)
 
     else:
-        logger.info(f"Damage has already been computed before. NOTE: NO LCA.")
+        logger.info(f"Loading mismatch matrices (without LCA).")
 
 
 #%%
@@ -384,18 +384,18 @@ def run_cpp(config: Config, force: bool = False) -> None:
 
 def get_df_mismatches(config: Config, force: bool = False) -> pd.DataFrame:
 
-    logger.info(f"Getting df_mismatches")
+    # logger.info(f"Getting df_mismatches")
 
     target = data_dir(config, name="mismatches")
 
     if do_run(target, force=force):
-        logger.info(f"Computing df_mismatches.")
+        logger.info(f"Computing mismatch matrix dataframes.")
         df_mismatches = mismatches.compute(config)
         target.parent.mkdir(parents=True, exist_ok=True)
         df_mismatches.to_parquet(target)
 
     else:
-        logger.info(f"Loading df_mismatches.")
+        logger.info(f"Loading mismatch matrix dataframes.")
         df_mismatches = pd.read_parquet(target)
 
     return df_mismatches
@@ -414,21 +414,21 @@ def get_df_fit_results(
     force: bool = False,
 ) -> pd.DataFrame:
 
-    logger.info(f"Getting df_fit_results.")
+    # logger.info(f"Getting df_fit_results.")
 
     target = data_dir(config, name="fit_results")
     if do_load(target, force=force):
-        logger.info(f"Try to load df_fit_results.")
+        logger.info(f"Try to load fit results.")
         df_fit_results = pd.read_parquet(target)
 
         # if frequentist fits only, return immediately
         if not config["bayesian"]:
-            logger.info(f"Loading df_fit_results (frequentist).")
+            logger.info(f"Loading fit results (MAP).")
             return df_fit_results
 
         # if df_fit_results has already been run with Bayesian, return this
         if dataframe_columns_contains(df_fit_results, "damage"):
-            logger.info(f"Loading df_fit_results (Bayesian).")
+            logger.info(f"Loading fit results (Bayesian).")
             return df_fit_results
 
     # Compute the fits
@@ -456,12 +456,12 @@ def get_df_results(
     force: bool = False,
 ) -> pd.DataFrame:
 
-    logger.info(f"Getting df_results.")
+    # logger.info(f"Getting df_results.")
 
     target = data_dir(config, name="results")
 
     if do_load(target, force=force):
-        logger.info(f"Loading df_results.")
+        logger.info(f"Loading results as dataframe.")
         df_results = pd.read_parquet(target)
 
         # if frequentist fits only, return immediately
@@ -473,7 +473,7 @@ def get_df_results(
             return df_results
 
     # Compute the results:
-    logger.info(f"Computing df_results.")
+    logger.info(f"Computing final results.")
     df_results = results.merge(config, df_mismatches, df_fit_results)
     target.parent.mkdir(parents=True, exist_ok=True)
     df_results.to_parquet(target)

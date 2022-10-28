@@ -8,34 +8,25 @@ formatters:
     format: "[%(asctime)s] | %(name)s:%(lineno)d | %(levelname)s | %(message)s"
     datefmt: "%Y-%m-%d %H:%M:%S"
   brief:
-    format: "[%(asctime)s] | %(levelname)s | %(message)s"
+    # format: "[%(asctime)s] | %(levelname)s | %(message)s"
+    format: "%(message)s"
     datefmt: "%Y-%m-%d %H:%M:%S"
 
 handlers:
   console:
-    class: logging.StreamHandler
+    class: rich.logging.RichHandler
     level: INFO
     formatter: brief
-    stream: ext://sys.stdout
-
-  error_file_handler:
-    class: logging.handlers.TimedRotatingFileHandler
-    level: DEBUG
-    formatter: simple
-    filename: logs/log.txt
-    backupCount: 15
-    encoding: utf8
-    when: midnight
-
-loggers:
-  urllib3:
-    level: WARNING
-    handlers: [console, error_file_handler]
-    propagate: no
+    # stream: ext://sys.stdout
+    show_time: true
+    show_level: true
+    show_path: false
+    rich_tracebacks: true
+    log_time_format: "%Y-%m-%d %H:%M:%S"
 
 root:
   level: DEBUG
-  handlers: [console, error_file_handler]
+  handlers: [console]
 
 logger_tt:
   suppress: ["exchangelib", "numba", "matplotlib", "absl"]

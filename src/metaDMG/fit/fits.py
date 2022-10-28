@@ -10,7 +10,8 @@ import numpy as np
 import numpyro
 import pandas as pd
 from logger_tt import logger
-from tqdm import tqdm
+from tqdm.rich import tqdm
+from tqdm.std import TqdmExperimentalWarning
 
 from metaDMG.errors import BadDataError, FittingError
 from metaDMG.fit import bayesian, fit_utils, frequentist
@@ -18,11 +19,20 @@ from metaDMG.fit.mismatches import add_reference_count
 from metaDMG.utils import Config
 
 
+# from tqdm import tqdm
+
 numpyro.enable_x64()
 
 #%%
 
 BAYESIAN_MAXIMUM_SIZE = 100
+
+#%%
+
+# XXX Works, but should be a better way
+# with warnings.catch_warnings():
+warnings.filterwarnings("ignore", category=TqdmExperimentalWarning)
+
 
 #%%
 
