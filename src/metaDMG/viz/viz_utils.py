@@ -628,7 +628,7 @@ def get_graph_kwargs_no_buttons():
 def get_d_columns_latex(viz_results):
     d_columns_latex = {
         "damage": r"$\text{Damage}$",
-        "MAP_damage": r"$Damage \,\, \text{(MAP)}$",
+        "MAP_damage": r"$\text{Damage} \,\, \text{(MAP)}$",
         #
         "significance": r"$\text{significance}$",
         "MAP_significance": r"$\text{significance} \,\, \text{(MAP)}$",
