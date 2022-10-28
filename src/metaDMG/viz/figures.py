@@ -12,9 +12,12 @@ from dash.exceptions import PreventUpdate
 from matplotlib import ticker
 from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib.ticker import EngFormatter
-from tqdm import tqdm
+from tqdm.rich import tqdm
 
 from metaDMG.viz import viz_utils
+
+
+# from tqdm import tqdm
 
 
 #%%
@@ -255,7 +258,8 @@ def plot_group(
         # add damage as single errorbar
         if D_info is not None:
 
-            D, D_low, D_high = D_info
+            # D, D_low, D_high = D_info
+            D, D_std = D_info
 
             # fit with errorbars
             fig.add_trace(
@@ -264,9 +268,10 @@ def plot_group(
                     y=[D],
                     error_y=dict(
                         type="data",
-                        symmetric=False,
-                        array=[D_high - D],
-                        arrayminus=[D - D_low],
+                        array=[D_std],
+                        # symmetric=False,
+                        # array=[D_high - D],
+                        # arrayminus=[D - D_low],
                         visible=True,
                         color="black",
                     ),

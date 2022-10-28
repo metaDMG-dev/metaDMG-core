@@ -105,14 +105,14 @@ def correct_for_non_LCA(df):
 
 def add_MAP_measures(df):
     df["MAP_rho_Ac_abs"] = np.abs(df["MAP_rho_Ac"])
-    df["MAP_damage_CI_low"] = df["MAP_damage"] - df["MAP_damage_std"]
-    df["MAP_damage_CI_high"] = df["MAP_damage"] + df["MAP_damage_std"]
+    # df["MAP_damage_CI_low"] = df["MAP_damage"] - df["MAP_damage_std"]
+    # df["MAP_damage_CI_high"] = df["MAP_damage"] + df["MAP_damage_std"]
 
 
 def add_bayesian_measures(df):
     df["rho_Ac_abs"] = np.abs(df["rho_Ac"])
-    df["damage_CI_low"] = df["damage_CI_1_sigma_low"]
-    df["damage_CI_high"] = df["damage_CI_1_sigma_high"]
+    # df["damage_CI_low"] = df["damage_CI_1_sigma_low"]
+    # df["damage_CI_high"] = df["damage_CI_1_sigma_high"]
 
 
 #%%
@@ -502,13 +502,14 @@ class VizResults:
             prefix = "MAP_"
 
         D = ds[f"{prefix}damage"].iloc[0]
+        D_sigma = ds[f"{prefix}damage_std"].iloc[0]
 
-        s1 = f"{prefix}damage_CI_low"
-        s2 = f"{prefix}damage_CI_high"
-        D_low = ds[s1].iloc[0]
-        D_high = ds[s2].iloc[0]
+        # s1 = f"{prefix}damage_CI_low"
+        # s2 = f"{prefix}damage_CI_high"
+        # D_low = ds[s1].iloc[0]
+        # D_high = ds[s2].iloc[0]
 
-        return D, D_low, D_high
+        return D, D_sigma
 
     def _ds_to_fit_text(self, ds):
 

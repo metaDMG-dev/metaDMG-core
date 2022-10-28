@@ -97,32 +97,33 @@ def add_D_information(
     beta = (1 - Dx) * phi
 
     # 1000x faster approximation for sp_betabinom(N, alpha, beta)
-    pdf_approx = sp_betabinom(N, alpha.mean(), beta.mean())
+    # pdf_approx = sp_betabinom(N, alpha.mean(), beta.mean())
 
     fit_result[f"{prefix}damage"] = mu.item()
     fit_result[f"{prefix}damage_std"] = std.item()
     fit_result[f"{prefix}significance"] = mu.item() / std.item()
-    fit_result[f"{prefix}damage_median"] = np.median(A)
+
+    # fit_result[f"{prefix}damage_median"] = np.median(A)
 
     # fit_result[f"{prefix}prob_lt_1p_damage"] = pdf_beta.cdf(0.01).mean()
     # # fit_result[f"{prefix}prob_lt_1p_damage_betabinom"] = pdf.cdf(0.01 * N).mean()
     # fit_result[f"{prefix}prob_zero_damage"] = pdf.cdf(0).mean()
 
-    for n_sigma in [1, 2, 3]:
-        conf = get_n_sigma_probability(n_sigma)
-        fit_result[f"{prefix}damage_CI_{n_sigma}_sigma_low"] = (
-            pdf_approx.ppf((1 - conf) / 2.0).mean() / N
-        )
-        fit_result[f"{prefix}damage_CI_{n_sigma}_sigma_high"] = (
-            pdf_approx.ppf((1 + conf) / 2.0).mean() / N
-        )
+    # for n_sigma in [1, 2, 3]:
+    #     conf = get_n_sigma_probability(n_sigma)
+    #     fit_result[f"{prefix}damage_CI_{n_sigma}_sigma_low"] = (
+    #         pdf_approx.ppf((1 - conf) / 2.0).mean() / N
+    #     )
+    #     fit_result[f"{prefix}damage_CI_{n_sigma}_sigma_high"] = (
+    #         pdf_approx.ppf((1 + conf) / 2.0).mean() / N
+    #     )
 
-    fit_result[f"{prefix}damage_CI_95_low"] = (
-        pdf_approx.ppf((1 - 0.95) / 2.0).mean() / N
-    )
-    fit_result[f"{prefix}damage_CI_95_high"] = (
-        pdf_approx.ppf((1 + 0.95) / 2.0).mean() / N
-    )
+    # fit_result[f"{prefix}damage_CI_95_low"] = (
+    #     pdf_approx.ppf((1 - 0.95) / 2.0).mean() / N
+    # )
+    # fit_result[f"{prefix}damage_CI_95_high"] = (
+    #     pdf_approx.ppf((1 + 0.95) / 2.0).mean() / N
+    # )
 
     return fit_result
 
@@ -158,9 +159,9 @@ def add_summary_of_variable(
 
     fit_result[f"{s}"] = np.mean(values, axis=axis)
     fit_result[f"{s}_std"] = np.std(values, axis=axis)
-    fit_result[f"{s}_median"] = np.median(values, axis=axis)
-    fit_result[f"{s}_CI_1_sigma_low"] = np.quantile(values, q_low, axis=axis)
-    fit_result[f"{s}_CI_1_sigma_high"] = np.quantile(values, q_high, axis=axis)
+    # fit_result[f"{s}_median"] = np.median(values, axis=axis)
+    # fit_result[f"{s}_CI_1_sigma_low"] = np.quantile(values, q_low, axis=axis)
+    # fit_result[f"{s}_CI_1_sigma_high"] = np.quantile(values, q_high, axis=axis)
 
 
 def compute_rho_Ac(mcmc):

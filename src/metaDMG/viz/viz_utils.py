@@ -267,8 +267,8 @@ def get_range_slider_keywords(viz_results, column="N_reads", N_steps=100):
         "q",
         "A",
         "c",
-        "damage_CI_low",
-        "damage_CI_high",
+        # "damage_CI_low",
+        # "damage_CI_high",
     ]:
         range_min = 0.0
         range_max = 1.0
@@ -633,10 +633,10 @@ def get_d_columns_latex(viz_results):
         "significance": r"$\text{significance}$",
         "MAP_significance": r"$\text{significance} \,\, \text{(MAP)}$",
         #
-        "damage_CI_low": r"$D \,\, \text{CI. low}$",
-        "damage_CI_high": r"$D \,\, \text{CI. high}$",
-        "MAP_damage_CI_low": r"$D \,\, \text{CI. low} \,\, \text{(MAP)}$",
-        "MAP_damage_CI_high": r"$D \,\, \text{CI. high} \,\, \text{(MAP)}$",
+        # "damage_CI_low": r"$D \,\, \text{CI. low}$",
+        # "damage_CI_high": r"$D \,\, \text{CI. high}$",
+        # "MAP_damage_CI_low": r"$D \,\, \text{CI. low} \,\, \text{(MAP)}$",
+        # "MAP_damage_CI_high": r"$D \,\, \text{CI. high} \,\, \text{(MAP)}$",
         #
         "q": r"$q$",
         "MAP_q": r"$q \text{(MAP)}$",
