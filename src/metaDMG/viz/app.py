@@ -263,39 +263,21 @@ def get_app(results_dir):
             bayesian_list = []
             if viz_results.Bayesian:
 
-                # s_D = f", [{ds['damage_CI_1_sigma_low']:.2%}, {ds['damage_CI_1_sigma_high']:.2%}]"
-
-                # conf_q_low = ds["q_CI_1_sigma_low"]
-                # conf_q_high = ds["q_CI_1_sigma_high"]
-                # s_q = f", [{conf_q_low:.3f}, {conf_q_high:.3f}]"
-
-                # conf_phi_low = viz_utils.human_format(ds["phi_CI_1_sigma_low"])
-                # conf_phi_high = viz_utils.human_format(ds["phi_CI_1_sigma_high"])
-                # s_phi = f", [{conf_phi_low}, {conf_phi_high}]"
-
-                # conf_A_low = ds["A_CI_1_sigma_low"]
-                # conf_A_high = ds["A_CI_1_sigma_high"]
-                # s_A = f", [{conf_A_low:.3f}, {conf_A_high:.3f}]"
-
-                # conf_c_low = ds["c_CI_1_sigma_low"]
-                # conf_c_high = ds["c_CI_1_sigma_high"]
-                # s_c = f", [{conf_c_low:.3f}, {conf_c_high:.3f}]"
-
                 bayesian_list = [
                     "Fit results:",
                     html.Br(),
-                    f"D: {ds['damage']:.2%} " f"± {ds['damage_std']:.2%}",  # + s_D,
+                    f"D: {ds['damage']:.2%} " f"± {ds['damage_std']:.2%}",
                     html.Br(),
                     f"significance: {ds['significance']:.2f}",
                     html.Br(),
-                    f"q: {ds['q']:.3f} " f"± {ds['q_std']:.3f}",  # + s_q,
+                    f"q: {ds['q']:.3f} " f"± {ds['q_std']:.3f}",
                     html.Br(),
                     f"phi: {viz_utils.human_format(ds['phi'])} "
-                    f"± {viz_utils.human_format(ds['phi_std'])}",  # + s_phi,
+                    f"± {viz_utils.human_format(ds['phi_std'])}",
                     html.Br(),
-                    f"A: {ds['A']:.3f} " f"± {ds['A_std']:.3f}",  # + s_A,
+                    f"A: {ds['A']:.3f} " f"± {ds['A_std']:.3f}",
                     html.Br(),
-                    f"c: {ds['c']:.3f} " f"± {ds['c_std']:.3f}",  # + s_c,
+                    f"c: {ds['c']:.3f} " f"± {ds['c_std']:.3f}",
                     html.Br(),
                     f"rho Ac: {ds['rho_Ac']:.3f}",
                     html.Br(),
