@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.37.1 (2022-11-04)
+### Fix
+* Remove old code ([`fd9e3af`](https://github.com/metaDMG-dev/metaDMG-core/commit/fd9e3af2548b5e8f5776d40ed8995407b4f3ee31))
+
 ## v0.37.0 (2022-10-28)
 ### Feature
 * Update version ([`5c11819`](https://github.com/metaDMG-dev/metaDMG-core/commit/5c118192cad37b2edd2244895071816ff67e068c))
