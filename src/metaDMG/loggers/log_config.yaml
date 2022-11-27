@@ -17,20 +17,25 @@ handlers:
     class: rich.logging.RichHandler
     level: INFO
     formatter: brief
-    # stream: ext://sys.stdout
     show_time: true
     show_level: true
     show_path: false
     rich_tracebacks: true
     log_time_format: "%Y-%m-%d %H:%M:%S"
 
+  error_file_handler:
+    class: logging.FileHandler
+    level: DEBUG
+    formatter: simple
+    filename: logs/log.txt
+    encoding: utf8
+
 root:
   level: DEBUG
-  handlers: [console]
+  handlers: [console, error_file_handler]
 
 logger_tt:
-  # suppress: ["exchangelib", "numba", "matplotlib", "absl", "jax"]
-  suppress: ["jax"]
+  suppress: ["numba", "jax"]
   suppress_level_below: "WARNING"
   capture_print: False
   strict: False
