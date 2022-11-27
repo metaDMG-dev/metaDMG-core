@@ -29,7 +29,8 @@ root:
   handlers: [console]
 
 logger_tt:
-  suppress: ["exchangelib", "numba", "matplotlib", "absl"]
+  # suppress: ["exchangelib", "numba", "matplotlib", "absl", "jax"]
+  suppress: ["jax"]
   suppress_level_below: "WARNING"
   capture_print: False
   strict: False
