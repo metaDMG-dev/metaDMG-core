@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.38.0 (2022-11-27)
+### Feature
+* Add logging to file ([`24bef97`](https://github.com/metaDMG-dev/metaDMG-core/commit/24bef97d16cbf64ac997210b740c95935abd3ca7))
+
+### Fix
+* Ignore jax warning ([`89f2134`](https://github.com/metaDMG-dev/metaDMG-core/commit/89f2134f627bfdfd185645269ca350ede66bce16))
+
 ## v0.37.1 (2022-11-04)
 ### Fix
 * Remove old code ([`fd9e3af`](https://github.com/metaDMG-dev/metaDMG-core/commit/fd9e3af2548b5e8f5776d40ed8995407b4f3ee31))
