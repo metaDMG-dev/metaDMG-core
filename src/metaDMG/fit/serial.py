@@ -91,7 +91,7 @@ def get_LCA_command(config: Config) -> str:
         f"-weighttype {config['weight_type']} "
         f"-fix_ncbi {config['custom_database']} "
         f"-tempfolder {config['path_tmp']}/ "
-        f"--stopIfErrors {config['stopIfErrors']} "
+        f"-stopIfErrors {config['stopIfErrors']} "
     )
     return command[:-1]
 
@@ -146,7 +146,7 @@ def get_damage_command(config: Config) -> str:
         f"--runmode {runmode} "
         f"--outname {outname} "
         f"{config['bam']} "
-        f"--stopIfErrors {config['stopIfErrors']} "
+        f"-stopIfErrors {config['stopIfErrors']} "
     )
     return command[:-1]
 
