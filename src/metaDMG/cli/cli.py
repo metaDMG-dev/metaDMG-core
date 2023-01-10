@@ -133,8 +133,7 @@ def create_config(
     ),
     # GENERAL PARAMETERS
     stopIfErrors: Optional[int] = typer.Option(
-        None,
-        # 0,
+        0,
         "--stopIfErrors",
         "-Z",
         help="Temporary hack to bypass sorting check if SO tag does not exist in sam header. Values 0 or 1. zero=dont check",
