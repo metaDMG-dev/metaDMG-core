@@ -1,3 +1,7 @@
+
+# ATTENTION: The source code for the DNA damage estimation is no longer updated for this repo. Please refer to https://github.com/metaDMG-dev/metaDMG-cpp for the latest version. 
+
+
 ![Logo](docs/source/images/logo.png)
 <!--
 ```{image} docs/source/images/logo.png
