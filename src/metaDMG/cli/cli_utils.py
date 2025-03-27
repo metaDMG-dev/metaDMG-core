@@ -459,6 +459,7 @@ def get_config_dict(
     sample_prefix: str = "",
     sample_suffix: str = "",
     long_name: bool = False,
+    stopIfErrors: int = 1,
     damage_mode: DAMAGE_MODE = DAMAGE_MODE.LCA,
     __version__: str = "",
 ) -> dict:
@@ -486,6 +487,7 @@ def get_config_dict(
             "weight_type": weight_type,
             "custom_database": custom_database,
             "forward_only": forward_only,
+            "stopIfErrors": stopIfErrors,
             #
             "output_dir": output_dir,
             "parallel_samples": parallel_samples,
